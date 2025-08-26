@@ -820,6 +820,16 @@
                     if (preview) {
                         preview.querySelector('img').src = e.target.result;
                         preview.style.display = 'inline-block';
+                        
+                        // Add smooth animation
+                        preview.style.opacity = '0';
+                        preview.style.transform = 'scale(0.8)';
+                        preview.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        
+                        setTimeout(() => {
+                            preview.style.opacity = '1';
+                            preview.style.transform = 'scale(1)';
+                        }, 100);
                     }
                 };
                 reader.readAsDataURL(input.files[0]);

@@ -357,9 +357,12 @@ def register_routes(app):
             return redirect(url_for('view_invitation_final', share_url=invitation.share_url))
             
         except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
             app.logger.error(f"Error creating invitation: {str(e)}")
+            app.logger.error(f"Full traceback: {error_details}")
             db.session.rollback()
-            flash('Error creating invitation. Please try again.', 'error')
+            flash(f'Error creating invitation: {str(e)}. Please try again.', 'error')
             return redirect(url_for('create_invitation'))
 
     @app.route('/uploads/<filename>')
