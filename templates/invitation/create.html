@@ -440,10 +440,10 @@
             <!-- Basic Event Information -->
             <div class="form-section">
                 <div class="section-header">
-                    <i class="fas fa-calendar-alt"></i>
+                    <i class="fas fa-info-circle"></i>
                     <h3>Basic Event Information</h3>
                 </div>
-                
+
                 <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label required">Event Title</label>
@@ -462,6 +462,12 @@
                     <label class="form-label">Event Description</label>
                     <textarea class="form-textarea" id="eventDescription" name="eventDescription" rows="4" 
                               placeholder="Describe your event, add special instructions, or include a personal message..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Main Event Image</label>
+                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*">
+                    <small class="form-hint">Upload a main image for your invitation background</small>
                 </div>
             </div>
 
@@ -658,48 +664,111 @@
 
         <!-- Step 2: Photos & Additional Info -->
         <div class="form-step" id="step2">
-            <!-- Main Photos -->
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-camera"></i>
-                    <h3>Event Photos</h3>
-                </div>
-                
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Main Photo (Hero Image)</label>
-                        <div class="file-upload" onclick="document.getElementById('mainImage').click()">
-                            <input type="file" id="mainImage" name="mainImage" 
-                                   accept="image/*" onchange="previewImage(this, 'mainImagePreview')" style="display: none;">
-                            <div class="upload-area">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Click to upload your hero image</p>
-                                <small>This will be the main background image</small>
-                            </div>
+            <!-- Wedding Event Fields -->
+            <div class="event-section" id="weddingSection">
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-heart"></i>
+                        <h3>Wedding Details</h3>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Bride's Name</label>
+                            <input type="text" class="form-input" id="brideName" name="brideName" 
+                                   placeholder="Enter bride's name...">
                         </div>
-                        <div id="mainImagePreview" class="image-preview" style="display: none;">
-                            <img src="" alt="Preview">
-                            <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview')">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                        <div class="form-group">
+                            <label class="form-label">Groom's Name</label>
+                            <input type="text" class="form-input" id="groomName" name="groomName" 
+                                   placeholder="Enter groom's name...">
                         </div>
                     </div>
-                    
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Bride's Photo</label>
+                            <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*">
+                            <small class="form-hint">Upload bride's photo</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Groom's Photo</label>
+                            <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*">
+                            <small class="form-hint">Upload groom's photo</small>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label class="form-label">Gallery Images (2-6 photos)</label>
-                        <div class="file-upload" onclick="document.getElementById('galleryImages').click()">
-                            <input type="file" id="galleryImages" name="galleryImages" 
-                                   accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryPreview')" style="display: none;">
-                            <div class="upload-area">
-                                <i class="fas fa-images"></i>
-                                <p>Click to upload gallery images</p>
-                                <small>2-6 photos recommended</small>
-                            </div>
+                        <label class="form-label">Couple Photo</label>
+                        <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*">
+                        <small class="form-hint">Upload couple's photo together</small>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Muhurtham Time</label>
+                            <input type="time" class="form-input" id="muhurthamTime" name="muhurthamTime">
                         </div>
-                        <div id="galleryPreview" class="gallery-preview" style="display: none;">
-                            <h6>Selected Images:</h6>
-                            <div class="gallery-grid" id="galleryPreviewGrid"></div>
+
+                        <div class="form-group">
+                            <label class="form-label">Reception Time</label>
+                            <input type="time" class="form-input" id="receptionTime" name="receptionTime">
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Gallery Images</label>
+                        <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple>
+                        <small class="form-hint">Upload multiple photos for the gallery (hold Ctrl/Cmd to select multiple)</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Birthday Event Fields -->
+            <div class="event-section" id="birthdaySection">
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-birthday-cake"></i>
+                        <h3>Birthday Details</h3>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Birthday Person's Name</label>
+                            <input type="text" class="form-input" id="birthdayPerson" name="birthdayPerson" 
+                                   placeholder="Enter birthday person's name...">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Age</label>
+                            <input type="number" class="form-input" id="age" name="age" 
+                                   placeholder="Enter age...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Birthday Person's Photo</label>
+                        <input type="file" class="form-input" id="birthdayImage" name="birthdayImage" accept="image/*">
+                        <small class="form-hint">Upload birthday person's photo</small>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Party Start Time</label>
+                            <input type="time" class="form-input" id="startTime" name="startTime">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Dinner Time</label>
+                            <input type="time" class="form-input" id="dinnerTime" name="dinnerTime">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Gallery Images</label>
+                        <input type="file" class="form-input" id="birthdayGalleryImages" name="galleryImages" accept="image/*" multiple>
+                        <small class="form-hint">Upload multiple photos for the gallery</small>
                     </div>
                 </div>
             </div>
@@ -796,7 +865,7 @@ function nextStep() {
         document.getElementById(`step${currentStep + 1}`).classList.add('active');
         
         document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
-        document.getElementById(`step${currentStep + 1}-indicator`).classList.add('active');
+        document.getElementById(`step${currentStep + 1}`).classList.add('active');
         
         currentStep++;
         updateNavigation();
@@ -809,7 +878,7 @@ function previousStep() {
         document.getElementById(`step${currentStep - 1}`).classList.add('active');
         
         document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
-        document.getElementById(`step${currentStep - 1}-indicator`).classList.remove('completed');
+        document.getElementById(`step${currentStep - 1}`).classList.remove('completed');
         document.getElementById(`step${currentStep - 1}-indicator`).classList.add('active');
         
         currentStep--;

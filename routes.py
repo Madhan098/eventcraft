@@ -228,11 +228,43 @@ def register_routes(app):
         if not is_authenticated():
             flash('Please login to create an invitation', 'error')
             return redirect(url_for('auth'))
-        
+
         try:
             data = request.form
             selected_template = data.get('selectedTemplate', '')
-            
+
+            # Handle file uploads
+            uploaded_files = {}
+            gallery_images = []
+
+            # Main image upload
+            if 'mainImage' in request.files:
+                main_file = request.files['mainImage']
+                if main_file and main_file.filename:
+                    filename = secure_filename(f"{session['user_id']}_main_{datetime.now().timestamp()}_{main_file.filename}")
+                    main_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    uploaded_files['main_image'] = filename
+
+            # Event-specific image uploads
+            event_images = ['brideImage', 'groomImage', 'coupleImage', 'birthdayImage', 'graduateImage', 'honoreeImage']
+            for img_field in event_images:
+                if img_field in request.files:
+                    img_file = request.files[img_field]
+                    if img_file and img_file.filename:
+                        field_name = img_field.replace('Image', '').lower()
+                        filename = secure_filename(f"{session['user_id']}_{field_name}_{datetime.now().timestamp()}_{img_file.filename}")
+                        img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        uploaded_files[f'{field_name}_image'] = filename
+
+            # Gallery images upload
+            if 'galleryImages' in request.files:
+                gallery_files = request.files.getlist('galleryImages')
+                for i, gallery_file in enumerate(gallery_files):
+                    if gallery_file and gallery_file.filename:
+                        filename = secure_filename(f"{session['user_id']}_{datetime.now().timestamp()}_{i}_{gallery_file.filename}")
+                        gallery_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        gallery_images.append(filename)
+
             # Create new invitation
             invitation = Invitation(
                 user_id=session['user_id'],
@@ -242,8 +274,6 @@ def register_routes(app):
                 template_name=selected_template,
                 event_date=datetime.strptime(data.get('eventDate', ''), '%Y-%m-%d') if data.get('eventDate') else None,
                 event_style=data.get('eventStyle', ''),
-                
-                # Event-specific fields
                 bride_name=data.get('brideName', ''),
                 groom_name=data.get('groomName', ''),
                 muhurtham_time=data.get('muhurthamTime', ''),
@@ -279,7 +309,17 @@ def register_routes(app):
                 contact_phone=data.get('contactPhone', ''),
                 contact_email=data.get('contactEmail', ''),
                 venue_address=data.get('venueAddress', ''),
-                
+
+                # Image fields
+                main_image=uploaded_files.get('main_image'),
+                bride_image=uploaded_files.get('bride_image'),
+                groom_image=uploaded_files.get('groom_image'),
+                birthday_image=uploaded_files.get('birthday_image'),
+                couple_image=uploaded_files.get('couple_image'),
+                graduate_image=uploaded_files.get('graduate_image'),
+                honoree_image=uploaded_files.get('honoree_image'),
+                gallery_images=json.dumps(gallery_images) if gallery_images else None,
+
                 # Generate unique share URL
                 share_url=generate_unique_share_url(),
                 is_active=True,
@@ -461,13 +501,60 @@ def register_routes(app):
         if not is_authenticated():
             flash('Please login to continue', 'error')
             return redirect(url_for('auth'))
-        
+
         invitation = Invitation.query.filter_by(share_url=share_url).first()
         if not invitation or invitation.user_id != session['user_id']:
             flash('Invitation not found or access denied', 'error')
             return redirect(url_for('dashboard'))
-        
-        return render_template('invitation/manage.html', invitation=invitation)
+
+        # Prepare event_data for management view (same as final view)
+        event_data = {
+            'eventTitle': invitation.title or 'Event Invitation',
+            'eventDescription': invitation.description or '',
+            'eventDate': invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else '',
+            'eventTime': invitation.muhurtham_time or invitation.start_time or invitation.anniversary_dinner_time or invitation.babyshower_start_time or '',
+            'venue': invitation.venue_address or '',
+            'address': invitation.venue_address or '',
+            'description': invitation.description or '',
+            'religiousType': invitation.event_style or 'general',
+            'familyName': invitation.title or 'Event Invitation',
+
+            # Wedding specific
+            'brideName': invitation.bride_name or '',
+            'groomName': invitation.groom_name or '',
+            'bridePhoto': invitation.bride_image,
+            'groomPhoto': invitation.groom_image,
+            'couplePhoto': invitation.couple_image,
+
+            # Birthday specific
+            'birthdayPerson': invitation.birthday_person or '',
+            'age': invitation.age or '',
+            'birthdayPhoto': invitation.birthday_image,
+
+            # Other event types...
+            'graduatePhoto': invitation.graduate_image,
+            'honoreePhoto': invitation.honoree_image,
+            'mainImage': invitation.main_image,
+            'galleryImages': json.loads(invitation.gallery_images) if invitation.gallery_images else [],
+
+            # Time and venue data
+            'timeData': {
+                'muhurthamTime': invitation.muhurtham_time or '',
+                'receptionTime': invitation.reception_time or '',
+                'startTime': invitation.start_time or '',
+                'dinnerTime': invitation.dinner_time or '',
+                'partyTime': invitation.party_time or '',
+                'anniversaryDinnerTime': invitation.anniversary_dinner_time or '',
+                'babyshowerStartTime': invitation.babyshower_start_time or '',
+                'babyshowerEndTime': invitation.babyshower_end_time or ''
+            },
+            'venueData': {
+                'venue': invitation.venue_address or '',
+                'address': invitation.venue_address or ''
+            }
+        }
+
+        return render_template('invitation/manage.html', invitation=invitation, event_data=event_data)
 
     @app.route('/view-invitation-final/<share_url>')
     def view_invitation_final(share_url):
@@ -497,8 +584,8 @@ def register_routes(app):
             # Wedding specific
             'brideName': invitation.bride_name or '',
             'groomName': invitation.groom_name or '',
-            'bridePhoto': None,  # We don't have photo fields in current model
-            'groomPhoto': None,
+            'bridePhoto': invitation.bride_image,  # Use the uploaded image field
+            'groomPhoto': invitation.groom_image,
             'brideDescription': 'Beautiful Bride',
             'groomDescription': 'Handsome Groom',
             
@@ -507,6 +594,7 @@ def register_routes(app):
             'age': invitation.age or '',
             'startTime': invitation.start_time or '',
             'dinnerTime': invitation.dinner_time or '',
+            'birthdayPhoto': invitation.birthday_image,
             
             # Baby shower specific
             'motherName': invitation.mother_name or '',
@@ -523,6 +611,7 @@ def register_routes(app):
             'degree': invitation.degree or '',
             'school': invitation.school or '',
             'major': invitation.major or '',
+            'graduatePhoto': invitation.graduate_image,
             
             # Anniversary specific
             'coupleNames': invitation.couple_names or '',
@@ -540,6 +629,11 @@ def register_routes(app):
             'position': invitation.position or '',
             'company': invitation.company or '',
             'startYear': invitation.start_year or '',
+            'honoreePhoto': invitation.honoree_image,
+            
+            # Main and Gallery images
+            'mainImage': invitation.main_image,
+            'galleryImages': json.loads(invitation.gallery_images) if invitation.gallery_images else [],
             
             # Contact info
             'hostName': invitation.host_name or '',
@@ -581,6 +675,51 @@ def register_routes(app):
                 # Update invitation data
                 data = request.form
                 
+                # Handle file uploads for editing
+                uploaded_files = {}
+                gallery_images_to_add = []
+
+                # Main image upload
+                if 'mainImage' in request.files:
+                    main_file = request.files['mainImage']
+                    if main_file and main_file.filename:
+                        # Remove old main image if exists
+                        if invitation.main_image:
+                            try:
+                                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], invitation.main_image))
+                            except OSError:
+                                pass # Ignore if file not found
+                        filename = secure_filename(f"{session['user_id']}_main_{datetime.now().timestamp()}_{main_file.filename}")
+                        main_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        uploaded_files['main_image'] = filename
+
+                # Event-specific image uploads
+                event_images = ['brideImage', 'groomImage', 'coupleImage', 'birthdayImage', 'graduateImage', 'honoreeImage']
+                for img_field in event_images:
+                    if img_field in request.files:
+                        img_file = request.files[img_field]
+                        if img_file and img_file.filename:
+                            field_name = img_field.replace('Image', '').lower()
+                            # Remove old image if exists
+                            old_image_field = f"{field_name}_image"
+                            if getattr(invitation, old_image_field, None):
+                                try:
+                                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], getattr(invitation, old_image_field)))
+                                except OSError:
+                                    pass
+                            filename = secure_filename(f"{session['user_id']}_{field_name}_{datetime.now().timestamp()}_{img_file.filename}")
+                            img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                            uploaded_files[f'{field_name}_image'] = filename
+
+                # Gallery images upload
+                if 'galleryImages' in request.files:
+                    gallery_files = request.files.getlist('galleryImages')
+                    for i, gallery_file in enumerate(gallery_files):
+                        if gallery_file and gallery_file.filename:
+                            filename = secure_filename(f"{session['user_id']}_{datetime.now().timestamp()}_{i}_{gallery_file.filename}")
+                            gallery_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                            gallery_images_to_add.append(filename)
+
                 # Update basic fields
                 invitation.title = data.get('eventTitle', '')
                 invitation.description = data.get('eventDescription', '')
@@ -627,6 +766,15 @@ def register_routes(app):
                 # Update style/religious preference
                 invitation.event_style = data.get('eventStyle', '')
                 
+                # Update image fields
+                for key, value in uploaded_files.items():
+                    setattr(invitation, key, value)
+
+                # Append new gallery images
+                current_gallery = json.loads(invitation.gallery_images) if invitation.gallery_images else []
+                current_gallery.extend(gallery_images_to_add)
+                invitation.gallery_images = json.dumps(current_gallery) if current_gallery else None
+                
                 invitation.updated_at = datetime.utcnow()
                 db.session.commit()
                 
@@ -638,7 +786,144 @@ def register_routes(app):
                 db.session.rollback()
                 flash('Error updating invitation. Please try again.', 'error')
         
-        return render_template('invitation/edit.html', invitation=invitation)
+        # Prepare event_data for editing form (similar to manage view)
+        event_data = {
+            'eventTitle': invitation.title or '',
+            'eventDescription': invitation.description or '',
+            'eventDate': invitation.event_date.strftime('%Y-%m-%d') if invitation.event_date else '',
+            'eventStyle': invitation.event_style or '',
+            'venueAddress': invitation.venue_address or '',
+            'hostName': invitation.host_name or '',
+            'contactPhone': invitation.contact_phone or '',
+            'contactEmail': invitation.contact_email or '',
+
+            # Wedding specific
+            'brideName': invitation.bride_name or '',
+            'groomName': invitation.groom_name or '',
+            'muhurthamTime': invitation.muhurtham_time or '',
+            'receptionTime': invitation.reception_time or '',
+            'coupleImage': invitation.couple_image,
+
+            # Birthday specific
+            'birthdayPerson': invitation.birthday_person or '',
+            'age': invitation.age or '',
+            'startTime': invitation.start_time or '',
+            'dinnerTime': invitation.dinner_time or '',
+            'birthdayImage': invitation.birthday_image,
+
+            # Baby shower specific
+            'motherName': invitation.mother_name or '',
+            'fatherName': invitation.father_name or '',
+            'babyshowerStartTime': invitation.babyshower_start_time or '',
+            'babyshowerEndTime': invitation.babyshower_end_time or '',
+
+            # Graduation specific
+            'graduateName': invitation.graduate_name or '',
+            'degree': invitation.degree or '',
+            'school': invitation.school or '',
+            'major': invitation.major or '',
+            'graduateImage': invitation.graduate_image,
+
+            # Anniversary specific
+            'coupleNames': invitation.couple_names or '',
+            'marriageYears': invitation.marriage_years or '',
+            'anniversaryDinnerTime': invitation.anniversary_dinner_time or '',
+            'partyTime': invitation.party_time or '',
+
+            # Retirement specific
+            'honoreeName': invitation.honoree_name or '',
+            'position': invitation.position or '',
+            'company': invitation.company or '',
+            'startYear': invitation.start_year or '',
+            'honoreeImage': invitation.honoree_image,
+
+            # Image fields for display in form
+            'mainImage': invitation.main_image,
+            'brideImage': invitation.bride_image,
+            'groomImage': invitation.groom_image,
+            'galleryImages': json.loads(invitation.gallery_images) if invitation.gallery_images else [],
+        }
+        
+        return render_template('invitation/edit.html', invitation=invitation, event_data=event_data)
+
+    @app.route('/delete-invitation/<int:invitation_id>', methods=['DELETE'])
+    def delete_invitation(invitation_id):
+        if not is_authenticated():
+            return jsonify({'success': False, 'message': 'Authentication required'}), 401
+
+        try:
+            invitation = Invitation.query.get_or_404(invitation_id)
+
+            # Check ownership
+            if invitation.user_id != session['user_id']:
+                return jsonify({'success': False, 'message': 'Access denied'}), 403
+
+            # Delete associated files
+            if invitation.main_image:
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], invitation.main_image))
+                except OSError:
+                    pass # Ignore if file not found
+
+            if invitation.bride_image:
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], invitation.bride_image))
+                except OSError:
+                    pass
+
+            if invitation.groom_image:
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], invitation.groom_image))
+                except OSError:
+                    pass
+
+            if invitation.birthday_image:
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], invitation.birthday_image))
+                except OSError:
+                    pass
+            
+            if invitation.couple_image:
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], invitation.couple_image))
+                except OSError:
+                    pass
+
+            if invitation.graduate_image:
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], invitation.graduate_image))
+                except OSError:
+                    pass
+
+            if invitation.honoree_image:
+                try:
+                    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], invitation.honoree_image))
+                except OSError:
+                    pass
+
+            # Delete gallery images
+            if invitation.gallery_images:
+                try:
+                    gallery_list = json.loads(invitation.gallery_images)
+                    for image in gallery_list:
+                        try:
+                            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], image))
+                        except OSError:
+                            pass
+                except Exception as e:
+                    app.logger.error(f"Error deleting gallery images for invitation {invitation.id}: {str(e)}")
+
+
+            # Delete invitation record
+            db.session.delete(invitation)
+            db.session.commit()
+
+            return jsonify({'success': True, 'message': 'Invitation deleted successfully'})
+
+        except Exception as e:
+            app.logger.error(f"Error deleting invitation: {str(e)}")
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Failed to delete invitation'}), 500
 
     @app.route('/test-event-types')
     def test_event_types():

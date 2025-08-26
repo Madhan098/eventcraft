@@ -101,48 +101,28 @@ with app.app_context():
         if not models.EventType.query.first():
             init_sample_data()
             print("✅ Sample data initialized successfully")
-            
+
     except Exception as e:
         print(f"❌ Error during database initialization: {e}")
         import traceback
         traceback.print_exc()
 
-# Import and register routes AFTER app context is set up
+# Import routes and register them
 try:
     print("🔄 Attempting to import routes...")
     from routes import register_routes
     print("✅ Routes module imported successfully")
-    
+
     print("🔄 Attempting to register routes...")
     register_routes(app)
     print("✅ Routes registered successfully")
-    
-except Exception as e:
-    print(f"❌ Error during route registration: {e}")
-    import traceback
-    traceback.print_exc()
-    
-    # Fallback: Add basic routes manually
-    print("🔄 Adding fallback routes...")
-    try:
-        from flask import render_template
-        
-        @app.route('/')
-        def index():
-            return render_template('index.html')
-        
-        @app.route('/auth')
-        def auth():
-            return render_template('auth/login.html')
-        
 
-        
-        print("✅ Fallback routes added successfully")
-        
-    except Exception as fallback_error:
-        print(f"❌ Error adding fallback routes: {fallback_error}")
-        import traceback
-        traceback.print_exc()
+except ImportError as e:
+    print(f"❌ Failed to import routes: {e}")
+    raise
+except Exception as e:
+    print(f"❌ Failed to register routes: {e}")
+    raise
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

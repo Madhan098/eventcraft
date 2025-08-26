@@ -1,76 +1,367 @@
 {% extends "base.html" %}
 
-{% block title %}Manage Invitation - EventCraft Pro{% endblock %}
+{% block title %}Manage Invitation - {{ invitation.title }}{% endblock %}
 
 {% block content %}
-<!-- Manage Invitation Hero Section -->
-<section class="manage-hero py-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <div class="hero-content slide-up">
-                    <div class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">
-                        <i class="fas fa-cog me-1"></i>Manage Invitation
+<div class="manage-invitation-container">
+    <!-- Header Section -->
+    <div class="manage-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="header-content">
+                        <h1 class="header-title">
+                            <i class="fas fa-cog me-2"></i>Manage Invitation
+                        </h1>
+                        <p class="header-subtitle">{{ invitation.title or 'Event Invitation' }}</p>
+                        <div class="header-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else 'Date TBD' }}
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-eye me-1"></i>
+                                {{ invitation.view_count }} views
+                            </span>
+                            <span class="meta-item">
+                                {% if invitation.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Inactive</span>
+                                {% endif %}
+                            </span>
+                        </div>
                     </div>
-                    
-                    <h1 class="hero-title mb-3">
-                        Manage <span class="text-gradient">Invitation</span>
-                    </h1>
-                    
-                    <p class="hero-subtitle mb-4">
-                        View and manage your invitation details
-                    </p>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Invitation Details Section -->
-<section class="invitation-details py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="invitation-card">
-                    <h2 class="text-center mb-4">Invitation Details</h2>
-                    
-                    {% if invitation %}
-                    <div class="invitation-info">
-                        <p><strong>Share URL:</strong> {{ invitation.share_url }}</p>
-                        <p><strong>Event Type:</strong> {{ invitation.event_type }}</p>
-                        <p><strong>Created:</strong> {{ invitation.created_at.strftime('%B %d, %Y') }}</p>
-                        <p><strong>Views:</strong> {{ invitation.view_count }}</p>
-                        <p><strong>Status:</strong> 
-                            {% if invitation.is_active %}
-                                <span class="badge bg-success">Active</span>
-                            {% else %}
-                                <span class="badge bg-secondary">Inactive</span>
-                            {% endif %}
-                        </p>
-                    </div>
-                    
-                    <div class="invitation-actions mt-4 text-center">
-                        <a href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}" class="btn btn-primary me-2">
+                <div class="col-md-4 text-end">
+                    <div class="header-actions">
+                        <a href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}" class="btn btn-primary btn-lg">
                             <i class="fas fa-edit me-2"></i>Edit Invitation
                         </a>
                         <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
                             <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                         </a>
                     </div>
-                    {% else %}
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        Invitation not found or access denied.
-                    </div>
-                    <div class="text-center mt-3">
-                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
-                        </a>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-</section>
+
+    <!-- Preview Section -->
+    <div class="preview-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="invitation-preview">
+                        <div class="preview-header">
+                            <h3><i class="fas fa-eye me-2"></i>Live Preview</h3>
+                            <div class="preview-actions">
+                                <a href="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" class="btn btn-sm btn-primary" target="_blank">
+                                    <i class="fas fa-external-link-alt me-1"></i>Open in New Tab
+                                </a>
+                            </div>
+                        </div>
+                        <div class="preview-content">
+                            <iframe src="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" 
+                                    class="invitation-iframe" 
+                                    frameborder="0">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="management-panel">
+                        <!-- Quick Stats -->
+                        <div class="stats-card">
+                            <h4><i class="fas fa-chart-line me-2"></i>Quick Stats</h4>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number">{{ invitation.view_count }}</span>
+                                    <span class="stat-label">Views</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">{{ invitation.event_type|title }}</span>
+                                    <span class="stat-label">Event Type</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">{{ invitation.template_name|replace('_', ' ')|title if invitation.template_name else 'Custom' }}</span>
+                                    <span class="stat-label">Template</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Share Options -->
+                        <div class="share-card">
+                            <h4><i class="fas fa-share-alt me-2"></i>Share Options</h4>
+                            <div class="share-url-container">
+                                <input type="text" class="form-control" id="shareUrlInput" 
+                                       value="{{ request.url_root }}view-invitation-final/{{ invitation.share_url }}" readonly>
+                                <button class="btn btn-outline-primary" onclick="copyShareUrl()">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="social-share-buttons mt-3">
+                                <a href="https://wa.me/?text={{ invitation.title or 'Event Invitation' }} - {{ request.url_root }}view-invitation-final/{{ invitation.share_url }}" target="_blank" class="btn btn-success btn-sm">
+                                    <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                                </a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url_root }}view-invitation-final/{{ invitation.share_url }}" target="_blank" class="btn btn-primary btn-sm">
+                                    <i class="fab fa-facebook me-1"></i> Facebook
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="actions-card">
+                            <h4><i class="fas fa-bolt me-2"></i>Quick Actions</h4>
+                            <div class="actions-list">
+                                <a href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}" class="action-btn">
+                                    <i class="fas fa-edit me-2"></i>Edit Details
+                                </a>
+                                <button class="action-btn" onclick="duplicateInvitation()">
+                                    <i class="fas fa-copy me-2"></i>Duplicate
+                                </button>
+                                <button class="action-btn text-danger" onclick="deleteInvitation()">
+                                    <i class="fas fa-trash me-2"></i>Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.manage-invitation-container {
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+.manage-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+}
+
+.header-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.header-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+}
+
+.header-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    background: rgba(255,255,255,0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.preview-section {
+    padding: 3rem 0;
+}
+
+.invitation-preview {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.invitation-iframe {
+    width: 100%;
+    height: 600px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.management-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.stats-card, .share-card, .actions-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.stats-card h4, .share-card h4, .actions-card h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.share-url-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.social-share-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    display: block;
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+    color: #2c3e50;
+}
+
+.action-btn.text-danger:hover {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+@media (max-width: 768px) {
+    .header-actions {
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .invitation-iframe {
+        height: 400px;
+    }
+}
+</style>
+
+<script>
+function copyShareUrl() {
+    const shareUrl = document.getElementById('shareUrlInput');
+    shareUrl.select();
+    shareUrl.setSelectionRange(0, 99999);
+
+    navigator.clipboard.writeText(shareUrl.value).then(function() {
+        showToast('Share link copied to clipboard!', 'success');
+    }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+        showToast('Failed to copy link', 'error');
+    });
+}
+
+function duplicateInvitation() {
+    if (confirm('Do you want to create a copy of this invitation?')) {
+        // Implement duplication logic
+        showToast('Feature coming soon!', 'info');
+    }
+}
+
+function deleteInvitation() {
+    if (confirm('Are you sure you want to delete this invitation? This action cannot be undone.')) {
+        // Implement deletion logic
+        fetch('/delete-invitation/{{ invitation.id }}', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response => {
+            if (response.ok) {
+                showToast('Invitation deleted successfully', 'success');
+                window.location.href = '{{ url_for("dashboard") }}';
+            } else {
+                showToast('Failed to delete invitation', 'error');
+            }
+        }).catch(err => {
+            console.error('Error:', err);
+            showToast('Failed to delete invitation', 'error');
+        });
+    }
+}
+
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    toast.style.top = '20px';
+    toast.style.right = '20px';
+    toast.style.zIndex = '9999';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.remove();
+        }
+    }, 5000);
+}
+</script>
 {% endblock %}

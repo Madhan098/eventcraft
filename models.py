@@ -108,6 +108,16 @@ class Invitation(db.Model):
     contact_email = db.Column(db.String(120))
     venue_address = db.Column(db.Text)
 
+    # Image fields
+    main_image = db.Column(db.String(255))
+    bride_image = db.Column(db.String(255))
+    groom_image = db.Column(db.String(255))
+    birthday_image = db.Column(db.String(255))
+    couple_image = db.Column(db.String(255))
+    graduate_image = db.Column(db.String(255))
+    honoree_image = db.Column(db.String(255))
+    gallery_images = db.Column(db.Text)  # JSON string of image filenames
+
     share_url = db.Column(db.String(100), unique=True, nullable=False)
     view_count = db.Column(db.Integer, default=0)
     is_active = db.Column(db.Boolean, default=True)
