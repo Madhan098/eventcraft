@@ -466,8 +466,14 @@
 
                 <div class="form-group">
                     <label class="form-label">Main Event Image</label>
-                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*">
+                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
                     <small class="form-hint">Upload a main image for your invitation background</small>
+                    <div id="mainImagePreview" class="image-preview" style="display: none;">
+                        <img src="" alt="Main Image Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                        <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -811,27 +817,36 @@ function previewImage(input, previewId) {
         const reader = new FileReader();
         reader.onload = function(e) {
             const preview = document.getElementById(previewId);
-            preview.querySelector('img').src = e.target.result;
-            preview.style.display = 'inline-block';
+            if (preview) {
+                preview.querySelector('img').src = e.target.result;
+                preview.style.display = 'inline-block';
+            }
         };
         reader.readAsDataURL(input.files[0]);
     }
 }
 
-function removeImage(previewId) {
+function removeImage(previewId, inputId) {
     const preview = document.getElementById(previewId);
-    preview.style.display = 'none';
-    preview.querySelector('img').src = '';
-    const input = preview.previousElementSibling.querySelector('input[type="file"]');
-    input.value = '';
+    const input = document.getElementById(inputId);
+    if (preview) {
+        preview.style.display = 'none';
+        preview.querySelector('img').src = '';
+    }
+    if (input) {
+        input.value = '';
+    }
 }
 
 function previewMultipleImages(input, previewId) {
     const preview = document.getElementById(previewId);
     const grid = document.getElementById('galleryPreviewGrid');
+    
+    if (!preview || !grid) return;
+    
     grid.innerHTML = '';
     
-    if (input.files) {
+    if (input.files && input.files.length > 0) {
         Array.from(input.files).forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -840,8 +855,8 @@ function previewMultipleImages(input, previewId) {
                 
                 imgDiv.innerHTML = `
                     <img src="${e.target.result}" alt="Gallery ${index + 1}" style="max-width: 100px; max-height: 100px; border-radius: 8px; border: 2px solid #e9ecef;">
-                    <button type="button" class="remove-btn" onclick="removeGalleryImage(this, ${index})" style="position: absolute; top: -10px; right: -10px;">
-                        <i class="fas fa-trash"></i>
+                    <button type="button" class="remove-btn" onclick="removeGalleryImage(this, ${index})" style="position: absolute; top: -10px; right: -10px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-times"></i>
                     </button>
                 `;
                 
@@ -851,11 +866,38 @@ function previewMultipleImages(input, previewId) {
         });
         
         preview.style.display = 'block';
+    } else {
+        preview.style.display = 'none';
     }
 }
 
 function removeGalleryImage(button, index) {
     button.parentElement.remove();
+    
+    // Update the file input by removing the specific file
+    const galleryInput = document.getElementById('galleryImages');
+    if (galleryInput && galleryInput.files.length > 0) {
+        const dt = new DataTransfer();
+        const files = Array.from(galleryInput.files);
+        
+        files.forEach((file, i) => {
+            if (i !== index) {
+                dt.items.add(file);
+            }
+        });
+        
+        galleryInput.files = dt.files;
+        
+        // Re-render the gallery preview
+        if (dt.files.length > 0) {
+            previewMultipleImages(galleryInput, 'galleryImagesPreview');
+        } else {
+            const preview = document.getElementById('galleryImagesPreview');
+            if (preview) {
+                preview.style.display = 'none';
+            }
+        }
+    }
 }
 
 // Initialize form
@@ -918,27 +960,48 @@ function showEventPhotosSection(eventType) {
                 <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label">Bride's Photo</label>
-                        <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*">
+                        <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*" onchange="previewImage(this, 'brideImagePreview')">
                         <small class="form-hint">Upload bride's photo</small>
+                        <div id="brideImagePreview" class="image-preview" style="display: none;">
+                            <img src="" alt="Bride Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                            <button type="button" class="remove-btn" onclick="removeImage('brideImagePreview', 'brideImage')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Groom's Photo</label>
-                        <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*">
+                        <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*" onchange="previewImage(this, 'groomImagePreview')">
                         <small class="form-hint">Upload groom's photo</small>
+                        <div id="groomImagePreview" class="image-preview" style="display: none;">
+                            <img src="" alt="Groom Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                            <button type="button" class="remove-btn" onclick="removeImage('groomImagePreview', 'groomImage')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Couple Photo</label>
-                    <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*">
+                    <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
                     <small class="form-hint">Upload couple's photo together</small>
+                    <div id="coupleImagePreview" class="image-preview" style="display: none;">
+                        <img src="" alt="Couple Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                        <button type="button" class="remove-btn" onclick="removeImage('coupleImagePreview', 'coupleImage')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple>
+                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
                     <small class="form-hint">Upload multiple photos for the gallery (hold Ctrl/Cmd to select multiple)</small>
+                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
+                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
                 </div>
             </div>
         `;
@@ -952,14 +1015,23 @@ function showEventPhotosSection(eventType) {
 
                 <div class="form-group">
                     <label class="form-label">Birthday Person's Photo</label>
-                    <input type="file" class="form-input" id="birthdayImage" name="birthdayImage" accept="image/*">
+                    <input type="file" class="form-input" id="birthdayImage" name="birthdayImage" accept="image/*" onchange="previewImage(this, 'birthdayImagePreview')">
                     <small class="form-hint">Upload birthday person's photo</small>
+                    <div id="birthdayImagePreview" class="image-preview" style="display: none;">
+                        <img src="" alt="Birthday Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                        <button type="button" class="remove-btn" onclick="removeImage('birthdayImagePreview', 'birthdayImage')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple>
+                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
                     <small class="form-hint">Upload multiple photos for the gallery</small>
+                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
+                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
                 </div>
             </div>
         `;
@@ -988,14 +1060,23 @@ function showEventPhotosSection(eventType) {
 
                 <div class="form-group">
                     <label class="form-label">Graduate's Photo</label>
-                    <input type="file" class="form-input" id="graduateImage" name="graduateImage" accept="image/*">
+                    <input type="file" class="form-input" id="graduateImage" name="graduateImage" accept="image/*" onchange="previewImage(this, 'graduateImagePreview')">
                     <small class="form-hint">Upload graduate's photo</small>
+                    <div id="graduateImagePreview" class="image-preview" style="display: none;">
+                        <img src="" alt="Graduate Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                        <button type="button" class="remove-btn" onclick="removeImage('graduateImagePreview', 'graduateImage')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple>
+                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
                     <small class="form-hint">Upload multiple photos for the gallery</small>
+                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
+                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
                 </div>
             </div>
         `;
@@ -1009,14 +1090,23 @@ function showEventPhotosSection(eventType) {
 
                 <div class="form-group">
                     <label class="form-label">Couple Photo</label>
-                    <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*">
+                    <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
                     <small class="form-hint">Upload couple's photo</small>
+                    <div id="coupleImagePreview" class="image-preview" style="display: none;">
+                        <img src="" alt="Couple Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                        <button type="button" class="remove-btn" onclick="removeImage('coupleImagePreview', 'coupleImage')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple>
+                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
                     <small class="form-hint">Upload multiple photos for the gallery</small>
+                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
+                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
                 </div>
             </div>
         `;
@@ -1030,14 +1120,23 @@ function showEventPhotosSection(eventType) {
 
                 <div class="form-group">
                     <label class="form-label">Honoree's Photo</label>
-                    <input type="file" class="form-input" id="honoreeImage" name="honoreeImage" accept="image/*">
+                    <input type="file" class="form-input" id="honoreeImage" name="honoreeImage" accept="image/*" onchange="previewImage(this, 'honoreeImagePreview')">
                     <small class="form-hint">Upload retiring person's photo</small>
+                    <div id="honoreeImagePreview" class="image-preview" style="display: none;">
+                        <img src="" alt="Honoree Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                        <button type="button" class="remove-btn" onclick="removeImage('honoreeImagePreview', 'honoreeImage')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple>
+                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
                     <small class="form-hint">Upload multiple photos for the gallery</small>
+                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
+                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
                 </div>
             </div>
         `;
