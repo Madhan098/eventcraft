@@ -8,7 +8,7 @@
         min-height: 100vh;
         background: #f8f9fa;
     }
-    
+
     .template-not-found {
         text-align: center;
         padding: 4rem 2rem;
@@ -17,17 +17,17 @@
         margin: 2rem;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-    
+
     .template-not-found h1 {
         color: #6c757d;
         margin-bottom: 1rem;
     }
-    
+
     .template-not-found p {
         color: #868e96;
         font-size: 1.1rem;
     }
-    
+
     .fallback-invitation {
         background: white;
         border-radius: 15px;
@@ -36,27 +36,27 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         text-align: center;
     }
-    
+
     .fallback-invitation h1 {
         color: #2c3e50;
         margin-bottom: 1rem;
         font-size: 2.5rem;
     }
-    
+
     .fallback-invitation .event-date {
         font-size: 1.5rem;
         color: #e74c3c;
         margin: 1rem 0;
         font-weight: bold;
     }
-    
+
     .fallback-invitation .event-details {
         margin: 2rem 0;
         padding: 2rem;
         background: #f8f9fa;
         border-radius: 10px;
     }
-    
+
     .fallback-invitation .contact-info {
         margin-top: 2rem;
         padding-top: 2rem;
@@ -67,72 +67,8 @@
 <div class="template-container">
     {% if invitation.template_name %}
         {# Render the appropriate template based on template_name #}
-        {% if invitation.template_name == 'wedding_elegant' %}
-            {# Wedding Elegant Template #}
-            <section class="hero-section" style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(139, 69, 19, 0.1) 100%); min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden;">
-                <div class="container">
-                    <div class="hero-content" style="position: relative; z-index: 2; text-align: center; padding: 2rem;">
-                        <h1 class="hero-title" style="font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 25px; border-radius: 15px; display: inline-block; margin: 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                            {{ event_data.familyName }}
-                        </h1>
-                        <p class="hero-subtitle" style="font-size: 1.2rem; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 12px 20px; border-radius: 12px; display: inline-block; text-shadow: 2px 2px 4px rgba(0,0,0,0.6);">
-                            {{ event_data.eventDescription or 'Join us in celebrating this special day' }}
-                        </p>
-                        
-                        <div class="save-date" style="background: #d4af37; color: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 2rem 0;">
-                            <h3 style="margin-bottom: 1rem;">Save the Date</h3>
-                            <div class="date-display" style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin: 1rem 0;">
-                                {{ event_data.eventDate }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Couple Section -->
-            <section class="couple-section" style="padding: 4rem 0; background: white;">
-                <div class="container">
-                    <h2 class="text-center mb-5" style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #2c3e50;">
-                        The Happy Couple
-                    </h2>
-                    <div class="row justify-content-center">
-                        <div class="col-md-4 text-center mb-4">
-                            <div class="person-card" style="background: #f8f9fa; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                                <h3 style="color: #667eea; margin-bottom: 1rem;">{{ event_data.brideName or 'Bride' }}</h3>
-                                <p style="color: #6c757d;">{{ event_data.brideDescription }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4 text-center mb-4">
-                            <div class="person-card" style="background: #f8f9fa; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                                <h3 style="color: #764ba2; margin-bottom: 1rem;">{{ event_data.groomName or 'Groom' }}</h3>
-                                <p style="color: #6c757d;">{{ event_data.groomDescription }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- Event Details -->
-            <section class="event-details" style="padding: 4rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-                <div class="container text-center">
-                    <h2 style="margin-bottom: 3rem; font-size: 2.5rem;">Event Details</h2>
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <h4 style="margin-bottom: 1rem;">Muhurtham</h4>
-                            <p style="font-size: 1.2rem;">{{ event_data.timeData.muhurthamTime or 'TBD' }}</p>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <h4 style="margin-bottom: 1rem;">Reception</h4>
-                            <p style="font-size: 1.2rem;">{{ event_data.timeData.receptionTime or 'TBD' }}</p>
-                        </div>
-                    </div>
-                    <div class="venue-info mt-4">
-                        <h4 style="margin-bottom: 1rem;">Venue</h4>
-                        <p style="font-size: 1.2rem;">{{ event_data.venue }}</p>
-                    </div>
-                </div>
-            </section>
-            
+        {% if invitation.template_name == 'wedding_elegant' or invitation.template_name == 'wedding_elegant_modern' %}
+            {% include 'invitation/templates/wedding_elegant_modern.html' %}
         {% elif invitation.template_name == 'birthday_fun_colorful' %}
             {# Birthday Fun Colorful Template #}
             <section class="hero-section" style="background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%); min-height: 100vh; display: flex; align-items: center; text-align: center; color: white;">
@@ -151,7 +87,7 @@
                     </div>
                 </div>
             </section>
-            
+
         {% elif invitation.template_name == 'wedding_hindu_traditional' %}
             {# Hindu Traditional Template #}
             <section class="hero-section" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); min-height: 100vh; display: flex; align-items: center; text-align: center; color: white;">
@@ -172,27 +108,27 @@
                     </div>
                 </div>
             </section>
-            
+
         {% else %}
             {# Generic template or fallback #}
             <div class="template-not-found">
                 <h1>🎉 {{ invitation.title or 'Event Invitation' }}</h1>
                 <p>Template "{{ invitation.template_name }}" is being prepared. Showing enhanced invitation.</p>
             </div>
-            
+
             <div class="fallback-invitation">
                 <h1>{{ invitation.title or 'Event Invitation' }}</h1>
                 {% if invitation.description %}
                 <p class="lead">{{ invitation.description }}</p>
                 {% endif %}
-                
+
                 {% if invitation.event_date %}
                 <div class="event-date">
                     <i class="fas fa-calendar-alt me-2"></i>
                     {{ invitation.event_date.strftime('%B %d, %Y') }}
                 </div>
                 {% endif %}
-                
+
                 <div class="event-details">
                     <h3>Event Details</h3>
                     {% if invitation.event_type == 'wedding' %}
@@ -275,14 +211,14 @@
                         {% endif %}
                     {% endif %}
                 </div>
-                
+
                 {% if invitation.venue_address %}
                 <div class="venue-info">
                     <h4><i class="fas fa-map-marker-alt me-2"></i>Venue</h4>
                     <p>{{ invitation.venue_address }}</p>
                 </div>
                 {% endif %}
-                
+
                 <div class="contact-info">
                     {% if invitation.host_name %}
                     <p><strong>Host:</strong> {{ invitation.host_name }}</p>
@@ -303,26 +239,26 @@
             {% if invitation.description %}
             <p class="lead">{{ invitation.description }}</p>
             {% endif %}
-            
+
             {% if invitation.event_date %}
             <div class="event-date">
                 <i class="fas fa-calendar-alt me-2"></i>
                 {{ invitation.event_date.strftime('%B %d, %Y') }}
             </div>
             {% endif %}
-            
+
             <div class="event-details">
                 <h3>Event Details</h3>
                 <p><strong>Type:</strong> {{ invitation.event_type|title if invitation.event_type else 'General Event' }}</p>
             </div>
-            
+
             {% if invitation.venue_address %}
             <div class="venue-info">
                 <h4><i class="fas fa-map-marker-alt me-2"></i>Venue</h4>
                 <p>{{ invitation.venue_address }}</p>
             </div>
             {% endif %}
-            
+
             <div class="contact-info">
                 {% if invitation.host_name %}
                 <p><strong>Host:</strong> {{ invitation.host_name }}</p>

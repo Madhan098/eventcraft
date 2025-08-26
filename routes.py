@@ -367,11 +367,19 @@ def register_routes(app):
 
     @app.route('/uploads/<filename>')
     def uploaded_file(filename):
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+        try:
+            return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+        except FileNotFoundError:
+            # Return a placeholder image if file not found
+            return send_from_directory('static/images', 'developer.jpg')
 
     @app.route('/static/uploads/<filename>')
     def static_uploaded_file(filename):
-        return send_from_directory('uploads', filename)
+        try:
+            return send_from_directory('uploads', filename)
+        except FileNotFoundError:
+            # Return a placeholder image if file not found
+            return send_from_directory('static/images', 'developer.jpg')
 
     @app.route('/test')
     def test():
