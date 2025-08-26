@@ -1,0 +1,598 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Invitation - EventCraft Pro{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Form Styling */
+    .edit-invitation-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .edit-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 3px solid #e9ecef;
+    }
+
+    .edit-header h1 {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .edit-header p {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .preview-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .preview-section h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.3rem;
+    }
+
+    .preview-section p {
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    .edit-form {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid #e9ecef;
+    }
+
+    .form-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid #e9ecef;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .section-header i {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-right: 1rem;
+        width: 40px;
+        text-align: center;
+    }
+
+    .section-header h3 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .form-label.required::after {
+        content: " *";
+        color: #dc3545;
+    }
+
+    .form-input, .form-textarea, .form-select {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: #2c3e50;
+        background: white;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .form-select {
+        cursor: pointer;
+    }
+
+    .style-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .style-option {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .style-option:hover {
+        border-color: #007bff;
+        background: #f8f9ff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+    }
+
+    .style-option.selected {
+        border-color: #007bff;
+        background: #e3f2fd;
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+    }
+
+    .style-option .emoji {
+        font-size: 2rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .style-option .label {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 0.9rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 2px solid #e9ecef;
+    }
+
+    .btn {
+        padding: 0.875rem 2rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #0056b3;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    .preview-btn {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .preview-btn:hover {
+        background: #138496;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .edit-invitation-container {
+            padding: 1rem;
+            margin: 1rem;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="edit-invitation-container">
+    <!-- Edit Header -->
+    <div class="edit-header">
+        <h1>Edit Invitation</h1>
+        <p>Update your invitation details and see changes instantly</p>
+    </div>
+
+    <!-- Preview Section -->
+    <div class="preview-section">
+        <h3>Current Invitation</h3>
+        <p>{{ invitation.title or 'Untitled Invitation' }} - {{ invitation.event_type|title if invitation.event_type else 'Event' }}</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('edit_invitation', invitation_id=invitation.id) }}">
+        <!-- Basic Event Information -->
+        <div class="form-section">
+            <div class="section-header">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Basic Event Information</h3>
+                    </div>
+                    
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label required">Event Title</label>
+                    <input type="text" class="form-input" id="eventTitle" name="eventTitle" 
+                           value="{{ invitation.title or '' }}" placeholder="e.g., Sarah & John's Wedding" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Event Date</label>
+                    <input type="date" class="form-input" id="eventDate" name="eventDate" 
+                           value="{{ invitation.event_date.strftime('%Y-%m-%d') if invitation.event_date else '' }}" required>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <label class="form-label">Event Description</label>
+                <textarea class="form-textarea" id="eventDescription" name="eventDescription" rows="4" 
+                          placeholder="Describe your event, add special instructions, or include a personal message...">{{ invitation.description or '' }}</textarea>
+        </div>
+    </div>
+
+        <!-- Style Selection -->
+        <div class="form-section">
+            <div class="section-header">
+                <i class="fas fa-palette"></i>
+                <h3>Event Style (Optional)</h3>
+            </div>
+            
+            <p style="color: #6c757d; margin-bottom: 1rem;">
+                Choose a style that matches your event theme, or leave unselected for a neutral design
+            </p>
+            
+            <div class="style-grid">
+                <div class="style-option {% if invitation.event_style == 'hindu' %}selected{% endif %}" onclick="selectStyle('hindu', this)">
+                    <span class="emoji">🕉️</span>
+                    <span class="label">Hindu</span>
+                    <input type="radio" name="eventStyle" value="hindu" {% if invitation.event_style == 'hindu' %}checked{% endif %} style="display: none;">
+                </div>
+                
+                <div class="style-option {% if invitation.event_style == 'muslim' %}selected{% endif %}" onclick="selectStyle('muslim', this)">
+                    <span class="emoji">☪️</span>
+                    <span class="label">Muslim</span>
+                    <input type="radio" name="eventStyle" value="muslim" {% if invitation.event_style == 'muslim' %}checked{% endif %} style="display: none;">
+                </div>
+                
+                <div class="style-option {% if invitation.event_style == 'christian' %}selected{% endif %}" onclick="selectStyle('christian', this)">
+                    <span class="emoji">✝️</span>
+                    <span class="label">Christian</span>
+                    <input type="radio" name="eventStyle" value="christian" {% if invitation.event_style == 'christian' %}checked{% endif %} style="display: none;">
+                            </div>
+                            
+                <div class="style-option {% if invitation.event_style == 'general' or not invitation.event_style %}selected{% endif %}" onclick="selectStyle('general', this)">
+                    <span class="emoji">🌍</span>
+                    <span class="label">General</span>
+                    <input type="radio" name="eventStyle" value="general" {% if invitation.event_style == 'general' or not invitation.event_style %}checked{% endif %} style="display: none;">
+                </div>
+            </div>
+                            </div>
+                            
+        <!-- Event-Specific Information -->
+        <div class="form-section">
+            <div class="section-header">
+                <i class="fas fa-star"></i>
+                <h3>Event-Specific Details</h3>
+                            </div>
+                            
+            {% if invitation.event_type == 'wedding' %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Bride's Name</label>
+                    <input type="text" class="form-input" id="brideName" name="brideName" 
+                           value="{{ invitation.bride_name or '' }}" placeholder="Bride's full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Groom's Name</label>
+                    <input type="text" class="form-input" id="groomName" name="groomName" 
+                           value="{{ invitation.groom_name or '' }}" placeholder="Groom's full name">
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Muhurtham Time</label>
+                    <input type="time" class="form-input" id="muhurthamTime" name="muhurthamTime" 
+                           value="{{ invitation.muhurtham_time or '' }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Reception Time</label>
+                    <input type="time" class="form-input" id="receptionTime" name="receptionTime" 
+                           value="{{ invitation.reception_time or '' }}">
+                </div>
+            </div>
+            {% elif invitation.event_type == 'birthday' %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Birthday Person's Name</label>
+                    <input type="text" class="form-input" id="birthdayPerson" name="birthdayPerson" 
+                           value="{{ invitation.birthday_person or '' }}" placeholder="Name of the birthday person">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <input type="number" class="form-input" id="age" name="age" 
+                           value="{{ invitation.age or '' }}" placeholder="Age" min="1" max="120">
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Start Time</label>
+                    <input type="time" class="form-input" id="startTime" name="startTime" 
+                           value="{{ invitation.start_time or '' }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Dinner Time</label>
+                    <input type="time" class="form-input" id="dinnerTime" name="dinnerTime" 
+                           value="{{ invitation.dinner_time or '' }}">
+                </div>
+            </div>
+            {% elif invitation.event_type == 'babyshower' %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Mother's Name</label>
+                    <input type="text" class="form-input" id="motherName" name="motherName" 
+                           value="{{ invitation.mother_name or '' }}" placeholder="Expecting mother's name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Father's Name</label>
+                    <input type="text" class="form-input" id="fatherName" name="fatherName" 
+                           value="{{ invitation.father_name or '' }}" placeholder="Expecting father's name">
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Start Time</label>
+                    <input type="time" class="form-input" id="babyshowerStartTime" name="babyshowerStartTime" 
+                           value="{{ invitation.babyshower_start_time or '' }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">End Time</label>
+                    <input type="time" class="form-input" id="babyshowerEndTime" name="babyshowerEndTime" 
+                           value="{{ invitation.babyshower_end_time or '' }}">
+                </div>
+            </div>
+            {% elif invitation.event_type == 'graduation' %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Graduate's Name</label>
+                    <input type="text" class="form-input" id="graduateName" name="graduateName" 
+                           value="{{ invitation.graduate_name or '' }}" placeholder="Graduate's full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Degree</label>
+                    <input type="text" class="form-input" id="degree" name="degree" 
+                           value="{{ invitation.degree or '' }}" placeholder="e.g., Bachelor's Degree">
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">School/University</label>
+                    <input type="text" class="form-input" id="school" name="school" 
+                           value="{{ invitation.school or '' }}" placeholder="School or university name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Field of Study</label>
+                    <input type="text" class="form-input" id="major" name="major" 
+                           value="{{ invitation.major or '' }}" placeholder="e.g., Computer Science">
+                </div>
+            </div>
+            {% elif invitation.event_type == 'anniversary' %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Couple's Names</label>
+                    <input type="text" class="form-input" id="coupleNames" name="coupleNames" 
+                           value="{{ invitation.couple_names or '' }}" placeholder="e.g., Sarah & John">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Years of Marriage</label>
+                    <input type="number" class="form-input" id="marriageYears" name="marriageYears" 
+                           value="{{ invitation.marriage_years or '' }}" placeholder="e.g., 25" min="1" max="100">
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Dinner Time</label>
+                    <input type="time" class="form-input" id="anniversaryDinnerTime" name="anniversaryDinnerTime" 
+                           value="{{ invitation.anniversary_dinner_time or '' }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Party Time</label>
+                    <input type="time" class="form-input" id="partyTime" name="partyTime" 
+                           value="{{ invitation.party_time or '' }}">
+                </div>
+            </div>
+            {% elif invitation.event_type == 'retirement' %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Retiring Person's Name</label>
+                    <input type="text" class="form-input" id="honoreeName" name="honoreeName" 
+                           value="{{ invitation.honoree_name or '' }}" placeholder="Full name of the retiring person">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Position/Title</label>
+                    <input type="text" class="form-input" id="position" name="position" 
+                           value="{{ invitation.position or '' }}" placeholder="e.g., Senior Manager">
+                            </div>
+                        </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Company/Organization</label>
+                    <input type="text" class="form-input" id="company" name="company" 
+                           value="{{ invitation.company or '' }}" placeholder="Company or organization name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Career Start Year</label>
+                    <input type="number" class="form-input" id="startYear" name="startYear" 
+                           value="{{ invitation.start_year or '' }}" placeholder="e.g., 1985" min="1900" max="2024">
+                    </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+        <!-- Contact Information -->
+        <div class="form-section">
+            <div class="section-header">
+                <i class="fas fa-address-book"></i>
+                <h3>Contact Information</h3>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label required">Host Name</label>
+                    <input type="text" class="form-input" id="hostName" name="hostName" 
+                           value="{{ invitation.host_name or '' }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Contact Phone</label>
+                    <input type="tel" class="form-input" id="contactPhone" name="contactPhone" 
+                           value="{{ invitation.contact_phone or '' }}" placeholder="Phone number for inquiries">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Contact Email</label>
+                    <input type="email" class="form-input" id="contactEmail" name="contactEmail" 
+                           value="{{ invitation.contact_email or '' }}" placeholder="Email for inquiries">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Venue Address</label>
+                    <textarea class="form-textarea" id="venueAddress" name="venueAddress" rows="3" 
+                              placeholder="Enter the venue address...">{{ invitation.venue_address or '' }}</textarea>
+            </div>
+        </div>
+    </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <div>
+                <a href="{{ url_for('view_invitation_manage', share_url=invitation.share_url) }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Manage
+                </a>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <a href="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" class="btn preview-btn" target="_blank">
+                    <i class="fas fa-eye"></i>
+                    Preview
+                </a>
+                
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save"></i>
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+// Style selection
+function selectStyle(style, element) {
+    // Remove selection from all options
+    document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
+    // Select clicked option
+    element.classList.add('selected');
+    // Set radio button value
+    element.querySelector('input[type="radio"]').checked = true;
+}
+
+// Initialize form
+document.addEventListener('DOMContentLoaded', function() {
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('eventDate').min = today;
+});
+</script>
+{% endblock %}

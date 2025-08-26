@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - EventCraft Pro{% endblock %}
+
+{% block content %}
+<!-- Dashboard Hero Section -->
+<section class="dashboard-hero py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="hero-content slide-up">
+                    <div class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">
+                        <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                    </div>
+                    
+                    <h1 class="hero-title mb-3">
+                        Welcome back, <span class="text-gradient">{{ session.user_name if session.user_name else 'User' }}</span>! 👋
+                    </h1>
+                    
+                    <p class="hero-subtitle mb-4">
+                        Ready to create something amazing? Let's craft your next unforgettable event invitation.
+                    </p>
+                    
+                    <div class="hero-actions d-flex gap-3 flex-wrap">
+                        <a href="{{ url_for('templates') }}" class="btn-primary-custom btn-lg">
+                            <i class="fas fa-palette me-2"></i>Create Invitation
+                        </a>
+                        <a href="{{ url_for('templates') }}" class="btn-secondary-custom btn-lg">
+                            <i class="fas fa-eye me-2"></i>Browse Templates
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 text-center">
+                <div class="hero-illustration slide-up" style="animation-delay: 0.2s;">
+                    <div class="illustration-container">
+                        <i class="fas fa-rocket hero-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="stats-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="stat-card slide-up" style="animation-delay: 0.1s;">
+                    <div class="stat-icon bg-primary-subtle">
+                        <i class="fas fa-calendar-alt text-primary"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number text-primary">{{ invitations|length }}</h3>
+                        <p class="stat-label">Total Invitations</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="stat-card slide-up" style="animation-delay: 0.2s;">
+                    <div class="stat-icon bg-success-subtle">
+                        <i class="fas fa-eye text-success"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number text-success">{{ invitations|sum(attribute='view_count') }}</h3>
+                        <p class="stat-label">Total Views</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="stat-card slide-up" style="animation-delay: 0.3s;">
+                    <div class="stat-icon bg-warning-subtle">
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number text-warning">{{ invitations|selectattr('is_active')|list|length }}</h3>
+                        <p class="stat-label">Active Events</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="stat-card slide-up" style="animation-delay: 0.4s;">
+                    <div class="stat-icon bg-info-subtle">
+                        <i class="fas fa-share-alt text-info"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number text-info">{{ invitations|length * 5 }}</h3>
+                        <p class="stat-label">Total Shares</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Actions Section -->
+<section class="quick-actions py-5 bg-light">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title slide-up">Quick Actions</h2>
+            <p class="section-subtitle slide-up" style="animation-delay: 0.1s;">Everything you need to manage your events</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="action-card slide-up" style="animation-delay: 0.1s;">
+                    <div class="action-icon bg-primary-subtle">
+                        <i class="fas fa-plus text-primary"></i>
+                    </div>
+                    <h4 class="action-title">Create New</h4>
+                    <p class="action-description">Start crafting your next invitation with our beautiful templates</p>
+                    <a href="{{ url_for('templates') }}" class="btn btn-primary w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Get Started
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="action-card slide-up" style="animation-delay: 0.2s;">
+                    <div class="action-icon bg-success-subtle">
+                        <i class="fas fa-palette text-success"></i>
+                    </div>
+                    <h4 class="action-title">Browse Templates</h4>
+                    <p class="action-description">Explore our collection of professionally designed templates</p>
+                    <a href="{{ url_for('templates') }}" class="btn btn-success w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Explore
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="action-card slide-up" style="animation-delay: 0.3s;">
+                    <div class="action-icon bg-warning-subtle">
+                        <i class="fas fa-cog text-warning"></i>
+                    </div>
+                    <h4 class="action-title">Manage Events</h4>
+                    <p class="action-description">Edit, update, and manage your existing invitations</p>
+                    <a href="#invitations" class="btn btn-warning w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Manage
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="action-card slide-up" style="animation-delay: 0.4s;">
+                    <div class="action-icon bg-info-subtle">
+                        <i class="fas fa-chart-line text-info"></i>
+                    </div>
+                    <h4 class="action-title">View Analytics</h4>
+                    <p class="action-description">Track performance and engagement of your invitations</p>
+                    <a href="#analytics" class="btn btn-info w-100">
+                        <i class="fas fa-arrow-right me-2"></i>View Stats
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Invitations Section -->
+<section id="invitations" class="invitations-section py-5">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title slide-up">Your Invitations</h2>
+            <p class="section-subtitle slide-up" style="animation-delay: 0.1s;">Manage and track all your created invitations</p>
+        </div>
+        
+        {% if invitations %}
+            <div class="row g-4">
+                {% for invitation in invitations %}
+                <div class="col-lg-6 col-xl-4">
+                    <div class="invitation-card slide-up" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+                        <div class="card-header d-flex justify-content-between align-items-start">
+                            <div class="invitation-status">
+                                {% if invitation.is_active %}
+                                    <span class="badge bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Inactive</span>
+                                {% endif %}
+                            </div>
+                            <div class="invitation-actions dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ url_for('view_invitation_manage', share_url=invitation.share_url) }}">
+                                        <i class="fas fa-eye me-2"></i>View
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}">
+                                        <i class="fas fa-edit me-2"></i>Edit
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="#" onclick="deleteInvitation({{ invitation.id }})">
+                                        <i class="fas fa-trash me-2"></i>Delete
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="invitation-title mb-2">{{ invitation.title or 'Untitled Invitation' }}</h5>
+                            <p class="invitation-description text-muted mb-3">
+                                {{ invitation.description or 'No description available' }}
+                            </p>
+                            
+                            <div class="invitation-meta mb-3">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar text-primary me-2"></i>
+                                    <span>{{ invitation.created_at.strftime('%B %d, %Y') }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-eye text-success me-2"></i>
+                                    <span>{{ invitation.view_count }} views</span>
+                                </div>
+                            </div>
+                            
+                            <div class="invitation-template mb-3">
+                                <span class="badge bg-light text-dark">
+                                    <i class="fas fa-palette me-1"></i>{{ invitation.template_name or invitation.event_type|title if invitation.event_type else 'Unknown Template' }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" class="btn btn-primary btn-sm flex-fill" target="_blank">
+                                    <i class="fas fa-eye me-1"></i>View Final
+                                </a>
+                                <a href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}" class="btn btn-outline-primary btn-sm flex-fill">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </a>
+                                <a href="{{ url_for('view_invitation_manage', share_url=invitation.share_url) }}" class="btn btn-outline-secondary btn-sm flex-fill">
+                                    <i class="fas fa-cog me-1"></i>Manage
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state text-center py-5 slide-up">
+                <div class="empty-icon mb-4">
+                    <i class="fas fa-calendar-plus fa-4x text-muted"></i>
+                </div>
+                <h4 class="empty-title mb-3">No Invitations Yet</h4>
+                <p class="empty-description text-muted mb-4">
+                    You haven't created any invitations yet. Start by choosing a template and creating your first invitation!
+                </p>
+                <a href="{{ url_for('templates') }}" class="btn-primary-custom btn-lg">
+                    <i class="fas fa-plus me-2"></i>Create Your First Invitation
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Analytics Section -->
+<section id="analytics" class="analytics-section py-5 bg-light">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title slide-up">Analytics Overview</h2>
+            <p class="section-subtitle slide-up" style="animation-delay: 0.1s;">Track the performance of your invitations</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="analytics-card slide-up" style="animation-delay: 0.1s;">
+                    <h4 class="analytics-title mb-3">
+                        <i class="fas fa-chart-line me-2 text-primary"></i>Performance Metrics
+                    </h4>
+                    <div class="metrics-list">
+                        <div class="metric-item d-flex justify-content-between align-items-center py-2">
+                            <span>Total Invitations Created</span>
+                            <strong class="text-primary">{{ invitations|length }}</strong>
+                        </div>
+                        <div class="metric-item d-flex justify-content-between align-items-center py-2">
+                            <span>Active Invitations</span>
+                            <strong class="text-success">{{ invitations|selectattr('is_active')|list|length }}</strong>
+                        </div>
+                        <div class="metric-item d-flex justify-content-between align-items-center py-2">
+                            <span>Total Views</span>
+                            <strong class="text-info">{{ invitations|sum(attribute='view_count') }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="analytics-card slide-up" style="animation-delay: 0.2s;">
+                    <h4 class="analytics-title mb-3">
+                        <i class="fas fa-clock me-2 text-warning"></i>Recent Activity
+                    </h4>
+                    <div class="activity-list">
+                        {% if invitations %}
+                            {% for invitation in invitations[:3] %}
+                            <div class="activity-item d-flex align-items-center py-2">
+                                <div class="activity-icon bg-primary-subtle rounded-circle d-flex align-items-center justify-content-center me-3">
+                                    <i class="fas fa-calendar text-primary"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">{{ invitation.title or 'Untitled Invitation' }}</div>
+                                    <div class="activity-time text-muted">{{ invitation.created_at.strftime('%B %d, %Y') }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="text-muted text-center py-3">
+                                <i class="fas fa-info-circle me-2"></i>No recent activity
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    // Intersection Observer for animations
+    document.addEventListener('DOMContentLoaded', function() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all slide-up elements
+        document.querySelectorAll('.slide-up').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    });
+    
+    // Delete invitation function
+    function deleteInvitation(invitationId) {
+        if (confirm('Are you sure you want to delete this invitation? This action cannot be undone.')) {
+            // Add your delete logic here
+            console.log('Deleting invitation:', invitationId);
+            // You can make an AJAX call to delete the invitation
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,719 @@
+{% extends "base.html" %}
+
+{% block title %}Login / Register - EventCraft Pro{% endblock %}
+
+{% block content %}
+<section class="py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); min-height: 100vh; display: flex; align-items: center;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <!-- Header Section -->
+                <div class="text-center mb-5">
+                    <div class="logo-container mb-4" style="width: 100px; height: 100px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.3);">
+                        <i class="fas fa-calendar-alt fa-3x" style="color: #ffffff;"></i>
+                    </div>
+                    <h1 class="text-white fw-bold mb-2" style="font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        EventCraft <span style="color: #ffd700;">Pro</span>
+                    </h1>
+                    <p class="text-white-50 mb-0" style="font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
+                        Create beautiful digital invitations in minutes
+                    </p>
+                </div>
+
+                <!-- Main Card -->
+                <div class="card shadow-lg border-0" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 25px; overflow: hidden;">
+                    <div class="card-body p-0">
+                        <!-- Navigation Tabs -->
+                        <div class="nav-tabs-container" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 0; border-bottom: 1px solid rgba(0,0,0,0.1);">
+                            <ul class="nav nav-pills nav-fill" id="authTabs" style="margin: 0; border-radius: 0;">
+                                <li class="nav-item" style="flex: 1;">
+                                    <button class="nav-link active" id="login-tab" data-bs-toggle="pill" data-bs-target="#login" type="button" 
+                                            style="border-radius: 0; border: none; background: transparent; color: #6c757d; padding: 20px; font-weight: 600; transition: all 0.3s ease; position: relative;">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transform: scaleX(1); transition: transform 0.3s ease;"></div>
+                                    </button>
+                                </li>
+                                <li class="nav-item" style="flex: 1;">
+                                    <button class="nav-link" id="register-tab" data-bs-toggle="pill" data-bs-target="#register" type="button"
+                                            style="border-radius: 0; border: none; background: transparent; color: #6c757d; padding: 20px; font-weight: 600; transition: all 0.3s ease; position: relative;">
+                                        <i class="fas fa-user-plus me-2"></i>Register
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); transform: scaleX(0); transition: transform 0.3s ease;"></div>
+                                    </button>
+                                </li>
+                                <li class="nav-item" style="flex: 1;">
+                                    <button class="nav-link" id="forgot-tab" data-bs-toggle="pill" data-bs-target="#forgot" type="button"
+                                            style="border-radius: 0; border: none; background: transparent; color: #6c757d; padding: 20px; font-weight: 600; transition: all 0.3s ease; position: relative;">
+                                        <i class="fas fa-key me-2"></i>Forgot Password
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); transform: scaleX(0); transition: transform 0.3s ease;"></div>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content p-5">
+                            <!-- Login Form -->
+                            <div class="tab-pane fade show active" id="login">
+                                <div class="text-center mb-4">
+                                    <div class="login-icon mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);">
+                                        <i class="fas fa-user-circle fa-2x" style="color: #ffffff;"></i>
+                                    </div>
+                                    <h3 class="fw-bold" style="color: #2c3e50; margin-bottom: 10px;">Welcome Back!</h3>
+                                    <p class="text-muted mb-0" style="font-size: 0.95rem;">Sign in to continue to your account</p>
+                                </div>
+
+                                <form method="POST" action="{{ url_for('login') }}">
+                                    <div class="mb-4">
+                                        <label for="login-email" class="form-label fw-semibold" style="color: #2c3e50;">
+                                            <i class="fas fa-envelope me-2" style="color: #667eea;"></i>Email Address
+                                        </label>
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                <i class="fas fa-at" style="color: #6c757d;"></i>
+                                            </span>
+                                            <input type="email" class="form-control" id="login-email" name="email" required 
+                                                   style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="login-password" class="form-label fw-semibold" style="color: #2c3e50;">
+                                            <i class="fas fa-lock me-2" style="color: #667eea;"></i>Password
+                                        </label>
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                <i class="fas fa-key" style="color: #6c757d;"></i>
+                                            </span>
+                                            <input type="password" class="form-control" id="login-password" name="password" required 
+                                                   style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-lg" 
+                                                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
+                                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Register Form -->
+                            <div class="tab-pane fade" id="register">
+                                <div class="text-center mb-4">
+                                    <div class="register-icon mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);">
+                                        <i class="fas fa-user-plus fa-2x" style="color: #ffffff;"></i>
+                                    </div>
+                                    <h3 class="fw-bold" style="color: #2c3e50; margin-bottom: 10px;">Create Account</h3>
+                                    <p class="text-muted mb-0" style="font-size: 0.95rem;">Join EventCraft Pro and start creating beautiful invitations</p>
+                                </div>
+
+                                <form method="POST" action="{{ url_for('register') }}">
+                                    <div class="mb-4">
+                                        <label for="register-name" class="form-label fw-semibold" style="color: #2c3e50;">
+                                            <i class="fas fa-user me-2" style="color: #f093fb;"></i>Full Name
+                                        </label>
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                <i class="fas fa-user" style="color: #6c757d;"></i>
+                                            </span>
+                                            <input type="text" class="form-control" id="register-name" name="name" required 
+                                                   style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="register-email" class="form-label fw-semibold" style="color: #2c3e50;">
+                                            <i class="fas fa-envelope me-2" style="color: #f093fb;"></i>Email Address
+                                        </label>
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                <i class="fas fa-at" style="color: #6c757d;"></i>
+                                            </span>
+                                            <input type="email" class="form-control" id="register-email" name="email" required 
+                                                   style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="register-mobile" class="form-label fw-semibold" style="color: #2c3e50;">
+                                            <i class="fas fa-phone me-2" style="color: #f093fb;"></i>Mobile Number
+                                        </label>
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                <i class="fas fa-mobile-alt" style="color: #6c757d;"></i>
+                                            </span>
+                                            <input type="tel" class="form-control" id="register-mobile" name="mobile" required 
+                                                   style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="register-password" class="form-label fw-semibold" style="color: #2c3e50;">
+                                            <i class="fas fa-lock me-2" style="color: #f093fb;"></i>Password
+                                        </label>
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                <i class="fas fa-key" style="color: #6c757d;"></i>
+                                            </span>
+                                            <input type="password" class="form-control" id="register-password" name="password" required minlength="6"
+                                                   style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="fas fa-info-circle me-1" style="color: #f093fb;"></i>
+                                            <span style="color: #6c757d;">Minimum 6 characters required</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="register-confirm-password" class="form-label fw-semibold" style="color: #2c3e50;">
+                                            <i class="fas fa-check-double me-2" style="color: #f093fb;"></i>Confirm Password
+                                        </label>
+                                        <div class="input-group input-group-lg">
+                                            <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                <i class="fas fa-shield-alt" style="color: #6c757d;"></i>
+                                            </span>
+                                            <input type="password" class="form-control" id="register-confirm-password" name="confirm_password" required minlength="6"
+                                                   style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-lg" 
+                                                style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3); transition: all 0.3s ease;">
+                                            <i class="fas fa-user-plus me-2"></i>Create Account
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Forgot Password Form -->
+                            <div class="tab-pane fade" id="forgot">
+                                <div class="text-center mb-4">
+                                    <div class="forgot-icon mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);">
+                                        <i class="fas fa-key fa-2x" style="color: #ffffff;"></i>
+                                    </div>
+                                    <h3 class="fw-bold" style="color: #2c3e50; margin-bottom: 10px;">Reset Your Password</h3>
+                                    <p class="text-muted mb-0" style="font-size: 0.95rem;">Enter your email address and we'll send you a secure OTP to reset your password</p>
+                                </div>
+                                
+                                <!-- Step 1: Email Input -->
+                                <div id="forgot-step-1">
+                                    <form method="POST" action="{{ url_for('forgot_password') }}">
+                                        <div class="mb-4">
+                                            <label for="forgot-email" class="form-label fw-semibold" style="color: #2c3e50;">
+                                                <i class="fas fa-envelope me-2" style="color: #4facfe;"></i>Email Address
+                                            </label>
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                    <i class="fas fa-at" style="color: #6c757d;"></i>
+                                                </span>
+                                                <input type="email" class="form-control" id="forgot-email" name="email" required 
+                                                       style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-lg" 
+                                                    style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3); transition: all 0.3s ease;">
+                                                <i class="fas fa-paper-plane me-2"></i>Send Secure OTP
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Step 2: OTP Verification -->
+                                <div id="forgot-step-2" style="display: none;">
+                                    <div class="text-center mb-4">
+                                        <div class="otp-icon mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);">
+                                            <i class="fas fa-shield-alt fa-2x" style="color: #ffffff;"></i>
+                                        </div>
+                                        <h4 class="fw-bold" style="color: #2c3e50; margin-bottom: 10px;">Verify OTP</h4>
+                                        <p class="text-muted mb-0" style="font-size: 0.95rem;">We've sent a 6-digit security code to your email</p>
+                                    </div>
+
+                                    <form method="POST" action="{{ url_for('verify_reset_otp') }}">
+                                        <input type="hidden" id="reset-email" name="email">
+                                        <div class="mb-4">
+                                            <label for="reset-otp" class="form-label fw-semibold" style="color: #2c3e50;">
+                                                <i class="fas fa-lock me-2" style="color: #f093fb;"></i>Security Code
+                                            </label>
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                    <i class="fas fa-key" style="color: #6c757d;"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center" id="reset-otp" name="otp" maxlength="6" required 
+                                                       style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1.2rem; font-weight: 600; letter-spacing: 3px; font-family: 'Courier New', monospace; transition: all 0.3s ease;">
+                                            </div>
+                                            <div class="form-text text-center mt-2">
+                                                <i class="fas fa-clock me-1" style="color: #f093fb;"></i>
+                                                <span style="color: #6c757d;">OTP expires in 10 minutes</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-grid mb-3">
+                                            <button type="submit" class="btn btn-lg" 
+                                                    style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3); transition: all 0.3s ease;">
+                                                <i class="fas fa-check me-2"></i>Verify & Continue
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-link text-decoration-none" id="resend-otp" 
+                                                    style="color: #4facfe; font-weight: 500; transition: all 0.3s ease;">
+                                                <i class="fas fa-redo me-2"></i>Resend OTP
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Step 3: New Password -->
+                                <div id="forgot-step-3" style="display: none;">
+                                    <div class="text-center mb-4">
+                                        <div class="password-icon mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);">
+                                            <i class="fas fa-lock-open fa-2x" style="color: #ffffff;"></i>
+                                        </div>
+                                        <h4 class="fw-bold" style="color: #2c3e50; margin-bottom: 10px;">Create New Password</h4>
+                                        <p class="text-muted mb-0" style="font-size: 0.95rem;">Choose a strong password for your account security</p>
+                                    </div>
+
+                                    <form method="POST" action="{{ url_for('reset_password') }}">
+                                        <input type="hidden" id="final-email" name="email">
+                                        <input type="hidden" id="final-otp" name="otp">
+                                        
+                                        <div class="mb-4">
+                                            <label for="new-password" class="form-label fw-semibold" style="color: #2c3e50;">
+                                                <i class="fas fa-lock me-2" style="color: #667eea;"></i>New Password
+                                            </label>
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                    <i class="fas fa-key" style="color: #6c757d;"></i>
+                                                </span>
+                                                <input type="password" class="form-control" id="new-password" name="password" required minlength="6"
+                                                       style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                            </div>
+                                            <div class="form-text">
+                                                <i class="fas fa-info-circle me-1" style="color: #667eea;"></i>
+                                                <span style="color: #6c757d;">Minimum 6 characters required</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <label for="confirm-new-password" class="form-label fw-semibold" style="color: #2c3e50;">
+                                                <i class="fas fa-check-double me-2" style="color: #667eea;"></i>Confirm Password
+                                            </label>
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
+                                                    <i class="fas fa-shield-alt" style="color: #6c757d;"></i>
+                                                </span>
+                                                <input type="password" class="form-control" id="confirm-new-password" name="confirm_password" required minlength="6"
+                                                       style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-lg" 
+                                                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
+                                                <i class="fas fa-save me-2"></i>Reset Password
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Progress Indicator -->
+                                <div class="progress-indicator mt-4" style="display: flex; justify-content: center; gap: 15px;">
+                                    <div class="step-dot active" data-step="1" style="width: 12px; height: 12px; border-radius: 50%; background: #4facfe; border: 2px solid #ffffff; box-shadow: 0 0 0 2px #4facfe;"></div>
+                                    <div class="step-dot" data-step="2" style="width: 12px; height: 12px; border-radius: 50%; background: #e9ecef; border: 2px solid #ffffff; box-shadow: 0 0 0 2px #e9ecef;"></div>
+                                    <div class="step-dot" data-step="3" style="width: 12px; height: 12px; border-radius: 50%; background: #e9ecef; border: 2px solid #ffffff; box-shadow: 0 0 0 2px #e9ecef;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab indicator management
+    const tabs = document.querySelectorAll('#authTabs .nav-link');
+    const tabIndicators = document.querySelectorAll('.tab-indicator');
+    
+    function updateTabIndicators(activeTab) {
+        tabs.forEach((tab, index) => {
+            const indicator = tabIndicators[index];
+            if (tab === activeTab) {
+                tab.style.color = '#2c3e50';
+                indicator.style.transform = 'scaleX(1)';
+            } else {
+                tab.style.color = '#6c757d';
+                indicator.style.transform = 'scaleX(0)';
+            }
+        });
+    }
+    
+    // Add click handlers for tabs
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            updateTabIndicators(this);
+        });
+    });
+
+    // Password confirmation validation
+    const registerForm = document.querySelector('#register form');
+    const password = document.getElementById('register-password');
+    const confirmPassword = document.getElementById('register-confirm-password');
+    
+    if (registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            if (password.value !== confirmPassword.value) {
+                e.preventDefault();
+                showAlert('Passwords do not match!', 'danger');
+                confirmPassword.focus();
+            }
+        });
+    }
+    
+    // Real-time password confirmation check
+    if (confirmPassword) {
+        confirmPassword.addEventListener('input', function() {
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity('Passwords do not match');
+            } else {
+                confirmPassword.setCustomValidity('');
+            }
+        });
+    }
+
+    // Forgot Password Flow Management
+    const forgotTab = document.getElementById('forgot-tab');
+    const forgotStep1 = document.getElementById('forgot-step-1');
+    const forgotStep2 = document.getElementById('forgot-step-2');
+    const forgotStep3 = document.getElementById('forgot-step-3');
+    const forgotEmail = document.getElementById('forgot-email');
+    const resetEmail = document.getElementById('reset-email');
+    const finalEmail = document.getElementById('final-email');
+    const finalOtp = document.getElementById('final-otp');
+    const resendOtpBtn = document.getElementById('resend-otp');
+
+    // Helper function to show alerts
+    function showAlert(message, type) {
+        // Remove existing alerts
+        const existingAlert = document.querySelector('.alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+        
+        // Create new alert
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        // Insert alert at the top of the forgot password tab
+        const forgotTab = document.getElementById('forgot');
+        forgotTab.insertBefore(alertDiv, forgotTab.firstChild);
+        
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Helper function to update progress indicator
+    function updateProgressIndicator(step) {
+        const dots = document.querySelectorAll('.step-dot');
+        dots.forEach((dot, index) => {
+            if (index < step) {
+                dot.style.background = '#4facfe';
+                dot.style.boxShadow = '0 0 0 2px #4facfe';
+            } else {
+                dot.style.background = '#e9ecef';
+                dot.style.boxShadow = '0 0 0 2px #e9ecef';
+            }
+        });
+    }
+
+    // Helper function to show step with animation
+    function showStep(stepNumber) {
+        // Hide all steps with fade out
+        [forgotStep1, forgotStep2, forgotStep3].forEach(step => {
+            if (step.style.display !== 'none') {
+                step.style.opacity = '0';
+                step.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    step.style.display = 'none';
+                }, 200);
+            }
+        });
+        
+        // Show the requested step with fade in
+        setTimeout(() => {
+            let targetStep;
+            switch(stepNumber) {
+                case 1:
+                    targetStep = forgotStep1;
+                    updateProgressIndicator(1);
+                    break;
+                case 2:
+                    targetStep = forgotStep2;
+                    updateProgressIndicator(2);
+                    break;
+                case 3:
+                    targetStep = forgotStep3;
+                    updateProgressIndicator(3);
+                    break;
+            }
+            
+            if (targetStep) {
+                targetStep.style.display = 'block';
+                targetStep.style.opacity = '0';
+                targetStep.style.transform = 'translateY(10px)';
+                
+                setTimeout(() => {
+                    targetStep.style.opacity = '1';
+                    targetStep.style.transform = 'translateY(0)';
+                }, 50);
+            }
+        }, 200);
+    }
+
+    // Handle forgot password form submission
+    const forgotForm = forgotStep1.querySelector('form');
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = forgotEmail.value;
+            
+            // Store email for next steps
+            resetEmail.value = email;
+            finalEmail.value = email;
+            
+            // Show step 2
+            showStep(2);
+            
+            // Submit form via AJAX
+            fetch('{{ url_for("forgot_password") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'email': email
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Success - OTP sent
+                    showAlert('OTP sent successfully! Please check your email.', 'success');
+                } else {
+                    // Error
+                    showAlert(data.message || 'Failed to send OTP. Please try again.', 'danger');
+                    // Go back to step 1
+                    showStep(1);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('An error occurred. Please try again.', 'danger');
+                // Go back to step 1
+                showStep(1);
+            });
+        });
+    }
+
+    // Handle OTP verification
+    const otpForm = forgotStep2.querySelector('form');
+    if (otpForm) {
+        otpForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const otp = document.getElementById('reset-otp').value;
+            
+            // Store OTP for final step
+            finalOtp.value = otp;
+            
+            // Submit OTP verification via AJAX
+            fetch('{{ url_for("verify_reset_otp") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'email': resetEmail.value,
+                    'otp': otp
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Success - OTP verified
+                    showAlert('OTP verified successfully! Please enter your new password.', 'success');
+                    // Show step 3
+                    showStep(3);
+                } else {
+                    // Error
+                    showAlert(data.message || 'Invalid OTP. Please try again.', 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('An error occurred. Please try again.', 'danger');
+            });
+        });
+    }
+
+    // Handle password reset
+    const resetForm = forgotStep3.querySelector('form');
+    if (resetForm) {
+        resetForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('new-password').value;
+            const confirmNewPassword = document.getElementById('confirm-new-password').value;
+            
+            if (newPassword !== confirmNewPassword) {
+                showAlert('Passwords do not match!', 'danger');
+                return;
+            }
+            
+            // Submit password reset via AJAX
+            fetch('{{ url_for("reset_password") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'email': finalEmail.value,
+                    'otp': finalOtp.value,
+                    'password': newPassword,
+                    'confirm_password': confirmNewPassword
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Success - password reset
+                    showAlert('Password reset successfully! You can now login with your new password.', 'success');
+                    // Reset form and go back to login
+                    setTimeout(() => {
+                        // Switch to login tab
+                        document.getElementById('login-tab').click();
+                        // Reset all forms
+                        forgotEmail.value = '';
+                        document.getElementById('reset-otp').value = '';
+                        document.getElementById('new-password').value = '';
+                        document.getElementById('confirm-new-password').value = '';
+                        // Reset steps
+                        showStep(1);
+                    }, 2000);
+                } else {
+                    // Error
+                    showAlert(data.message || 'Failed to reset password. Please try again.', 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('An error occurred. Please try again.', 'danger');
+            });
+        });
+    }
+
+    // Handle resend OTP
+    if (resendOtpBtn) {
+        resendOtpBtn.addEventListener('click', function() {
+            const email = resetEmail.value;
+            
+            fetch('{{ url_for("forgot_password") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'email': email
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('New OTP sent successfully!', 'success');
+                } else {
+                    showAlert(data.message || 'Failed to resend OTP. Please try again.', 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('An error occurred. Please try again.', 'danger');
+            });
+        });
+    }
+
+    // Reset steps when switching to forgot password tab
+    forgotTab.addEventListener('click', function() {
+        showStep(1);
+        // Clear any existing alerts
+        const existingAlert = document.querySelector('.alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+    });
+
+    // Add hover effects and focus effects to all inputs
+    const inputs = document.querySelectorAll('.form-control');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.borderColor = '#667eea';
+            this.style.boxShadow = '0 0 0 0.2rem rgba(102, 126, 234, 0.25)';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.style.borderColor = '#e9ecef';
+            this.style.boxShadow = 'none';
+        });
+    });
+
+    // Add hover effects to buttons
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 12px 30px rgba(0,0,0,0.4)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            // Restore original box-shadow based on button type
+            if (this.textContent.includes('Send Secure OTP')) {
+                this.style.boxShadow = '0 8px 25px rgba(79, 172, 254, 0.3)';
+            } else if (this.textContent.includes('Verify & Continue')) {
+                this.style.boxShadow = '0 8px 25px rgba(240, 147, 251, 0.3)';
+            } else if (this.textContent.includes('Reset Password')) {
+                this.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.3)';
+            } else if (this.textContent.includes('Sign In')) {
+                this.style.boxShadow = '0 8px 25px rgba(102, 126, 234, 0.3)';
+            } else if (this.textContent.includes('Create Account')) {
+                this.style.boxShadow = '0 8px 25px rgba(240, 147, 251, 0.3)';
+            }
+        });
+    });
+
+    // Add CSS transitions to all elements
+    const style = document.createElement('style');
+    style.textContent = `
+        .form-control, .btn, .nav-link, .tab-indicator {
+            transition: all 0.3s ease !important;
+        }
+        .tab-pane {
+            transition: opacity 0.2s ease, transform 0.2s ease !important;
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>
+{% endblock %}

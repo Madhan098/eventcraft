@@ -1,0 +1,450 @@
+{% extends "base.html" %}
+
+{% block title %}Pick a Template - EventCraft Pro{% endblock %}
+
+{% block content %}
+<!-- Templates Hero Section -->
+<section class="templates-hero py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title display-4 fw-bold mb-3">All Available Templates</h1>
+                <p class="hero-subtitle lead text-muted">Browse and filter through our complete collection of invitation templates.</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="lottie-container">
+                    <!-- Lottie Animation will be placed here -->
+                    <div class="lottie-placeholder">
+                        <div class="lottie-icon">
+                            <i class="fas fa-magic fa-6x text-primary"></i>
+                        </div>
+                        <p class="text-muted mt-3">Lottie Animation Space</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Templates Section with Filters -->
+<section class="templates-section py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Filters Sidebar -->
+            <div class="col-lg-3">
+                <div class="filters-sidebar">
+                    <div class="filters-header d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">Filters</h5>
+                        <a href="#" class="text-decoration-none text-primary clear-filters">Clear Filters</a>
+                    </div>
+                    
+                    <!-- Event Type Filter -->
+                    <div class="filter-group mb-4">
+                        <h6 class="filter-title fw-bold mb-3">Event Type</h6>
+                        <div class="filter-options">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="wedding" id="filter-wedding">
+                                <label class="form-check-label" for="filter-wedding">
+                                    Wedding
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="birthday" id="filter-birthday">
+                                <label class="form-check-label" for="filter-birthday">
+                                    Birthday Party
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="anniversary" id="filter-anniversary">
+                                <label class="form-check-label" for="filter-anniversary">
+                                    Anniversary
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="babyshower" id="filter-babyshower">
+                                <label class="form-check-label" for="filter-babyshower">
+                                    Baby Shower
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="graduation" id="filter-graduation">
+                                <label class="form-check-label" for="filter-graduation">
+                                    Graduation Party
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="retirement" id="filter-retirement">
+                                <label class="form-check-label" for="filter-retirement">
+                                    Retirement Party
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Style Filter -->
+                    <div class="filter-group mb-4">
+                        <h6 class="filter-title fw-bold mb-3">Style</h6>
+                        <div class="filter-options">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="traditional" id="filter-traditional">
+                                <label class="form-check-label" for="filter-traditional">
+                                    Traditional
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="modern" id="filter-modern">
+                                <label class="form-check-label" for="filter-modern">
+                                    Modern
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="elegant" id="filter-elegant">
+                                <label class="form-check-label" for="filter-elegant">
+                                    Elegant
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="fun" id="filter-fun">
+                                <label class="form-check-label" for="filter-fun">
+                                    Fun & Colorful
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="classic" id="filter-classic">
+                                <label class="form-check-label" for="filter-classic">
+                                    Classic
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Theme Filter -->
+                    <div class="filter-group mb-4">
+                        <h6 class="filter-title fw-bold mb-3">Theme</h6>
+                        <div class="filter-options">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="hindu" id="filter-hindu">
+                                <label class="form-check-label" for="filter-hindu">
+                                    Hindu
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="muslim" id="filter-muslim">
+                                <label class="form-check-label" for="filter-muslim">
+                                    Muslim
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="christian" id="filter-christian">
+                                <label class="form-check-label" for="filter-christian">
+                                    Christian
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input filter-check-input" type="checkbox" value="secular" id="filter-secular">
+                                <label class="form-check-label" for="filter-secular">
+                                    Secular
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Templates Grid -->
+            <div class="col-lg-9">
+                <div class="templates-grid">
+                    <div class="row g-4" id="templates-container">
+                        <!-- Wedding Templates -->
+                        <div class="col-lg-4 col-md-6 template-item" data-event-type="wedding" data-style="elegant" data-theme="secular">
+                            <div class="template-card">
+                                <div class="template-preview wedding-elegant-preview">
+                                    <div class="template-overlay">
+                                        <div class="template-icon">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                        <div class="template-content">
+                                            <h4 class="template-title">Wedding Elegant</h4>
+                                            <p class="template-description">Perfect for your special day</p>
+                                            <div class="template-tags">
+                                                <span class="tag">Wedding</span>
+                                                <span class="tag">Elegant</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-actions text-center mt-3">
+                                    <a href="{{ url_for('create_invitation') }}?template=wedding_elegant" class="btn btn-primary-custom w-100">
+                                        Choose Template
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 col-md-6 template-item" data-event-type="wedding" data-style="traditional" data-theme="hindu">
+                            <div class="template-card">
+                                <div class="template-preview wedding-hindu-preview">
+                                    <div class="template-overlay">
+                                        <div class="template-icon">
+                                            <i class="fas fa-om"></i>
+                                        </div>
+                                        <div class="template-content">
+                                            <h4 class="template-title">Wedding Hindu Traditional</h4>
+                                            <p class="template-description">Sacred Hindu ceremony design</p>
+                                            <div class="template-tags">
+                                                <span class="tag">Wedding</span>
+                                                <span class="tag">Hindu</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-actions text-center mt-3">
+                                    <a href="{{ url_for('create_invitation') }}?template=wedding_hindu_traditional" class="btn btn-primary-custom w-100">
+                                        Choose Template
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4 col-md-6 template-item" data-event-type="wedding" data-style="elegant" data-theme="muslim">
+                            <div class="template-card">
+                                <div class="template-preview wedding-muslim-preview">
+                                    <div class="template-overlay">
+                                        <div class="template-icon">
+                                            <i class="fas fa-moon"></i>
+                                        </div>
+                                        <div class="template-content">
+                                            <h4 class="template-title">Wedding Muslim Elegant</h4>
+                                            <p class="template-description">Beautiful Islamic wedding design</p>
+                                            <div class="template-tags">
+                                                <span class="tag">Wedding</span>
+                                                <span class="tag">Muslim</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-actions text-center mt-3">
+                                    <a href="{{ url_for('create_invitation') }}?template=wedding_muslim_elegant" class="btn btn-primary-custom w-100">
+                                        Choose Template
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Birthday Templates -->
+                        <div class="col-lg-4 col-md-6 template-item" data-event-type="birthday" data-style="fun" data-theme="secular">
+                            <div class="template-card">
+                                <div class="template-preview birthday-fun-preview">
+                                    <div class="template-overlay">
+                                        <div class="template-icon">
+                                            <i class="fas fa-birthday-cake"></i>
+                                        </div>
+                                        <div class="template-content">
+                                            <h4 class="template-title">Birthday Fun Colorful</h4>
+                                            <p class="template-description">Celebrate in style</p>
+                                            <div class="template-tags">
+                                                <span class="tag">Birthday</span>
+                                                <span class="tag">Fun</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-actions text-center mt-3">
+                                    <a href="{{ url_for('create_invitation') }}?template=birthday_fun_colorful" class="btn btn-primary-custom w-100">
+                                        Choose Template
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Anniversary Templates -->
+                        <div class="col-lg-4 col-md-6 template-item" data-event-type="anniversary" data-style="elegant" data-theme="secular">
+                            <div class="template-card">
+                                <div class="template-preview anniversary-golden-preview">
+                                    <div class="template-overlay">
+                                        <div class="template-icon">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                        <div class="template-content">
+                                            <h4 class="template-title">Anniversary Golden Elegant</h4>
+                                            <p class="template-description">Celebrate love & memories</p>
+                                            <div class="template-tags">
+                                                <span class="tag">Anniversary</span>
+                                                <span class="tag">Golden</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-actions text-center mt-3">
+                                    <a href="{{ url_for('create_invitation') }}?template=anniversary_golden_elegant" class="btn btn-primary-custom w-100">
+                                        Choose Template
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Baby Shower Templates -->
+                        <div class="col-lg-4 col-md-6 template-item" data-event-type="babyshower" data-style="fun" data-theme="secular">
+                            <div class="template-card">
+                                <div class="template-preview babyshower-sweet-preview">
+                                    <div class="template-overlay">
+                                        <div class="template-icon">
+                                            <i class="fas fa-baby"></i>
+                                        </div>
+                                        <div class="template-content">
+                                            <h4 class="template-title">Baby Shower Sweet Pink</h4>
+                                            <p class="template-description">Welcome the little one</p>
+                                            <div class="template-tags">
+                                                <span class="tag">Baby Shower</span>
+                                                <span class="tag">Sweet</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-actions text-center mt-3">
+                                    <a href="{{ url_for('create_invitation') }}?template=babyshower_sweet_pink" class="btn btn-primary-custom w-100">
+                                        Choose Template
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Graduation Templates -->
+                        <div class="col-lg-4 col-md-6 template-item" data-event-type="graduation" data-style="modern" data-theme="secular">
+                            <div class="template-card">
+                                <div class="template-preview graduation-modern-preview">
+                                    <div class="template-overlay">
+                                        <div class="template-icon">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        <div class="template-content">
+                                            <h4 class="template-title">Graduation Success Modern</h4>
+                                            <p class="template-description">Celebrate academic achievements</p>
+                                            <div class="template-tags">
+                                                <span class="tag">Graduation</span>
+                                                <span class="tag">Modern</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-actions text-center mt-3">
+                                    <a href="{{ url_for('create_invitation') }}?template=graduation_success_modern" class="btn btn-primary-custom w-100">
+                                        Choose Template
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Retirement Templates -->
+                        <div class="col-lg-4 col-md-6 template-item" data-event-type="retirement" data-style="classic" data-theme="secular">
+                            <div class="template-card">
+                                <div class="template-preview retirement-classic-preview">
+                                    <div class="template-overlay">
+                                        <div class="template-icon">
+                                            <i class="fas fa-chair"></i>
+                                        </div>
+                                        <div class="template-content">
+                                            <h4 class="template-title">Retirement Golden Classic</h4>
+                                            <p class="template-description">Honor years of service</p>
+                                            <div class="template-tags">
+                                                <span class="tag">Retirement</span>
+                                                <span class="tag">Classic</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="template-actions text-center mt-3">
+                                    <a href="{{ url_for('create_invitation') }}?template=retirement_golden_classic" class="btn btn-primary-custom w-100">
+                                        Choose Template
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Bottom Action Buttons -->
+<section class="bottom-actions py-4 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-end gap-3">
+            <a href="#" class="btn btn-secondary-custom">Choose Later</a>
+            <a href="{{ url_for('create_invitation') }}" class="btn btn-primary-custom">Use this template</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterCheckboxes = document.querySelectorAll('.filter-check-input');
+    const templateItems = document.querySelectorAll('.template-item');
+    const clearFiltersLink = document.querySelector('.clear-filters');
+    
+    // Function to apply filters
+    function applyFilters() {
+        const selectedEventTypes = Array.from(document.querySelectorAll('input[value*="wedding"]:checked, input[value*="birthday"]:checked, input[value*="anniversary"]:checked, input[value*="babyshower"]:checked, input[value*="graduation"]:checked, input[value*="retirement"]:checked')).map(cb => cb.value);
+        const selectedStyles = Array.from(document.querySelectorAll('input[value*="traditional"]:checked, input[value*="modern"]:checked, input[value*="elegant"]:checked, input[value*="fun"]:checked, input[value*="classic"]:checked')).map(cb => cb.value);
+        const selectedThemes = Array.from(document.querySelectorAll('input[value*="hindu"]:checked, input[value*="muslim"]:checked, input[value*="christian"]:checked, input[value*="secular"]:checked')).map(cb => cb.value);
+        
+        templateItems.forEach(item => {
+            const eventType = item.dataset.eventType;
+            const style = item.dataset.style;
+            const theme = item.dataset.theme;
+            
+            const eventTypeMatch = selectedEventTypes.length === 0 || selectedEventTypes.includes(eventType);
+            const styleMatch = selectedStyles.length === 0 || selectedStyles.includes(style);
+            const themeMatch = selectedThemes.length === 0 || selectedThemes.includes(theme);
+            
+            if (eventTypeMatch && styleMatch && themeMatch) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+    
+    // Add event listeners to all filter checkboxes
+    filterCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', applyFilters);
+    });
+    
+    // Clear filters functionality
+    clearFiltersLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        filterCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        applyFilters();
+    });
+    
+    // Initialize filters - show all templates by default
+    applyFilters();
+});
+
+// Intersection Observer for animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+        }
+    });
+}, observerOptions);
+
+// Observe all template cards
+document.querySelectorAll('.template-card').forEach(el => {
+    observer.observe(el);
+});
+</script>
+{% endblock %}
+

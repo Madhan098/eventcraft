@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}Select Template - EventCraft Pro{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="display-6 fw-bold">Choose Your Template</h1>
+                <p class="lead text-muted">Select a beautiful design for your {{ event_data.eventType.title() }} invitation</p>
+            </div>
+        </div>
+
+        <!-- Event Summary -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h4 class="mb-2">{{ event_data.eventTitle }}</h4>
+                                <p class="mb-0 text-muted">
+                                    <i class="fas fa-calendar me-2"></i>{{ event_data.eventDate }}
+                                    <i class="fas fa-clock ms-3 me-2"></i>{{ event_data.eventTime }}
+                                    <i class="fas fa-map-marker-alt ms-3 me-2"></i>{{ event_data.venue }}
+                                </p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <span class="badge bg-primary fs-6 px-3 py-2">{{ event_data.eventType.title() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selected Template Notice -->
+        {% if selected_template %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="alert alert-success">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle fa-2x me-3 text-success"></i>
+                            <div>
+                                <h5 class="mb-1">Template Pre-selected!</h5>
+                                <p class="mb-0">You've chosen the <strong>{{ selected_template|replace('_', ' ')|title }}</strong> template. You can still change your selection below or proceed to create your invitation.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" form="template-form" class="btn btn-success btn-lg" style="font-size: 1.2rem; padding: 12px 30px;">
+                                <i class="fas fa-check me-2"></i>Create Invitation Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Template Selection -->
+        {% if templates %}
+            <form method="POST" action="{{ url_for('save_invitation') }}" id="template-form">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Template Selection:</strong> 
+                            {% if event_data.religiousType and event_data.religiousType.strip() %}
+                                Showing {{ event_data.religiousType.title() }} style templates for {{ event_data.eventType.title() }} events.
+                            {% else %}
+                                <span class="text-success">🌍 General style templates are recommended for most events.</span> 
+                                Religious templates are also available as alternatives.
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4 mb-4">
+                    {% for template in templates %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="template-card">
+                                <input type="radio" class="btn-check" name="template_id" id="template-{{ template.id }}" 
+                                       value="{{ template.id }}" required>
+                                <label class="card h-100 shadow-sm template-label" for="template-{{ template.id }}">
+                                    <div class="template-preview">
+                                        <img src="{{ template.preview_image }}" class="card-img-top" alt="{{ template.name }}" 
+                                             style="height: 250px; object-fit: cover;">
+                                        <div class="template-overlay">
+                                            <i class="fas fa-check-circle fa-3x text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h5 class="card-title">{{ template.name }}</h5>
+                                            <span class="fs-4">
+                                                {% if template.emoji_theme and template.emoji_theme.strip() %}
+                                                    {{ template.emoji_theme[0] if template.emoji_theme else '🎉' }}
+                                                {% else %}
+                                                    🎉
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <p class="card-text text-muted">{{ template.description }}</p>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">
+                                                <i class="fas fa-palette me-1"></i>{{ template.color_scheme.title() }}
+                                            </small>
+                                            <small class="text-muted">
+                                                <i class="fas fa-users me-1"></i>{{ template.usage_count }} uses
+                                            </small>
+                                        </div>
+                                        <div class="text-center">
+                                            <small class="badge {% if template.religious_type == 'general' %}bg-success{% else %}bg-info{% endif %}">
+                                                {% if template.religious_type == 'general' %}
+                                                    🌍 General Style
+                                                {% else %}
+                                                    {{ template.religious_type.title() }} Style
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('create_invitation') }}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Event Details
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg" style="font-size: 1.3rem; padding: 15px 40px;">
+                                <i class="fas fa-check me-2"></i>Create Invitation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {% else %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-circle fa-3x text-warning mb-3"></i>
+                        <h4>No Templates Available</h4>
+                        <p class="text-muted mb-4">Sorry, no templates are currently available for {{ event_data.eventType.title() }} events.</p>
+                        <a href="{{ url_for('create_invitation') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Go Back and Choose Different Event Type
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.template-card {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.template-label {
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.template-label:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Make general templates more prominent */
+.template-label[for*="template-"]:has(input[value*="general"]) {
+    border-color: #28a745;
+}
+
+.template-label[for*="template-"]:has(input[value*="general"]):hover {
+    border-color: #20c997;
+    box-shadow: 0 0.5rem 1rem rgba(40, 167, 69, 0.2) !important;
+}
+
+/* Add a subtle indicator for general templates */
+.template-label[for*="template-"]:has(input[value*="general"])::before {
+    content: "🌍";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.2rem;
+    z-index: 1;
+}
+
+/* Style for religious templates */
+.template-label[for*="template-"]:not(:has(input[value*="general"])) {
+    border-color: #6c757d;
+}
+
+.template-label[for*="template-"]:not(:has(input[value*="general"])):hover {
+    border-color: #495057;
+}
+
+.template-preview {
+    position: relative;
+    overflow: hidden;
+}
+
+.template-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 123, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-check:checked + .template-label {
+    border-color: var(--bs-primary);
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-check:checked + .template-label .template-overlay {
+    opacity: 1;
+}
+</style>
+{% endblock %}

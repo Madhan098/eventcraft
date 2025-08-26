@@ -1,0 +1,936 @@
+{% extends "base.html" %}
+
+{% block title %}Create Invitation - EventCraft Pro{% endblock %}
+
+{% block content %}
+<style>
+    /* Modern Form Styling */
+    .create-invitation-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 3px solid #e9ecef;
+    }
+
+    .form-header h1 {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .form-header p {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    .template-info {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .template-info h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.3rem;
+    }
+
+    .template-info p {
+        margin: 0;
+        opacity: 0.9;
+    }
+
+    /* Form Steps */
+    .form-steps {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 3rem;
+        gap: 1rem;
+    }
+
+    .step-indicator {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 25px;
+        color: #6c757d;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .step-indicator.active {
+        background: #007bff;
+        border-color: #007bff;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .step-indicator.completed {
+        background: #28a745;
+        border-color: #28a745;
+        color: white;
+    }
+
+    /* Form Sections */
+    .form-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid #e9ecef;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .section-header i {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-right: 1rem;
+        width: 40px;
+        text-align: center;
+    }
+
+    .section-header h3 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    /* Form Grid Layout */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .form-label.required::after {
+        content: " *";
+        color: #dc3545;
+    }
+
+    .form-input, .form-textarea, .form-select {
+        width: 100%;
+        padding: 0.875rem 1rem;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: #2c3e50;
+        background: white;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .form-select {
+        cursor: pointer;
+    }
+
+    /* Style Selection */
+    .style-selection {
+        margin-bottom: 2rem;
+    }
+
+    .style-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .style-option {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .style-option:hover {
+        border-color: #007bff;
+        background: #f8f9ff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+    }
+
+    .style-option.selected {
+        border-color: #007bff;
+        background: #e3f2fd;
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+    }
+
+    .style-option .emoji {
+        font-size: 2rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .style-option .label {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 0.9rem;
+    }
+
+    /* File Upload */
+    .file-upload {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .upload-area {
+        border: 2px dashed #dee2e6;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+
+    .upload-area:hover {
+        border-color: #007bff;
+        background: #e3f2fd;
+    }
+
+    .upload-area i {
+        font-size: 2rem;
+        color: #6c757d;
+        margin-bottom: 1rem;
+    }
+
+    .upload-area p {
+        margin: 0.5rem 0;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .upload-area small {
+        color: #6c757d;
+        font-size: 0.875rem;
+    }
+
+    .image-preview {
+        margin-top: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .image-preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .remove-btn:hover {
+        background: #c82333;
+        transform: scale(1.1);
+    }
+
+    /* Navigation Buttons */
+    .form-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 2px solid #e9ecef;
+    }
+
+    .btn {
+        padding: 0.875rem 2rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #0056b3;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .create-invitation-container {
+            padding: 1rem;
+            margin: 1rem;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-steps {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-navigation {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    /* Event-specific fields */
+    .event-specific-fields {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        border: 1px solid #dee2e6;
+    }
+
+    .event-specific-fields h4 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    /* Hidden sections */
+    .hidden {
+        display: none !important;
+    }
+</style>
+
+<div class="create-invitation-container">
+    <!-- Form Header -->
+    <div class="form-header">
+        <h1>Create Your Invitation</h1>
+        <p>Design a beautiful digital invitation for your special event</p>
+    </div>
+
+    <!-- Template Information -->
+    {% if selected_template %}
+    <div class="template-info">
+        <h3>Selected Template: {{ selected_template|replace('_', ' ')|title }}</h3>
+        <p>You're creating a {{ selected_template|replace('_', ' ')|title }} invitation</p>
+    </div>
+    {% endif %}
+
+    <!-- Step Indicators -->
+    <div class="form-steps">
+        <div class="step-indicator active" id="step1-indicator">
+            <i class="fas fa-info-circle"></i>
+            <span>Event Details</span>
+        </div>
+        <div class="step-indicator" id="step2-indicator">
+            <i class="fas fa-images"></i>
+            <span>Photos & Info</span>
+        </div>
+        <div class="step-indicator" id="step3-indicator">
+            <i class="fas fa-check-circle"></i>
+            <span>Review & Create</span>
+        </div>
+    </div>
+
+    <form id="invitationForm" method="POST" action="{{ url_for('create_invitation') }}" enctype="multipart/form-data">
+        <!-- Hidden field for selected template -->
+        <input type="hidden" name="selectedTemplate" value="{{ selected_template }}">
+        <!-- Step 1: Event Details -->
+        <div class="form-step active" id="step1">
+            <!-- Basic Event Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Basic Event Information</h3>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label required">Event Title</label>
+                        <input type="text" class="form-input" id="eventTitle" name="eventTitle" 
+                               placeholder="e.g., Sarah & John's Wedding" required
+                               value="{% if current_user and selected_template %}{{ current_user.name }}'s {{ selected_template|replace('_', ' ')|title }}{% endif %}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Event Date</label>
+                        <input type="date" class="form-input" id="eventDate" name="eventDate" required>
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">Event Description</label>
+                    <textarea class="form-textarea" id="eventDescription" name="eventDescription" rows="4" 
+                              placeholder="Describe your event, add special instructions, or include a personal message..."></textarea>
+                </div>
+            </div>
+
+            <!-- Style Selection -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-palette"></i>
+                    <h3>Event Style (Optional)</h3>
+                </div>
+                
+                <p style="color: #6c757d; margin-bottom: 1rem;">
+                    Choose a style that matches your event theme, or leave unselected for a neutral design
+                </p>
+                
+                <div class="style-grid">
+                    <div class="style-option" onclick="selectStyle('hindu', this)">
+                        <span class="emoji">🕉️</span>
+                        <span class="label">Hindu</span>
+                        <input type="radio" name="eventStyle" value="hindu" style="display: none;">
+                    </div>
+                    
+                    <div class="style-option" onclick="selectStyle('muslim', this)">
+                        <span class="emoji">☪️</span>
+                        <span class="label">Muslim</span>
+                        <input type="radio" name="eventStyle" value="muslim" style="display: none;">
+                    </div>
+                    
+                    <div class="style-option" onclick="selectStyle('christian', this)">
+                        <span class="emoji">✝️</span>
+                        <span class="label">Christian</span>
+                        <input type="radio" name="eventStyle" value="christian" style="display: none;">
+                    </div>
+                    
+                    <div class="style-option" onclick="selectStyle('general', this)">
+                        <span class="emoji">🌍</span>
+                        <span class="label">General</span>
+                        <input type="radio" name="eventStyle" value="general" style="display: none;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event-Specific Information -->
+            <div class="form-section" id="eventSpecificSection">
+                <div class="section-header">
+                    <i class="fas fa-star"></i>
+                    <h3>Event-Specific Details</h3>
+                </div>
+                
+                <!-- Wedding Fields -->
+                <div id="weddingFields" class="event-specific-fields" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Bride's Name</label>
+                            <input type="text" class="form-input" id="brideName" name="brideName" placeholder="Bride's full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Groom's Name</label>
+                            <input type="text" class="form-input" id="groomName" name="groomName" placeholder="Groom's full name">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Muhurtham Time</label>
+                            <input type="time" class="form-input" id="muhurthamTime" name="muhurthamTime">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Reception Time</label>
+                            <input type="time" class="form-input" id="receptionTime" name="receptionTime">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Birthday Fields -->
+                <div id="birthdayFields" class="event-specific-fields" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Birthday Person's Name</label>
+                            <input type="text" class="form-input" id="birthdayPerson" name="birthdayPerson" placeholder="Name of the birthday person">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Age</label>
+                            <input type="number" class="form-input" id="age" name="age" placeholder="Age" min="1" max="120">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Start Time</label>
+                            <input type="time" class="form-input" id="startTime" name="startTime">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Dinner Time</label>
+                            <input type="time" class="form-input" id="dinnerTime" name="dinnerTime">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Baby Shower Fields -->
+                <div id="babyshowerFields" class="event-specific-fields" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Mother's Name</label>
+                            <input type="text" class="form-input" id="motherName" name="motherName" placeholder="Expecting mother's name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Father's Name</label>
+                            <input type="text" class="form-input" id="fatherName" name="fatherName" placeholder="Expecting father's name">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Start Time</label>
+                            <input type="time" class="form-input" id="babyshowerStartTime" name="babyshowerStartTime">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">End Time</label>
+                            <input type="time" class="form-input" id="babyshowerEndTime" name="babyshowerEndTime">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graduation Fields -->
+                <div id="graduationFields" class="event-specific-fields" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Graduate's Name</label>
+                            <input type="text" class="form-input" id="graduateName" name="graduateName" placeholder="Graduate's full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Degree</label>
+                            <input type="text" class="form-input" id="degree" name="degree" placeholder="e.g., Bachelor's Degree">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">School/University</label>
+                            <input type="text" class="form-input" id="school" name="school" placeholder="School or university name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Field of Study</label>
+                            <input type="text" class="form-input" id="major" name="major" placeholder="e.g., Computer Science">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anniversary Fields -->
+                <div id="anniversaryFields" class="event-specific-fields" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Couple's Names</label>
+                            <input type="text" class="form-input" id="coupleNames" name="coupleNames" placeholder="e.g., Sarah & John">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Years of Marriage</label>
+                            <input type="number" class="form-input" id="marriageYears" name="marriageYears" placeholder="e.g., 25" min="1" max="100">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Dinner Time</label>
+                            <input type="time" class="form-input" id="anniversaryDinnerTime" name="anniversaryDinnerTime">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Party Time</label>
+                            <input type="time" class="form-input" id="partyTime" name="partyTime">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Retirement Fields -->
+                <div id="retirementFields" class="event-specific-fields" style="display: none;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Retiring Person's Name</label>
+                            <input type="text" class="form-input" id="honoreeName" name="honoreeName" placeholder="Full name of the retiring person">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Position/Title</label>
+                            <input type="text" class="form-input" id="position" name="position" placeholder="e.g., Senior Manager">
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Company/Organization</label>
+                            <input type="text" class="form-input" id="company" name="company" placeholder="Company or organization name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Career Start Year</label>
+                            <input type="number" class="form-input" id="startYear" name="startYear" placeholder="e.g., 1985" min="1900" max="2024">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Photos & Additional Info -->
+        <div class="form-step" id="step2">
+            <!-- Main Photos -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-camera"></i>
+                    <h3>Event Photos</h3>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Main Photo (Hero Image)</label>
+                        <div class="file-upload" onclick="document.getElementById('mainImage').click()">
+                            <input type="file" id="mainImage" name="mainImage" 
+                                   accept="image/*" onchange="previewImage(this, 'mainImagePreview')" style="display: none;">
+                            <div class="upload-area">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload your hero image</p>
+                                <small>This will be the main background image</small>
+                            </div>
+                        </div>
+                        <div id="mainImagePreview" class="image-preview" style="display: none;">
+                            <img src="" alt="Preview">
+                            <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Gallery Images (2-6 photos)</label>
+                        <div class="file-upload" onclick="document.getElementById('galleryImages').click()">
+                            <input type="file" id="galleryImages" name="galleryImages" 
+                                   accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryPreview')" style="display: none;">
+                            <div class="upload-area">
+                                <i class="fas fa-images"></i>
+                                <p>Click to upload gallery images</p>
+                                <small>2-6 photos recommended</small>
+                            </div>
+                        </div>
+                        <div id="galleryPreview" class="gallery-preview" style="display: none;">
+                            <h6>Selected Images:</h6>
+                            <div class="gallery-grid" id="galleryPreviewGrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-address-book"></i>
+                    <h3>Contact Information</h3>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label required">Host Name</label>
+                        <input type="text" class="form-input" id="hostName" name="hostName" 
+                               value="{{ current_user.name if current_user else '' }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Contact Phone</label>
+                        <input type="tel" class="form-input" id="contactPhone" name="contactPhone" 
+                               placeholder="Phone number for inquiries">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Contact Email</label>
+                        <input type="email" class="form-input" id="contactEmail" name="contactEmail" 
+                               value="{{ current_user.email if current_user else '' }}" placeholder="Email for inquiries">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Venue Address</label>
+                        <textarea class="form-textarea" id="venueAddress" name="venueAddress" rows="3" 
+                                  placeholder="Enter the venue address..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Review & Create -->
+        <div class="form-step" id="step3">
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-eye"></i>
+                    <h3>Review Your Invitation</h3>
+                </div>
+                
+                <div id="reviewContent">
+                    <p>Please complete the previous steps to review your invitation details.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="form-navigation">
+            <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">
+                <i class="fas fa-arrow-left"></i>
+                Previous
+            </button>
+            
+            <div style="margin-left: auto;">
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+                    Next
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+                    <i class="fas fa-check"></i>
+                    Create Invitation
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+let currentStep = 1;
+const totalSteps = 3;
+
+// Style selection
+function selectStyle(style, element) {
+    // Remove selection from all options
+    document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
+    // Select clicked option
+    element.classList.add('selected');
+    // Set radio button value
+    element.querySelector('input[type="radio"]').checked = true;
+}
+
+// Step navigation
+function nextStep() {
+    if (currentStep < totalSteps) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById(`step${currentStep + 1}`).classList.add('active');
+        
+        document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
+        document.getElementById(`step${currentStep + 1}-indicator`).classList.add('active');
+        
+        currentStep++;
+        updateNavigation();
+    }
+}
+
+function previousStep() {
+    if (currentStep > 1) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById(`step${currentStep - 1}`).classList.add('active');
+        
+        document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
+        document.getElementById(`step${currentStep - 1}-indicator`).classList.remove('completed');
+        document.getElementById(`step${currentStep - 1}-indicator`).classList.add('active');
+        
+        currentStep--;
+        updateNavigation();
+    }
+}
+
+function updateNavigation() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Show/hide previous button
+    prevBtn.style.display = currentStep > 1 ? 'inline-flex' : 'none';
+    
+    // Show/hide next/submit buttons
+    if (currentStep === totalSteps) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline-flex';
+    } else {
+        nextBtn.style.display = 'inline-flex';
+        submitBtn.style.display = 'none';
+    }
+    
+    // Mark completed steps
+    for (let i = 1; i < currentStep; i++) {
+        document.getElementById(`step${i}-indicator`).classList.add('completed');
+    }
+}
+
+// Image preview functions
+function previewImage(input, previewId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById(previewId);
+            preview.querySelector('img').src = e.target.result;
+            preview.style.display = 'inline-block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function removeImage(previewId) {
+    const preview = document.getElementById(previewId);
+    preview.style.display = 'none';
+    preview.querySelector('img').src = '';
+    const input = preview.previousElementSibling.querySelector('input[type="file"]');
+    input.value = '';
+}
+
+function previewMultipleImages(input, previewId) {
+    const preview = document.getElementById(previewId);
+    const grid = document.getElementById('galleryPreviewGrid');
+    grid.innerHTML = '';
+    
+    if (input.files) {
+        Array.from(input.files).forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgDiv = document.createElement('div');
+                imgDiv.style.cssText = 'position: relative; display: inline-block; margin: 0.5rem;';
+                
+                imgDiv.innerHTML = `
+                    <img src="${e.target.result}" alt="Gallery ${index + 1}" style="max-width: 100px; max-height: 100px; border-radius: 8px; border: 2px solid #e9ecef;">
+                    <button type="button" class="remove-btn" onclick="removeGalleryImage(this, ${index})" style="position: absolute; top: -10px; right: -10px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                
+                grid.appendChild(imgDiv);
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        preview.style.display = 'block';
+    }
+}
+
+function removeGalleryImage(button, index) {
+    button.parentElement.remove();
+}
+
+// Initialize form
+document.addEventListener('DOMContentLoaded', function() {
+    updateNavigation();
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('eventDate').min = today;
+    
+    // Show event-specific fields based on selected template
+    showEventSpecificFields();
+});
+
+// Show event-specific fields based on template
+function showEventSpecificFields() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const template = urlParams.get('template');
+    
+    if (template) {
+        // Hide all event-specific sections first
+        document.querySelectorAll('.event-specific-fields').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Show the appropriate section based on template
+        if (template.includes('wedding')) {
+            document.getElementById('weddingFields').style.display = 'block';
+        } else if (template.includes('birthday')) {
+            document.getElementById('birthdayFields').style.display = 'block';
+        } else if (template.includes('babyshower')) {
+            document.getElementById('babyshowerFields').style.display = 'block';
+        } else if (template.includes('graduation')) {
+            document.getElementById('graduationFields').style.display = 'block';
+        } else if (template.includes('anniversary')) {
+            document.getElementById('anniversaryFields').style.display = 'block';
+        } else if (template.includes('retirement')) {
+            document.getElementById('retirementFields').style.display = 'block';
+        }
+    }
+}
+</script>
+{% endblock %}

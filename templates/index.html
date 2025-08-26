@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}EventCraft Pro - Create Beautiful Invitations Online{% endblock %}
+
+{% block extra_head %}
+<style>
+/* Force new design styles inline */
+.hero-title .text-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-section {
+    background: white !important;
+    color: #1f2937 !important;
+}
+
+.cta-section {
+    background: white !important;
+    color: #1f2937 !important;
+    border: 2px solid #e5e7eb;
+    border-radius: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title display-3 fw-bold mb-4">
+                        Fast. Easy. Effective.
+                        <span class="text-gradient-primary">EventCraft Pro.</span>
+                        <br>The Best Invitation Maker Online.
+                    </h1>
+                    <p class="hero-subtitle lead mb-4">
+                        Whether you want to build a new invitation from scratch or improve an existing one, let EventCraft Pro help you present your special moments with invitations that stand out.
+                    </p>
+                    <div class="hero-actions d-flex gap-3 flex-wrap">
+                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
+                            <i class="fas fa-plus me-2"></i>Create New Invitation
+                        </a>
+                        <a href="{{ url_for('templates') }}" class="btn btn-secondary-custom btn-lg">
+                            <i class="fas fa-edit me-2"></i>Improve My Invitation
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-visual text-center">
+                    <div class="lottie-container">
+                        <!-- Lottie Animation will be placed here -->
+                        <div class="lottie-placeholder">
+                            <div class="lottie-icon">
+                                <i class="fas fa-magic fa-6x text-primary"></i>
+                            </div>
+                            <p class="text-muted mt-3">Lottie Animation Space</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Template Selection Section -->
+<section class="template-selection py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title display-5 fw-bold mb-3">Pick an Invitation Template</h2>
+            <p class="section-subtitle lead text-muted">Choose a sleek design and layout to get started</p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Wedding Template -->
+            <div class="col-lg-3 col-md-6">
+                <div class="template-card">
+                    <div class="template-preview wedding-preview">
+                        <div class="template-overlay">
+                            <div class="template-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="template-content">
+                                <h4 class="template-title">Wedding Elegant</h4>
+                                <p class="template-description">Perfect for your special day</p>
+                                <div class="template-tags">
+                                    <span class="tag">Wedding</span>
+                                    <span class="tag">Elegant</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-actions text-center mt-3">
+                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom w-100">
+                            Choose Template
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Birthday Template -->
+            <div class="col-lg-3 col-md-6">
+                <div class="template-card">
+                    <div class="template-preview birthday-preview">
+                        <div class="template-overlay">
+                            <div class="template-icon">
+                                <i class="fas fa-birthday-cake"></i>
+                            </div>
+                            <div class="template-content">
+                                <h4 class="template-title">Birthday Fun</h4>
+                                <p class="template-description">Celebrate in style</p>
+                                <div class="template-tags">
+                                    <span class="tag">Birthday</span>
+                                    <span class="tag">Fun</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-actions text-center mt-3">
+                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom w-100">
+                            Choose Template
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Anniversary Template -->
+            <div class="col-lg-3 col-md-6">
+                <div class="template-card">
+                    <div class="template-preview anniversary-preview">
+                        <div class="template-overlay">
+                            <div class="template-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="template-content">
+                                <h4 class="template-title">Anniversary Golden</h4>
+                                <p class="template-description">Celebrate love & memories</p>
+                                <div class="template-tags">
+                                    <span class="tag">Anniversary</span>
+                                    <span class="tag">Golden</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-actions text-center mt-3">
+                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom w-100">
+                            Choose Template
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Baby Shower Template -->
+            <div class="col-lg-3 col-md-6">
+                <div class="template-card">
+                    <div class="template-preview babyshower-preview">
+                        <div class="template-overlay">
+                            <div class="template-icon">
+                                <i class="fas fa-baby"></i>
+                            </div>
+                            <div class="template-content">
+                                <h4 class="template-title">Baby Shower Sweet</h4>
+                                <p class="template-description">Welcome the little one</p>
+                                <div class="template-tags">
+                                    <span class="tag">Baby Shower</span>
+                                    <span class="tag">Sweet</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-actions text-center mt-3">
+                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom w-100">
+                            Choose Template
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
+                <i class="fas fa-eye me-2"></i>View All Templates
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Process Section -->
+<section class="process-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title display-5 fw-bold mb-3">How It Works</h2>
+            <p class="section-subtitle lead text-muted">Create your perfect invitation in three simple steps</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="process-card text-center">
+                    <div class="process-icon mb-4">
+                        <i class="fas fa-palette fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="process-title mb-3">Pick a Template</h4>
+                    <p class="process-description">Choose a sleek design and layout to get started.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="process-card text-center">
+                    <div class="process-icon mb-4">
+                        <i class="fas fa-edit fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="process-title mb-3">Fill in the Details</h4>
+                    <p class="process-description">Type in a few words. Let our wizard fill the rest.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="process-card text-center">
+                    <div class="process-icon mb-4">
+                        <i class="fas fa-magic fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="process-title mb-3">Customize & Share</h4>
+                    <p class="process-description">Make it truly yours. Uniqueness in a few clicks.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
+                    <i class="fas fa-plus me-2"></i>Create New Invitation
+                </a>
+                <a href="{{ url_for('templates') }}" class="btn btn-secondary-custom btn-lg">
+                    <i class="fas fa-edit me-2"></i>Improve My Invitation
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section py-5">
+    <div class="container text-center">
+        <h2 class="cta-title display-4 fw-bold mb-4">Ready to Create Something Amazing?</h2>
+        <p class="cta-subtitle lead mb-4">Join thousands of users who trust EventCraft Pro for their special moments</p>
+        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
+            <i class="fas fa-rocket me-2"></i>Get Started Now
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Intersection Observer for animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+        }
+    });
+}, observerOptions);
+
+// Observe all elements that should animate
+document.querySelectorAll('.template-card, .process-card, .hero-content').forEach(el => {
+    observer.observe(el);
+});
+
+// Add smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+</script>
+{% endblock %}

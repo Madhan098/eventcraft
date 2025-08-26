@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event_data.eventTitle }} - Hindu Wedding Invitation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --accent-secondary: #f5576c;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-light: #FFF8DC;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background-image: url('{% if event_data.mainImage %}{{ url_for('uploaded_file', filename=event_data.mainImage) }}{% elif invitation.main_image %}{{ url_for('uploaded_file', filename=invitation.main_image) }}{% else %}data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><rect width='1200' height='800' fill='%23FFE4E1'/><text x='600' y='400' text-anchor='middle' font-family='Playfair Display' font-size='48' fill='%23DC143C'>Hindu Wedding</text></svg>{% endif %}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 15px 30px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-title:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-secondary) 100%);
+            padding: 12px 20px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 10px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .om-symbol {
+            font-size: 3rem;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+        }
+        
+        .event-date {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-secondary) 100%);
+            padding: 10px 20px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        
+        /* Couple Section */
+        .couple-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .couple-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .couple-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+        
+        .person-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .person-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-color);
+            margin: 0 auto 1rem;
+            display: block;
+        }
+        
+        .person-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .person-desc {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Ceremony Details */
+        .mandap-section {
+            background: var(--bg-light);
+            padding: 4rem 0;
+        }
+        
+        .mandap-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .ceremony-details {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .ceremony-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .ceremony-time {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .ceremony-venue {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+        
+        /* Testimonials Section */
+        .testimonials-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .testimonials-container {
+            max-height: 400px;
+            overflow: hidden;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .testimonials-list {
+            display: flex;
+            gap: 1.5rem;
+            animation: scrollTestimonials 40s linear infinite;
+            padding: 1rem 0;
+        }
+        
+        .testimonial-item {
+            min-width: 320px;
+            flex-shrink: 0;
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-left: 5px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 1rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+        
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .testimonial-timestamp {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        @keyframes scrollTestimonials {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .testimonials-container:hover .testimonials-list {
+            animation-play-state: paused;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .couple-info {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            .testimonial-item {
+                min-width: 280px;
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="page-load-animation">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">{{ event_data.familyName }}</h1>
+                <p class="hero-subtitle">is inviting you</p>
+                <div class="om-symbol">🕉️</div>
+                <h2 class="hero-title">WE'RE GETTING MARRIED</h2>
+                <p class="hero-subtitle">Save Our Date</p>
+                <div class="event-date">{{ event_data.eventDate }}</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Couple Section -->
+    <section class="couple-section">
+        <div class="container">
+            <h2 class="couple-title">Happy Couple</h2>
+            <div class="couple-info">
+                <div class="person-card">
+                    {% if event_data.bridePhoto %}
+                    <img src="{{ url_for('uploaded_file', filename=event_data.bridePhoto) }}" alt="Bride" class="person-photo">
+                    {% else %}
+                    <div class="person-photo d-flex align-items-center justify-content-center bg-light">
+                        <i class="fas fa-user fa-2x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    <h3 class="person-name">{{ event_data.brideName }}</h3>
+                    <p class="person-desc">{{ event_data.brideDescription or "Beautiful bride" }}</p>
+                </div>
+                
+                <div class="person-card">
+                    {% if event_data.groomPhoto %}
+                    <img src="{{ url_for('uploaded_file', filename=event_data.groomPhoto) }}" alt="Groom" class="person-photo">
+                    {% else %}
+                    <div class="person-photo d-flex align-items-center justify-content-center bg-light">
+                        <i class="fas fa-user fa-2x text-muted"></i>
+                    </div>
+                    {% endif %}
+                    <h3 class="person-name">{{ event_data.groomName }}</h3>
+                    <p class="person-desc">{{ event_data.groomDescription or "Handsome groom" }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Welcome Section -->
+    <section class="mandap-section">
+        <div class="container">
+            <h2 class="mandap-title">Welcome to our Sacred Union</h2>
+            <p class="text-center" style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 3rem;">
+                {{ event_data.description or "Join us in celebrating the sacred bond of marriage in the presence of our family and friends." }}
+            </p>
+        </div>
+    </section>
+    
+    <!-- Ceremony Details -->
+    <section class="mandap-section">
+        <div class="container">
+            <h2 class="mandap-title">When & Where</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="ceremony-details">
+                        <h3 class="ceremony-title">Haldi Ceremony</h3>
+                        <p class="ceremony-time">
+                            {% if event_data.timeData %}
+                                {% set time_data = event_data.timeData | safe_from_json %}
+                                {% if time_data.muhurthamTime %}
+                                    {{ time_data.muhurthamTime }}
+                                {% else %}
+                                    {{ event_data.eventTime }}
+                                {% endif %}
+                            {% else %}
+                                {{ event_data.eventTime }}
+                            {% endif %}
+                        </p>
+                        <p class="ceremony-venue">{{ event_data.venue }}</p>
+                        <button type="button" class="btn btn-primary btn-lg" onclick="openSharePopup()">
+                            <i class="fas fa-share-alt me-2"></i>Share Invitation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Convey Your Wishes Section -->
+    <section class="wishes-section py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="wishes-content bg-white rounded-4 p-4 shadow-lg">
+                        <h4 class="text-center mb-4" style="color: #2c3e50; font-family: 'Playfair Display', serif; font-weight: 700;">
+                            <i class="fas fa-heart me-2" style="color: #e74c3c;"></i>Convey Your Wishes
+                        </h4>
+                        <p class="text-center text-muted mb-4">
+                            <span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">
+                                Share your blessings and wishes for the couple
+                            </span>
+                        </p>
+                        
+                        <!-- Wish Submission Form -->
+                        <form id="wishForm" class="mb-4" method="POST" action="{{ url_for('submit_wishes', share_url=invitation.share_url) }}" onsubmit="submitWish(event)">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="guestName" placeholder="Your Name" required style="border: 2px solid #e9ecef; border-radius: 10px; padding: 12px 15px;">
+                                </div>
+                                <div class="col-12">
+                                    <textarea class="form-control" id="guestWish" rows="3" placeholder="Write your wedding wish or blessing..." required style="border: 2px solid #e9ecef; border-radius: 10px; padding: 12px 15px; resize: vertical;"></textarea>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary px-4 py-2" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); border: none; border-radius: 25px; font-weight: 600;">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Wish
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Enhanced Testimonials Display Section -->
+                        <div class="testimonials-section mt-4">
+                            <h5 class="text-center mb-3" style="color: #2c3e50; font-weight: 600;">
+                                <i class="fas fa-star me-2" style="color: #FFD700;"></i>Wedding Wishes & Blessings
+                            </h5>
+                            <div class="testimonials-container">
+                                <div id="testimonialsList" class="testimonials-list">
+                                    <!-- Sample testimonials will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Share Invitation Modal -->
+    <div class="modal fade" id="shareInvitationModal" tabindex="-1" aria-labelledby="shareInvitationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shareInvitationModalLabel">
+                        <i class="fas fa-share-alt me-2"></i>Share Invitation
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center mb-4">
+                        <span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">
+                            Share this beautiful invitation with your friends and family!
+                        </span>
+                    </p>
+                    
+                    <!-- Share Link Display -->
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="popupShareLink" value="{{ request.url }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyPopupLink()">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Social Media Buttons -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-success w-100" onclick="shareWhatsApp()">
+                                <i class="fab fa-whatsapp me-1"></i>WhatsApp
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-primary w-100" onclick="shareFacebook()">
+                                <i class="fab fa-facebook me-1"></i>Facebook
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-info w-100" onclick="shareTwitter()">
+                                <i class="fab fa-twitter me-1"></i>Twitter
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-warning w-100" onclick="shareEmail()">
+                                <i class="fas fa-envelope me-1"></i>Email
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code Option -->
+                    <div class="text-center">
+                        <button type="button" class="btn btn-outline-dark" onclick="generatePopupQR()">
+                            <i class="fas fa-qrcode me-1"></i>Generate QR Code
+                        </button>
+                    </div>
+                    
+                    <!-- QR Code Display -->
+                    <div id="popupQRSection" class="text-center mt-3" style="display: none;">
+                        <div id="popupQRCode" class="d-inline-block p-3 bg-white border rounded shadow-sm"></div>
+                        <p class="small text-muted mt-2">
+                            <span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">
+                                Scan to open invitation
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Back to Dashboard Button for Creator -->
+    {% if is_creator %}
+    <div class="text-center mt-4 mb-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-lg">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+    {% endif %}
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">Thank You For Being With Us</p>
+            <div class="mt-4 text-center">
+                <p class="mb-3" style="color: #8B4513; font-size: 1.1rem;">
+                    If you want to make your own invitation
+                </p>
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%); border: none; border-radius: 25px; padding: 12px 30px; font-weight: 600; box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3); transition: all 0.3s ease; color: white;">
+                    <i class="fas fa-plus me-2"></i>Click Here
+                </a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript Functions -->
+    <script>
+        // Load sample testimonials on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSampleTestimonials();
+        });
+        
+        function loadSampleTestimonials() {
+            const testimonialsList = document.getElementById('testimonialsList');
+            if (!testimonialsList) return;
+            
+            const sampleTestimonials = [
+                {
+                    name: "Sarah & Family",
+                    message: "May your love story be as beautiful as a fairy tale and your marriage be filled with endless joy and laughter. Wishing you both a lifetime of happiness together!",
+                    timestamp: "Just now"
+                },
+                {
+                    name: "Michael & Emma",
+                    message: "As you begin this beautiful journey together, may every day bring you closer and every moment strengthen your bond. Here's to a love that grows deeper with time!",
+                    timestamp: "2 minutes ago"
+                },
+                {
+                    name: "Priya & Raj",
+                    message: "Your love is an inspiration to us all. May your marriage be blessed with health, wealth, and everlasting happiness. Congratulations on finding your soulmate!",
+                    timestamp: "5 minutes ago"
+                }
+            ];
+            
+            // Load from localStorage if available
+            const savedWishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+            const allWishes = [...sampleTestimonials, ...savedWishes];
+            
+            displayTestimonials(allWishes);
+        }
+        
+        function displayTestimonials(wishes) {
+            const testimonialsList = document.getElementById('testimonialsList');
+            if (!testimonialsList) return;
+            
+            testimonialsList.innerHTML = '';
+            wishes.forEach(wish => addTestimonial(wish));
+        }
+        
+        function addTestimonial(wish) {
+            const testimonialsList = document.getElementById('testimonialsList');
+            if (!testimonialsList) return;
+            
+            const wishElement = document.createElement('div');
+            wishElement.className = 'testimonial-item';
+            
+            wishElement.innerHTML = `
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"${wish.message || wish.guest_wish || wish.wish}"</p>
+                    <div class="testimonial-author">${wish.name || wish.guest_name}</div>
+                    <div class="testimonial-timestamp">${wish.timestamp || 'Just now'}</div>
+                </div>
+            `;
+            
+            testimonialsList.appendChild(wishElement);
+        }
+        
+        // Share popup functions
+        function openSharePopup() {
+            const modal = new bootstrap.Modal(document.getElementById('shareInvitationModal'));
+            modal.show();
+        }
+        
+        function copyPopupLink() {
+            const shareLink = document.getElementById('popupShareLink');
+            shareLink.select();
+            
+            // Use modern clipboard API with fallback
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(shareLink.value).then(function() {
+                    showCopySuccess();
+                }).catch(function(err) {
+                    console.error('Failed to copy: ', err);
+                    fallbackCopyTextToClipboard(shareLink.value);
+                });
+            } else {
+                fallbackCopyTextToClipboard(shareLink.value);
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess();
+                } else {
+                    alert('Failed to copy link. Please copy it manually.');
+                }
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+                alert('Failed to copy link. Please copy it manually.');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
+        function showCopySuccess() {
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            btn.classList.remove('btn-outline-secondary');
+            btn.classList.add('btn-success');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-outline-secondary');
+            }, 2000);
+        }
+        
+        function generatePopupQR() {
+            const qrSection = document.getElementById('popupQRSection');
+            const qrDiv = document.getElementById('popupQRCode');
+            
+            if (qrSection.style.display === 'none') {
+                // Generate QR code using external API
+                const url = window.location.href;
+                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+                
+                qrDiv.innerHTML = `<img src="${qrCodeUrl}" alt="QR Code" class="img-fluid" style="max-width: 200px;">`;
+                qrSection.style.display = 'block';
+                
+                // Change button text to indicate it's working
+                const btn = event.target;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-qrcode me-1"></i>Hide QR Code';
+                btn.classList.remove('btn-outline-dark');
+                btn.classList.add('btn-dark');
+                
+                // Store button reference for toggling
+                btn.setAttribute('data-original-text', originalText);
+            } else {
+                // Hide QR code
+                qrSection.style.display = 'none';
+                
+                // Reset button
+                const btn = event.target;
+                const originalText = btn.getAttribute('data-original-text') || '<i class="fas fa-qrcode me-1"></i>Generate QR Code';
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-dark');
+                btn.classList.add('btn-outline-dark');
+            }
+        }
+        
+        function shareWhatsApp() {
+            const link = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("Check out this beautiful wedding invitation!");
+            window.open(`https://wa.me/?text=${text}%20${link}`, '_blank');
+        }
+        
+        function shareFacebook() {
+            const link = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${link}`, '_blank');
+        }
+        
+        function shareTwitter() {
+            const link = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent("Check out this beautiful wedding invitation!");
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${link}`, '_blank');
+        }
+        
+        function shareEmail() {
+            const link = encodeURIComponent(window.location.href);
+            const subject = encodeURIComponent("You're Invited to Our Wedding!");
+            const body = encodeURIComponent("I'd love for you to join us for our special day.\n\nCheck out our invitation here:\n");
+            window.open(`mailto:?subject=${subject}&body=${body}${link}`, '_blank');
+        }
+        
+        // Enhanced submitWish function that adds to testimonials
+        function submitWish(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('guestName').value.trim();
+            const wish = document.getElementById('guestWish').value.trim();
+            
+            if (!name || !wish) {
+                alert('Please enter your name and wish.');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            submitBtn.disabled = true;
+            
+            // Submit via AJAX
+            fetch('{{ url_for("submit_wishes", share_url=invitation.share_url) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'guest_name': name,
+                    'guest_wish': wish
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Add wish to testimonials immediately
+                    addTestimonial(data.wish);
+                    
+                    // Reset form
+                    document.getElementById('wishForm').reset();
+                    
+                    // Show success message
+                    showSuccessMessage(data.message);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to submit wish. Please try again.');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        }
+        
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'alert alert-success position-fixed';
+            successDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1000; min-width: 300px;';
+            successDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>${message}
+            `;
+            document.body.appendChild(successDiv);
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,669 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ event_data.eventTitle }} - EventCraft Pro{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced text readability for background images */
+    .hero-background h1, .hero-background h2, .hero-background h3, .hero-background p {
+        background: rgba(0, 0, 0, 0.7) !important;
+        color: white !important;
+        padding: 15px 25px !important;
+        border-radius: 20px !important;
+        display: inline-block !important;
+        margin: 10px 0 !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+    }
+    
+    .hero-background p {
+        background: rgba(0, 0, 0, 0.6) !important;
+        padding: 12px 20px !important;
+        border-radius: 15px !important;
+    }
+    
+    /* Ensure all text in hero sections is readable */
+    .hero-background * {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+    }
+    
+    /* Add semi-transparent backgrounds to text containers */
+    .text-overlay {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 15px;
+        border-radius: 15px;
+        margin: 10px 0;
+    }
+    
+    /* Enhanced text shadows for better readability */
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                <!-- Invitation Card -->
+                <div class="invitation-card card shadow-lg border-0" 
+                     style="background: linear-gradient(135deg, {{ template.color_scheme | default('#e91e63') if template.color_scheme == 'rose' else '#FFD700' if template.color_scheme == 'gold' else '#FF69B4' if template.color_scheme == 'pink' else '#4169E1' if template.color_scheme == 'blue' else '#4CAF50' if template.color_scheme == 'green' else '#9C27B0' }}20, {{ template.color_scheme | default('#e91e63') if template.color_scheme == 'rose' else '#FFD700' if template.color_scheme == 'gold' else '#FF69B4' if template.color_scheme == 'pink' else '#4169E1' if template.color_scheme == 'blue' else '#4CAF50' if template.color_scheme == 'green' else '#9C27B0' }}10); font-family: {{ template.font_family if template.font_family else 'Georgia, serif' }};">
+                    
+                    <!-- Family Name Header -->
+                    {% if not invitation.main_image %}
+                    <div class="card-header bg-transparent border-0 text-center py-4">
+                        <div class="invitation-icon mb-3">
+                            <span class="fs-1">
+                                {% if template.emoji_theme and template.emoji_theme.strip() %}
+                                    {{ template.emoji_theme[0] if template.emoji_theme else '🎉' }}
+                                {% else %}
+                                    🎉
+                                {% endif %}
+                            </span>
+                        </div>
+                        <h2 class="display-6 fw-bold mb-2" style="color: #2c3e50;">{{ invitation.family_name or event_data.familyName }}</h2>
+                        <p class="text-muted mb-0">cordially invites you to</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Main Image as Background with Overlay Text -->
+                    {% if invitation.main_image %}
+                    <div class="hero-background mb-4" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ url_for('uploaded_file', filename=invitation.main_image) }}'); background-size: cover; background-position: center; min-height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 15px;">
+                        <div class="text-center text-white">
+                            <h2 class="display-4 fw-bold mb-3 text-overlay">{{ invitation.family_name or event_data.familyName }}</h2>
+                            <p class="fs-5 mb-0 text-overlay">cordially invites you to</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- Default Image Based on Event Type -->
+                    <div class="text-center mb-4">
+                        <div class="default-image-placeholder p-4 rounded-3 border" style="background-color: #f8f9fa;">
+                            {% if event_data.eventType == 'wedding' %}
+                                <div class="fs-1 mb-2">👰🤵💍</div>
+                                <p class="text-muted">Wedding Celebration</p>
+                            {% elif event_data.eventType == 'birthday' %}
+                                <div class="fs-1 mb-2">🎂🎉🎈</div>
+                                <p class="text-muted">Birthday Celebration</p>
+                            {% elif event_data.eventType == 'anniversary' %}
+                                <div class="fs-1 mb-2">💑❤️🌹</div>
+                                <p class="text-muted">Anniversary Celebration</p>
+                            {% else %}
+                                <div class="fs-1 mb-2">🎊✨🎉</div>
+                                <p class="text-muted">Special Celebration</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Individual Photos Section for Wedding -->
+                    {% if event_data.eventType == 'wedding' %}
+                    <div class="couple-photos mb-4">
+                        <div class="row g-4 align-items-center">
+                            <!-- Bride Photo -->
+                            <div class="col-md-4 text-center">
+                                {% if event_data.bridePhoto %}
+                                <div class="photo-circle mb-3">
+                                    <img src="{{ url_for('uploaded_file', filename=event_data.bridePhoto) }}" 
+                                         class="img-fluid rounded-circle shadow" 
+                                         style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #FFD700;" 
+                                         alt="Bride Photo">
+                                </div>
+                                {% else %}
+                                <div class="photo-circle mb-3" style="width: 150px; height: 150px; margin: 0 auto; border: 4px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                                    <span class="fs-1">👰</span>
+                                </div>
+                                {% endif %}
+                                <h5 class="fw-bold">{{ event_data.brideName or 'Bride' }}</h5>
+                                <p class="text-muted">Bride</p>
+                            </div>
+                            
+                            <!-- Couple Photo -->
+                            <div class="col-md-4 text-center">
+                                {% if event_data.couplePhoto %}
+                                <div class="photo-circle mb-3">
+                                    <img src="{{ url_for('uploaded_file', filename=event_data.couplePhoto) }}" 
+                                         class="img-fluid rounded-circle shadow" 
+                                         style="width: 180px; height: 180px; object-fit: cover; border: 4px solid #FFD700;" 
+                                         alt="Couple Photo">
+                                </div>
+                                {% else %}
+                                <div class="photo-circle mb-3" style="width: 180px; height: 180px; margin: 0 auto; border: 4px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                                    <span class="fs-1">💑</span>
+                                </div>
+                                {% endif %}
+                                <h4 class="fw-bold">{{ event_data.brideName or 'Bride' }} & {{ event_data.groomName or 'Groom' }}</h4>
+                            </div>
+                            
+                            <!-- Groom Photo -->
+                            <div class="col-md-4 text-center">
+                                {% if event_data.groomPhoto %}
+                                <div class="photo-circle mb-3">
+                                    <img src="{{ url_for('uploaded_file', filename=event_data.groomPhoto) }}" 
+                                         class="img-fluid rounded-circle shadow" 
+                                         style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #FFD700;" 
+                                         alt="Groom Photo">
+                                </div>
+                                {% else %}
+                                <div class="photo-circle mb-3" style="width: 150px; height: 150px; margin: 0 auto; border: 4px solid #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                                    <span class="fs-1">🤵</span>
+                                </div>
+                                {% endif %}
+                                <h5 class="fw-bold">{{ event_data.groomName or 'Groom' }}</h5>
+                                <p class="text-muted">Groom</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Event Details -->
+                    <div class="card-body text-center">
+                        <h1 class="display-5 fw-bold mb-4" style="color: #2c3e50;">{{ event_data.eventTitle }}</h1>
+                        
+                        <div class="event-details mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <i class="fas fa-calendar-alt fa-2x mb-2" style="color: #e74c3c;"></i>
+                                        <h6 class="fw-bold">Date</h6>
+                                        <p class="mb-0">{{ event_data.eventDate }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock fa-2x mb-2" style="color: #f39c12;"></i>
+                                        <h6 class="fw-bold">Time</h6>
+                                        <p class="mb-0">{{ event_data.eventTime }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="detail-item">
+                                        <i class="fas fa-map-marker-alt fa-2x mb-2" style="color: #27ae60;"></i>
+                                        <h6 class="fw-bold">Venue</h6>
+                                        <p class="mb-1">{{ event_data.venue }}</p>
+                                        <small class="text-muted">{{ event_data.address }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if event_data.description %}
+                        <div class="event-description mb-4 p-3 bg-light rounded">
+                            <p class="mb-0 fst-italic">{{ event_data.description }}</p>
+                        </div>
+                        {% endif %}
+
+                        <!-- Gallery Section -->
+                        {% if invitation.gallery_images and invitation.gallery_images != '[]' and invitation.gallery_images != 'null' %}
+                        <div class="gallery-section mb-4">
+                            <h5 class="mb-3">Our Memories</h5>
+                            <p class="text-muted mb-3">All Pre Event & Celebration Moments</p>
+                            <div class="row g-3">
+                                {% set gallery_list = invitation.gallery_images | safe_from_json %}
+                                {% for image in gallery_list %}
+                                    {% if image and image.strip() and image != '' %}
+                                    <div class="col-6 col-md-4 col-lg-3">
+                                        <div class="gallery-item" onclick="openGalleryModal('{{ url_for('uploaded_file', filename=image) }}')">
+                                            <img src="{{ url_for('uploaded_file', filename=image) }}" 
+                                                 class="img-fluid gallery-image" 
+                                                 style="height: 150px; width: 100%; object-fit: cover; border-radius: 10px;"
+                                                 alt="Gallery Image"
+                                                 onerror="this.parentElement.parentElement.style.display='none'">
+                                            <div class="gallery-overlay">
+                                                <i class="fas fa-search-plus text-white"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+
+                            
+
+
+                        <!-- Share Section - Popup for Everyone -->
+                        <div class="share-section bg-light rounded p-4 mb-4">
+                            <h5 class="text-center mb-3">
+                                <i class="fas fa-share-alt me-2"></i>Share this invitation
+                            </h5>
+                            <p class="text-center text-muted mb-3">Spread the joy! Share with friends and family</p>
+                            
+                            <!-- Share Button for Everyone -->
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary btn-lg" onclick="openSharePopup()">
+                                    <i class="fas fa-share-alt me-2"></i>Share Invitation
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        {% if event_data.contactPhone or event_data.contactEmail %}
+                        <div class="contact-info border-top pt-3">
+                            <h6 class="mb-2">For any queries, contact:</h6>
+                            <p class="mb-1"><strong>{{ event_data.hostName }}</strong></p>
+                            {% if event_data.contactPhone %}
+                                <p class="mb-1"><i class="fas fa-phone me-2"></i>{{ event_data.contactPhone }}</p>
+                            {% endif %}
+                            {% if event_data.contactEmail %}
+                                <p class="mb-0"><i class="fas fa-envelope me-2"></i>{{ event_data.contactEmail }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Back to Dashboard Button -->
+                {% if is_creator %}
+                <div class="text-center mt-4 mb-3">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Made with EventCraft Pro -->
+                <div class="text-center mt-4">
+                    <p class="text-muted">
+                        Made with ❤️ using 
+                        <a href="{{ url_for('index') }}" class="text-decoration-none fw-bold" style="color: #e74c3c;">
+                            EventCraft Pro
+                        </a>
+                    </p>
+                    <a href="{{ url_for('auth') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-plus me-2"></i>Create Your Own Invitation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Modal -->
+<div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+
+<!-- Share Invitation Popup Modal -->
+<div class="modal fade" id="shareInvitationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-share-alt me-2"></i>Share Invitation
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center mb-4">Share this beautiful invitation with your friends and family!</p>
+                
+                <!-- Share Link Display -->
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="popupShareLink" value="{{ request.url }}" readonly>
+                    <button class="btn btn-outline-secondary" type="button" onclick="copyPopupLink()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                
+                <!-- Social Media Buttons -->
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-success w-100" onclick="shareWhatsApp()">
+                            <i class="fab fa-whatsapp me-1"></i>WhatsApp
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-primary w-100" onclick="shareFacebook()">
+                            <i class="fab fa-facebook me-1"></i>Facebook
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-info w-100" onclick="shareTwitter()">
+                            <i class="fab fa-twitter me-1"></i>Twitter
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-warning w-100" onclick="shareEmail()">
+                            <i class="fas fa-envelope me-1"></i>Email
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- QR Code Option -->
+                <div class="text-center">
+                    <button type="button" class="btn btn-outline-dark" onclick="generatePopupQR()">
+                        <i class="fas fa-qrcode me-1"></i>Generate QR Code
+                    </button>
+                </div>
+                
+                <!-- QR Code Display -->
+                <div id="popupQRSection" class="text-center mt-3" style="display: none;">
+                    <div id="popupQRCode" class="d-inline-block p-3 bg-white border rounded shadow-sm"></div>
+                    <p class="small text-muted mt-2">Scan to open invitation</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+                <img id="modalImage" src="" class="img-fluid rounded shadow" alt="Gallery Image">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+
+
+// Gallery modal
+function openGalleryModal(imageSrc) {
+    document.getElementById('modalImage').src = imageSrc;
+    new bootstrap.Modal(document.getElementById('galleryModal')).show();
+}
+
+// Google Calendar integration
+function addToGoogleCalendar() {
+    const eventTitle = "{{ event_data.eventTitle }}";
+    const eventDate = "{{ event_data.eventDate }}";
+    const eventTime = "{{ event_data.eventTime }}";
+    const venue = "{{ event_data.venue }}";
+    const address = "{{ event_data.address }}";
+    
+    // Create date-time string for Google Calendar
+    const startDateTime = new Date(eventDate + 'T' + eventTime).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const endDateTime = new Date(new Date(eventDate + 'T' + eventTime).getTime() + 2 * 60 * 60 * 1000).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDateTime}/${endDateTime}&location=${encodeURIComponent(venue + ', ' + address)}&details=${encodeURIComponent('You are invited to ' + eventTitle)}`;
+    
+    window.open(googleCalendarUrl, '_blank');
+}
+
+// Enhanced Share functions
+function shareWhatsApp() {
+    const url = window.location.href;
+    const eventTitle = "{{ event_data.eventTitle }}";
+    const eventDate = "{{ event_data.eventDate }}";
+    const venue = "{{ event_data.venue }}";
+    const text = `🎉 You're invited to ${eventTitle}!\n📅 ${eventDate}\n📍 ${venue}\n\nCheck out the invitation: ${url}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareTwitter() {
+    const url = window.location.href;
+    const text = "You're invited to {{ event_data.eventTitle }}! 🎉";
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+}
+
+function shareFacebook() {
+    const url = window.location.href;
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+}
+
+function shareEmail() {
+    const url = window.location.href;
+    const eventTitle = "{{ event_data.eventTitle }}";
+    const eventDate = "{{ event_data.eventDate }}";
+    const venue = "{{ event_data.venue }}";
+    const subject = `Invitation to ${eventTitle}`;
+    const body = `You're invited to ${eventTitle}!\n\nDate: ${eventDate}\nVenue: ${venue}\n\nView the invitation: ${url}`;
+    window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank');
+}
+
+function copyLink() {
+    const shareLink = document.getElementById('shareLink');
+    shareLink.select();
+    navigator.clipboard.writeText(shareLink.value).then(function() {
+        // Show temporary success message
+        const btn = event.target.closest('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.classList.remove('btn-outline-secondary');
+        btn.classList.add('btn-success');
+        
+        // Show toast notification
+        showToast('Link copied to clipboard!', 'success');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-secondary');
+        }, 2000);
+    });
+}
+
+function generateQR() {
+    const qrSection = document.getElementById('qrCodeSection');
+    const qrDiv = document.getElementById('qrCode');
+    
+    if (qrSection.style.display === 'none') {
+        // Generate QR code
+        const url = window.location.href;
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+        qrDiv.innerHTML = `<img src="${qrCodeUrl}" alt="QR Code" class="img-fluid">`;
+        qrSection.style.display = 'block';
+    } else {
+        qrSection.style.display = 'none';
+    }
+}
+
+function showToast(message, type = 'info') {
+    // Create toast notification
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(toast);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    }, 3000);
+}
+
+// Popup-specific functions
+function openSharePopup() {
+    const modal = new bootstrap.Modal(document.getElementById('shareInvitationModal'));
+    modal.show();
+}
+
+function copyPopupLink() {
+    const shareLink = document.getElementById('popupShareLink');
+    shareLink.select();
+    navigator.clipboard.writeText(shareLink.value).then(function() {
+        // Show temporary success message
+        const btn = event.target.closest('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.classList.remove('btn-outline-secondary');
+        btn.classList.add('btn-success');
+        
+        // Show toast notification
+        showToast('Link copied to clipboard!', 'success');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-secondary');
+        }, 2000);
+    });
+}
+
+function generatePopupQR() {
+    const qrSection = document.getElementById('popupQRSection');
+    const qrDiv = document.getElementById('popupQRCode');
+    
+    if (qrSection.style.display === 'none') {
+        // Generate QR code
+        const url = window.location.href;
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+        qrDiv.innerHTML = `<img src="${qrCodeUrl}" alt="QR Code" class="img-fluid">`;
+        qrSection.style.display = 'block';
+    } else {
+        qrSection.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.gallery-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.gallery-image {
+    transition: transform 0.3s ease;
+}
+
+.gallery-image:hover {
+    transform: scale(1.05);
+}
+
+.gallery-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 123, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 10px;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+/* Modal Styles */
+.modal-content {
+    background: rgba(0, 0, 0, 0.9) !important;
+}
+
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.detail-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.btn-check:checked + .btn {
+    transform: scale(1.05);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+.default-image-placeholder {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.hero-background {
+    position: relative;
+    overflow: hidden;
+}
+
+.photo-circle {
+    transition: transform 0.3s ease;
+}
+
+.photo-circle:hover {
+    transform: scale(1.05);
+}
+
+.share-section .btn {
+    transition: all 0.3s ease;
+}
+
+.share-section .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.input-group .form-control {
+    background-color: #fff;
+    border: 2px solid #dee2e6;
+}
+
+.alert.position-fixed {
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .display-5 {
+        font-size: 1.8rem;
+    }
+    
+    .btn-group .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+    
+    .hero-background {
+        min-height: 300px !important;
+    }
+    
+    .hero-background .display-4 {
+        font-size: 2rem;
+    }
+    
+    .couple-photos .row {
+        text-align: center;
+    }
+    
+    .photo-circle img {
+        width: 120px !important;
+        height: 120px !important;
+    }
+}
+</style>
+{% endblock %}
