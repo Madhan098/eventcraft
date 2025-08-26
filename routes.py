@@ -232,38 +232,62 @@ def register_routes(app):
         try:
             data = request.form
             selected_template = data.get('selectedTemplate', '')
+            
+            # Validate required fields
+            if not data.get('eventTitle'):
+                flash('Event title is required', 'error')
+                return redirect(url_for('create_invitation'))
+            
+            if not data.get('eventDate'):
+                flash('Event date is required', 'error')
+                return redirect(url_for('create_invitation'))
 
-            # Handle file uploads
+            # Handle file uploads with better error handling
             uploaded_files = {}
             gallery_images = []
+
+            # Ensure upload directory exists
+            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
             # Main image upload
             if 'mainImage' in request.files:
                 main_file = request.files['mainImage']
-                if main_file and main_file.filename:
-                    filename = secure_filename(f"{session['user_id']}_main_{datetime.now().timestamp()}_{main_file.filename}")
-                    main_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    uploaded_files['main_image'] = filename
+                if main_file and main_file.filename and main_file.filename != '':
+                    try:
+                        filename = secure_filename(f"{session['user_id']}_main_{datetime.now().timestamp()}_{main_file.filename}")
+                        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                        main_file.save(file_path)
+                        uploaded_files['main_image'] = filename
+                    except Exception as e:
+                        app.logger.error(f"Error saving main image: {str(e)}")
 
             # Event-specific image uploads
             event_images = ['brideImage', 'groomImage', 'coupleImage', 'birthdayImage', 'graduateImage', 'honoreeImage']
             for img_field in event_images:
                 if img_field in request.files:
                     img_file = request.files[img_field]
-                    if img_file and img_file.filename:
-                        field_name = img_field.replace('Image', '').lower()
-                        filename = secure_filename(f"{session['user_id']}_{field_name}_{datetime.now().timestamp()}_{img_file.filename}")
-                        img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                        uploaded_files[f'{field_name}_image'] = filename
+                    if img_file and img_file.filename and img_file.filename != '':
+                        try:
+                            field_name = img_field.replace('Image', '').lower()
+                            filename = secure_filename(f"{session['user_id']}_{field_name}_{datetime.now().timestamp()}_{img_file.filename}")
+                            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                            img_file.save(file_path)
+                            uploaded_files[f'{field_name}_image'] = filename
+                        except Exception as e:
+                            app.logger.error(f"Error saving {img_field}: {str(e)}")
 
             # Gallery images upload
             if 'galleryImages' in request.files:
                 gallery_files = request.files.getlist('galleryImages')
                 for i, gallery_file in enumerate(gallery_files):
-                    if gallery_file and gallery_file.filename:
-                        filename = secure_filename(f"{session['user_id']}_{datetime.now().timestamp()}_{i}_{gallery_file.filename}")
-                        gallery_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                        gallery_images.append(filename)
+                    if gallery_file and gallery_file.filename and gallery_file.filename != '':
+                        try:
+                            filename = secure_filename(f"{session['user_id']}_{datetime.now().timestamp()}_{i}_{gallery_file.filename}")
+                            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                            gallery_file.save(file_path)
+                            gallery_images.append(filename)
+                        except Exception as e:
+                            app.logger.error(f"Error saving gallery image {i}: {str(e)}")
 
             # Create new invitation
             invitation = Invitation(

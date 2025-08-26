@@ -451,7 +451,7 @@
                                placeholder="e.g., Sarah & John's Wedding" required
                                value="{% if current_user and selected_template %}{{ current_user.name }}'s {{ selected_template|replace('_', ' ')|title }}{% endif %}">
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label required">Event Date</label>
                         <input type="date" class="form-input" id="eventDate" name="eventDate" required>
@@ -467,13 +467,13 @@
                 <div class="form-group">
                     <label class="form-label">Main Event Image</label>
                     <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                    <small class="form-hint">Upload a main image for your invitation background</small>
                     <div id="mainImagePreview" class="image-preview" style="display: none;">
                         <img src="" alt="Main Image Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
                         <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
+                    <small class="form-text">Upload a main image for your invitation background</small>
                 </div>
             </div>
 
@@ -483,30 +483,30 @@
                     <i class="fas fa-palette"></i>
                     <h3>Event Style (Optional)</h3>
                 </div>
-                
+
                 <p style="color: #6c757d; margin-bottom: 1rem;">
                     Choose a style that matches your event theme, or leave unselected for a neutral design
                 </p>
-                
+
                 <div class="style-grid">
                     <div class="style-option" onclick="selectStyle('hindu', this)">
                         <span class="emoji">🕉️</span>
                         <span class="label">Hindu</span>
                         <input type="radio" name="eventStyle" value="hindu" style="display: none;">
                     </div>
-                    
+
                     <div class="style-option" onclick="selectStyle('muslim', this)">
                         <span class="emoji">☪️</span>
                         <span class="label">Muslim</span>
                         <input type="radio" name="eventStyle" value="muslim" style="display: none;">
                     </div>
-                    
+
                     <div class="style-option" onclick="selectStyle('christian', this)">
                         <span class="emoji">✝️</span>
                         <span class="label">Christian</span>
                         <input type="radio" name="eventStyle" value="christian" style="display: none;">
                     </div>
-                    
+
                     <div class="style-option" onclick="selectStyle('general', this)">
                         <span class="emoji">🌍</span>
                         <span class="label">General</span>
@@ -521,7 +521,7 @@
                     <i class="fas fa-star"></i>
                     <h3>Event-Specific Details</h3>
                 </div>
-                
+
                 <!-- Wedding Fields -->
                 <div id="weddingFields" class="event-specific-fields" style="display: none;">
                     <div class="form-grid">
@@ -681,26 +681,26 @@
                     <i class="fas fa-address-book"></i>
                     <h3>Contact Information</h3>
                 </div>
-                
+
                 <div class="form-grid">
                     <div class="form-group">
                         <label class="form-label required">Host Name</label>
                         <input type="text" class="form-input" id="hostName" name="hostName" 
                                value="{{ current_user.name if current_user else '' }}" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Contact Phone</label>
                         <input type="tel" class="form-input" id="contactPhone" name="contactPhone" 
                                placeholder="Phone number for inquiries">
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Contact Email</label>
                         <input type="email" class="form-input" id="contactEmail" name="contactEmail" 
                                value="{{ current_user.email if current_user else '' }}" placeholder="Email for inquiries">
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Venue Address</label>
                         <textarea class="form-textarea" id="venueAddress" name="venueAddress" rows="3" 
@@ -717,7 +717,7 @@
                     <i class="fas fa-eye"></i>
                     <h3>Review Your Invitation</h3>
                 </div>
-                
+
                 <div id="reviewContent">
                     <p>Please complete the previous steps to review your invitation details.</p>
                 </div>
@@ -730,13 +730,13 @@
                 <i class="fas fa-arrow-left"></i>
                 Previous
             </button>
-            
+
             <div style="margin-left: auto;">
                 <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
                     Next
                     <i class="fas fa-arrow-right"></i>
                 </button>
-                
+
                 <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
                     <i class="fas fa-check"></i>
                     Create Invitation
@@ -747,210 +747,210 @@
 </div>
 
 <script>
-let currentStep = 1;
-const totalSteps = 3;
+        let currentStep = 1;
+        const totalSteps = 3;
 
-// Style selection
-function selectStyle(style, element) {
-    // Remove selection from all options
-    document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
-    // Select clicked option
-    element.classList.add('selected');
-    // Set radio button value
-    element.querySelector('input[type="radio"]').checked = true;
-}
+        // Style selection
+        function selectStyle(style, element) {
+            // Remove selection from all options
+            document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
+            // Select clicked option
+            element.classList.add('selected');
+            // Set radio button value
+            element.querySelector('input[type="radio"]').checked = true;
+        }
 
-// Step navigation
-function nextStep() {
-    if (currentStep < totalSteps) {
-        document.getElementById(`step${currentStep}`).classList.remove('active');
-        document.getElementById(`step${currentStep + 1}`).classList.add('active');
-        
-        document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
-        document.getElementById(`step${currentStep + 1}`).classList.add('active');
-        
-        currentStep++;
-        updateNavigation();
-    }
-}
+        // Step navigation
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.getElementById(`step${currentStep + 1}`).classList.add('active');
 
-function previousStep() {
-    if (currentStep > 1) {
-        document.getElementById(`step${currentStep}`).classList.remove('active');
-        document.getElementById(`step${currentStep - 1}`).classList.add('active');
-        
-        document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
-        document.getElementById(`step${currentStep - 1}`).classList.remove('completed');
-        document.getElementById(`step${currentStep - 1}-indicator`).classList.add('active');
-        
-        currentStep--;
-        updateNavigation();
-    }
-}
+                document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
+                document.getElementById(`step${currentStep + 1}`).classList.add('active');
 
-function updateNavigation() {
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const submitBtn = document.getElementById('submitBtn');
-    
-    // Show/hide previous button
-    prevBtn.style.display = currentStep > 1 ? 'inline-flex' : 'none';
-    
-    // Show/hide next/submit buttons
-    if (currentStep === totalSteps) {
-        nextBtn.style.display = 'none';
-        submitBtn.style.display = 'inline-flex';
-    } else {
-        nextBtn.style.display = 'inline-flex';
-        submitBtn.style.display = 'none';
-    }
-    
-    // Mark completed steps
-    for (let i = 1; i < currentStep; i++) {
-        document.getElementById(`step${i}-indicator`).classList.add('completed');
-    }
-}
+                currentStep++;
+                updateNavigation();
+            }
+        }
 
-// Image preview functions
-function previewImage(input, previewId) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
+        function previousStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.getElementById(`step${currentStep - 1}`).classList.add('active');
+
+                document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
+                document.getElementById(`step${currentStep - 1}`).classList.remove('completed');
+                document.getElementById(`step${currentStep - 1}-indicator`).classList.add('active');
+
+                currentStep--;
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Show/hide previous button
+            prevBtn.style.display = currentStep > 1 ? 'inline-flex' : 'none';
+
+            // Show/hide next/submit buttons
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-flex';
+            } else {
+                nextBtn.style.display = 'inline-flex';
+                submitBtn.style.display = 'none';
+            }
+
+            // Mark completed steps
+            for (let i = 1; i < currentStep; i++) {
+                document.getElementById(`step${i}-indicator`).classList.add('completed');
+            }
+        }
+
+        // Image preview functions
+        function previewImage(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById(previewId);
+                    if (preview) {
+                        preview.querySelector('img').src = e.target.result;
+                        preview.style.display = 'inline-block';
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeImage(previewId, inputId) {
             const preview = document.getElementById(previewId);
+            const input = document.getElementById(inputId);
             if (preview) {
-                preview.querySelector('img').src = e.target.result;
-                preview.style.display = 'inline-block';
+                preview.style.display = 'none';
+                preview.querySelector('img').src = '';
             }
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-function removeImage(previewId, inputId) {
-    const preview = document.getElementById(previewId);
-    const input = document.getElementById(inputId);
-    if (preview) {
-        preview.style.display = 'none';
-        preview.querySelector('img').src = '';
-    }
-    if (input) {
-        input.value = '';
-    }
-}
-
-function previewMultipleImages(input, previewId) {
-    const preview = document.getElementById(previewId);
-    const grid = document.getElementById('galleryPreviewGrid');
-    
-    if (!preview || !grid) return;
-    
-    grid.innerHTML = '';
-    
-    if (input.files && input.files.length > 0) {
-        Array.from(input.files).forEach((file, index) => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imgDiv = document.createElement('div');
-                imgDiv.style.cssText = 'position: relative; display: inline-block; margin: 0.5rem;';
-                
-                imgDiv.innerHTML = `
-                    <img src="${e.target.result}" alt="Gallery ${index + 1}" style="max-width: 100px; max-height: 100px; border-radius: 8px; border: 2px solid #e9ecef;">
-                    <button type="button" class="remove-btn" onclick="removeGalleryImage(this, ${index})" style="position: absolute; top: -10px; right: -10px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                
-                grid.appendChild(imgDiv);
-            };
-            reader.readAsDataURL(file);
-        });
-        
-        preview.style.display = 'block';
-    } else {
-        preview.style.display = 'none';
-    }
-}
-
-function removeGalleryImage(button, index) {
-    button.parentElement.remove();
-    
-    // Update the file input by removing the specific file
-    const galleryInput = document.getElementById('galleryImages');
-    if (galleryInput && galleryInput.files.length > 0) {
-        const dt = new DataTransfer();
-        const files = Array.from(galleryInput.files);
-        
-        files.forEach((file, i) => {
-            if (i !== index) {
-                dt.items.add(file);
+            if (input) {
+                input.value = '';
             }
-        });
-        
-        galleryInput.files = dt.files;
-        
-        // Re-render the gallery preview
-        if (dt.files.length > 0) {
-            previewMultipleImages(galleryInput, 'galleryImagesPreview');
-        } else {
-            const preview = document.getElementById('galleryImagesPreview');
-            if (preview) {
+        }
+
+        function previewMultipleImages(input, previewId) {
+            const preview = document.getElementById(previewId);
+            const grid = document.getElementById('galleryPreviewGrid');
+
+            if (!preview || !grid) return;
+
+            grid.innerHTML = '';
+
+            if (input.files && input.files.length > 0) {
+                Array.from(input.files).forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imgDiv = document.createElement('div');
+                        imgDiv.style.cssText = 'position: relative; display: inline-block; margin: 0.5rem;';
+
+                        imgDiv.innerHTML = `
+                            <img src="${e.target.result}" alt="Gallery ${index + 1}" style="max-width: 100px; max-height: 100px; border-radius: 8px; border: 2px solid #e9ecef;">
+                            <button type="button" class="remove-btn" onclick="removeGalleryImage(this, ${index})" style="position: absolute; top: -10px; right: -10px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+
+                        grid.appendChild(imgDiv);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                preview.style.display = 'block';
+            } else {
                 preview.style.display = 'none';
             }
         }
-    }
-}
 
-// Initialize form
-document.addEventListener('DOMContentLoaded', function() {
-    updateNavigation();
-    
-    // Set minimum date to today
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('eventDate').min = today;
-    
-    // Show event-specific fields based on selected template
-    showEventSpecificFields();
-});
+        function removeGalleryImage(button, index) {
+            button.parentElement.remove();
 
-// Show event-specific fields based on template
-function showEventSpecificFields() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const template = urlParams.get('template') || '';
-    
-    // Hide all event-specific sections first
-    document.querySelectorAll('.event-specific-fields').forEach(section => {
-        section.style.display = 'none';
-    });
-    
-    // Show the appropriate section based on template
-    if (template.includes('wedding')) {
-        document.getElementById('weddingFields').style.display = 'block';
-        showEventPhotosSection('wedding');
-    } else if (template.includes('birthday')) {
-        document.getElementById('birthdayFields').style.display = 'block';
-        showEventPhotosSection('birthday');
-    } else if (template.includes('babyshower')) {
-        document.getElementById('babyshowerFields').style.display = 'block';
-        showEventPhotosSection('babyshower');
-    } else if (template.includes('graduation')) {
-        document.getElementById('graduationFields').style.display = 'block';
-        showEventPhotosSection('graduation');
-    } else if (template.includes('anniversary')) {
-        document.getElementById('anniversaryFields').style.display = 'block';
-        showEventPhotosSection('anniversary');
-    } else if (template.includes('retirement')) {
-        document.getElementById('retirementFields').style.display = 'block';
-        showEventPhotosSection('retirement');
-    }
-}
+            // Update the file input by removing the specific file
+            const galleryInput = document.getElementById('galleryImages');
+            if (galleryInput && galleryInput.files.length > 0) {
+                const dt = new DataTransfer();
+                const files = Array.from(galleryInput.files);
 
-// Show appropriate photo section in Step 2
-function showEventPhotosSection(eventType) {
-    const photosSection = document.getElementById('eventPhotosSection');
-    let html = '';
-    
-    if (eventType === 'wedding') {
-        html = `
+                files.forEach((file, i) => {
+                    if (i !== index) {
+                        dt.items.add(file);
+                    }
+                });
+
+                galleryInput.files = dt.files;
+
+                // Re-render the gallery preview
+                if (dt.files.length > 0) {
+                    previewMultipleImages(galleryInput, 'galleryImagesPreview');
+                } else {
+                    const preview = document.getElementById('galleryImagesPreview');
+                    if (preview) {
+                        preview.style.display = 'none';
+                    }
+                }
+            }
+        }
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigation();
+
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('eventDate').min = today;
+
+            // Show event-specific fields based on selected template
+            showEventSpecificFields();
+        });
+
+        // Show event-specific fields based on template
+        function showEventSpecificFields() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const template = urlParams.get('template') || '';
+
+            // Hide all event-specific sections first
+            document.querySelectorAll('.event-specific-fields').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show the appropriate section based on template
+            if (template.includes('wedding')) {
+                document.getElementById('weddingFields').style.display = 'block';
+                showEventPhotosSection('wedding');
+            } else if (template.includes('birthday')) {
+                document.getElementById('birthdayFields').style.display = 'block';
+                showEventPhotosSection('birthday');
+            } else if (template.includes('babyshower')) {
+                document.getElementById('babyshowerFields').style.display = 'block';
+                showEventPhotosSection('babyshower');
+            } else if (template.includes('graduation')) {
+                document.getElementById('graduationFields').style.display = 'block';
+                showEventPhotosSection('graduation');
+            } else if (template.includes('anniversary')) {
+                document.getElementById('anniversaryFields').style.display = 'block';
+                showEventPhotosSection('anniversary');
+            } else if (template.includes('retirement')) {
+                document.getElementById('retirementFields').style.display = 'block';
+                showEventPhotosSection('retirement');
+            }
+        }
+
+        // Show appropriate photo section in Step 2
+        function showEventPhotosSection(eventType) {
+            const photosSection = document.getElementById('eventPhotosSection');
+            let html = '';
+
+            if (eventType === 'wedding') {
+                html = `
             <div class="form-section">
                 <div class="section-header">
                     <i class="fas fa-heart"></i>
@@ -961,52 +961,52 @@ function showEventPhotosSection(eventType) {
                     <div class="form-group">
                         <label class="form-label">Bride's Photo</label>
                         <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*" onchange="previewImage(this, 'brideImagePreview')">
-                        <small class="form-hint">Upload bride's photo</small>
                         <div id="brideImagePreview" class="image-preview" style="display: none;">
                             <img src="" alt="Bride Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
                             <button type="button" class="remove-btn" onclick="removeImage('brideImagePreview', 'brideImage')">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
+                        <small class="form-hint">Upload bride's photo</small>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Groom's Photo</label>
                         <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*" onchange="previewImage(this, 'groomImagePreview')">
-                        <small class="form-hint">Upload groom's photo</small>
                         <div id="groomImagePreview" class="image-preview" style="display: none;">
                             <img src="" alt="Groom Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
                             <button type="button" class="remove-btn" onclick="removeImage('groomImagePreview', 'groomImage')">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
+                        <small class="form-hint">Upload groom's photo</small>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Couple Photo</label>
                     <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
-                    <small class="form-hint">Upload couple's photo together</small>
                     <div id="coupleImagePreview" class="image-preview" style="display: none;">
                         <img src="" alt="Couple Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
                         <button type="button" class="remove-btn" onclick="removeImage('coupleImagePreview', 'coupleImage')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
+                    <small class="form-hint">Upload couple's photo together</small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
                     <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <small class="form-hint">Upload multiple photos for the gallery (hold Ctrl/Cmd to select multiple)</small>
                     <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
                         <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                     </div>
+                    <small class="form-hint">Upload multiple photos for the gallery (hold Ctrl/Cmd to select multiple)</small>
                 </div>
             </div>
         `;
-    } else if (eventType === 'birthday') {
-        html = `
+            } else if (eventType === 'birthday') {
+                html = `
             <div class="form-section">
                 <div class="section-header">
                     <i class="fas fa-birthday-cake"></i>
@@ -1016,27 +1016,27 @@ function showEventPhotosSection(eventType) {
                 <div class="form-group">
                     <label class="form-label">Birthday Person's Photo</label>
                     <input type="file" class="form-input" id="birthdayImage" name="birthdayImage" accept="image/*" onchange="previewImage(this, 'birthdayImagePreview')">
-                    <small class="form-hint">Upload birthday person's photo</small>
                     <div id="birthdayImagePreview" class="image-preview" style="display: none;">
                         <img src="" alt="Birthday Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
                         <button type="button" class="remove-btn" onclick="removeImage('birthdayImagePreview', 'birthdayImage')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
+                    <small class="form-hint">Upload birthday person's photo</small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
                     <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
                     <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
                         <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                     </div>
+                    <small class="form-hint">Upload multiple photos for the gallery</small>
                 </div>
             </div>
         `;
-    } else if (eventType === 'babyshower') {
-        html = `
+            } else if (eventType === 'babyshower') {
+                html = `
             <div class="form-section">
                 <div class="section-header">
                     <i class="fas fa-baby"></i>
@@ -1045,13 +1045,16 @@ function showEventPhotosSection(eventType) {
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple>
+                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
+                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
+                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
                     <small class="form-hint">Upload multiple photos for the gallery</small>
                 </div>
             </div>
         `;
-    } else if (eventType === 'graduation') {
-        html = `
+            } else if (eventType === 'graduation') {
+                html = `
             <div class="form-section">
                 <div class="section-header">
                     <i class="fas fa-graduation-cap"></i>
@@ -1061,27 +1064,27 @@ function showEventPhotosSection(eventType) {
                 <div class="form-group">
                     <label class="form-label">Graduate's Photo</label>
                     <input type="file" class="form-input" id="graduateImage" name="graduateImage" accept="image/*" onchange="previewImage(this, 'graduateImagePreview')">
-                    <small class="form-hint">Upload graduate's photo</small>
                     <div id="graduateImagePreview" class="image-preview" style="display: none;">
                         <img src="" alt="Graduate Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
                         <button type="button" class="remove-btn" onclick="removeImage('graduateImagePreview', 'graduateImage')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
+                    <small class="form-hint">Upload graduate's photo</small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
                     <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
                     <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
                         <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                     </div>
+                    <small class="form-hint">Upload multiple photos for the gallery</small>
                 </div>
             </div>
         `;
-    } else if (eventType === 'anniversary') {
-        html = `
+            } else if (eventType === 'anniversary') {
+                html = `
             <div class="form-section">
                 <div class="section-header">
                     <i class="fas fa-heart"></i>
@@ -1091,27 +1094,27 @@ function showEventPhotosSection(eventType) {
                 <div class="form-group">
                     <label class="form-label">Couple Photo</label>
                     <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
-                    <small class="form-hint">Upload couple's photo</small>
                     <div id="coupleImagePreview" class="image-preview" style="display: none;">
                         <img src="" alt="Couple Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
                         <button type="button" class="remove-btn" onclick="removeImage('coupleImagePreview', 'coupleImage')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
+                    <small class="form-hint">Upload couple's photo</small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
                     <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
                     <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
                         <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                     </div>
+                    <small class="form-hint">Upload multiple photos for the gallery</small>
                 </div>
             </div>
         `;
-    } else if (eventType === 'retirement') {
-        html = `
+            } else if (eventType === 'retirement') {
+                html = `
             <div class="form-section">
                 <div class="section-header">
                     <i class="fas fa-chair"></i>
@@ -1121,28 +1124,28 @@ function showEventPhotosSection(eventType) {
                 <div class="form-group">
                     <label class="form-label">Honoree's Photo</label>
                     <input type="file" class="form-input" id="honoreeImage" name="honoreeImage" accept="image/*" onchange="previewImage(this, 'honoreeImagePreview')">
-                    <small class="form-hint">Upload retiring person's photo</small>
                     <div id="honoreeImagePreview" class="image-preview" style="display: none;">
                         <img src="" alt="Honoree Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
                         <button type="button" class="remove-btn" onclick="removeImage('honoreeImagePreview', 'honoreeImage')">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
+                    <small class="form-hint">Upload retiring person's photo</small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Gallery Images</label>
                     <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
                     <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
                         <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
                     </div>
+                    <small class="form-hint">Upload multiple photos for the gallery</small>
                 </div>
             </div>
         `;
-    }
-    
-    photosSection.innerHTML = html;
-}
+            }
+
+            photosSection.innerHTML = html;
+        }
 </script>
 {% endblock %}
