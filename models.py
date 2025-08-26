@@ -5,7 +5,7 @@ import json
 
 class User(db.Model):
     __tablename__ = 'users'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -14,13 +14,13 @@ class User(db.Model):
     is_verified = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
+
     # Relationships
     invitations = db.relationship('Invitation', backref='user', lazy=True, cascade='all, delete-orphan')
 
 class OTP(db.Model):
     __tablename__ = 'otps'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), nullable=False)
     otp_code = db.Column(db.String(6), nullable=False)
@@ -31,7 +31,7 @@ class OTP(db.Model):
 
 class EventType(db.Model):
     __tablename__ = 'event_types'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     display_name = db.Column(db.String(100), nullable=False)
@@ -44,7 +44,7 @@ class EventType(db.Model):
 
 class Template(db.Model):
     __tablename__ = 'templates'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
@@ -61,7 +61,7 @@ class Template(db.Model):
 
 class Invitation(db.Model):
     __tablename__ = 'invitations'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.String(200))
@@ -70,44 +70,44 @@ class Invitation(db.Model):
     template_name = db.Column(db.String(100))
     event_date = db.Column(db.DateTime)
     event_style = db.Column(db.String(50))
-    
+
     # Event-specific fields
     bride_name = db.Column(db.String(100))
     groom_name = db.Column(db.String(100))
     muhurtham_time = db.Column(db.String(50))
     reception_time = db.Column(db.String(50))
-    
+
     birthday_person = db.Column(db.String(100))
     age = db.Column(db.String(10))
     start_time = db.Column(db.String(50))
     dinner_time = db.Column(db.String(50))
-    
+
     mother_name = db.Column(db.String(100))
     father_name = db.Column(db.String(100))
     babyshower_start_time = db.Column(db.String(50))
     babyshower_end_time = db.Column(db.String(50))
-    
+
     graduate_name = db.Column(db.String(100))
     degree = db.Column(db.String(100))
     school = db.Column(db.String(100))
     major = db.Column(db.String(100))
-    
+
     couple_names = db.Column(db.String(100))
     marriage_years = db.Column(db.String(20))
     anniversary_dinner_time = db.Column(db.String(50))
     party_time = db.Column(db.String(50))
-    
+
     honoree_name = db.Column(db.String(100))
     position = db.Column(db.String(100))
     company = db.Column(db.String(100))
     start_year = db.Column(db.String(10))
-    
+
     # Contact information
     host_name = db.Column(db.String(100))
     contact_phone = db.Column(db.String(20))
     contact_email = db.Column(db.String(120))
     venue_address = db.Column(db.Text)
-    
+
     share_url = db.Column(db.String(100), unique=True, nullable=False)
     view_count = db.Column(db.Integer, default=0)
     is_active = db.Column(db.Boolean, default=True)
@@ -118,7 +118,7 @@ class Invitation(db.Model):
 
 def init_sample_data():
     """Initialize the database with sample templates and event types"""
-    
+
     # Sample Event Types
     event_types = [
         {
@@ -170,12 +170,12 @@ def init_sample_data():
             'sort_order': 6
         }
     ]
-    
+
     for event_type_data in event_types:
         if not EventType.query.filter_by(name=event_type_data['name']).first():
             event_type = EventType(**event_type_data)
             db.session.add(event_type)
-    
+
     # Sample Templates with Religious Types
     templates = [
         # Hindu Wedding Templates
@@ -187,7 +187,7 @@ def init_sample_data():
             'style': 'traditional',
             'color_scheme': 'gold',
             'font_family': 'Georgia, serif',
-            'emoji_theme': '🕉️💒🌺',
+            'emoji_theme': 'Om Wedding Flowers',
             'preview_image': 'https://via.placeholder.com/300x400/FF6B35/FFFFFF?text=Hindu+Wedding'
         },
         {
@@ -198,7 +198,7 @@ def init_sample_data():
             'style': 'royal',
             'color_scheme': 'red',
             'font_family': 'Playfair Display, serif',
-            'emoji_theme': '👑🌹🔥',
+            'emoji_theme': 'Crown Rose Fire',
             'preview_image': 'https://via.placeholder.com/300x400/DC143C/FFFFFF?text=Royal+Hindu'
         },
         # Muslim Wedding Templates
@@ -210,7 +210,7 @@ def init_sample_data():
             'style': 'traditional',
             'color_scheme': 'green',
             'font_family': 'Amiri, serif',
-            'emoji_theme': '☪️🕌💚',
+            'emoji_theme': 'Crescent Mosque Heart',
             'preview_image': 'https://via.placeholder.com/300x400/228B22/FFFFFF?text=Islamic+Nikah'
         },
         {
@@ -221,7 +221,7 @@ def init_sample_data():
             'style': 'modern',
             'color_scheme': 'teal',
             'font_family': 'Lora, serif',
-            'emoji_theme': '🌙✨💍',
+            'emoji_theme': 'Moon Stars Ring',
             'preview_image': 'https://via.placeholder.com/300x400/008080/FFFFFF?text=Muslim+Wedding'
         },
         # Christian Wedding Templates
@@ -233,7 +233,7 @@ def init_sample_data():
             'style': 'classic',
             'color_scheme': 'white',
             'font_family': 'Times New Roman, serif',
-            'emoji_theme': '✝️⛪💒',
+            'emoji_theme': 'Cross Church Wedding',
             'preview_image': 'https://via.placeholder.com/300x400/FFFFFF/000000?text=Christian+Wedding'
         },
         {
@@ -244,7 +244,7 @@ def init_sample_data():
             'style': 'modern',
             'color_scheme': 'blue',
             'font_family': 'Montserrat, sans-serif',
-            'emoji_theme': '💒🕊️💙',
+            'emoji_theme': 'Wedding Dove Blue',
             'preview_image': 'https://via.placeholder.com/300x400/4169E1/FFFFFF?text=Modern+Christian'
         },
         {
@@ -255,7 +255,7 @@ def init_sample_data():
             'style': 'elegant',
             'color_scheme': 'gold',
             'font_family': 'Playfair Display, serif',
-            'emoji_theme': '💒💍❤️',
+            'emoji_theme': 'Wedding Ring Heart',
             'preview_image': 'https://via.placeholder.com/300x400/FFD700/000000?text=Elegant+Wedding'
         },
         {
@@ -266,7 +266,7 @@ def init_sample_data():
             'style': 'traditional',
             'color_scheme': 'orange',
             'font_family': 'Playfair Display, serif',
-            'emoji_theme': '🕉️💒🌺',
+            'emoji_theme': 'Om Wedding Flowers',
             'preview_image': 'https://via.placeholder.com/300x400/FF6B35/FFFFFF?text=Hindu+Wedding'
         },
         {
@@ -277,7 +277,7 @@ def init_sample_data():
             'style': 'elegant',
             'color_scheme': 'green',
             'font_family': 'Playfair Display, serif',
-            'emoji_theme': '☪️🕌💚',
+            'emoji_theme': 'Crescent Mosque Heart',
             'preview_image': 'https://via.placeholder.com/300x400/228B22/FFFFFF?text=Muslim+Wedding'
         },
         # Hindu Birthday Templates
@@ -289,7 +289,7 @@ def init_sample_data():
             'style': 'traditional',
             'color_scheme': 'orange',
             'font_family': 'Noto Sans Devanagari, sans-serif',
-            'emoji_theme': '🎂🪔🌺',
+            'emoji_theme': 'Cake Lamp Flowers',
             'preview_image': 'https://via.placeholder.com/300x400/FF8C00/FFFFFF?text=Hindu+Birthday'
         },
         # Muslim Birthday Templates
@@ -301,7 +301,7 @@ def init_sample_data():
             'style': 'traditional',
             'color_scheme': 'green',
             'font_family': 'Amiri, serif',
-            'emoji_theme': '🎂☪️🌙',
+            'emoji_theme': 'Cake Crescent Moon',
             'preview_image': 'https://via.placeholder.com/300x400/32CD32/FFFFFF?text=Islamic+Birthday'
         },
         # Christian Birthday Templates
@@ -313,7 +313,7 @@ def init_sample_data():
             'style': 'classic',
             'color_scheme': 'blue',
             'font_family': 'Georgia, serif',
-            'emoji_theme': '🎂✝️🎉',
+            'emoji_theme': 'Cake Cross Party',
             'preview_image': 'https://via.placeholder.com/300x400/1E90FF/FFFFFF?text=Christian+Birthday'
         },
         # General Birthday Templates
@@ -325,7 +325,7 @@ def init_sample_data():
             'style': 'fun',
             'color_scheme': 'rainbow',
             'font_family': 'Comic Sans MS, cursive',
-            'emoji_theme': '🎂🎉🎈',
+            'emoji_theme': 'Cake Party Balloons',
             'preview_image': 'https://via.placeholder.com/300x400/FF69B4/FFFFFF?text=Fun+Birthday'
         },
         {
@@ -336,7 +336,7 @@ def init_sample_data():
             'style': 'fun',
             'color_scheme': 'pink',
             'font_family': 'Fredoka One, cursive',
-            'emoji_theme': '🎂🎉🎈',
+            'emoji_theme': 'Cake Party Balloons',
             'preview_image': 'https://via.placeholder.com/300x400/FF69B4/FFFFFF?text=Fun+Birthday'
         },
         # Other Templates
@@ -357,7 +357,7 @@ def init_sample_data():
             'style': 'elegant',
             'color_scheme': 'gold',
             'font_family': 'Playfair Display, serif',
-            'emoji_theme': '💑💍💎',
+            'emoji_theme': 'Couple Ring Diamond',
             'preview_image': 'https://via.placeholder.com/300x400/FFD700/000000?text=Golden+Anniversary'
         },
         {
@@ -377,7 +377,7 @@ def init_sample_data():
             'style': 'cute',
             'color_scheme': 'pink',
             'font_family': 'Dancing Script, cursive',
-            'emoji_theme': '👶🍼🧸',
+            'emoji_theme': 'Baby Bottle Teddy',
             'preview_image': 'https://via.placeholder.com/300x400/FFB6C1/000000?text=Sweet+Baby+Shower'
         },
         {
@@ -397,7 +397,7 @@ def init_sample_data():
             'style': 'modern',
             'color_scheme': 'blue',
             'font_family': 'Playfair Display, serif',
-            'emoji_theme': '🎓📚🏆',
+            'emoji_theme': 'GraduationCap Books Trophy',
             'preview_image': 'https://via.placeholder.com/300x400/4169E1/FFFFFF?text=Graduation+Success'
         },
         {
@@ -417,15 +417,15 @@ def init_sample_data():
             'style': 'classic',
             'color_scheme': 'gold',
             'font_family': 'Playfair Display, serif',
-            'emoji_theme': '👑🏆⭐',
+            'emoji_theme': 'Crown Trophy Star',
             'preview_image': 'https://via.placeholder.com/300x400/FFD700/000000?text=Retirement+Celebration'
         }
     ]
-    
+
     for template_data in templates:
         if not Template.query.filter_by(name=template_data['name']).first():
             template = Template(**template_data)
             db.session.add(template)
-    
+
     db.session.commit()
     print("Sample data initialized successfully!")
