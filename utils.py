@@ -12,11 +12,11 @@ def send_otp_email(email, otp_code, purpose='verification'):
     """Send OTP via email using Gmail SMTP"""
     
     try:
-        # Gmail SMTP configuration
+        # Gmail SMTP configuration from environment variables
         smtp_server = 'smtp.gmail.com'
         smtp_port = 587
-        smtp_username = 'jmadhanplacement@gmail.com'
-        smtp_password = 'tsvxkjddyiqiehxj'
+        smtp_username = os.environ.get('SMTP_USERNAME', 'jmadhanplacement@gmail.com')
+        smtp_password = os.environ.get('SMTP_PASSWORD', 'tsvxkjddyiqiehxj')
         
         # Determine email content based on purpose
         if purpose == 'password_reset':
@@ -148,6 +148,8 @@ If you didn't request this, please ignore this email.
         print("2. Verify the app password is correct and hasn't expired")
         print("3. Check spam/junk folder for the email")
         print("4. Try with a different email address")
+        print("5. Set environment variables: SMTP_USERNAME and SMTP_PASSWORD")
+        print("6. For Render deployment, add these as environment variables in Render dashboard")
         
         return False
 
