@@ -187,15 +187,39 @@ def register_routes(app):
             flash('Verification failed. Please try again.', 'error')
             return redirect(url_for('verify_otp'))
 
+    @app.route('/oauth-debug')
+    def oauth_debug():
+        """Debug OAuth configuration"""
+        debug_info = {
+            'client_id': app.config.get('GOOGLE_CLIENT_ID', 'Not set'),
+            'client_secret': 'Set' if app.config.get('GOOGLE_CLIENT_SECRET') else 'Not set',
+            'redirect_uri': app.config.get('GOOGLE_REDIRECT_URI', 'Not set'),
+            'session_state': session.get('oauth_state', 'Not set'),
+            'is_render': bool(os.environ.get('RENDER')),
+            'environment': 'Production' if os.environ.get('RENDER') else 'Development'
+        }
+        return f"<pre>{debug_info}</pre>"
+
     @app.route('/auth/google')
     def google_auth():
         """Initiate Google OAuth flow"""
         if is_authenticated():
             return redirect(url_for('dashboard'))
         
+        # Check if Google OAuth is configured
+        if not app.config.get('GOOGLE_CLIENT_ID') or not app.config.get('GOOGLE_CLIENT_SECRET'):
+            flash('Google OAuth is not configured. Please contact support.', 'error')
+            return redirect(url_for('auth'))
+        
         # Generate state parameter for security
         state = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
         session['oauth_state'] = state
+        session.permanent = True  # Make session persistent
+        
+        # Debug logging
+        app.logger.info(f"Generated OAuth state: {state}")
+        app.logger.info(f"Redirect URI: {app.config['GOOGLE_REDIRECT_URI']}")
+        app.logger.info(f"Client ID: {app.config['GOOGLE_CLIENT_ID']}")
         
         # Google OAuth URL
         params = {
@@ -209,6 +233,7 @@ def register_routes(app):
         }
         
         auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+        app.logger.info(f"OAuth URL: {auth_url}")
         return redirect(auth_url)
 
     @app.route('/auth/google/callback')

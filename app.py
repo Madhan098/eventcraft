@@ -12,8 +12,10 @@ app.secret_key = os.environ.get("SESSION_SECRET", "eventcraft-secret-key-2024")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # Google OAuth Configuration
-app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID')
-app.config['GOOGLE_CLIENT_SECRET'] = os.environ.get('GOOGLE_CLIENT_SECRET')
+# For testing - replace with your actual credentials
+app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID', '835499388459-br178k12amc1foaku2kq17n1sopapcit.apps.googleusercontent.com')
+app.config['GOOGLE_CLIENT_SECRET'] = os.environ.get('GOOGLE_CLIENT_SECRET', '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')
+
 # Use the deployed URL for production, localhost for development
 if os.environ.get('RENDER'):
     # Running on Render
