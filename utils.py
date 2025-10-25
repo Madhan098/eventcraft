@@ -12,11 +12,11 @@ def send_otp_email(email, otp_code, purpose='verification'):
     """Send OTP via email using Gmail SMTP"""
     
     # Always display OTP in terminal for debugging
-    print(f"\n🔐 OTP GENERATED FOR {email.upper()}")
-    print(f"📧 Purpose: {purpose}")
-    print(f"🔑 OTP Code: {otp_code}")
-    print(f"⏰ Valid for 10 minutes")
-    print(f"🔗 Use this OTP to complete your {purpose}")
+    print(f"\n=== OTP GENERATED FOR {email.upper()} ===")
+    print(f"Purpose: {purpose}")
+    print(f"OTP Code: {otp_code}")
+    print(f"Valid for 10 minutes")
+    print(f"Use this OTP to complete your {purpose}")
     print(f"{'='*50}\n")
     
     try:
@@ -24,7 +24,7 @@ def send_otp_email(email, otp_code, purpose='verification'):
         smtp_server = 'smtp.gmail.com'
         smtp_port = 587
         smtp_username = os.environ.get('SMTP_USERNAME', 'jmadhanplacement@gmail.com')
-        smtp_password = os.environ.get('SMTP_PASSWORD', 'tsvxkjddyiqiehxj')
+        smtp_password = os.environ.get('SMTP_PASSWORD', 'nuzo pyuk focz kdxx')
         
         # Determine email content based on purpose
         if purpose == 'password_reset':
@@ -134,7 +134,7 @@ If you didn't request this, please ignore this email.
             
             server = smtplib.SMTP('smtp.gmail.com', 587)
             server.starttls()
-            server.login('jmadhanplacement@gmail.com', 'tsvxkjddyiqiehxj')
+            server.login('jmadhanplacement@gmail.com', 'nuzo pyuk focz kdxx')
             server.send_message(simple_msg)
             server.quit()
             
@@ -152,10 +152,10 @@ If you didn't request this, please ignore this email.
         print(f"================")
         
         # Always show OTP in terminal for debugging
-        print(f"\n🔐 OTP FOR {email.upper()}: {otp_code}")
-        print(f"📧 Purpose: {purpose}")
-        print(f"⏰ Valid for 10 minutes")
-        print(f"🔗 Use this OTP to complete your {purpose}\n")
+        print(f"\n=== OTP FOR {email.upper()}: {otp_code} ===")
+        print(f"Purpose: {purpose}")
+        print(f"Valid for 10 minutes")
+        print(f"Use this OTP to complete your {purpose}\n")
         
         # Provide troubleshooting suggestions
         print("TROUBLESHOOTING SUGGESTIONS:")
