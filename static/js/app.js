@@ -333,5 +333,21 @@ window.utils = {
         toast.addEventListener('hidden.bs.toast', function() {
             toast.remove();
         });
+    },
+
+    // Location functionality for Google Maps integration
+    openLocation: function(venueAddress) {
+        if (venueAddress && venueAddress.trim()) {
+            const encodedAddress = encodeURIComponent(venueAddress.trim());
+            const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+            window.open(googleMapsUrl, '_blank');
+        } else {
+            this.showToast('Venue address not available', 'warning');
+        }
     }
+};
+
+// Global function for backward compatibility
+window.openLocation = function(venueAddress) {
+    return window.utils.openLocation(venueAddress);
 };

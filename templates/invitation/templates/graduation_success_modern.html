@@ -1,1149 +1,684 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>{{ event_data.eventTitle }} - Graduation Celebration</title> <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"> <style>
-        /* Enhanced text readability for background images */
-        .hero-content h1, .hero-content h2, .hero-content h3, .hero-content p {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-            color: white !important;
-            padding: 15px 25px !important;
-            border-radius: 15px !important;
-            display: inline-block !important;
-            margin: 10px 0 !important;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3) !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event_data.eventTitle }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:wght@400&family=Playfair+Display:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .hero-content p {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
-            padding: 12px 20px !important;
-            border-radius: 12px !important;
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow-x: hidden;
         }
-        
-        /* Ensure all text in hero sections is readable */
-        .hero-section * {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3) !important;
+
+        .invitation-wrapper {
+            min-height: 100vh;
+            position: relative;
         }
-        
-        /* Add semi-transparent backgrounds to text containers */
-        .text-overlay {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 15px;
-            border-radius: 15px;
-            margin: 10px 0;
+
+        /* Floating Elements */
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
-        
-        /* Enhanced text shadows for better readability */
-        .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(0,0,0,0.5) !important;
+
+        .heart {
+            position: absolute;
+            color: rgba(76, 175, 80, 0.3);
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
         }
-     /* Enhanced text readability for background images */ .hero-content h1, .hero-content h2, .hero-content h3, .hero-content p { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; padding: 10px 20px !important; border-radius: 15px !important; display: inline-block !important; margin: 10px 0 !important; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3) !important; } .hero-content p { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important; padding: 8px 16px !important; border-radius: 12px !important; } /* Ensure all text in hero sections is readable */ .hero-section * { text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3) !important; } /* Add semi-transparent backgrounds to text containers */ .text-overlay { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 15px; border-radius: 15px; margin: 10px 0; } :root { --primary-color: #4169E1; --secondary-color: #1E3A8A; --accent-color: #FFD700; --text-dark: #2c3e50; --text-light: #7f8c8d; --bg-light: #F0F8FF; } body { font-family: 'Montserrat', sans-serif; line-height: 1.6; color: var(--text-dark); background-color: var(--bg-light); } .hero-section { background: linear-gradient(135deg, rgba(65, 105, 225, 0.1) 0%, rgba(30, 58, 138, 0.1) 100%); min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; } .hero-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%234169E1" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>'); opacity: 0.3; } .hero-content { position: relative; z-index: 2; text-align: center; padding: 2rem; } .hero-title { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: var(--secondary-color); margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); } .hero-subtitle { font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem; font-weight: 300; } .graduation-symbol { font-size: 4rem; color: var(--primary-color); margin: 2rem 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); } .graduate-section { background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; padding: 4rem 0; } .graduate-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; text-align: center; } .graduate-info { text-align: center; padding: 2rem; background: rgba(255, 255, 255, 0.1); border-radius: 15px; backdrop-filter: blur(10px); margin: 2rem 0; } .graduate-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 1rem; } .graduate-degree { font-size: 1.5rem; opacity: 0.9; margin-bottom: 1rem; } .graduate-school { font-size: 1.2rem; opacity: 0.8; } .achievement-section { background: var(--bg-light); padding: 4rem 0; } .achievement-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--secondary-color); text-align: center; margin-bottom: 2rem; } .achievement-details { background: white; border-radius: 15px; padding: 2rem; margin: 2rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid var(--accent-color); } .achievement-item { display: flex; align-items: center; margin: 1.5rem 0; padding: 1rem; border-left: 3px solid var(--primary-color); } .achievement-icon { font-size: 2rem; color: var(--primary-color); margin-right: 1.5rem; } .achievement-content { flex: 1; } .achievement-title-small { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 0.5rem; } .achievement-desc { font-size: 1rem; color: var(--text-light); } .ceremony-section { background: var(--bg-light); padding: 4rem 0; } .ceremony-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--secondary-color); text-align: center; margin-bottom: 2rem; } .ceremony-details { background: white; border-radius: 15px; padding: 2rem; margin: 2rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid var(--accent-color); } .ceremony-title-small { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; } .ceremony-time { font-size: 1.2rem; color: var(--secondary-color); font-weight: 600; margin-bottom: 0.5rem; } .ceremony-venue { font-size: 1rem; color: var(--text-light); } .future-section { background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%); color: white; padding: 4rem 0; } .future-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; text-align: center; margin-bottom: 2rem; } .future-item { text-align: center; padding: 1rem; margin: 1rem 0; } .future-icon { font-size: 2rem; margin-bottom: 1rem; } .rsvp-section { background: var(--bg-light); padding: 4rem 0; } .rsvp-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--secondary-color); text-align: center; margin-bottom: 2rem; } .rsvp-form { background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid var(--accent-color); } .form-control { border: 2px solid #e9ecef; border-radius: 10px; padding: 12px 15px; font-size: 1rem; transition: all 0.3s ease; } .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 0.2rem rgba(65, 105, 225, 0.25); } .btn-primary { background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); border: none; border-radius: 10px; padding: 12px 30px; font-size: 1.1rem; font-weight: 600; transition: all 0.3s ease; } .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); } .footer { background: var(--secondary-color); color: white; text-align: center; padding: 2rem 0; } .footer-text { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; } .floating-caps { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; } .cap-float { position: absolute; font-size: 2rem; animation: float 6s ease-in-out infinite; } @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } } @media (max-width: 768px) { .hero-title { font-size: 2.5rem; } .graduate-info { padding: 1.5rem; } .achievement-item { flex-direction: column; text-align: center; } .achievement-icon { margin-right: 0; margin-bottom: 1rem; } } /* Gallery Styles */ .gallery-item { position: relative; overflow: hidden; border-radius: 15px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.1); } .gallery-item:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); } .gallery-image { width: 100%; height: 250px; object-fit: cover; transition: transform 0.3s ease; } .gallery-item:hover .gallery-image { transform: scale(1.1); } .gallery-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(52, 152, 219, 0.8); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; } .gallery-item:hover .gallery-overlay { opacity: 1; } /* Modal Styles */ .modal-content { background: rgba(0, 0, 0, 0.9) !important; } .btn-close-white { filter: invert(1) grayscale(100%) brightness(200%); } /* Share Section Styles */ .share-section { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); } .share-content { background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid var(--accent-color); } .share-content h4 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--secondary-color); } .input-group { border-radius: 10px; } .input-group .form-control { border-right: none; border-radius: 10px 0 0 10px; } .input-group .btn { border-radius: 0 10px 10px 0; border-left: none; } .btn-outline-secondary { border-color: #ced4da; color: #495057; } .btn-outline-secondary:hover { background-color: #e9ecef; border-color: #ced4da; } .btn-success, .btn-primary, .btn-info, .btn-warning { color: white; border-radius: 8px; font-weight: 600; padding: 10px 15px; } .btn-success:hover, .btn-primary:hover, .btn-info:hover, .btn-warning:hover { opacity: 0.9; } .btn-outline-dark { border-radius: 8px; font-weight: 600; padding: 8px 12px; color: #343a40; border-color: #343a40; } .btn-outline-dark:hover { background-color: #343a40; color: white; } #qrCode { border: 1px solid #ddd; } </style> 
-<!-- Enhanced Visual Appeal CSS -->
-<style>
-/* Enhanced Hero Section - Grab User Attention */
+
+        .heart:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+        .heart:nth-child(3) { top: 60%; left: 5%; animation-delay: 4s; }
+        .heart:nth-child(4) { top: 80%; right: 15%; animation-delay: 1s; }
+        .heart:nth-child(5) { top: 40%; left: 80%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Header Section */
         .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 248, 255, 0.9) 100%);
+            padding: 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .graduation-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            color: #4caf50;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .graduate-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 300;
+            color: #2c3e50;
+            margin: 2rem 0;
+            position: relative;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .graduate-name::before,
+        .graduate-name::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #4caf50, transparent);
+        }
+
+        .graduate-name::before { left: -100px; }
+        .graduate-name::after { right: -100px; }
+
+        .degree-info {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: #4caf50;
+            margin: 1rem 0;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .graduation-date {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #666;
+            margin: 2rem 0;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .main-image {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 10px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        /* Graduate Section */
+        .graduate-section {
+            padding: 6rem 2rem;
+            background: white;
+            position: relative;
+        }
+
+        .graduate-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 200px 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .graduate-info, .celebration-info {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             position: relative;
             overflow: hidden;
         }
-        
-        .hero-section::before {
+
+        .graduate-info::before, .celebration-info::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 100%);
-    z-index: 1;
+            height: 4px;
+            background: linear-gradient(90deg, #4caf50, #8bc34a, #cddc39, #4caf50);
         }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
-}
 
-/* Enhanced Text Elements - More Prominent */
-.hero-title, .hero-subtitle, .hero-content h1, .hero-content h2, .hero-content h3 {
-    animation: fadeInUp 1s ease-out;
-    text-shadow: 
-        2px 2px 4px rgba(0,0,0,0.8),
-        0 0 20px rgba(255,255,255,0.4),
-        0 0 40px rgba(255,255,255,0.2);
-    transition: all 0.3s ease;
-}
-
-.hero-title:hover, .hero-subtitle:hover, .hero-content h1:hover, .hero-content h2:hover, .hero-content h3:hover {
-    transform: scale(1.05);
-    text-shadow: 
-        3px 3px 6px rgba(0,0,0,0.9),
-        0 0 30px rgba(255,255,255,0.6),
-        0 0 60px rgba(255,255,255,0.4);
-}
-
-/* Enhanced Buttons - More Attractive */
-.btn-enhanced {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    border-radius: 25px;
-    padding: 15px 30px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
-    animation: slideInFromBottom 1s ease-out 0.5s both;
-}
-
-.btn-enhanced:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-/* Enhanced Date Display - More Prominent */
-.event-date {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-    color: white;
-    padding: 20px 40px;
-    border-radius: 20px;
-            font-size: 2.5rem;
-    font-weight: 900;
-            text-align: center;
-    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-    animation: pulse 2s ease-in-out infinite;
-            margin: 2rem 0;
+        .graduate-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            margin-bottom: 1.5rem;
         }
-        
-/* Enhanced Background Elements */
-.background-pattern {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
-    animation: backgroundFloat 20s ease-in-out infinite;
-    z-index: 0;
-}
 
-/* Enhanced Animations */
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideInFromBottom {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-    }
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
-    }
-}
-
-@keyframes backgroundFloat {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    33% {
-        transform: translateY(-20px) rotate(1deg);
-    }
-    66% {
-        transform: translateY(10px) rotate(-1deg);
-    }
-}
-
-/* Enhanced Text Overlays - Better Readability */
-.text-overlay-enhanced {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
-    color: white;
-    padding: 20px 30px;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.text-overlay-enhanced:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-/* Enhanced Responsive Design */
-@media (max-width: 768px) {
-    .event-date {
-        font-size: 2rem;
-        padding: 15px 25px;
-    }
-    
-    .btn-enhanced {
-        padding: 12px 25px;
-        font-size: 1rem;
-    }
-    
-    .hero-title, .hero-subtitle, .hero-content h1, .hero-content h2, .hero-content h3 {
-            font-size: 1.5rem;
-    }
-}
-
-/* Enhanced Loading Animation */
-.page-load-animation {
-    animation: pageLoad 1.5s ease-out;
-}
-
-@keyframes pageLoad {
-    0% {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Enhanced Focus States */
-.hero-content *:focus {
-    outline: 3px solid rgba(102, 126, 234, 0.6);
-    outline-offset: 2px;
-    border-radius: 8px;
-}
-
-/* Enhanced Hover Effects */
-.hero-content *:hover {
-    transition: all 0.3s ease;
-}
-</style>
-</head> <body class="page-load-animation"> <!-- Floating Caps --> <div class="floating-caps"> <div class="cap-float" style="top: 10%; left: 10%; animation-delay: 0s;">🎓</div> <div class="cap-float" style="top: 20%; right: 15%; animation-delay: 1s;">📚</div> <div class="cap-float" style="top: 60%; left: 5%; animation-delay: 2s;">🏆</div> <div class="cap-float" style="top: 40%; right: 10%; animation-delay: 3s;">⭐</div> <div class="cap-float" style="top: 80%; left: 20%; animation-delay: 4s;">🎉</div> </div> <!-- Hero Section with Main Image Background --> <section class="hero-section" style="background-image: url('{% if event_data.mainImage %}{{ url_for('uploaded_file', filename=event_data.mainImage) }}{% elif invitation.main_image %}{{ url_for('uploaded_file', filename=invitation.main_image) }}{% else %}data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'><rect width='1200' height='800' fill='%23E8F4FD'/><text x='600' y='400' text-anchor='middle' font-family='Poppins' font-size='48' fill='%231E3A8A'>Graduation</text></svg>{% endif %}'); background-size: cover; background-position: center; background-attachment: fixed;"> <div class="container"> <div class="hero-content"> <div class="religion-icon mb-3" style="font-size:2.5rem;"> {% set rel = invitation.template.religious_type if invitation.template and invitation.template.religious_type else event_data.religiousType %} {% if rel and rel.strip() %} {% if rel == 'hindu' %} 🕉️ <span class="fs-5 align-middle ms-2">Hindu {% elif rel == 'muslim' %} ☪️ <span class="fs-5 align-middle ms-2">Muslim {% elif rel == 'christian' %} ✝️ <span class="fs-5 align-middle ms-2">Christian {% else %} 🌍 <span class="fs-5 align-middle ms-2">General {% endif %} {% endif %} </div> <h1 class="hero-title" style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 15px 30px; border-radius: 20px; display: inline-block;"> {{ event_data.familyName }}</h1> <p class="hero-subtitle" style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3);">is inviting you</p> <div class="graduation-symbol">🎓</div> <h2 class="hero-title" style="font-size: 2.5rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3);"> GRADUATION CELEBRATION</h2> <p class="hero-subtitle" style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3);">Save The Date</p> <div class="event-date">{{ event_data.eventDate }}</div> </div> </div> </section> <!-- Graduate Section --> <section class="graduate-section"> <div class="container"> <h2 class="graduate-title"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Graduate</h2> <div class="graduate-info"> {% if event_data.graduatePhoto %} <img src="{{ url_for('uploaded_file', filename=event_data.graduatePhoto) }}" alt="Graduate" class="graduate-photo" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 5px solid var(--primary-color); margin: 0 auto 1rem; display: block;"> {% else %} <div class="graduate-photo d-flex align-items-center justify-content-center bg-light" style="width: 150px; height: 150px; border-radius: 50%; border: 5px solid var(--primary-color); margin: 0 auto 1rem;"> <i class="fas fa-user-graduate fa-3x text-muted"></i> </div> {% endif %} <h3 class="graduate-name"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">{{ event_data.graduateName }}</h3> <p class="graduate-degree"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">{{ event_data.degree or "Bachelor's Degree" }}</p> <p class="graduate-school"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">{{ event_data.school or "University" }}</p> </div> </div> </section> <!-- Achievement Section --> <section class="achievement-section"> <div class="container"> <h2 class="achievement-title"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Academic Achievements</h2> <div class="achievement-details"> <div class="achievement-item"> <div class="achievement-icon">🎓</div> <div class="achievement-content"> <h3 class="achievement-title-small"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Degree Completed</h3> <p class="achievement-desc"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">{{ event_data.degree or "Bachelor's Degree" }} in {{ event_data.major or "Field of Study" }}</p> </div> </div> <div class="achievement-item"> <div class="achievement-icon">🏆</div> <div class="achievement-content"> <h3 class="achievement-title-small"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Academic Excellence</h3> <p class="achievement-desc"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">{{ event_data.achievements or "Outstanding academic performance" }}</p> </div> </div> <div class="achievement-item"> <div class="achievement-icon">⭐</div> <div class="achievement-content"> <h3 class="achievement-title-small"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Special Recognition</h3> <p class="achievement-desc"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">{{ event_data.recognition or "Special honors and awards" }}</p> </div> </div> </div> </div> </section> <!-- Welcome Section --> <section class="ceremony-section"> <div class="container"> <h2 class="ceremony-title"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Welcome to Our Graduation</h2> <p class="text-center" style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 3rem;"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;"> {{ event_data.description or "Join us in celebrating this significant milestone and academic achievement." }} </p> </div> </section> <!-- Ceremony Details --> <section class="ceremony-section"> <div class="container"> <h2 class="ceremony-title"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">When & Where</h2> <div class="row"> <div class="col-md-6"> <div class="ceremony-details"> <h3 class="ceremony-title-small"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Graduation Ceremony</h3> <p class="ceremony-time"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;"> {% if event_data.timeData %} {% set time_data = event_data.timeData | safe_from_json %} {% if time_data.ceremonyTime %} {{ time_data.ceremonyTime }} {% else %} {{ event_data.eventTime }} {% endif %} {% else %} {{ event_data.eventTime }} {% endif %}</p> <p class="ceremony-venue"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">{{ event_data.venue }}</p> <button class="btn btn-outline-primary btn-sm mt-2" onclick="openLocation()" title="Click to view location on Google Maps"> <i class="fas fa-map-marker-alt me-2"></i>See Location </button> </div> </div> <div class="col-md-6"> <div class="ceremony-details"> <h3 class="ceremony-title-small"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Celebration Party</h3> <p class="ceremony-time"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;"> {% if event_data.timeData %} {% set time_data = event_data.timeData | safe_from_json %} {% if time_data.celebrationTime %} {{ time_data.celebrationTime }} {% else %} {{ event_data.eventTime }} {% endif %} {% else %} {{ event_data.eventTime }} {% endif %}</p> <p class="ceremony-venue"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">{{ event_data.venue }}</p> <button class="btn btn-outline-primary btn-sm mt-2" onclick="openLocation()" title="Click to view location on Google Maps"> <i class="fas fa-map-marker-alt me-2"></i>See Location </button> </div> </div> </div> </div> </section> <!-- Future Section --> <section class="future-section"> <div class="container"> <h2 class="future-title"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">What's Next</h2> <div class="row"> <div class="col-md-3"> <div class="future-item"> <div class="future-icon">💼</div> <p><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">Career</p> </div> </div> <div class="col-md-3"> <div class="future-item"> <div class="future-icon">📚</div> <p><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">Further Studies</p> </div> </div> <div class="col-md-3"> <div class="future-item"> <div class="future-icon">🌍</div> <p><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">Adventures</p> </div> </div> <div class="col-md-3"> <div class="future-item"> <div class="future-icon">🎯</div> <p><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">Goals</p> </div> </div> </div> </div> </section> <!-- Gallery Section --> {% if invitation.gallery_images and invitation.gallery_images != '[]' %} <section class="future-section"> <div class="container"> <h2 class="future-title"><span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 10px; display: inline-block;">Our Gallery</h2> <p class="text-center text-muted mb-4"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">All Graduation Memories & Achievements</p> <div class="row g-3"> {% set gallery_list = invitation.gallery_images | safe_from_json %} {% for image in gallery_list %} <div class="col-md-4 col-lg-3"> <div class="gallery-item" onclick="openGalleryModal('{{ url_for('uploaded_file', filename=image) }}')"> <img src="{{ url_for('uploaded_file', filename=image) }}" class="img-fluid gallery-image" alt="Gallery Image"> <div class="gallery-overlay"> <i class="fas fa-search-plus fa-2x text-white"></i> </div> </div> </div> {% endfor %} </div> </div> </section> <!-- Gallery Modal --> <div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true"> <div class="modal-dialog modal-lg modal-dialog-centered"> <div class="modal-content bg-transparent border-0"> <div class="modal-header border-0"> <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button> </div> <div class="modal-body text-center"> <img id="modalImage" src="" class="img-fluid rounded shadow" alt="Gallery Image"> </div> </div> </div> </div> <!-- Share Invitation Popup Modal --> <div class="modal fade" id="shareInvitationModal" tabindex="-1" aria-hidden="true"> <div class="modal-dialog modal-dialog-centered"> <div class="modal-content"> <div class="modal-header bg-primary text-white"> <h5 class="modal-title"> <i class="fas fa-share-alt me-2"></i>Share Invitation </h5> <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button> </div> <div class="modal-body"> <p class="text-center mb-4"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">Share this beautiful invitation with your friends and family!</p> <!-- Share Link Display --> <div class="input-group mb-3"> <input type="text" class="form-control" id="popupShareLink" value="{{ request.url }}" readonly> <button class="btn btn-outline-secondary" type="button" onclick="copyPopupLink()"> <i class="fas fa-copy"></i> </button> </div> <!-- Social Media Buttons --> <div class="row g-2 mb-3"> <div class="col-6"> <button type="button" class="btn btn-success w-100" onclick="shareWhatsApp()"> <i class="fab fa-whatsapp me-1"></i>WhatsApp </button> </div> <div class="col-6"> <button type="button" class="btn btn-primary w-100" onclick="shareFacebook()"> <i class="fab fa-facebook me-1"></i>Facebook </button> </div> </div> <div class="row g-2 mb-3"> <div class="col-6"> <button type="button" class="btn btn-info w-100" onclick="shareTwitter()"> <i class="fab fa-twitter me-1"></i>Twitter </button> </div> <div class="col-6"> <button type="button" class="btn btn-warning w-100" onclick="shareEmail()"> <i class="fas fa-envelope me-1"></i>Email </button> </div> </div> <!-- QR Code Option --> <div class="text-center"> <button type="button" class="btn btn-outline-dark" onclick="generatePopupQR()"> <i class="fas fa-qrcode me-1"></i>Generate QR Code </button> </div> <!-- QR Code Display --> <div id="popupQRSection" class="text-center mt-3" style="display: none;"> <div id="popupQRCode" class="d-inline-block p-3 bg-white border rounded shadow-sm"></div> <p class="small text-muted mt-2"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">Scan to open invitation</p> </div> </div> <div class="modal-footer"> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> </div> </div> </div> </div> {% endif %} <!-- Share Success Notification Popup -->
-<div id="shareNotificationPopup" class="position-fixed" style="display: none; top: 20px; right: 20px; z-index: 9999; max-width: 350px;">
-    <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%); color: white;">
-        <div class="card-body p-3">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-check-circle me-2" style="font-size: 1.2rem; color: #28a745;"></i>
-                    <div>
-                        <h6 class="mb-1" style="color: white;">Shared Successfully!</h6>
-                        <small style="color: rgba(255,255,255,0.8);">Your invitation has been shared</small>
-                    </div>
-                </div>
-                <button type="button" class="btn-close btn-close-white" onclick="closeShareNotification()" style="font-size: 0.8rem;"></button>
-            </div>
-            <div class="progress mt-2" style="height: 3px; background: rgba(255,255,255,0.3);">
-                <div id="notificationProgress" class="progress-bar bg-success" style="width: 100%; transition: width 0.1s linear;"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Convey Your Wishes Section --> <section class="wishes-section py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);"> <div class="container"> <div class="row justify-content-center"> <div class="col-lg-8"> <div class="wishes-content bg-white rounded-4 p-4 shadow-lg"> <h4 class="text-center mb-4" style="color: #2c3e50; font-family: 'Poppins', sans-serif; font-weight: 700;"> <i class="fas fa-graduation-cap me-2" style="color: #6c5ce7;"></i>Convey Your Wishes </h4> <p class="text-center text-muted mb-4"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">Share your congratulations and blessings for the graduate</p> <!-- Wish Submission Form --> <form id="wishForm" class="mb-4" onsubmit="submitWish(event)"> <div class="row g-3"> <div class="col-12"> <input type="text" class="form-control" id="guestName" placeholder="Your Name" required style="border: 2px solid #e9ecef; border-radius: 10px; padding: 12px 15px;"> </div> <div class="col-12"> <textarea class="form-control" id="guestWish" rows="3" placeholder="Write your graduation wish or blessing..." required style="border: 2px solid #e9ecef; border-radius: 10px; padding: 12px 15px; resize: vertical;"></textarea> </div> <div class="col-12 text-center"> <button type="submit" class="btn btn-primary px-4 py-2" style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); border: none; border-radius: 25px; font-weight: 600;"> <i class="fas fa-paper-plane me-2"></i>Send Wish </button> </div> </div> </form> <!-- Testimonials Display --> 
-<!-- Enhanced Testimonials Display Section -->
-<div class="testimonials-section mt-4">
-    <h5 class="text-center mb-3" style="color: #2c3e50; font-weight: 600;">
-        <i class="fas fa-star me-2" style="color: #FFD700;"></i>Wedding Wishes & Blessings
-    </h5>
-    <div class="testimonials-container" style="max-height: 300px; overflow-x: auto; overflow-y: hidden; padding: 1rem; background: #f8f9fa; border-radius: 10px; white-space: nowrap;">
-        <div id="testimonialsList" class="testimonials-list" style="display: flex; gap: 1rem; animation: scrollTestimonials 30s linear infinite;">
-            <!-- Sample testimonials will be loaded here -->
-        </div>
-    </div>
-</div>
-
-<!-- Enhanced Testimonials CSS -->
-<style>
-@keyframes scrollTestimonials {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
-}
-
-.testimonials-container:hover .testimonials-list {
-    animation-play-state: paused;
-}
-
-.testimonial-item {
-    min-width: 300px;
-    flex-shrink: 0;
-            background: white;
-            border-radius: 15px;
-    padding: 1.5rem;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    border-left: 4px solid #667eea;
-    transition: transform 0.3s ease;
-}
-
-.testimonial-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.testimonial-content {
-    margin-bottom: 1rem;
-}
-
-.testimonial-text {
-    font-style: italic;
-    color: #2c3e50;
-    margin-bottom: 1rem;
-    line-height: 1.6;
-}
-
-.testimonial-author {
+        .graduate-name-small {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
             font-weight: 600;
-    color: #667eea;
-    margin-bottom: 0.5rem;
-}
-
-.testimonial-timestamp {
-    font-size: 0.85rem;
-    color: #6c757d;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .testimonial-item {
-        min-width: 250px;
-        padding: 1rem;
-    }
-    
-    .testimonials-container {
-        max-height: 250px;
-    }
-}
-</style>
-
-<!-- Enhanced Testimonials JavaScript -->
-<script>
-// Load sample testimonials on page load
-document.addEventListener('DOMContentLoaded', function() {
-    loadSampleTestimonials();
-});
-
-function loadSampleTestimonials() {
-    const testimonialsList = document.getElementById('testimonialsList');
-    if (!testimonialsList) return;
-    
-    const sampleTestimonials = [
-        {
-            name: "Sarah & Family",
-            message: "May your love story be as beautiful as a fairy tale and your marriage be filled with endless joy and laughter. Wishing you both a lifetime of happiness together!",
-            timestamp: "Just now"
-        },
-        {
-            name: "Michael & Emma",
-            message: "As you begin this beautiful journey together, may every day bring you closer and every moment strengthen your bond. Here's to a love that grows deeper with time!",
-            timestamp: "2 minutes ago"
-        },
-        {
-            name: "Priya & Raj",
-            message: "Your love is an inspiration to us all. May your marriage be blessed with health, wealth, and everlasting happiness. Congratulations on finding your soulmate!",
-            timestamp: "5 minutes ago"
-        },
-        {
-            name: "David & Lisa",
-            message: "Two hearts, one love, forever together. May your love story continue to inspire everyone around you. Wishing you endless moments of joy and togetherness!",
-            timestamp: "8 minutes ago"
-        },
-        {
-            name: "Anita & Kumar",
-            message: "May your love be as deep as the ocean and as high as the mountains. Here's to a beautiful journey filled with love, laughter, and countless beautiful memories!",
-            timestamp: "10 minutes ago"
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
         }
-    ];
-    
-    // Load from localStorage if available
-    const savedWishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
-    const allWishes = [...sampleTestimonials, ...savedWishes];
-    
-    displayTestimonials(allWishes);
-}
 
-function displayTestimonials(wishes) {
-    const testimonialsList = document.getElementById('testimonialsList');
-    if (!testimonialsList) return;
-    
-    testimonialsList.innerHTML = '';
-    wishes.forEach(wish => addTestimonial(wish));
-}
+        .graduate-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.5rem;
+            color: #4caf50;
+            margin-bottom: 1rem;
+        }
 
-function addTestimonial(wish) {
-    const testimonialsList = document.getElementById('testimonialsList');
-    if (!testimonialsList) return;
-    
-    const wishElement = document.createElement('div');
-    wishElement.className = 'testimonial-item';
-    
-    wishElement.innerHTML = `
-        <div class="testimonial-content">
-            <p class="testimonial-text">"${wish.message || wish.guest_wish || wish.wish}"</p>
-            <div class="testimonial-author">${wish.name || wish.guest_name}</div>
-            <div class="testimonial-timestamp">${wish.timestamp || 'Just now'}</div>
+        .cap-divider {
+            font-size: 3rem;
+            color: #4caf50;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Event Details Section */
+        .event-details {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .details-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .event-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .event-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .event-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .event-time, .event-venue {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* RSVP Section */
+        .rsvp-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            text-align: center;
+            color: #2d3436;
+        }
+
+        .rsvp-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .rsvp-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #2d3436;
+        }
+
+        .contact-info {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .contact-item i {
+            margin-right: 1rem;
+            color: #4caf50;
+            width: 20px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .graduation-title {
+                font-size: 2.5rem;
+            }
+
+            .graduate-name {
+                font-size: 2rem;
+            }
+
+            .graduate-name::before,
+            .graduate-name::after {
+                display: none;
+            }
+
+            .graduate-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cap-divider {
+                order: 2;
+                margin: 1rem 0;
+            }
+
+            .main-image {
+                width: 250px;
+                height: 250px;
+            }
+
+            .graduate-photo {
+                width: 150px;
+                height: 150px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="invitation-wrapper">
+        <!-- Floating Hearts -->
+        <div class="floating-hearts">
+            <div class="heart">🎓</div>
+            <div class="heart">🎉</div>
+            <div class="heart">✨</div>
+            <div class="heart">🏆</div>
+            <div class="heart">🌟</div>
         </div>
-    `;
-    
-    testimonialsList.appendChild(wishElement);
-}
 
-// Function to add new wish to testimonials (called from submitWish function)
-function addNewWishToTestimonials(wishData) {
-    const newWish = {
-        name: wishData.guest_name || wishData.name,
-        message: wishData.guest_wish || wishData.wish || wishData.message,
-        timestamp: 'Just now'
-    };
-    
-    // Add to testimonials display
-    addTestimonial(newWish);
-    
-    // Save to localStorage
-    const savedWishes = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
-    savedWishes.push(newWish);
-    localStorage.setItem('wedding_wishes', JSON.stringify(savedWishes));
-}
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="graduation-title">Graduation Invitation</h1>
+                
+                {% if event_data.mainImage %}
+                <img src="{{ url_for('uploaded_file', filename=event_data.mainImage) }}" 
+                     alt="Graduation Photo" class="main-image">
+                {% endif %}
 
-// Enhanced submitWish function that adds to testimonials
-function submitWish(event) {
-    event.preventDefault();
-    
-    const name = document.getElementById('guestName').value.trim();
-    const wish = document.getElementById('guestWish').value.trim();
-    
-    if (!name || !wish) {
-        alert('Please enter your name and wish.');
-        return;
-    }
-    
-    // Show loading state
-    const submitBtn = event.target.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-    submitBtn.disabled = true;
-    
-    // Submit via AJAX
-    fetch('{{ url_for("submit_wishes", share_url=invitation.share_url) }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            'guest_name': name,
-            'guest_wish': wish
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Add wish to testimonials immediately
-            addNewWishToTestimonials(data.wish);
-            
-            // Reset form
-            document.getElementById('wishForm').reset();
-            
-            // Show success message
-            showSuccessMessage(data.message);
-        } else {
-            alert(data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to submit wish. Please try again.');
-    })
-    .finally(() => {
-        // Reset button state
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    });
-}
+                <div class="graduate-name">
+                    {{ event_data.graduateName or 'Graduate' }}
+                </div>
 
-function showSuccessMessage(message) {
-    const successDiv = document.createElement('div');
-    successDiv.className = 'alert alert-success position-fixed';
-    successDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1000; min-width: 300px;';
-    successDiv.innerHTML = `
-        <i class="fas fa-check-circle me-2"></i>${message}
-    `;
-    document.body.appendChild(successDiv);
-    setTimeout(() => {
-        successDiv.remove();
-    }, 3000);
-}
-</script>
+                {% if event_data.degree %}
+                <div class="degree-info">
+                    {{ event_data.degree }}
+                </div>
+                {% endif %}
+
+                {% if event_data.school %}
+                <div class="degree-info">
+                    {{ event_data.school }}
+                </div>
+                {% endif %}
+
+                <div class="graduation-date">
+                    {% if event_data.eventDate %}
+                    <i class="fas fa-calendar-heart"></i>
+                    {{ event_data.eventDate }}
+                    {% endif %}
+                </div>
+
+                {% if event_data.description %}
+                <p style="font-size: 1.2rem; color: #666; margin-top: 2rem; font-style: italic;">
+                    {{ event_data.description }}
+                </p>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Graduate Section -->
+        <section class="graduate-section">
+            <div class="graduate-container">
+                <!-- Graduate Info -->
+                <div class="graduate-info">
+                    {% if event_data.graduateImage %}
+                    <img src="{{ url_for('uploaded_file', filename=event_data.graduateImage) }}" 
+                         alt="{{ event_data.graduateName }}" class="graduate-photo">
+                    {% endif %}
+                    <h3 class="graduate-name-small">{{ event_data.graduateName or 'Graduate' }}</h3>
+                    <p class="graduate-title">The Graduate</p>
+                    <p>{{ event_data.graduateDescription or 'Achieving academic excellence' }}</p>
+                </div>
+
+                <!-- Cap Divider -->
+                <div class="cap-divider">🎓</div>
+
+                <!-- Celebration Info -->
+                <div class="celebration-info">
+                    <div class="graduate-photo" style="background: #4caf50; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="graduate-name-small">Celebration</h3>
+                    <p class="graduate-title">Join the Success</p>
+                    <p>Let's celebrate this achievement together!</p>
                 </div>
             </div>
-        </div>
-    </div>
-</section> 
-<!-- Auto Share Popup - Only Visible to Creator -->
-{% if is_creator %}
-<!-- Auto Share Popup -->
-<div id="autoSharePopup" class="auto-share-popup" style="display: none;">
-    <div class="auto-share-content">
-        <div class="auto-share-header">
-            <i class="fas fa-share-alt me-2"></i>
-            <h5>Share this invitation</h5>
-        </div>
-        <div class="auto-share-message">
-            <span style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 8px 16px; border-radius: 20px; font-size: 14px;">
-                Spread the joy! Share with friends and family
-            </span>
-        </div>
-        <div class="auto-share-actions">
-            <button type="button" class="btn btn-warning btn-lg" onclick="openShareModal()">
-                <i class="fas fa-share-alt me-2"></i>Share Invitation
-            </button>
-        </div>
-    </div>
-</div>
+        </section>
 
-<!-- Auto Share Popup CSS -->
-<style>
-.auto-share-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    animation: slideInFromTop 0.5s ease-out;
-}
-
-.auto-share-content {
-    background: white;
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    text-align: center;
-    min-width: 350px;
-    max-width: 450px;
-}
-
-.auto-share-header {
-    margin-bottom: 1.5rem;
-}
-
-.auto-share-header h5 {
-    color: #007bff;
-    font-weight: 600;
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-.auto-share-header i {
-    color: #007bff;
-    font-size: 1.8rem;
-}
-
-.auto-share-message {
-    margin-bottom: 2rem;
-}
-
-.auto-share-actions .btn {
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    border-radius: 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.auto-share-actions .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-@keyframes slideInFromTop {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-@keyframes slideOutToTop {
-    0% {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-}
-
-.auto-share-popup.fade-out {
-    animation: slideOutToTop 0.5s ease-in forwards;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .auto-share-content {
-        min-width: 300px;
-        padding: 1.5rem;
-    }
-    
-    .auto-share-header h5 {
-        font-size: 1.3rem;
-    }
-    
-    .auto-share-actions .btn {
-        padding: 10px 20px;
-        font-size: 1rem;
-    }
-}
-    </style>
-
-<!-- Auto Share Popup JavaScript -->
-<script>
-// Auto show popup after delay
-document.addEventListener('DOMContentLoaded', function() {
-    // Show popup after 3 seconds
-    setTimeout(function() {
-        showAutoSharePopup();
-    }, 3000);
-    
-    // Auto hide popup after 8 seconds (5 seconds display time)
-    setTimeout(function() {
-        hideAutoSharePopup();
-    }, 8000);
-});
-
-function showAutoSharePopup() {
-    const popup = document.getElementById('autoSharePopup');
-    if (popup) {
-        popup.style.display = 'block';
-        popup.classList.remove('fade-out');
-        
-        // Add click outside to close
-        document.addEventListener('click', closeOnOutsideClick);
-    }
-}
-
-function hideAutoSharePopup() {
-    const popup = document.getElementById('autoSharePopup');
-    if (popup) {
-        popup.classList.add('fade-out');
-        
-        // Remove popup after animation
-        setTimeout(function() {
-            popup.style.display = 'none';
-            popup.classList.remove('fade-out');
-        }, 500);
-        
-        // Remove event listener
-        document.removeEventListener('click', closeOnOutsideClick);
-    }
-}
-
-function closeOnOutsideClick(event) {
-    const popup = document.getElementById('autoSharePopup');
-    const content = popup.querySelector('.auto-share-content');
-    
-    if (popup && !content.contains(event.target)) {
-        hideAutoSharePopup();
-    }
-}
-
-function openShareModal() {
-    // Hide auto popup first
-    hideAutoSharePopup();
-    
-    // Open the existing share modal
-    try {
-        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-            const modalElement = document.getElementById('shareInvitationModal');
-            if (modalElement) {
-                const modal = new bootstrap.Modal(modalElement);
-                modal.show();
-                return;
-            }
-        }
-        
-        // Fallback: Show modal manually
-        showModalManually();
-        
-    } catch (error) {
-        console.error('Error opening share modal:', error);
-        showModalManually();
-    }
-}
-
-function showModalManually() {
-    const modal = document.getElementById('shareInvitationModal');
-    if (modal) {
-        modal.style.display = 'block';
-        modal.classList.add('show');
-        modal.setAttribute('aria-hidden', 'false');
-        
-        // Add backdrop
-        const backdrop = document.createElement('div');
-        backdrop.className = 'modal-backdrop fade show';
-        backdrop.id = 'manualBackdrop';
-        document.body.appendChild(backdrop);
-        
-        // Close modal when backdrop is clicked
-        backdrop.addEventListener('click', function() {
-            closeModalManually();
-        });
-        
-        // Close modal when close button is clicked
-        const closeButtons = modal.querySelectorAll('[data-bs-dismiss="modal"], .btn-close');
-        closeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                closeModalManually();
-            });
-        });
-    }
-}
-
-function closeModalManually() {
-    const modal = document.getElementById('shareInvitationModal');
-    if (modal) {
-        modal.style.display = 'none';
-        modal.classList.remove('show');
-        modal.setAttribute('aria-hidden', 'true');
-    }
-    
-    // Remove backdrop
-    const backdrop = document.getElementById('manualBackdrop');
-    if (backdrop) {
-        backdrop.remove();
-    }
-}
-</script>
-{% endif %} <script> // Wishes and Testimonials System document.addEventListener('DOMContentLoaded', function() { // Load sample testimonials loadSampleTestimonials(); // Handle wish form submission const wishForm = document.getElementById('wishForm'); if (wishForm) { wishForm.addEventListener('submit', function(e) { e.preventDefault(); submitWish(); }); } }); function loadSampleTestimonials() { const testimonialsList = document.getElementById('testimonialsList'); if (!testimonialsList) return; const sampleTestimonials = [ { name: "Sarah & Family", message: "Congratulations on your graduation! Your hard work and dedication have paid off. May this be just the beginning of many more achievements to come!" }, { name: "Michael & Emma", message: "What an incredible milestone! Your perseverance and commitment have brought you to this moment. Here's to your bright future ahead!" }, { name: "Priya & Raj", message: "You've made us all so proud! Your graduation is a testament to your strength and determination. May success follow you in everything you do!" }, { name: "David & Lisa", message: "Congratulations, graduate! Your journey has been inspiring, and your future looks incredibly bright. Here's to new beginnings and endless possibilities!" }, { name: "Anita & Kumar", message: "Well done on reaching this amazing milestone! Your graduation represents years of hard work and dedication. May your future be filled with success and happiness!" } ]; // Load from localStorage if available const savedWishes = JSON.parse(localStorage.getItem('graduation_wishes') || '[]'); const allWishes = [...sampleTestimonials, ...savedWishes]; displayTestimonials(allWishes); } function submitWish(event) {
-    event.preventDefault();
-    
-        const name = document.getElementById('guestName').value.trim();
-        const wish = document.getElementById('guestWish').value.trim();
-
-        if (!name || !wish) {
-            alert('Please enter your name and wish.');
-            return;
-        }
-
-    // Show loading state
-    const submitBtn = event.target.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-    submitBtn.disabled = true;
-    
-    // Submit via AJAX
-    fetch('{{ url_for("submit_wishes", share_url=invitation.share_url) }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            'guest_name': name,
-            'guest_wish': wish
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Add wish to testimonials immediately
-            addTestimonial(data.wish);
-
-        // Reset form
-        document.getElementById('wishForm').reset();
-
-        // Show success message
-            showSuccessMessage(data.message);
-        } else {
-            alert(data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to submit wish. Please try again.');
-    })
-    .finally(() => {
-        // Reset button state
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    });
-} const newWish = { name: name, message: wish, timestamp: new Date().toLocaleDateString() }; // Save to localStorage const savedWishes = JSON.parse(localStorage.getItem('graduation_wishes') || '[]'); savedWishes.push(newWish); localStorage.setItem('graduation_wishes', JSON.stringify(savedWishes)); // Add to display addTestimonial(newWish); // Reset form document.getElementById('wishForm').reset(); // Show success message showSuccessMessage('Thank you for your beautiful graduation wish!'); } function addTestimonial(wish) { const testimonialsList = document.getElementById('testimonialsList'); if (!testimonialsList) return; const wishElement = document.createElement('div'); wishElement.className = 'testimonial-item mb-3 p-3 bg-light rounded'; wishElement.style.borderLeft = '4px solid #6c5ce7'; wishElement.innerHTML = ` <div class="d-flex align-items-start"> <div class="flex-shrink-0 me-3"> <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%) !important;"> <i class="fas fa-graduation-cap text-white"></i> </div> </div> <div class="flex-grow-1"> <p class="mb-2" style="color: #2c3e50; font-style: italic;"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">"${wish.message}"</p> <div class="d-flex justify-content-between align-items-center"> <strong style="color: #6c5ce7;">${wish.name}</strong> <small class="text-muted">${wish.timestamp}</small> </div> </div> </div> `; testimonialsList.appendChild(wishElement); } function displayTestimonials(wishes) { const testimonialsList = document.getElementById('testimonialsList'); if (!testimonialsList) return; testimonialsList.innerHTML = ''; wishes.forEach(wish => addTestimonial(wish)); } function showSuccessMessage(message) { const successDiv = document.createElement('div'); successDiv.className = 'alert alert-success position-fixed'; successDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1000; min-width: 300px;'; successDiv.innerHTML = ` <i class="fas fa-check-circle me-2"></i>${message} `; document.body.appendChild(successDiv); setTimeout(() => { successDiv.remove(); }, 3000); } // Share Link and Social Media Functions function copyLink() { const linkInput = document.getElementById('shareLink'); linkInput.select(); document.execCommand('copy'); alert('Link copied to clipboard!'); } function shareWhatsApp() { const link = document.getElementById('shareLink').value; window.open(`https://wa.me/?text=${encodeURIComponent('Check out this invitation: ' + link)}`, '_blank'); } function shareFacebook() { const link = document.getElementById('shareLink').value; window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`, '_blank'); } function shareTwitter() { const link = document.getElementById('shareLink').value; window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(link)}&text=Check out this invitation!`, '_blank'); } function shareEmail() { const link = document.getElementById('shareLink').value; window.open(`mailto:?subject=Invitation&body=Check out this invitation: ${encodeURIComponent(link)}`); } function generateQR() { const link = document.getElementById('shareLink').value; const qrCodeContainer = document.getElementById('qrCode'); qrCodeContainer.innerHTML = ''; // Clear previous QR code try { const qr = qrcode(0, 'M'); qr.addData(link); qr.make(); qrCodeContainer.innerHTML = qr.createImgTag(5); document.getElementById('qrCodeSection').style.display = 'block'; } catch (error) { console.error('QR Code generation error:', error); alert('Failed to generate QR code. Please try again.'); } } function openLocation() { const venue = document.querySelector('.ceremony-venue').textContent.trim(); const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue)}`; window.open(googleMapsUrl, '_blank'); } 
-// Enhanced Share Popup Functions with Error Handling and Fallbacks
-function openSharePopup() {
-    try {
-        // Try to use Bootstrap modal first
-        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-            const modalElement = document.getElementById('shareInvitationModal');
-            if (modalElement) {
-                const modal = new bootstrap.Modal(modalElement);
-                modal.show();
-                return;
-            }
-        }
-        
-        // Fallback: Show modal manually if Bootstrap is not available
-        showModalManually();
-        
-    } catch (error) {
-        console.error('Error opening share popup:', error);
-        // Fallback to manual modal display
-        showModalManually();
-    }
-}
-
-function showModalManually() {
-    const modal = document.getElementById('shareInvitationModal');
-    if (modal) {
-        modal.style.display = 'block';
-        modal.classList.add('show');
-        modal.setAttribute('aria-hidden', 'false');
-        
-        // Add backdrop
-        const backdrop = document.createElement('div');
-        backdrop.className = 'modal-backdrop fade show';
-        backdrop.id = 'manualBackdrop';
-        document.body.appendChild(backdrop);
-        
-        // Close modal when backdrop is clicked
-        backdrop.addEventListener('click', function() {
-            closeModalManually();
-        });
-        
-        // Close modal when close button is clicked
-        const closeButtons = modal.querySelectorAll('[data-bs-dismiss="modal"], .btn-close');
-        closeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                closeModalManually();
-            });
-        });
-    }
-}
-
-function closeModalManually() {
-    const modal = document.getElementById('shareInvitationModal');
-    if (modal) {
-        modal.style.display = 'none';
-        modal.classList.remove('show');
-        modal.setAttribute('aria-hidden', 'true');
-    }
-    
-    // Remove backdrop
-    const backdrop = document.getElementById('manualBackdrop');
-    if (backdrop) {
-        backdrop.remove();
-    }
-}
-
-function copyPopupLink() {
-    const shareLink = document.getElementById('popupShareLink');
-    if (!shareLink) {
-        alert('Share link not found!');
-        return;
-    }
-    
-    try {
-        // Try modern clipboard API first
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(shareLink.value).then(function() {
-                showCopySuccess();
-            }).catch(function() {
-                // Fallback to old method
-                fallbackCopyTextToClipboard(shareLink.value);
-            });
-        } else {
-            // Fallback for older browsers
-            fallbackCopyTextToClipboard(shareLink.value);
-        }
-        } catch (error) {
-        console.error('Copy failed:', error);
-        fallbackCopyTextToClipboard(shareLink.value);
-    }
-}
-
-function fallbackCopyTextToClipboard(text) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
-    try {
-        const successful = document.execCommand('copy');
-        if (successful) {
-            showCopySuccess();
-        } else {
-            alert('Failed to copy link. Please copy manually.');
-        }
-    } catch (err) {
-        console.error('Fallback copy failed:', err);
-        alert('Failed to copy link. Please copy manually.');
-    }
-    
-    document.body.removeChild(textArea);
-}
-
-function showCopySuccess() {
-                const btn = event.target.closest('button');
-    if (btn) {
-                const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                btn.classList.remove('btn-outline-secondary');
-                btn.classList.add('btn-success');
+        <!-- Event Details -->
+        <section class="event-details">
+            <div class="details-container">
+                <h2 class="section-title">Celebration Details</h2>
                 
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('btn-success');
-                    btn.classList.add('btn-outline-secondary');
-                }, 2000);
-    }
-    
-    // Show success message
-    const successDiv = document.createElement('div');
-    successDiv.className = 'alert alert-success position-fixed';
-    successDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1000; min-width: 300px;';
-    successDiv.innerHTML = '<i class="fas fa-check-circle me-2"></i>Link copied to clipboard!';
-    document.body.appendChild(successDiv);
-    
-    setTimeout(() => {
-        successDiv.remove();
-    }, 3000);
-        }
+                <div class="event-cards">
+                    {% if event_data.timeData.ceremonyTime %}
+                    <div class="event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="event-name">Graduation Ceremony</h3>
+                        <p class="event-time">
+                            <i class="fas fa-clock"></i>
+                            {{ event_data.timeData.ceremonyTime }}
+                        </p>
+                        {% if event_data.venueData.venue %}
+                        <p class="event-venue">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ event_data.venueData.venue }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
 
-        function generatePopupQR() {
-            const qrSection = document.getElementById('popupQRSection');
-            const qrDiv = document.getElementById('popupQRCode');
-            
-    if (!qrSection || !qrDiv) {
-        alert('QR code elements not found!');
-        return;
-    }
-    
-    if (qrSection.style.display === 'none' || qrSection.style.display === '') {
-        try {
-            // Generate QR code using external API
-                const url = window.location.href;
-                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
-            
-            qrDiv.innerHTML = `<img src="${qrCodeUrl}" alt="QR Code" class="img-fluid" style="max-width: 200px;">`;
-                qrSection.style.display = 'block';
-            
-            // Change button text
-            const qrBtn = event.target.closest('button');
-            if (qrBtn) {
-                qrBtn.innerHTML = '<i class="fas fa-eye-slash me-1"></i>Hide QR Code';
-            }
-        } catch (error) {
-            console.error('QR generation error:', error);
-            alert('Failed to generate QR code. Please try again.');
-        }
-            } else {
-                qrSection.style.display = 'none';
-        
-        // Change button text back
-        const qrBtn = event.target.closest('button');
-        if (qrBtn) {
-            qrBtn.innerHTML = '<i class="fas fa-qrcode me-1"></i>Generate QR Code';
-        }
-    }
-}
+                    {% if event_data.timeData.partyTime %}
+                    <div class="event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-glass-cheers"></i>
+                        </div>
+                        <h3 class="event-name">Graduation Party</h3>
+                        <p class="event-time">
+                            <i class="fas fa-clock"></i>
+                            {{ event_data.timeData.partyTime }}
+                        </p>
+                        {% if event_data.venueData.venue %}
+                        <p class="event-venue">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ event_data.venueData.venue }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
 
-// Social media sharing functions
-function shareWhatsApp() {
-    const url = window.location.href;
-    const text = 'Check out this beautiful invitation: ' + url;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-}
+                {% if event_data.venueData.address %}
+                <div style="margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 15px;">
+                    <h4 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-map-marker-alt"></i> Venue Address
+                    </h4>
+                    <p style="font-size: 1.1rem;">{{ event_data.venueData.address }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
 
-function shareFacebook() {
-    const url = window.location.href;
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-}
+        <!-- Gallery Section -->
+        {% if event_data.galleryImages and event_data.galleryImages|length > 0 %}
+        <section class="gallery-section">
+            <div class="details-container">
+                <h2 class="section-title" style="color: #2c3e50; text-align: center;">
+                    Our Memories
+                </h2>
+                
+                <div class="gallery-grid">
+                    {% for image in event_data.galleryImages %}
+                    <div class="gallery-item">
+                        <img src="{{ url_for('uploaded_file', filename=image) }}" 
+                             alt="Graduation Gallery" loading="lazy">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
 
-function shareTwitter() {
-    const url = window.location.href;
-    const text = 'Check out this beautiful invitation!';
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
-}
+        <!-- RSVP Section -->
+        <section class="rsvp-section">
+            <div class="rsvp-container">
+                <h2 class="rsvp-title">Contact Us</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                    For any queries or to confirm your presence
+                </p>
+                
+                <div class="contact-info">
+                    {% if event_data.hostName %}
+                    <div class="contact-item">
+                        <i class="fas fa-user"></i>
+                        <span><strong>Host:</strong> {{ event_data.hostName }}</span>
+                    </div>
+                    {% endif %}
 
-function shareEmail() {
-    const url = window.location.href;
-    const subject = 'Beautiful Invitation';
-    const body = 'Check out this beautiful invitation: ' + url;
-    window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank');
-}
+                    {% if event_data.contactPhone %}
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span><strong>Phone:</strong> {{ event_data.contactPhone }}</span>
+                    </div>
+                    {% endif %}
 
-// Ensure functions are globally available
-window.openSharePopup = openSharePopup;
-window.copyPopupLink = copyPopupLink;
-window.generatePopupQR = generatePopupQR;
-window.shareWhatsApp = shareWhatsApp;
-window.shareFacebook = shareFacebook;
-window.shareTwitter = shareTwitter;
-window.shareEmail = shareEmail;
+                    {% if event_data.contactEmail %}
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span><strong>Email:</strong> {{ event_data.contactEmail }}</span>
+                    </div>
+                    {% endif %}
+                </div>
 
-// Share Success Notification Functions
-function showShareNotification() {
-    const popup = document.getElementById('shareNotificationPopup');
-    const progress = document.getElementById('notificationProgress');
-    
-    if (popup && progress) {
-        // Show popup
-        popup.style.display = 'block';
-        
-        // Reset progress bar
-        progress.style.width = '100%';
-        
-        // Start countdown animation (12 seconds)
-        const duration = 12000; // 12 seconds
-        const interval = 100; // Update every 100ms
-        const steps = duration / interval;
-        const decrement = 100 / steps;
-        
-        let currentStep = 0;
-        const timer = setInterval(() => {
-            currentStep++;
-            const newWidth = 100 - (decrement * currentStep);
-            progress.style.width = newWidth + '%';
-            
-            if (currentStep >= steps) {
-                clearInterval(timer);
-                closeShareNotification();
-            }
-        }, interval);
-        
-        // Store timer reference for manual close
-        popup.dataset.timer = timer;
-    }
-}
+                <div style="margin-top: 3rem; font-family: 'Great Vibes', cursive; font-size: 2rem; color: #4caf50;">
+                    Looking forward to celebrating with you!
+                </div>
+            </div>
+        </section>
+    </div>
 
-function closeShareNotification() {
-    const popup = document.getElementById('shareNotificationPopup');
-    if (popup) {
-        // Clear timer if exists
-        if (popup.dataset.timer) {
-            clearInterval(parseInt(popup.dataset.timer));
-        }
-        
-        // Hide popup
-        popup.style.display = 'none';
-    }
-}
+    <script>
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 
-// Enhanced sharing functions with notification
-function shareWhatsApp() {
-    const url = window.location.href;
-    const text = 'Check out this graduation invitation: ' + url;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    showShareNotification();
-}
+        // Add entrance animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-function shareFacebook() {
-    const url = window.location.href;
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-    showShareNotification();
-}
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-function shareTwitter() {
-    const url = window.location.href;
-    const text = 'Check out this graduation invitation!';
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
-    showShareNotification();
-}
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
+        });
 
-function shareEmail() {
-    const url = window.location.href;
-    const subject = 'Graduation Invitation';
-    const body = 'Check out this graduation invitation: ' + url;
-    window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
-    showShareNotification();
-}
-
-function copyPopupLink() {
-    const shareLink = document.getElementById('popupShareLink');
-    shareLink.select();
-    navigator.clipboard.writeText(shareLink.value).then(function() {
-        // Show temporary success message
-        const btn = event.target.closest('button');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i>';
-        btn.classList.remove('btn-outline-secondary');
-        btn.classList.add('btn-success');
-        
-        // Show success message
-        showShareNotification();
-        
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.classList.remove('btn-success');
-            btn.classList.add('btn-outline-secondary');
-        }, 2000);
-    });
-}
-
-<!-- Back to Dashboard Button -->
-{% if is_creator %}
-<div class="text-center mt-4 mb-3">
-    <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%); border: none; border-radius: 25px; padding: 12px 30px; font-weight: 600; box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3); transition: all 0.3s ease; color: white;">
-        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
-    </a>
-</div>
-{% endif %}
-
-<!-- Made with EventCraft Pro -->
-                <footer class="footer"> <div class="container"> <p class="footer-text"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">Thank You For Celebrating With Us! 🎓</p> <div class="mt-4 text-center"> <p class="mb-3" style="color: #4A90E2; font-size: 1.1rem;"><span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 6px 12px; border-radius: 8px; display: inline-block;">If you want to make your own invitation</p> <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%); border: none; border-radius: 25px; padding: 12px 30px; font-weight: 600; box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3); transition: all 0.3s ease; color: white;"> <i class="fas fa-plus me-2"></i>Click Here </a> </div> </div> </footer> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script> <style>
-        /* Enhanced text readability for background images */
-        .hero-content h1, .hero-content h2, .hero-content h3, .hero-content p {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-            color: white !important;
-            padding: 15px 25px !important;
-            border-radius: 15px !important;
-            display: inline-block !important;
-            margin: 10px 0 !important;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3) !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
-        }
-        
-        .hero-content p {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
-            padding: 12px 20px !important;
-            border-radius: 12px !important;
-        }
-        
-        /* Ensure all text in hero sections is readable */
-        .hero-section * {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3) !important;
-        }
-        
-        /* Add semi-transparent backgrounds to text containers */
-        .text-overlay {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 15px;
-            border-radius: 15px;
-            margin: 10px 0;
-        }
-        
-        /* Enhanced text shadows for better readability */
-        .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(0,0,0,0.5) !important;
-        }
-     /* Enhanced text readability for background images */ .hero-content h1, .hero-content h2, .hero-content h3, .hero-content p { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color: white !important; padding: 10px 20px !important; border-radius: 15px !important; display: inline-block !important; margin: 10px 0 !important; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3) !important; } .hero-content p { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important; padding: 8px 16px !important; border-radius: 12px !important; } /* Ensure all text in hero sections is readable */ .hero-section * { text-shadow: 2px 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3), 0 0 20px rgba(255,255,255,0.3) !important; } /* Add semi-transparent backgrounds to text containers */ .text-overlay { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 15px; border-radius: 15px; margin: 10px 0; } @keyframes scrollTestimonials { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } } .testimonials-container:hover .testimonials-list { animation-play-state: paused; } .testimonial-item { min-width: 300px; flex-shrink: 0; } </style> </body> </html>
+        // Gallery lightbox effect
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                const lightbox = document.createElement('div');
+                lightbox.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                    cursor: pointer;
+                `;
+                
+                const lightboxImg = document.createElement('img');
+                lightboxImg.src = img.src;
+                lightboxImg.style.cssText = `
+                    max-width: 90%;
+                    max-height: 90%;
+                    border-radius: 10px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                `;
+                
+                lightbox.appendChild(lightboxImg);
+                document.body.appendChild(lightbox);
+                
+                lightbox.addEventListener('click', () => {
+                    document.body.removeChild(lightbox);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

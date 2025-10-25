@@ -2,22 +2,403 @@
 
 {% block title %}Dashboard - EventCraft Pro{% endblock %}
 
+{% block extra_head %}
+<style>
+    /* Professional Dashboard Styles */
+    .dashboard-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        position: relative;
+        overflow: hidden;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .dashboard-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    .dashboard-hero .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-content {
+        color: white;
+    }
+
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: 800;
+        color: white;
+        line-height: 1.2;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, #ffffff 0%, #c7af6b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: none;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.95);
+        line-height: 1.6;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .hero-actions .btn {
+        margin: 0.5rem;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 1.25rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .hero-actions .btn-primary-custom {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        color: #667eea;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .hero-actions .btn-primary-custom:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+
+    .hero-actions .btn-secondary-custom {
+        background: transparent;
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-actions .btn-secondary-custom:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-3px);
+    }
+
+    .illustration-container {
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        animation: float 6s ease-in-out infinite;
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-icon {
+        font-size: 4rem;
+        color: white;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    /* Professional Stats Section */
+    .stats-section {
+        background: #f8f9fa;
+        padding: 4rem 0;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 2.5rem 2rem;
+        border-radius: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid #e5e7eb;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+    }
+
+    .stat-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+        color: #1f2937;
+    }
+
+    .stat-label {
+        color: #6b7280;
+        font-weight: 600;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.875rem;
+    }
+
+    /* Professional Action Cards */
+    .actions-section {
+        background: white;
+        padding: 4rem 0;
+    }
+
+    .action-card {
+        background: white;
+        padding: 2.5rem 2rem;
+        border-radius: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid #e5e7eb;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .action-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .action-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+    }
+
+    .action-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .action-title {
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+    }
+
+    .action-description {
+        color: #6b7280;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .action-card .btn {
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        border-radius: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .action-card .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    /* Professional Analytics Section */
+    .analytics-section {
+        background: #f8f9fa;
+        padding: 4rem 0;
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: #6b7280;
+        max-width: 600px;
+        margin: 0 auto 3rem;
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    .analytics-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid #e5e7eb;
+        overflow: hidden;
+    }
+
+    .analytics-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+    }
+
+    .analytics-title {
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 1.5rem;
+        font-size: 1.25rem;
+    }
+
+    .metric-item {
+        border-bottom: 1px solid #e5e7eb;
+        padding: 1rem 0;
+    }
+
+    .metric-item:last-child {
+        border-bottom: none;
+    }
+
+    .metric-item span {
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .metric-item strong {
+        color: #1f2937;
+        font-weight: 700;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 991.98px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .illustration-container {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .hero-icon {
+            font-size: 3rem;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .hero-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hero-actions .btn {
+            width: 100%;
+            max-width: 300px;
+            margin: 0.5rem 0;
+        }
+        
+        .illustration-container {
+            width: 120px;
+            height: 120px;
+        }
+        
+        .hero-icon {
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Dashboard Hero Section -->
-<section class="dashboard-hero py-5">
+<section class="dashboard-hero">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <div class="hero-content slide-up">
+                <div class="hero-content">
                     <div class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">
                         <i class="fas fa-tachometer-alt me-1"></i>Dashboard
                     </div>
                     
-                    <h1 class="hero-title mb-3">
+                    <h1 class="hero-title">
                         Welcome back, <span class="text-gradient">{{ session.user_name if session.user_name else 'User' }}</span>! 👋
                     </h1>
                     
-                    <p class="hero-subtitle mb-4">
+                    <p class="hero-subtitle">
                         Ready to create something amazing? Let's craft your next unforgettable event invitation.
                     </p>
                     
@@ -33,7 +414,7 @@
             </div>
             
             <div class="col-lg-4 text-center">
-                <div class="hero-illustration slide-up" style="animation-delay: 0.2s;">
+                <div class="hero-illustration">
                     <div class="illustration-container">
                         <i class="fas fa-rocket hero-icon"></i>
                     </div>
@@ -65,7 +446,7 @@
                         <i class="fas fa-eye text-success"></i>
                     </div>
                     <div class="stat-content">
-                        <h3 class="stat-number text-success">{{ invitations|sum(attribute='view_count') }}</h3>
+                        <h3 class="stat-number text-success">{{ invitations|sum(attribute='view_count') if invitations and invitations[0].view_count is defined else 0 }}</h3>
                         <p class="stat-label">Total Views</p>
                     </div>
                 </div>
@@ -77,7 +458,7 @@
                         <i class="fas fa-star text-warning"></i>
                     </div>
                     <div class="stat-content">
-                        <h3 class="stat-number text-warning">{{ invitations|selectattr('is_active')|list|length }}</h3>
+                        <h3 class="stat-number text-warning">{{ invitations|selectattr('is_active')|list|length if invitations and invitations[0].is_active is defined else 0 }}</h3>
                         <p class="stat-label">Active Events</p>
                     </div>
                 </div>
@@ -215,7 +596,7 @@
                                 </div>
                                 <div class="meta-item">
                                     <i class="fas fa-eye text-success me-2"></i>
-                                    <span>{{ invitation.view_count }} views</span>
+                                    <span>{{ invitation.view_count if invitation.view_count is defined else 0 }} views</span>
                                 </div>
                             </div>
                             
@@ -234,8 +615,11 @@
                                 <a href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}" class="btn btn-outline-primary btn-sm flex-fill">
                                     <i class="fas fa-edit me-1"></i>Edit
                                 </a>
-                                <a href="{{ url_for('view_invitation_manage', share_url=invitation.share_url) }}" class="btn btn-outline-secondary btn-sm flex-fill">
-                                    <i class="fas fa-cog me-1"></i>Manage
+                                <a href="{{ url_for('rsvp_manage', invitation_id=invitation.id) }}" class="btn btn-outline-secondary btn-sm flex-fill">
+                                    <i class="fas fa-users me-1"></i>RSVP
+                                </a>
+                                <a href="{{ url_for('invitation_analytics', invitation_id=invitation.id) }}" class="btn btn-outline-info btn-sm flex-fill">
+                                    <i class="fas fa-chart-line me-1"></i>Analytics
                                 </a>
                             </div>
                         </div>
@@ -285,7 +669,7 @@
                         </div>
                         <div class="metric-item d-flex justify-content-between align-items-center py-2">
                             <span>Total Views</span>
-                            <strong class="text-info">{{ invitations|sum(attribute='view_count') }}</strong>
+                            <strong class="text-info">{{ invitations|sum(attribute='view_count') if invitations and invitations[0].view_count is defined else 0 }}</strong>
                         </div>
                     </div>
                 </div>

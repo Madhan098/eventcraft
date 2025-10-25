@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+
+{% block title %}Help Center - EventCraft Pro Support{% endblock %}
+
+{% block content %}
+<!-- Help Center Hero -->
+<section class="help-hero py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">Help Center</h1>
+                <p class="lead text-muted mb-4">Find answers to common questions and learn how to make the most of EventCraft Pro</p>
+                <div class="search-box">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0" id="help-search" placeholder="Search help articles...">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="help-illustration text-center">
+                    <i class="fas fa-question-circle fa-5x text-primary mb-4"></i>
+                    <h3 class="text-muted">How can we help you today?</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Help Categories -->
+<section class="help-categories py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="help-category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h4>Getting Started</h4>
+                    <p>Learn the basics of creating your first invitation</p>
+                    <a href="#getting-started" class="btn btn-outline-primary">View Articles</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="help-category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4>Customization</h4>
+                    <p>Customize templates and make them your own</p>
+                    <a href="#customization" class="btn btn-outline-primary">View Articles</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="help-category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>RSVP Management</h4>
+                    <p>Manage guests and track RSVP responses</p>
+                    <a href="#rsvp-management" class="btn btn-outline-primary">View Articles</a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="help-category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Analytics</h4>
+                    <p>Understand your invitation performance</p>
+                    <a href="#analytics" class="btn btn-outline-primary">View Articles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Help Articles -->
+<section class="help-articles py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Getting Started Section -->
+                <div id="getting-started" class="help-section mb-5">
+                    <h2 class="section-title mb-4">Getting Started</h2>
+                    <div class="accordion" id="gettingStartedAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="gs1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGs1" aria-expanded="true" aria-controls="collapseGs1">
+                                    How do I create my first invitation?
+                                </button>
+                            </h2>
+                            <div id="collapseGs1" class="accordion-collapse collapse show" aria-labelledby="gs1" data-bs-parent="#gettingStartedAccordion">
+                                <div class="accordion-body">
+                                    <p>Creating your first invitation is easy! Follow these simple steps:</p>
+                                    <ol>
+                                        <li>Click "Create New Invitation" on the homepage</li>
+                                        <li>Choose a template that matches your event type</li>
+                                        <li>Fill in your event details using our step-by-step wizard</li>
+                                        <li>Customize colors, fonts, and images to match your style</li>
+                                        <li>Preview your invitation and make any final adjustments</li>
+                                        <li>Share your invitation with guests</li>
+                                    </ol>
+                                    <p>You can have a beautiful invitation ready in just a few minutes!</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="gs2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGs2" aria-expanded="false" aria-controls="collapseGs2">
+                                    What types of events can I create invitations for?
+                                </button>
+                            </h2>
+                            <div id="collapseGs2" class="accordion-collapse collapse" aria-labelledby="gs2" data-bs-parent="#gettingStartedAccordion">
+                                <div class="accordion-body">
+                                    <p>EventCraft Pro supports a wide variety of events including:</p>
+                                    <ul>
+                                        <li><strong>Weddings</strong> - Traditional, modern, and cultural ceremonies</li>
+                                        <li><strong>Birthday Parties</strong> - All ages and themes</li>
+                                        <li><strong>Anniversaries</strong> - Milestone celebrations</li>
+                                        <li><strong>Baby Showers</strong> - Gender reveals and celebrations</li>
+                                        <li><strong>Graduation Parties</strong> - Academic achievements</li>
+                                        <li><strong>Retirement Parties</strong> - Career milestones</li>
+                                        <li><strong>Corporate Events</strong> - Business gatherings</li>
+                                        <li><strong>Holiday Parties</strong> - Seasonal celebrations</li>
+                                    </ul>
+                                    <p>Each event type has specialized templates and customization options.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="gs3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGs3" aria-expanded="false" aria-controls="collapseGs3">
+                                    Do I need to create an account?
+                                </button>
+                            </h2>
+                            <div id="collapseGs3" class="accordion-collapse collapse" aria-labelledby="gs3" data-bs-parent="#gettingStartedAccordion">
+                                <div class="accordion-body">
+                                    <p>Yes, creating a free account is required to:</p>
+                                    <ul>
+                                        <li>Save and manage your invitations</li>
+                                        <li>Track RSVP responses</li>
+                                        <li>Access analytics and insights</li>
+                                        <li>Edit invitations after creation</li>
+                                        <li>Collaborate with others on event planning</li>
+                                    </ul>
+                                    <p>Creating an account is quick and free. You just need to provide your name, email, and phone number.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customization Section -->
+                <div id="customization" class="help-section mb-5">
+                    <h2 class="section-title mb-4">Customization</h2>
+                    <div class="accordion" id="customizationAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="c1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseC1" aria-expanded="true" aria-controls="collapseC1">
+                                    How can I customize my invitation template?
+                                </button>
+                            </h2>
+                            <div id="collapseC1" class="accordion-collapse collapse show" aria-labelledby="c1" data-bs-parent="#customizationAccordion">
+                                <div class="accordion-body">
+                                    <p>You can customize almost every aspect of your invitation:</p>
+                                    <ul>
+                                        <li><strong>Text</strong> - Change all text content, fonts, and sizes</li>
+                                        <li><strong>Colors</strong> - Modify color schemes to match your theme</li>
+                                        <li><strong>Images</strong> - Upload your own photos or choose from our library</li>
+                                        <li><strong>Layout</strong> - Adjust spacing, alignment, and positioning</li>
+                                        <li><strong>Backgrounds</strong> - Change background colors or patterns</li>
+                                        <li><strong>Borders</strong> - Add decorative borders and frames</li>
+                                    </ul>
+                                    <p>Use our drag-and-drop editor to make changes visually, or use the text editor for precise control.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="c2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseC2" aria-expanded="false" aria-controls="collapseC2">
+                                    Can I upload my own images?
+                                </button>
+                            </h2>
+                            <div id="collapseC2" class="accordion-collapse collapse" aria-labelledby="c2" data-bs-parent="#customizationAccordion">
+                                <div class="accordion-body">
+                                    <p>Yes! You can upload your own images in several ways:</p>
+                                    <ul>
+                                        <li><strong>Main Images</strong> - Upload photos for the main invitation image</li>
+                                        <li><strong>Profile Photos</strong> - Add photos of the couple, birthday person, etc.</li>
+                                        <li><strong>Gallery Images</strong> - Create a photo gallery for your event</li>
+                                        <li><strong>Background Images</strong> - Use custom backgrounds</li>
+                                    </ul>
+                                    <p><strong>Supported formats:</strong> JPG, PNG, GIF (up to 10MB each)</p>
+                                    <p><strong>Recommended size:</strong> At least 800x600 pixels for best quality</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="c3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseC3" aria-expanded="false" aria-controls="collapseC3">
+                                    How do I change the font and text styling?
+                                </button>
+                            </h2>
+                            <div id="collapseC3" class="accordion-collapse collapse" aria-labelledby="c3" data-bs-parent="#customizationAccordion">
+                                <div class="accordion-body">
+                                    <p>To change fonts and text styling:</p>
+                                    <ol>
+                                        <li>Click on any text element in your invitation</li>
+                                        <li>Use the text toolbar that appears</li>
+                                        <li>Select from our curated font collection</li>
+                                        <li>Adjust size, color, and alignment</li>
+                                        <li>Apply bold, italic, or underline formatting</li>
+                                    </ol>
+                                    <p>We offer a variety of fonts including:</p>
+                                    <ul>
+                                        <li>Elegant serif fonts for formal events</li>
+                                        <li>Modern sans-serif fonts for contemporary style</li>
+                                        <li>Script fonts for romantic occasions</li>
+                                        <li>Fun fonts for casual celebrations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RSVP Management Section -->
+                <div id="rsvp-management" class="help-section mb-5">
+                    <h2 class="section-title mb-4">RSVP Management</h2>
+                    <div class="accordion" id="rsvpAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="r1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseR1" aria-expanded="true" aria-controls="collapseR1">
+                                    How does the RSVP system work?
+                                </button>
+                            </h2>
+                            <div id="collapseR1" class="accordion-collapse collapse show" aria-labelledby="r1" data-bs-parent="#rsvpAccordion">
+                                <div class="accordion-body">
+                                    <p>Our RSVP system makes guest management easy:</p>
+                                    <ol>
+                                        <li><strong>Add Guests</strong> - Manually add guests or import from a list</li>
+                                        <li><strong>Send Invitations</strong> - Share your invitation link with guests</li>
+                                        <li><strong>Track Responses</strong> - View real-time RSVP status updates</li>
+                                        <li><strong>Manage Details</strong> - Track plus-ones, dietary requirements, and messages</li>
+                                        <li><strong>Send Reminders</strong> - Automatically remind guests who haven't responded</li>
+                                    </ol>
+                                    <p>Guests can respond directly through your invitation link, and you'll see updates instantly in your dashboard.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="r2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseR2" aria-expanded="false" aria-controls="collapseR2">
+                                    Can I send reminder emails to guests?
+                                </button>
+                            </h2>
+                            <div id="collapseR2" class="accordion-collapse collapse" aria-labelledby="r2" data-bs-parent="#rsvpAccordion">
+                                <div class="accordion-body">
+                                    <p>Yes! You can send reminder emails in several ways:</p>
+                                    <ul>
+                                        <li><strong>Automatic Reminders</strong> - Set up automatic reminders for guests who haven't responded</li>
+                                        <li><strong>Manual Reminders</strong> - Send individual or bulk reminder emails</li>
+                                        <li><strong>Custom Messages</strong> - Personalize reminder messages</li>
+                                        <li><strong>Scheduled Reminders</strong> - Set specific dates for reminder emails</li>
+                                    </ul>
+                                    <p>Reminder emails include a direct link to your invitation and RSVP form.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="r3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseR3" aria-expanded="false" aria-controls="collapseR3">
+                                    How do I export my guest list?
+                                </button>
+                            </h2>
+                            <div id="collapseR3" class="accordion-collapse collapse" aria-labelledby="r3" data-bs-parent="#rsvpAccordion">
+                                <div class="accordion-body">
+                                    <p>To export your guest list:</p>
+                                    <ol>
+                                        <li>Go to your invitation's RSVP management page</li>
+                                        <li>Click the "Export" button in the top right</li>
+                                        <li>Choose your export format (CSV, Excel, or PDF)</li>
+                                        <li>Select which information to include (names, emails, RSVP status, etc.)</li>
+                                        <li>Download your file</li>
+                                    </ol>
+                                    <p>Exported files include all guest information, RSVP responses, and any additional notes or dietary requirements.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Section -->
+                <div id="analytics" class="help-section mb-5">
+                    <h2 class="section-title mb-4">Analytics & Insights</h2>
+                    <div class="accordion" id="analyticsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="a1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseA1" aria-expanded="true" aria-controls="collapseA1">
+                                    What analytics are available for my invitations?
+                                </button>
+                            </h2>
+                            <div id="collapseA1" class="accordion-collapse collapse show" aria-labelledby="a1" data-bs-parent="#analyticsAccordion">
+                                <div class="accordion-body">
+                                    <p>Our analytics dashboard provides comprehensive insights:</p>
+                                    <ul>
+                                        <li><strong>View Statistics</strong> - Total views, unique visitors, and viewing patterns</li>
+                                        <li><strong>RSVP Analytics</strong> - Response rates, attendance breakdown, and trends</li>
+                                        <li><strong>Device Analytics</strong> - How guests are viewing your invitation (mobile, desktop, tablet)</li>
+                                        <li><strong>Share Analytics</strong> - Which sharing methods are most effective</li>
+                                        <li><strong>Geographic Data</strong> - Where your guests are located</li>
+                                        <li><strong>Time Analytics</strong> - Peak viewing times and engagement patterns</li>
+                                    </ul>
+                                    <p>Use these insights to optimize your invitation strategy and improve engagement.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="a2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseA2" aria-expanded="false" aria-controls="collapseA2">
+                                    How can I improve my invitation's performance?
+                                </button>
+                            </h2>
+                            <div id="collapseA2" class="accordion-collapse collapse" aria-labelledby="a2" data-bs-parent="#analyticsAccordion">
+                                <div class="accordion-body">
+                                    <p>Based on analytics data, here are tips to improve performance:</p>
+                                    <ul>
+                                        <li><strong>Optimize for Mobile</strong> - Most guests view invitations on mobile devices</li>
+                                        <li><strong>Share at Peak Times</strong> - Send invitations during high-engagement hours</li>
+                                        <li><strong>Use Multiple Channels</strong> - Share via email, WhatsApp, and social media</li>
+                                        <li><strong>Send Reminders</strong> - Follow up with guests who haven't responded</li>
+                                        <li><strong>Test Different Templates</strong> - A/B test different designs to see what works</li>
+                                        <li><strong>Personalize Messages</strong> - Add personal touches to increase engagement</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="help-sidebar">
+                    <!-- Contact Support -->
+                    <div class="support-card mb-4">
+                        <h4>Still Need Help?</h4>
+                        <p>Can't find what you're looking for? Our support team is here to help!</p>
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('contact') }}" class="btn btn-primary">
+                                <i class="fas fa-envelope me-2"></i>Contact Support
+                            </a>
+                            <a href="#" class="btn btn-outline-primary" onclick="openLiveChat()">
+                                <i class="fas fa-comments me-2"></i>Live Chat
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Popular Articles -->
+                    <div class="popular-articles mb-4">
+                        <h5>Popular Articles</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#getting-started" class="text-decoration-none">Getting Started Guide</a></li>
+                            <li><a href="#customization" class="text-decoration-none">Customizing Templates</a></li>
+                            <li><a href="#rsvp-management" class="text-decoration-none">Managing RSVPs</a></li>
+                            <li><a href="#analytics" class="text-decoration-none">Understanding Analytics</a></li>
+                            <li><a href="#" class="text-decoration-none">Troubleshooting Common Issues</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Video Tutorials -->
+                    <div class="video-tutorials">
+                        <h5>Video Tutorials</h5>
+                        <div class="video-item mb-3">
+                            <div class="video-thumbnail">
+                                <i class="fas fa-play-circle fa-3x text-primary"></i>
+                            </div>
+                            <div class="video-info">
+                                <h6>Creating Your First Invitation</h6>
+                                <small class="text-muted">5 min video</small>
+                            </div>
+                        </div>
+                        <div class="video-item mb-3">
+                            <div class="video-thumbnail">
+                                <i class="fas fa-play-circle fa-3x text-primary"></i>
+                            </div>
+                            <div class="video-info">
+                                <h6>Advanced Customization</h6>
+                                <small class="text-muted">8 min video</small>
+                            </div>
+                        </div>
+                        <div class="video-item">
+                            <div class="video-thumbnail">
+                                <i class="fas fa-play-circle fa-3x text-primary"></i>
+                            </div>
+                            <div class="video-info">
+                                <h6>RSVP Management Tips</h6>
+                                <small class="text-muted">6 min video</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Help Center Search Functionality
+document.getElementById('help-search').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const articles = document.querySelectorAll('.accordion-item');
+    
+    articles.forEach(article => {
+        const title = article.querySelector('.accordion-button').textContent.toLowerCase();
+        const content = article.querySelector('.accordion-body').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || content.includes(searchTerm)) {
+            article.style.display = 'block';
+        } else {
+            article.style.display = 'none';
+        }
+    });
+});
+
+// Live Chat Function
+function openLiveChat() {
+    alert('Live chat feature coming soon! For now, please use our contact form.');
+}
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+</script>
+{% endblock %}

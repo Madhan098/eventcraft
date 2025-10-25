@@ -399,6 +399,56 @@
     .hidden {
         display: none !important;
     }
+
+    /* Form Steps */
+    .form-step {
+        display: none;
+    }
+
+    .form-step.active {
+        display: block;
+    }
+
+    /* Image Preview */
+    .image-preview {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .image-preview img {
+        max-width: 150px;
+        max-height: 150px;
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gallery-preview {
+        margin-top: 10px;
+    }
+
+    .gallery-preview img {
+        max-width: 100px;
+        max-height: 100px;
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+    }
 </style>
 
 <div class="create-invitation-container">
@@ -414,6 +464,14 @@
         <h3>Selected Template: {{ selected_template|replace('_', ' ')|title }}</h3>
         <p>You're creating a {{ selected_template|replace('_', ' ')|title }} invitation</p>
     </div>
+    {% else %}
+    <div class="template-info alert alert-warning">
+        <h3><i class="fas fa-exclamation-triangle me-2"></i>No Template Selected</h3>
+        <p>Please <a href="{{ url_for('templates') }}" class="alert-link">select a template first</a> to see default values and create your invitation.</p>
+        <a href="{{ url_for('templates') }}" class="btn btn-primary">
+            <i class="fas fa-palette me-2"></i>Browse Templates
+        </a>
+    </div>
     {% endif %}
 
     <!-- Step Indicators -->
@@ -424,17 +482,15 @@
         </div>
         <div class="step-indicator" id="step2-indicator">
             <i class="fas fa-images"></i>
-            <span>Photos & Info</span>
+            <span>Photos & Create</span>
         </div>
-        <div class="step-indicator" id="step3-indicator">
-            <i class="fas fa-check-circle"></i>
-            <span>Review & Create</span>
-        </div>
+
     </div>
 
     <form id="invitationForm" method="POST" action="{{ url_for('create_invitation') }}" enctype="multipart/form-data">
         <!-- Hidden field for selected template -->
         <input type="hidden" name="selectedTemplate" value="{{ selected_template }}">
+        
         <!-- Step 1: Event Details -->
         <div class="form-step active" id="step1">
             <!-- Basic Event Information -->
@@ -449,7 +505,7 @@
                         <label class="form-label required">Event Title</label>
                         <input type="text" class="form-input" id="eventTitle" name="eventTitle" 
                                placeholder="e.g., Sarah & John's Wedding" required
-                               value="{% if current_user and selected_template %}{{ current_user.name }}'s {{ selected_template|replace('_', ' ')|title }}{% endif %}">
+                               value="{% if current_user and selected_template %}{% if 'wedding' in selected_template %}{{ current_user.name }}'s Wedding{% elif 'birthday' in selected_template %}{{ current_user.name }}'s Birthday{% elif 'anniversary' in selected_template %}{{ current_user.name }}'s Anniversary{% elif 'graduation' in selected_template %}{{ current_user.name }}'s Graduation{% elif 'babyshower' in selected_template %}{{ current_user.name }}'s Babyshower{% elif 'retirement' in selected_template %}{{ current_user.name }}'s Retirement{% else %}{{ current_user.name }}'s {{ selected_template|replace('_', ' ')|title }}{% endif %}{% endif %}">
                     </div>
 
                     <div class="form-group">
@@ -461,8 +517,29 @@
                 <div class="form-group full-width">
                     <label class="form-label">Event Description</label>
                     <textarea class="form-textarea" id="eventDescription" name="eventDescription" rows="4" 
-                              placeholder="Describe your event, add special instructions, or include a personal message..."></textarea>
+                              placeholder="Describe your event, add special instructions, or include a personal message...">{% if current_user and selected_template %}{% if 'wedding' in selected_template %}With immense joy and love, we invite you to celebrate our special day as we begin our journey of forever together. Your presence will make our celebration complete.{% elif 'birthday' in selected_template %}Join us for a day filled with laughter, joy, and wonderful memories as we celebrate another year of life's beautiful journey.{% elif 'anniversary' in selected_template %}Celebrate with us the beautiful years of love, commitment, and countless memories we've shared together.{% elif 'graduation' in selected_template %}Join us in celebrating this significant milestone and the beginning of a new chapter in life's journey.{% elif 'babyshower' in selected_template %}Share in our excitement as we prepare to welcome a precious new life into our family.{% elif 'retirement' in selected_template %}Celebrate with us as we mark the end of one chapter and the beginning of new adventures in life.{% else %}We cordially invite you to join us for this special celebration. Your presence will make this day even more memorable.{% endif %}{% endif %}</textarea>
+                    <small class="form-text">A loving message has been pre-filled for you. Feel free to customize it!</small>
                 </div>
+
+                <!-- Love Story Section for Weddings -->
+                {% if selected_template and 'wedding' in selected_template %}
+                <div class="form-group full-width">
+                    <label class="form-label">Love Story</label>
+                    <textarea class="form-textarea" id="loveStory" name="loveStory" rows="4" 
+                              placeholder="Share your beautiful love story...">Our love story began with a simple hello and grew into something beautiful. Every moment together has been a blessing, and now we're ready to take the next step in our journey of love and commitment. From our first meeting to this special day, every step has been guided by love, trust, and endless support for each other.</textarea>
+                    <small class="form-text">Your beautiful love story will be featured in the invitation!</small>
+                </div>
+                {% endif %}
+
+                <!-- Event Story Section for Other Events -->
+                {% if selected_template and 'wedding' not in selected_template %}
+                <div class="form-group full-width">
+                    <label class="form-label">Event Story</label>
+                    <textarea class="form-textarea" id="eventStory" name="eventStory" rows="4" 
+                              placeholder="Share your event story...">{% if 'birthday' in selected_template %}Another year of life's beautiful journey, filled with growth, learning, and wonderful experiences. Each birthday marks a new chapter of memories, achievements, and dreams coming true.{% elif 'anniversary' in selected_template %}Years of love, laughter, and countless memories that have made our bond stronger with each passing day. Every anniversary is a celebration of the beautiful journey we've shared together.{% elif 'graduation' in selected_template %}A journey of dedication, hard work, and determination that has led to this moment of achievement. This graduation represents not just an end, but the beginning of new possibilities and dreams.{% elif 'babyshower' in selected_template %}The anticipation of welcoming a precious new life, filled with hope, joy, and endless possibilities. This special time is about celebrating the miracle of new beginnings and the love that surrounds us.{% elif 'retirement' in selected_template %}A career filled with dedication, achievements, and memories that will last a lifetime. This retirement marks the beginning of new adventures and the time to enjoy the fruits of years of hard work.{% else %}A celebration of life's beautiful moments, filled with love, joy, and wonderful memories that we'll cherish forever.{% endif %}</textarea>
+                    <small class="form-text">Your event story will add a personal touch to the invitation!</small>
+                </div>
+                {% endif %}
 
                 <div class="form-group">
                     <label class="form-label">Main Event Image</label>
@@ -710,19 +787,7 @@
             </div>
         </div>
 
-        <!-- Step 3: Review & Create -->
-        <div class="form-step" id="step3">
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-eye"></i>
-                    <h3>Review Your Invitation</h3>
-                </div>
 
-                <div id="reviewContent">
-                    <p>Please complete the previous steps to review your invitation details.</p>
-                </div>
-            </div>
-        </div>
 
         <!-- Navigation Buttons -->
         <div class="form-navigation">
@@ -748,7 +813,7 @@
 
 <script>
         let currentStep = 1;
-        const totalSteps = 3;
+        const totalSteps = 2;
 
         // Style selection
         function selectStyle(style, element) {
@@ -762,14 +827,27 @@
 
         // Step navigation
         function nextStep() {
+            console.log('nextStep called, currentStep:', currentStep, 'totalSteps:', totalSteps);
             if (currentStep < totalSteps) {
-                document.getElementById(`step${currentStep}`).classList.remove('active');
-                document.getElementById(`step${currentStep + 1}`).classList.add('active');
+                // Hide current step
+                const currentStepElement = document.getElementById(`step${currentStep}`);
+                const nextStepElement = document.getElementById(`step${currentStep + 1}`);
+                
+                console.log('Current step element:', currentStepElement);
+                console.log('Next step element:', nextStepElement);
+                
+                if (currentStepElement) currentStepElement.classList.remove('active');
+                if (nextStepElement) nextStepElement.classList.add('active');
 
-                document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
-                document.getElementById(`step${currentStep + 1}`).classList.add('active');
+                // Update step indicators
+                const currentIndicator = document.getElementById(`step${currentStep}-indicator`);
+                const nextIndicator = document.getElementById(`step${currentStep + 1}-indicator`);
+                
+                if (currentIndicator) currentIndicator.classList.remove('active');
+                if (nextIndicator) nextIndicator.classList.add('active');
 
                 currentStep++;
+                console.log('Step changed to:', currentStep);
                 updateNavigation();
             }
         }
@@ -1191,7 +1269,7 @@
                 </div>
             </div>
         `;
-            } else {
+            } else if (eventType === 'graduation') {
                 html = `
             <div class="form-section">
                 <div class="section-header">
@@ -1281,9 +1359,109 @@
                 </div>
             </div>
         `;
+            } else {
+                // Default case for any other event types
+                html = `
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fas fa-images"></i>
+                    <h3>Event Photos & Additional Details</h3>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Main Event Image</label>
+                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
+                    <div id="mainImagePreview" class="image-preview" style="display: none;">
+                        <img src="" alt="Main Image Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
+                        <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <small class="form-hint">Upload main event image</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Gallery Images</label>
+                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
+                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
+                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
+                    <small class="form-hint">Upload multiple photos for the gallery</small>
+                </div>
+            </div>
+        `;
             }
 
             photosSection.innerHTML = html;
         }
-</script>
+
+        // Initialize the page when it loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show event-specific fields and photos section
+            showEventSpecificFields();
+            
+            // If no specific template is selected, show default photos section
+            const urlParams = new URLSearchParams(window.location.search);
+            const template = urlParams.get('template') || '';
+            if (!template) {
+                showEventPhotosSection('general');
+                
+                // Show warning message
+                const templateInfo = document.querySelector('.template-info');
+                if (templateInfo) {
+                    templateInfo.style.display = 'block';
+                }
+            } else {
+                // Hide warning message if template is selected
+                const templateInfo = document.querySelector('.template-info.alert-warning');
+                if (templateInfo) {
+                    templateInfo.style.display = 'none';
+                }
+            }
+            
+            // Ensure form fields have values after a short delay
+            setTimeout(function() {
+                const eventTitleField = document.getElementById('eventTitle');
+                const eventDescriptionField = document.getElementById('eventDescription');
+                
+                // Set event title if empty
+                if (eventTitleField && !eventTitleField.value.trim()) {
+                    if (template.includes('wedding')) {
+                        eventTitleField.value = 'Beautiful Wedding Celebration';
+                    } else if (template.includes('birthday')) {
+                        eventTitleField.value = 'Birthday Party';
+                    } else if (template.includes('anniversary')) {
+                        eventTitleField.value = 'Anniversary Celebration';
+                    } else if (template.includes('graduation')) {
+                        eventTitleField.value = 'Graduation Ceremony';
+                    } else if (template.includes('babyshower')) {
+                        eventTitleField.value = 'Baby Shower';
+                    } else if (template.includes('retirement')) {
+                        eventTitleField.value = 'Retirement Party';
+                    } else {
+                        eventTitleField.value = 'Special Celebration';
+                    }
+                }
+                
+                // Set event description if empty
+                if (eventDescriptionField && !eventDescriptionField.value.trim()) {
+                    if (template.includes('wedding')) {
+                        eventDescriptionField.value = 'With immense joy and love, we invite you to celebrate our special day as we begin our journey of forever together. Your presence will make our celebration complete.';
+                    } else if (template.includes('birthday')) {
+                        eventDescriptionField.value = 'Join us for a day filled with laughter, joy, and wonderful memories as we celebrate another year of life\'s beautiful journey.';
+                    } else if (template.includes('anniversary')) {
+                        eventDescriptionField.value = 'Celebrate with us the beautiful years of love, commitment, and countless memories we\'ve shared together.';
+                    } else if (template.includes('graduation')) {
+                        eventDescriptionField.value = 'Join us in celebrating this significant milestone and the beginning of a new chapter in life\'s journey.';
+                    } else if (template.includes('babyshower')) {
+                        eventDescriptionField.value = 'Share in our excitement as we prepare to welcome a precious new life into our family.';
+                    } else if (template.includes('retirement')) {
+                        eventDescriptionField.value = 'Celebrate with us as we mark the end of one chapter and the beginning of new adventures in life.';
+                    } else {
+                        eventDescriptionField.value = 'We cordially invite you to join us for this special celebration. Your presence will make this day even more memorable.';
+                    }
+                }
+            }, 200);
+        });
+    </script>
 {% endblock %}

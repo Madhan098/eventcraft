@@ -318,8 +318,28 @@
                 <label class="form-label">Event Description</label>
                 <textarea class="form-textarea" id="eventDescription" name="eventDescription" rows="4" 
                           placeholder="Describe your event, add special instructions, or include a personal message...">{{ invitation.description or '' }}</textarea>
+            </div>
+
+            <!-- Love Story Section for Weddings -->
+            {% if invitation.event_type == 'wedding' %}
+            <div class="form-group full-width">
+                <label class="form-label">Love Story</label>
+                <textarea class="form-textarea" id="loveStory" name="loveStory" rows="4" 
+                          placeholder="Share your beautiful love story...">{{ invitation.love_story or 'Our love story began with a simple hello and grew into something beautiful. Every moment together has been a blessing, and now we\'re ready to take the next step in our journey of love and commitment.' }}</textarea>
+                <small class="form-text">Your beautiful love story will be featured in the invitation!</small>
+            </div>
+            {% endif %}
+
+            <!-- Event Story Section for Other Events -->
+            {% if invitation.event_type != 'wedding' %}
+            <div class="form-group full-width">
+                <label class="form-label">Event Story</label>
+                <textarea class="form-textarea" id="eventStory" name="eventStory" rows="4" 
+                          placeholder="Share your event story...">{{ invitation.event_story or 'A celebration of life\'s beautiful moments, filled with love, joy, and wonderful memories that we\'ll cherish forever.' }}</textarea>
+                <small class="form-text">Your event story will add a personal touch to the invitation!</small>
+            </div>
+            {% endif %}
         </div>
-    </div>
 
         <!-- Style Selection -->
         <div class="form-section">

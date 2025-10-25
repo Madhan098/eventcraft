@@ -304,6 +304,9 @@
             outline: none;
         }
     </style>
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body>
     <!-- Modern Navigation -->
@@ -335,6 +338,18 @@
                             <i class="fas fa-envelope me-1"></i>Contact
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('help_center') }}">
+                            <i class="fas fa-question-circle me-1"></i>Help
+                        </a>
+                    </li>
+                    {% if session.user_id %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('drag_drop_editor') }}">
+                            <i class="fas fa-edit me-1"></i>Editor
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
                 
                 <ul class="navbar-nav ms-auto">

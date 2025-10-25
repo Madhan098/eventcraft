@@ -21,30 +21,66 @@
             overflow-x: hidden;
         }
 
-        /* Hero Section - Main Banner */
+        /* Hero Section - Main Banner - Enhanced for Full Screen */
         .hero-section {
-            height: 100vh;
+            height: 100vh !important;
+            width: 100vw !important;
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
                         {% if invitation.main_image %}
                         url('{{ url_for("uploaded_file", filename=invitation.main_image) }}')
                         {% else %}
                         url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="1200" height="800" fill="%23f8f9fa"/><text x="600" y="400" text-anchor="middle" font-family="serif" font-size="48" fill="%23333">{{ invitation.bride_name }} & {{ invitation.groom_name }}</text></svg>')
                         {% endif %};
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
             position: relative;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensure background covers entire viewport */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            z-index: -1;
+        }
+
+        /* Enhanced overlay for better text readability */
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.5));
+            z-index: 1;
         }
 
         .hero-content {
-            z-index: 10;
+            z-index: 10 !important;
             max-width: 800px;
             padding: 2rem;
+            position: relative !important;
+            background: rgba(0,0,0,0.1) !important;
+            border-radius: 15px !important;
+            backdrop-filter: blur(10px) !important;
         }
 
         .wedding-title {
@@ -293,6 +329,66 @@
             margin-bottom: 0.5rem;
         }
 
+        .contact-card p {
+            margin-bottom: 0.5rem;
+        }
+
+        .location-link {
+            display: inline-flex;
+            align-items: center;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 123, 255, 0.2);
+        }
+
+        .location-link:hover {
+            color: #0056b3;
+            background: rgba(0, 123, 255, 0.15);
+            border-color: rgba(0, 123, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+            text-decoration: none;
+        }
+
+        .location-link i {
+            font-size: 0.8rem;
+        }
+
+        .location-link-small {
+            display: inline-flex;
+            align-items: center;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 123, 255, 0.2);
+            margin-top: 0.5rem;
+        }
+
+        .location-link-small:hover {
+            color: #0056b3;
+            background: rgba(0, 123, 255, 0.15);
+            border-color: rgba(0, 123, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+            text-decoration: none;
+        }
+
+        .location-link-small i {
+            font-size: 0.7rem;
+            margin-right: 0.3rem;
+        }
+
         /* Footer */
         .footer {
             background: #1a252f;
@@ -377,6 +473,111 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Enhanced text readability for background images */
+        .hero-content h1, .hero-content h2, .hero-content h3, .hero-content p {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+            color: white !important;
+            padding: 15px 25px !important;
+            border-radius: 15px !important;
+            display: inline-block !important;
+            margin: 10px 0 !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero-content p {
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%) !important;
+            padding: 12px 20px !important;
+            border-radius: 12px !important;
+        }
+        
+        /* Ensure all text in hero sections is readable */
+        .hero-section * {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+        }
+        
+        /* Add semi-transparent backgrounds to text containers */
+        .text-overlay {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Enhanced text shadows for better readability */
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+        }
+        
+        /* Text readability for sections with background images */
+        .section-with-bg {
+            position: relative;
+        }
+        
+        .section-with-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+        
+        .section-with-bg > * {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Enhanced text containers */
+        .text-container {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .text-container h1, .text-container h2, .text-container h3 {
+            color: #2c3e50 !important;
+            text-shadow: none !important;
+        }
+        
+        .text-container p {
+            color: #555 !important;
+            text-shadow: none !important;
+        }
+        
+        /* Dark text overlay for light backgrounds */
+        .dark-text-overlay {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+            color: white !important;
+            padding: 15px 25px !important;
+            border-radius: 15px !important;
+            display: inline-block !important;
+            margin: 10px 0 !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Light text overlay for dark backgrounds */
+        .light-text-overlay {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+            color: #2c3e50 !important;
+            padding: 15px 25px !important;
+            border-radius: 15px !important;
+            display: inline-block !important;
+            margin: 10px 0 !important;
+            text-shadow: none !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+            backdrop-filter: blur(10px);
+        }
     </style>
 </head>
 <body>
@@ -448,7 +649,12 @@
                     <div class="icon"><i class="fas fa-ring"></i></div>
                     <h3>Ceremony</h3>
                     <div class="time">{{ invitation.muhurtham_time }}</div>
-                    <div class="location">{{ invitation.venue_address or 'Venue Address' }}</div>
+                    <div class="location venue-address" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">{{ invitation.venue_address or 'Venue Address' }}</div>
+                    {% if invitation.venue_address %}
+                    <a href="#" class="location-link-small" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">
+                        <i class="fas fa-external-link-alt"></i> View on Maps
+                    </a>
+                    {% endif %}
                 </div>
                 {% endif %}
                 
@@ -457,7 +663,12 @@
                     <div class="icon"><i class="fas fa-glass-cheers"></i></div>
                     <h3>Reception</h3>
                     <div class="time">{{ invitation.reception_time }}</div>
-                    <div class="location">{{ invitation.venue_address or 'Venue Address' }}</div>
+                    <div class="location venue-address" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">{{ invitation.venue_address or 'Venue Address' }}</div>
+                    {% if invitation.venue_address %}
+                    <a href="#" class="location-link-small" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">
+                        <i class="fas fa-external-link-alt"></i> View on Maps
+                    </a>
+                    {% endif %}
                 </div>
                 {% endif %}
                 
@@ -465,23 +676,27 @@
                     <div class="icon"><i class="fas fa-utensils"></i></div>
                     <h3>Dinner</h3>
                     <div class="time">Following Reception</div>
-                    <div class="location">{{ invitation.venue_address or 'Venue Address' }}</div>
+                    <div class="location venue-address" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">{{ invitation.venue_address or 'Venue Address' }}</div>
+                    {% if invitation.venue_address %}
+                    <a href="#" class="location-link-small" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">
+                        <i class="fas fa-external-link-alt"></i> View on Maps
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Gallery Section -->
-    {% if invitation.gallery_images %}
+    {% if event_data.galleryImages and event_data.galleryImages|length > 0 %}
     <section class="gallery-section">
         <div class="container">
             <h2 class="section-title fade-in">Our Memories</h2>
             <div class="gallery-grid">
-                {% set gallery_list = invitation.gallery_images.split(',') if invitation.gallery_images else [] %}
-                {% for image in gallery_list %}
-                {% if image.strip() %}
+                {% for image in event_data.galleryImages %}
+                {% if image %}
                 <div class="gallery-item fade-in">
-                    <img src="{{ url_for('uploaded_file', filename=image.strip()) }}" alt="Gallery Image" loading="lazy">
+                    <img src="{{ url_for('uploaded_file', filename=image) }}" alt="Gallery Image" loading="lazy">
                 </div>
                 {% endif %}
                 {% endfor %}
@@ -523,7 +738,10 @@
                 <div class="contact-card fade-in">
                     <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
                     <h4>Venue</h4>
-                    <p>{{ invitation.venue_address }}</p>
+                    <p class="venue-address" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps" style="cursor: pointer; font-weight: 600; color: #2c3e50; padding: 0.5rem; background: rgba(16, 19, 87, 0.05); border-radius: 8px; border: 1px solid rgba(16, 19, 87, 0.1); transition: all 0.3s ease;">{{ invitation.venue_address }}</p>
+                    <a href="#" class="location-link" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">
+                        <i class="fas fa-external-link-alt me-2"></i>View on Google Maps
+                    </a>
                 </div>
                 {% endif %}
             </div>
@@ -563,6 +781,17 @@
                 behavior: 'smooth'
             });
         });
+
+        // Location functionality
+        function openLocation(venueAddress) {
+            if (venueAddress && venueAddress.trim()) {
+                const encodedAddress = encodeURIComponent(venueAddress.trim());
+                const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+                window.open(googleMapsUrl, '_blank');
+            } else {
+                alert('Venue address not available');
+            }
+        }
     </script>
 </body>
 </html>

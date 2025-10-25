@@ -108,6 +108,10 @@ class Invitation(db.Model):
     contact_email = db.Column(db.String(120))
     venue_address = db.Column(db.Text)
 
+    # Story fields
+    love_story = db.Column(db.Text)  # For weddings
+    event_story = db.Column(db.Text)  # For other events
+
     # Image fields
     main_image = db.Column(db.String(255))
     bride_image = db.Column(db.String(255))
@@ -117,12 +121,22 @@ class Invitation(db.Model):
     graduate_image = db.Column(db.String(255))
     honoree_image = db.Column(db.String(255))
     gallery_images = db.Column(db.Text)  # JSON string of image filenames
+    
+    # Customization fields
+    customization_data = db.Column(db.Text)  # JSON string of customization settings
 
     share_url = db.Column(db.String(100), unique=True, nullable=False)
     view_count = db.Column(db.Integer, default=0)
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    wishes = db.relationship('Wish', backref='invitation', lazy=True, cascade='all, delete-orphan')
+    guests = db.relationship('Guest', backref='invitation', lazy=True, cascade='all, delete-orphan')
+    rsvps = db.relationship('RSVP', backref='invitation', lazy=True, cascade='all, delete-orphan')
+    views = db.relationship('InvitationView', backref='invitation', lazy=True, cascade='all, delete-orphan')
+    shares = db.relationship('InvitationShare', backref='invitation', lazy=True, cascade='all, delete-orphan')
 
 
 
@@ -439,3 +453,74 @@ def init_sample_data():
 
     db.session.commit()
     print("Sample data initialized successfully!")
+
+
+# Add Wish model after all other models
+class Wish(db.Model):
+    __tablename__ = 'wishes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invitation_id = db.Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+# RSVP Models
+class Guest(db.Model):
+    __tablename__ = 'guests'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invitation_id = db.Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120))
+    phone = db.Column(db.String(20))
+    plus_ones = db.Column(db.Integer, default=0)
+    dietary_requirements = db.Column(db.Text)
+    notes = db.Column(db.Text)
+    is_invited = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    rsvp = db.relationship('RSVP', backref='guest', lazy=True, uselist=False, cascade='all, delete-orphan')
+
+class RSVP(db.Model):
+    __tablename__ = 'rsvps'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invitation_id = db.Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
+    guest_id = db.Column(db.Integer, db.ForeignKey('guests.id'), nullable=False)
+    status = db.Column(db.String(20), nullable=False)  # 'attending', 'not_attending', 'maybe', 'pending'
+    response_date = db.Column(db.DateTime, default=datetime.utcnow)
+    plus_ones_attending = db.Column(db.Integer, default=0)
+    dietary_requirements = db.Column(db.Text)
+    message = db.Column(db.Text)
+    ip_address = db.Column(db.String(45))
+    user_agent = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+# Analytics Models
+class InvitationView(db.Model):
+    __tablename__ = 'invitation_views'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invitation_id = db.Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
+    ip_address = db.Column(db.String(45))
+    user_agent = db.Column(db.Text)
+    referrer = db.Column(db.String(255))
+    country = db.Column(db.String(100))
+    city = db.Column(db.String(100))
+    device_type = db.Column(db.String(50))  # 'desktop', 'mobile', 'tablet'
+    browser = db.Column(db.String(100))
+    viewed_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class InvitationShare(db.Model):
+    __tablename__ = 'invitation_shares'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invitation_id = db.Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
+    share_method = db.Column(db.String(50), nullable=False)  # 'email', 'whatsapp', 'telegram', 'link', 'qr'
+    recipient_info = db.Column(db.String(255))  # email, phone, or 'direct_link'
+    shared_at = db.Column(db.DateTime, default=datetime.utcnow)
+    ip_address = db.Column(db.String(45))

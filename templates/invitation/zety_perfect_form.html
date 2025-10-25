@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventCraft - Create Your Invitation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar Navigation - Exact Zety Style */
+        .left-sidebar {
+            width: 280px;
+            background: #1e3a8a;
+            color: white;
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e3a8a;
+            font-size: 1.2rem;
+        }
+
+        .nav-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-step {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .nav-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            width: 2px;
+            height: 30px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 1px;
+        }
+
+        .step-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .step-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .step-link.active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .step-number.completed {
+            background: #10b981;
+        }
+
+        .step-number.active {
+            background: white;
+            color: #1e3a8a;
+        }
+
+        .step-text {
+            font-weight: 500;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 2rem;
+            left: 1.5rem;
+            right: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.75rem;
+        }
+
+        /* Main Content Area - Exact Zety Style */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            background: white;
+            padding: 2rem 3rem;
+            min-height: 100vh;
+        }
+
+        .back-link {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link:hover {
+            color: #1e3a8a;
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .required-note {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .required-note::before {
+            content: '*';
+            color: #ef4444;
+            margin-right: 0.25rem;
+        }
+
+        /* Photo Upload Section - Exact Zety Style */
+        .photo-section {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            align-items: flex-start;
+        }
+
+        .photo-upload {
+            flex-shrink: 0;
+        }
+
+        .photo-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            border: 2px dashed #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-placeholder {
+            color: #9ca3af;
+            font-size: 2rem;
+        }
+
+        .upload-link {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            display: block;
+            text-align: center;
+        }
+
+        .upload-link:hover {
+            color: #1e3a8a;
+        }
+
+        /* Form Fields - Exact Zety Style */
+        .form-section {
+            flex: 1;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+        }
+
+        .form-input.valid {
+            border-color: #10b981;
+        }
+
+        .validation-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #10b981;
+            font-size: 1.2rem;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        /* Additional Information Section - Exact Zety Style */
+        .additional-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .additional-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .additional-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .info-icon {
+            color: #1e3a8a;
+            font-size: 1rem;
+        }
+
+        .additional-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .additional-btn {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .additional-btn:hover {
+            background: #1e3a8a;
+            transform: translateY(-1px);
+        }
+
+        /* Right Sidebar Preview - Exact Zety Style */
+        .right-sidebar {
+            width: 350px;
+            background: #f8f9fa;
+            padding: 2rem;
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 999;
+        }
+
+        .preview-header {
+            margin-bottom: 2rem;
+        }
+
+        .preview-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .results-icon {
+            font-size: 2rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .results-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .resume-preview {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-header-section {
+            background: #1e3a8a;
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .preview-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .preview-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .preview-title {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .preview-content {
+            padding: 1.5rem;
+        }
+
+        .preview-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-section-title {
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .preview-item {
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: #4b5563;
+        }
+
+        .preview-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .preview-highlight {
+            background: #e5e7eb;
+            color: #374151;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .change-template-link {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .change-template-link:hover {
+            color: #1e3a8a;
+        }
+
+        .disclaimer {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 1rem;
+            line-height: 1.4;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .left-sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .photo-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+
+        /* Form Validation States */
+        .form-input.error {
+            border-color: #ef4444;
+        }
+
+        .form-input.valid {
+            border-color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left Sidebar Navigation -->
+        <div class="left-sidebar">
+            <div class="logo-section">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    EventCraft
+                </a>
+            </div>
+            
+            <ul class="nav-steps">
+                <li class="nav-step">
+                    <a href="#" class="step-link active">
+                        <div class="step-number active">1</div>
+                        <span class="step-text">Contact Information</span>
+                    </a>
+                </li>
+                <li class="nav-step">
+                    <a href="#" class="step-link">
+                        <div class="step-number completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <span class="step-text">Event Details</span>
+                    </a>
+                </li>
+                <li class="nav-step">
+                    <a href="#" class="step-link">
+                        <div class="step-number">3</div>
+                        <span class="step-text">Venue & Location</span>
+                    </a>
+                </li>
+                <li class="nav-step">
+                    <a href="#" class="step-link">
+                        <div class="step-number">4</div>
+                        <span class="step-text">Guest List</span>
+                    </a>
+                </li>
+                <li class="nav-step">
+                    <a href="#" class="step-link">
+                        <div class="step-number">5</div>
+                        <span class="step-text">Customization</span>
+                    </a>
+                </li>
+                <li class="nav-step">
+                    <a href="#" class="step-link">
+                        <div class="step-number">6</div>
+                        <span class="step-text">Finalize</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <ul class="footer-links">
+                    <li><a href="#">Terms And Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+                <div class="copyright">
+                    © 2025, EventCraft Limited. All rights reserved.
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <a href="#" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Go Back
+            </a>
+            
+            <div class="form-header">
+                <h1 class="form-title">Let's confirm your contact information</h1>
+                <p class="form-subtitle">Guests may call or email you, so make sure your information is updated.</p>
+                <p class="required-note">indicates a required field</p>
+            </div>
+
+            <div class="photo-section">
+                <div class="photo-upload">
+                    <div class="photo-preview" id="photoPreview">
+                        <div class="photo-placeholder">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    <a href="#" class="upload-link" id="uploadLink">Upload Photo</a>
+                    <input type="file" id="photoInput" accept="image/*" style="display: none;">
+                </div>
+                
+                <div class="form-section">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-input" id="firstName" value="MADHAN">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Surname</label>
+                            <input type="text" class="form-input valid" id="surname" value="J">
+                            <i class="fas fa-check validation-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Profession</label>
+                            <input type="text" class="form-input" id="profession" value="Event Organizer">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-input valid" id="city" value="Chittoor">
+                            <i class="fas fa-check validation-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <input type="text" class="form-input valid" id="country" value="India">
+                            <i class="fas fa-check validation-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Pin Code</label>
+                            <input type="text" class="form-input" id="pinCode" value="110034">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-input valid" id="phone" value="+91-8328557699">
+                            <i class="fas fa-check validation-icon"></i>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email <span class="required">*</span></label>
+                            <input type="email" class="form-input valid" id="email" value="jmadhanplacement@gmail.com" required>
+                            <i class="fas fa-check validation-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="additional-section">
+                <div class="additional-header">
+                    <h3 class="additional-title">Add additional information to your invitation (optional)</h3>
+                    <i class="fas fa-info-circle info-icon"></i>
+                </div>
+                <div class="additional-buttons">
+                    <button class="additional-btn">
+                        <i class="fas fa-plus"></i>
+                        LinkedIn +
+                    </button>
+                    <button class="additional-btn">
+                        <i class="fas fa-plus"></i>
+                        Website +
+                    </button>
+                    <button class="additional-btn">
+                        <i class="fas fa-plus"></i>
+                        Social Media +
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar Preview -->
+        <div class="right-sidebar">
+            <div class="preview-header">
+                <h2 class="preview-title">Our Invitation Builder delivers results</h2>
+            </div>
+            
+            <div class="results-section">
+                <div class="results-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="results-text">50% Increase in guest attendance</div>
+            </div>
+            
+            <div class="resume-preview">
+                <div class="preview-header-section">
+                    <div class="preview-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="preview-name">MADHAN J</div>
+                        <div class="preview-title">Event Organizer</div>
+                    </div>
+                </div>
+                
+                <div class="preview-content">
+                    <div class="preview-section">
+                        <div class="preview-section-title">Contact</div>
+                        <div class="preview-item">Chittoor, India 110034</div>
+                        <div class="preview-item">+91-8328557699</div>
+                        <div class="preview-item">jmadhanplacement@gmail.com</div>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <div class="preview-section-title">Highlights</div>
+                        <div class="preview-highlights">
+                            <span class="preview-highlight">Event Planning</span>
+                            <span class="preview-highlight">Wedding Coordination</span>
+                            <span class="preview-highlight">Party Management</span>
+                            <span class="preview-highlight">Guest Relations</span>
+                            <span class="preview-highlight">Venue Selection</span>
+                            <span class="preview-highlight">Catering</span>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <div class="preview-section-title">Experience</div>
+                        <div class="preview-item">Senior Event Coordinator</div>
+                        <div class="preview-item">Wedding Planner</div>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <div class="preview-section-title">Education</div>
+                        <div class="preview-item">B.Tech: Computer Science</div>
+                        <div class="preview-item">Event Management Certification</div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#" class="change-template-link">Change template</a>
+            
+            <div class="disclaimer">
+                † The results are based on a study with over 1000 participants, among whom 287 used invitation tools provided on our family sites.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Photo upload functionality
+        document.getElementById('uploadLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('photoInput').click();
+        });
+
+        document.getElementById('photoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photoPreview = document.getElementById('photoPreview');
+                    photoPreview.innerHTML = `<img src="${e.target.result}" alt="Profile Photo">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form validation
+        const formInputs = document.querySelectorAll('.form-input');
+        formInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                validateField(this);
+            });
+        });
+
+        function validateField(field) {
+            const value = field.value.trim();
+            const isValid = value.length > 0;
+            
+            field.classList.remove('valid', 'error');
+            if (isValid) {
+                field.classList.add('valid');
+            } else if (field.hasAttribute('required')) {
+                field.classList.add('error');
+            }
+        }
+
+        // Additional buttons functionality
+        document.querySelectorAll('.additional-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const text = this.textContent.replace(' +', '');
+                alert(`Adding ${text} field...`);
+            });
+        });
+
+        // Step navigation
+        document.querySelectorAll('.step-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all steps
+                document.querySelectorAll('.step-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.step-number').forEach(n => n.classList.remove('active'));
+                
+                // Add active class to clicked step
+                this.classList.add('active');
+                this.querySelector('.step-number').classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,25 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}Contact - EventCraft Pro{% endblock %}
+{% block title %}Contact EventCraft Pro - Get Support & Help{% endblock %}
 
 {% block content %}
-<!-- Contact Hero Section -->
-<section class="contact-hero py-5">
+<!-- Hero Section -->
+<section class="hero-section py-5">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <div class="hero-content slide-up">
-                    <div class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">
-                        <i class="fas fa-envelope me-1"></i>Contact Us
-                    </div>
-                    
-                    <h1 class="hero-title mb-3">
-                        Get in <span class="text-gradient">Touch</span>
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title display-4 fw-bold mb-4">
+                        Get in <span class="text-gradient-primary">Touch</span>
                     </h1>
-                    
-                    <p class="hero-subtitle mb-4">
-                        Have questions or need help? We'd love to hear from you!
+                    <p class="hero-subtitle lead mb-4">
+                        Have questions? Need help? We're here to support you every step of the way. Reach out to our team and we'll get back to you within 24 hours.
                     </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-visual text-center">
+                    <div class="contact-illustration">
+                        <i class="fas fa-headset fa-5x text-gradient-primary mb-4"></i>
+                        <h3 class="text-white">24/7 Support Available</h3>
+                    </div>
                 </div>
             </div>
         </div>
@@ -27,33 +30,56 @@
 </section>
 
 <!-- Contact Form Section -->
-<section class="contact-form py-5">
+<section class="contact-section py-5 bg-light">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="contact-card">
-                    <h2 class="text-center mb-4">Send us a Message</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="contact-form-card">
+                    <div class="text-center mb-5">
+                        <h2 class="section-title mb-3">Send us a Message</h2>
+                        <p class="section-subtitle text-muted">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+                    </div>
                     
-                    <form method="POST">
+                    <form class="contact-form" method="POST" action="{{ url_for('contact') }}">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="name" class="form-label">Full Name *</label>
                                 <input type="text" class="form-control" id="name" name="name" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">Email Address *</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
                             </div>
-                            <div class="col-12">
-                                <label for="subject" class="form-label">Subject</label>
-                                <input type="text" class="form-control" id="subject" name="subject" required>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="subject" class="form-label">Subject *</label>
+                                <select class="form-control" id="subject" name="subject" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="billing">Billing Question</option>
+                                    <option value="feature">Feature Request</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="other">Other</option>
+                                </select>
                             </div>
                             <div class="col-12">
-                                <label for="message" class="form-label">Message</label>
-                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+                                    <label class="form-check-label" for="newsletter">
+                                        Subscribe to our newsletter for updates and tips
+                                    </label>
+                                </div>
                             </div>
                             <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-primary btn-lg">
+                                <button type="submit" class="btn btn-primary-custom btn-lg">
                                     <i class="fas fa-paper-plane me-2"></i>Send Message
                                 </button>
                             </div>
@@ -64,4 +90,202 @@
         </div>
     </div>
 </section>
+
+<!-- Contact Info Section -->
+<section class="contact-info-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title display-5 fw-bold mb-3">Other Ways to Reach Us</h2>
+            <p class="section-subtitle lead text-muted">Choose the method that works best for you</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="contact-info-card text-center h-100">
+                    <div class="contact-icon mb-4">
+                        <i class="fas fa-envelope fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="contact-title mb-3">Email Support</h4>
+                    <p class="contact-description mb-3">
+                        Get detailed help via email. Our support team responds within 24 hours.
+                    </p>
+                    <a href="mailto:support@eventcraftpro.com" class="btn btn-outline-primary">
+                        support@eventcraftpro.com
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="contact-info-card text-center h-100">
+                    <div class="contact-icon mb-4">
+                        <i class="fas fa-comments fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="contact-title mb-3">Live Chat</h4>
+                    <p class="contact-description mb-3">
+                        Chat with our support team in real-time. Available Monday-Friday, 9 AM - 6 PM EST.
+                    </p>
+                    <button class="btn btn-outline-primary" onclick="openLiveChat()">
+                        Start Live Chat
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="contact-info-card text-center h-100">
+                    <div class="contact-icon mb-4">
+                        <i class="fas fa-phone fa-3x text-primary"></i>
+                    </div>
+                    <h4 class="contact-title mb-3">Phone Support</h4>
+                    <p class="contact-description mb-3">
+                        Speak directly with our support team. Available for premium users.
+                    </p>
+                    <a href="tel:+1-555-0123" class="btn btn-outline-primary">
+                        +1 (555) 012-3456
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title display-5 fw-bold mb-3">Frequently Asked Questions</h2>
+            <p class="section-subtitle lead text-muted">Quick answers to common questions</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                How do I create my first invitation?
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Creating your first invitation is easy! Simply click "Create New Invitation" on our homepage, choose a template that matches your event type, and follow our step-by-step customization wizard. You can have a beautiful invitation ready in just a few minutes.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                Can I customize the templates?
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Absolutely! All our templates are fully customizable. You can change colors, fonts, text, images, and even upload your own photos and logos. Our drag-and-drop editor makes it easy to create a unique invitation that perfectly matches your event.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                How does RSVP tracking work?
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Our RSVP system automatically tracks responses when guests click the RSVP button on your invitation. You can view all responses in real-time through your dashboard, send automated reminders to guests who haven't responded, and export your guest list for easy management.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                Is my data secure?
+                            </button>
+                        </h2>
+                        <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, absolutely. We use enterprise-grade security measures including SSL encryption, secure data storage, and are fully GDPR compliant. Your personal information and event data are protected with the highest security standards.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq5">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                Can I collaborate with others on an invitation?
+                            </button>
+                        </h2>
+                        <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! You can invite co-hosts to collaborate on your invitation design and guest management. They can make real-time edits, add comments, and help manage the guest list. Perfect for couples planning weddings or teams organizing corporate events.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section py-5">
+    <div class="container text-center">
+        <h2 class="cta-title display-4 fw-bold mb-4">Still Have Questions?</h2>
+        <p class="cta-subtitle lead mb-4">Our support team is here to help you succeed</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="#contact-form" class="btn btn-primary-custom btn-lg">
+                <i class="fas fa-envelope me-2"></i>Send us a Message
+            </a>
+            <a href="{{ url_for('templates') }}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-rocket me-2"></i>Start Creating
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function openLiveChat() {
+    // Simulate opening live chat
+    alert('Live chat feature coming soon! For now, please use our email support.');
+}
+
+// Form validation and submission
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('.contact-form');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            
+            // Basic validation
+            if (!data.name || !data.email || !data.subject || !data.message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Simulate form submission
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+                form.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+    }
+});
+</script>
 {% endblock %}

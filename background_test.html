@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Screen Background Test</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .test-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .test-content {
+            z-index: 10;
+            max-width: 800px;
+            padding: 2rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .test-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .test-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-features {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .test-features li {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .test-features li::before {
+            content: '✅ ';
+            margin-right: 0.5rem;
+        }
+
+        /* Sample background images */
+        .anniversary-bg {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        }
+
+        .wedding-bg {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .birthday-bg {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .nav-btn {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem 0;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="navigation">
+        <a href="#anniversary" class="nav-btn">Anniversary</a>
+        <a href="#wedding" class="nav-btn">Wedding</a>
+        <a href="#birthday" class="nav-btn">Birthday</a>
+        <a href="#gradient" class="nav-btn">Gradient</a>
+    </div>
+
+    <!-- Anniversary Section -->
+    <section id="anniversary" class="test-section anniversary-bg">
+        <div class="test-content">
+            <h1 class="test-title">Anniversary Invitation</h1>
+            <p class="test-subtitle">Full-screen background with golden theme</p>
+            <ul class="test-features">
+                <li>Background covers entire viewport</li>
+                <li>Responsive on all devices</li>
+                <li>Golden gradient background</li>
+                <li>Perfect text readability</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Wedding Section -->
+    <section id="wedding" class="test-section wedding-bg">
+        <div class="test-content">
+            <h1 class="test-title">Wedding Invitation</h1>
+            <p class="test-subtitle">Elegant full-screen background</p>
+            <ul class="test-features">
+                <li>100vh height coverage</li>
+                <li>100vw width coverage</li>
+                <li>Center-positioned content</li>
+                <li>Professional styling</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Birthday Section -->
+    <section id="birthday" class="test-section birthday-bg">
+        <div class="test-content">
+            <h1 class="test-title">Birthday Invitation</h1>
+            <p class="test-subtitle">Colorful full-screen background</p>
+            <ul class="test-features">
+                <li>Vibrant color scheme</li>
+                <li>Full viewport coverage</li>
+                <li>Mobile-friendly design</li>
+                <li>Enhanced readability</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Gradient Section -->
+    <section id="gradient" class="test-section gradient-bg">
+        <div class="test-content">
+            <h1 class="test-title">Gradient Background</h1>
+            <p class="test-subtitle">Beautiful gradient full-screen background</p>
+            <ul class="test-features">
+                <li>Smooth gradient transition</li>
+                <li>Full-screen coverage</li>
+                <li>Modern design</li>
+                <li>Perfect for all events</li>
+            </ul>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.navigation');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(0,0,0,0.9)';
+            } else {
+                nav.style.background = 'rgba(0,0,0,0.8)';
+            }
+        });
+    </script>
+</body>
+</html>

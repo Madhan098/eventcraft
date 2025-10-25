@@ -4,9 +4,80 @@
 
 {% block content %}
 <style>
+    /* Enhanced Invitation Styling */
     .template-container {
         min-height: 100vh;
-        background: #f8f9fa;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .template-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="sparkle" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.3)"/><circle cx="5" cy="5" r="0.5" fill="rgba(255,255,255,0.2)"/><circle cx="15" cy="15" r="0.5" fill="rgba(255,255,255,0.2)"/></pattern></defs><rect width="100" height="100" fill="url(%23sparkle)"/></svg>');
+        animation: sparkle 20s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes sparkle {
+        0% { transform: translateX(0) translateY(0); }
+        100% { transform: translateX(-20px) translateY(-20px); }
+    }
+
+    .invitation-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 25px;
+        box-shadow: 
+            0 20px 40px rgba(0,0,0,0.1),
+            0 0 0 1px rgba(255,255,255,0.2),
+            inset 0 1px 0 rgba(255,255,255,0.3);
+        border: 2px solid rgba(255,255,255,0.3);
+        backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+        animation: cardEntrance 1s ease-out;
+    }
+
+    .invitation-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+        background-size: 200% 100%;
+        animation: gradientShift 3s ease-in-out infinite;
+    }
+
+    @keyframes cardEntrance {
+        0% {
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .invitation-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 
+            0 30px 60px rgba(0,0,0,0.15),
+            0 0 0 1px rgba(255,255,255,0.3),
+            inset 0 1px 0 rgba(255,255,255,0.4);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .template-not-found {
@@ -38,9 +109,76 @@
     }
 
     .fallback-invitation h1 {
-        color: #2c3e50;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         margin-bottom: 1rem;
-        font-size: 2.5rem;
+        font-size: 3rem;
+        font-weight: 800;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        animation: titleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+        0% { filter: brightness(1); }
+        100% { filter: brightness(1.2); }
+    }
+
+    /* Enhanced Typography */
+    .event-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        margin: 2rem 0;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        animation: titlePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes titlePulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .event-date {
+        font-size: 1.8rem;
+        color: #e74c3c;
+        font-weight: 700;
+        text-align: center;
+        margin: 1.5rem 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        animation: dateBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes dateBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    .event-description {
+        font-size: 1.3rem;
+        color: #495057;
+        line-height: 1.8;
+        text-align: center;
+        margin: 2rem 0;
+        font-weight: 500;
+        animation: fadeInUp 1s ease-out 0.5s both;
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .fallback-invitation .event-date {
@@ -62,52 +200,1088 @@
         padding-top: 2rem;
         border-top: 2px solid #e9ecef;
     }
+
+    /* Venue Info and Location Link Styles */
+    .venue-info {
+        margin: 1.5rem 0;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border-left: 4px solid #007bff;
+    }
+
+    .venue-info h4 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+    }
+
+    .venue-info p {
+        color: #495057;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+
+    .location-link {
+        display: inline-flex;
+        align-items: center;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        background: rgba(0, 123, 255, 0.1);
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 123, 255, 0.2);
+    }
+
+    .location-link:hover {
+        color: #0056b3;
+        background: rgba(0, 123, 255, 0.15);
+        border-color: rgba(0, 123, 255, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+        text-decoration: none;
+    }
+
+    .location-link i {
+        font-size: 0.9rem;
+    }
+
+    /* Enhanced Wishes Section Styles */
+    .wishes-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 4rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .wishes-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hearts" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="2" fill="rgba(255,255,255,0.1)"/><path d="M15,10 C12,5 8,5 8,8 C8,5 4,5 4,8 C4,12 8,15 15,20 C22,15 26,12 26,8 C26,5 22,5 22,8 C22,5 18,5 15,10 Z" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23hearts)"/></svg>');
+        animation: heartsFloat 25s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes heartsFloat {
+        0% { transform: translateY(0) translateX(0); }
+        100% { transform: translateY(-30px) translateX(-30px); }
+    }
+
+    .wishes-container {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%) !important;
+        border: 2px solid rgba(255,255,255,0.3) !important;
+        box-shadow: 
+            0 20px 40px rgba(0,0,0,0.1),
+            0 0 0 1px rgba(255,255,255,0.2) !important;
+        backdrop-filter: blur(20px);
+        animation: wishesSlideIn 1s ease-out 0.6s both;
+    }
+
+    @keyframes wishesSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .wish-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%) !important;
+        border: 2px solid rgba(102, 126, 234, 0.1) !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
+        transition: all 0.3s ease !important;
+        animation: wishCardEntrance 0.6s ease-out both;
+    }
+
+    .wish-card:hover {
+        transform: translateY(-5px) scale(1.02) !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+        border-color: rgba(102, 126, 234, 0.3) !important;
+    }
+
+    @keyframes wishCardEntrance {
+        0% {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .wish-form {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+    }
+
+    .wish-card {
+        transition: all 0.3s ease;
+        border: 2px solid #e9ecef !important;
+        background: white;
+    }
+
+    .wish-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        border-color: #007bff !important;
+    }
+
+    .wish-avatar {
+        flex-shrink: 0;
+    }
+
+    .wish-name {
+    
+    /* Modal Debug Styles */
+    .modal {
+        z-index: 9999 !important;
+    }
+    
+    .modal-backdrop {
+        z-index: 9998 !important;
+    }
+    
+    #shareModal {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .wish-message {
+        color: #495057;
+        line-height: 1.5;
+    }
+
+    .wish-content small {
+        font-size: 0.8rem;
+    }
+
+    /* Horizontal Scrollable Wishes Styles */
+    .wishes-scroll-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .wishes-horizontal-scroll {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 1rem;
+        padding: 0.5rem 0;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #007bff #f8f9fa;
+    }
+
+    .wishes-horizontal-scroll::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .wishes-horizontal-scroll::-webkit-scrollbar-track {
+        background: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .wishes-horizontal-scroll::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 4px;
+    }
+
+    .wishes-horizontal-scroll::-webkit-scrollbar-thumb:hover {
+        background: #0056b3;
+    }
+
+    .wish-item {
+        flex: 0 0 300px;
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    .wish-item .wish-card {
+        height: 100%;
+        min-height: 120px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .wish-item {
+            flex: 0 0 280px;
+            min-width: 280px;
+            max-width: 280px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .wish-item {
+            flex: 0 0 250px;
+            min-width: 250px;
+            max-width: 250px;
+        }
+    }
+
+    /* Auto-scrolling wishes styles */
+    .wishes-auto-scroll {
+        display: flex;
+        overflow: hidden;
+        gap: 1rem;
+        padding: 1rem 0;
+        animation: scrollWishes 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    .wishes-auto-scroll:hover {
+        animation-play-state: paused;
+    }
+
+    .wishes-auto-scroll .wish-item {
+        flex: 0 0 300px;
+        white-space: normal;
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    @keyframes scrollWishes {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    .wishes-scroll-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .wishes-scroll-container::before,
+    .wishes-scroll-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 50px;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .wishes-scroll-container::before {
+        left: 0;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0.8), transparent);
+    }
+
+    .wishes-scroll-container::after {
+        right: 0;
+        background: linear-gradient(to left, rgba(255, 255, 255, 0.8), transparent);
+    }
+
+    /* Enhanced RSVP Section Styles */
+    .rsvp-section {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 
+            0 15px 35px rgba(0,0,0,0.1),
+            0 0 0 1px rgba(255,255,255,0.2);
+        border: 2px solid rgba(102, 126, 234, 0.2);
+        position: relative;
+        overflow: hidden;
+        animation: rsvpSlideIn 1s ease-out 0.3s both;
+    }
+
+    .rsvp-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #28a745, #20c997, #17a2b8);
+        background-size: 200% 100%;
+        animation: rsvpGradient 3s ease-in-out infinite;
+    }
+
+    @keyframes rsvpSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes rsvpGradient {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .rsvp-section h5 {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .rsvp-btn {
+        padding: 1.2rem 2.5rem;
+        font-weight: 700;
+        border-radius: 15px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .rsvp-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .rsvp-btn:hover::before {
+        left: 100%;
+    }
+
+    .rsvp-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .rsvp-btn.btn-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border-color: #28a745;
+        color: white;
+    }
+
+    .rsvp-btn.btn-success:hover {
+        background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+        border-color: #1e7e34;
+    }
+
+    .rsvp-btn.btn-outline-danger {
+        border-color: #dc3545;
+        color: #dc3545;
+        background: transparent;
+    }
+
+    .rsvp-btn.btn-outline-danger:hover {
+        background: #dc3545;
+        color: white;
+        border-color: #dc3545;
+    }
+
+    .rsvp-status .alert {
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+        color: #0c5460;
+        font-weight: 500;
+    }
+
+    .rsvp-status .alert i {
+        color: #17a2b8;
+    }
+
+    /* Interactive Elements */
+    .floating-elements {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .floating-heart {
+        position: absolute;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 1.5rem;
+        animation: floatUp 8s linear infinite;
+    }
+
+    @keyframes floatUp {
+        0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    /* Enhanced Share Button */
+    .share-section .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 15px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .share-section .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .share-section .btn:hover::before {
+        left: 100%;
+    }
+
+    .share-section .btn:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Enhanced Venue Info with Interactive Location */
+    .venue-info {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%) !important;
+        border: 2px solid rgba(102, 126, 234, 0.2) !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+        animation: venueSlideIn 1s ease-out 0.4s both;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .venue-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .venue-info:hover::before {
+        left: 100%;
+    }
+
+    .venue-info:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+            0 25px 50px rgba(0,0,0,0.15),
+            0 0 0 1px rgba(102, 126, 234, 0.3);
+        border-color: rgba(102, 126, 234, 0.4);
+    }
+
+    @keyframes venueSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Enhanced Venue Title */
+    .venue-info h4 {
+        color: #2c3e50 !important;
+        font-weight: 800 !important;
+        font-size: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+        text-align: center !important;
+        position: relative;
+        animation: titleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+        0% { 
+            text-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            transform: scale(1);
+        }
+        100% { 
+            text-shadow: 0 0 15px rgba(102, 126, 234, 0.6);
+            transform: scale(1.05);
+        }
+    }
+
+    /* Interactive Location Text */
+    .venue-info p {
+        color: #495057 !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        margin-bottom: 1.5rem !important;
+        line-height: 1.6 !important;
+        transition: all 0.3s ease !important;
+        position: relative;
+    }
+
+    .venue-info:hover p {
+        color: #667eea !important;
+        transform: scale(1.05);
+    }
+
+    /* Enhanced Location Link */
+    .location-link {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        border-radius: 15px !important;
+        text-decoration: none !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3) !important;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto !important;
+        animation: locationPulse 3s ease-in-out infinite;
+    }
+
+    .location-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .location-link:hover::before {
+        left: 100%;
+    }
+
+    @keyframes locationPulse {
+        0%, 100% { 
+            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        50% { 
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(40, 167, 69, 0.5);
+        }
+    }
+
+    .location-link:hover {
+        transform: translateY(-5px) scale(1.1) !important;
+        box-shadow: 0 15px 40px rgba(40, 167, 69, 0.5) !important;
+        color: white !important;
+    }
+
+    .location-link i {
+        font-size: 1.2rem !important;
+        animation: mapIconBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes mapIconBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+    }
+
+    /* Enhanced Event Cards Animations */
+    .event-card {
+        animation: eventCardEntrance 1s ease-out both;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .event-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+        background-size: 200% 100%;
+        animation: cardGradientShift 4s ease-in-out infinite;
+    }
+
+    @keyframes eventCardEntrance {
+        0% {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes cardGradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .event-card:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Enhanced Event Icons */
+    .event-icon {
+        animation: iconFloat 3s ease-in-out infinite;
+        transition: all 0.3s ease;
+    }
+
+    .event-icon:hover {
+        transform: scale(1.2) rotate(10deg);
+        animation-play-state: paused;
+    }
+
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-8px) rotate(5deg); }
+    }
+
+    /* Enhanced Event Times */
+    .event-time {
+        animation: timeGlow 2s ease-in-out infinite alternate;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    @keyframes timeGlow {
+        0% { 
+            text-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            transform: scale(1);
+        }
+        100% { 
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.6);
+            transform: scale(1.05);
+        }
+    }
+
+    /* Enhanced Event Titles */
+    .event-title {
+        animation: titleSlideIn 1s ease-out 0.2s both;
+        font-weight: 800;
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    @keyframes titleSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Enhanced Address Text */
+    .address-text {
+        animation: addressFadeIn 1s ease-out 0.6s both;
+        font-weight: 600;
+        color: #495057;
+        line-height: 1.6;
+    }
+
+    @keyframes addressFadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Enhanced Decorative Elements */
+    .decorative-heart {
+        animation: heartFloat 4s ease-in-out infinite;
+        color: #ff6b9d;
+        font-size: 1.5rem;
+    }
+
+    .decorative-star {
+        animation: starTwinkle 2s ease-in-out infinite;
+        color: #ffd700;
+        font-size: 1.2rem;
+    }
+
+    @keyframes heartFloat {
+        0%, 100% { 
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.7;
+        }
+        50% { 
+            transform: translateY(-10px) rotate(10deg);
+            opacity: 1;
+        }
+    }
+
+    @keyframes starTwinkle {
+        0%, 100% { 
+            transform: scale(1) rotate(0deg);
+            opacity: 0.6;
+        }
+        50% { 
+            transform: scale(1.2) rotate(180deg);
+            opacity: 1;
+        }
+    }
+
+    /* Enhanced Location Link */
+    .location-link {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        color: white !important;
+        padding: 0.75rem 1.5rem !important;
+        border-radius: 10px !important;
+        text-decoration: none !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3) !important;
+    }
+
+    .location-link:hover {
+        transform: translateY(-3px) scale(1.05) !important;
+        box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4) !important;
+        color: white !important;
+    }
+
+    /* Share Button Styles */
+    .share-section .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .share-section .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    /* Enhanced text readability for background images */
+    .hero-content h1, .hero-content h2, .hero-content h3, .hero-content p {
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+        color: white !important;
+        padding: 15px 25px !important;
+        border-radius: 15px !important;
+        display: inline-block !important;
+        margin: 10px 0 !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+        backdrop-filter: blur(10px);
+    }
+    
+    .hero-content p {
+        background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%) !important;
+        padding: 12px 20px !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Ensure all text in hero sections is readable */
+    .hero-section * {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Add semi-transparent backgrounds to text containers */
+    .text-overlay {
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+        padding: 15px;
+        border-radius: 15px;
+        margin: 10px 0;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Enhanced text shadows for better readability */
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Text readability for sections with background images */
+    .section-with-bg {
+        position: relative;
+    }
+    
+    .section-with-bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.3);
+        z-index: 1;
+    }
+    
+    .section-with-bg > * {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Enhanced text containers */
+    .text-container {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        border: 1px solid rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    .text-container h1, .text-container h2, .text-container h3 {
+        color: #2c3e50 !important;
+        text-shadow: none !important;
+    }
+    
+    .text-container p {
+        color: #555 !important;
+        text-shadow: none !important;
+    }
+    
+    /* Dark text overlay for light backgrounds */
+    .dark-text-overlay {
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+        color: white !important;
+        padding: 15px 25px !important;
+        border-radius: 15px !important;
+        display: inline-block !important;
+        margin: 10px 0 !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Light text overlay for dark backgrounds */
+    .light-text-overlay {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+        color: #2c3e50 !important;
+        padding: 15px 25px !important;
+        border-radius: 15px !important;
+        display: inline-block !important;
+        margin: 10px 0 !important;
+        text-shadow: none !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Modal fallback styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal.show {
+        display: block;
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1040;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-backdrop.fade {
+        opacity: 0;
+        transition: opacity 0.15s linear;
+    }
+
+    .modal-backdrop.show {
+        opacity: 1;
+    }
+
+    .modal-dialog {
+        position: relative;
+        width: auto;
+        margin: 0.5rem;
+        pointer-events: none;
+    }
+
+    .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+
+    .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: calc(0.3rem - 1px);
+        border-top-right-radius: calc(0.3rem - 1px);
+    }
+
+    .modal-body {
+        position: relative;
+        flex: 1 1 auto;
+        padding: 1rem;
+    }
+
+    .modal-footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0.75rem;
+        border-top: 1px solid #dee2e6;
+        border-bottom-right-radius: calc(0.3rem - 1px);
+        border-bottom-left-radius: calc(0.3rem - 1px);
+    }
+
+    .btn-close {
+        box-sizing: content-box;
+        width: 1em;
+        height: 1em;
+        padding: 0.25em 0.25em;
+        color: #000;
+        background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+        border: 0;
+        border-radius: 0.25rem;
+        opacity: 0.5;
+        cursor: pointer;
+    }
+
+    .btn-close:hover {
+        color: #000;
+        text-decoration: none;
+        opacity: 0.75;
+    }
+
+    .btn-close:focus {
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        opacity: 1;
+    }
+
+    .btn-close-white {
+        filter: invert(1) grayscale(100%) brightness(200%);
+    }
+
+    /* Responsive modal */
+    @media (min-width: 576px) {
+        .modal-dialog {
+            max-width: 500px;
+            margin: 1.75rem auto;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .modal-dialog {
+            max-width: 600px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .modal-dialog {
+            max-width: 700px;
+        }
+    }
 </style>
 
 <div class="template-container">
+    <!-- Floating Hearts Animation -->
+    <div class="floating-elements">
+        <div class="floating-heart" style="left: 10%; animation-delay: 0s;">💖</div>
+        <div class="floating-heart" style="left: 20%; animation-delay: 2s;">✨</div>
+        <div class="floating-heart" style="left: 30%; animation-delay: 4s;">💕</div>
+        <div class="floating-heart" style="left: 40%; animation-delay: 6s;">🌟</div>
+        <div class="floating-heart" style="left: 50%; animation-delay: 1s;">💖</div>
+        <div class="floating-heart" style="left: 60%; animation-delay: 3s;">✨</div>
+        <div class="floating-heart" style="left: 70%; animation-delay: 5s;">💕</div>
+        <div class="floating-heart" style="left: 80%; animation-delay: 7s;">🌟</div>
+        <div class="floating-heart" style="left: 90%; animation-delay: 1.5s;">💖</div>
+    </div>
+    
     {% if invitation.template_name %}
         {# Render the appropriate template based on template_name #}
-        {% if invitation.template_name == 'wedding_elegant' or invitation.template_name == 'wedding_elegant_modern' %}
-            {% include 'invitation/templates/wedding_elegant_modern.html' %}
+        {% if invitation.template_name == 'wedding_elegant' or invitation.template_name == 'wedding_elegant_modern' or invitation.template_name == 'wedding_hindu_traditional' %}
+            {% include 'invitation/templates/wedding_elegant.html' %}
         {% elif invitation.template_name == 'birthday_fun_colorful' %}
-            {# Birthday Fun Colorful Template #}
-            <section class="hero-section" style="background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%); min-height: 100vh; display: flex; align-items: center; text-align: center; color: white;">
-                <div class="container">
-                    <h1 style="font-size: 4rem; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                        🎉 {{ event_data.eventTitle }}
-                    </h1>
-                    <p style="font-size: 1.5rem; margin-bottom: 2rem;">
-                        {{ event_data.eventDescription or 'Join us for a fun celebration!' }}
-                    </p>
-                    <div class="birthday-info" style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 20px; backdrop-filter: blur(10px);">
-                        <h3 style="margin-bottom: 1rem;">🎂 {{ event_data.birthdayPerson or 'Birthday Person' }}</h3>
-                        <p style="font-size: 1.3rem; margin-bottom: 1rem;">Turning {{ event_data.age or 'Age' }}!</p>
-                        <p style="font-size: 1.2rem;">📅 {{ event_data.eventDate }}</p>
-                        <p style="font-size: 1.2rem;">⏰ {{ event_data.startTime or 'Time TBD' }}</p>
-                    </div>
-                </div>
-            </section>
-
-        {% elif invitation.template_name == 'wedding_hindu_traditional' %}
-            {# Hindu Traditional Template #}
-            <section class="hero-section" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); min-height: 100vh; display: flex; align-items: center; text-align: center; color: white;">
-                <div class="container">
-                    <div class="religion-icon" style="font-size: 4rem; margin-bottom: 2rem;">
-                        🕉️
-                    </div>
-                    <h1 style="font-size: 3.5rem; margin-bottom: 2rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                        {{ event_data.familyName }}
-                    </h1>
-                    <p style="font-size: 1.3rem; margin-bottom: 2rem;">
-                        {{ event_data.eventDescription or 'Traditional Hindu Wedding Ceremony' }}
-                    </p>
-                    <div class="date-info" style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 20px; backdrop-filter: blur(10px);">
-                        <h3 style="margin-bottom: 1rem;">📅 {{ event_data.eventDate }}</h3>
-                        <p style="font-size: 1.2rem;">Muhurtham: {{ event_data.timeData.muhurthamTime or 'TBD' }}</p>
-                        <p style="font-size: 1.2rem;">Reception: {{ event_data.timeData.receptionTime or 'TBD' }}</p>
-                    </div>
-                </div>
-            </section>
+            {% include 'invitation/templates/birthday_fun_colorful.html' %}
+        {% elif invitation.template_name == 'graduation_success_modern' %}
+            {% include 'invitation/templates/graduation_success_modern.html' %}
+        {% elif invitation.template_name == 'anniversary_golden_elegant' %}
+            {% include 'invitation/templates/anniversary_golden_elegant.html' %}
+        {% elif invitation.template_name == 'babyshower_sweet_pink' %}
+            {% include 'invitation/templates/babyshower_sweet_pink.html' %}
+        {% elif invitation.template_name == 'retirement_golden_classic' %}
+            {% include 'invitation/templates/retirement_golden_classic.html' %}
 
         {% else %}
             {# Generic template or fallback #}
@@ -213,9 +1387,15 @@
                 </div>
 
                 {% if invitation.venue_address %}
-                <div class="venue-info">
-                    <h4><i class="fas fa-map-marker-alt me-2"></i>Venue</h4>
-                    <p>{{ invitation.venue_address }}</p>
+                <div class="venue-info" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">
+                    <h4><i class="fas fa-map-marker-alt me-2 event-icon"></i>📍 Location</h4>
+                    <p class="address-text">{{ invitation.venue_address }}</p>
+                    <a href="#" class="location-link" onclick="event.stopPropagation(); openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">
+                        <i class="fas fa-map-marked-alt me-2"></i>Open in Google Maps
+                    </a>
+                    <!-- Decorative Elements -->
+                    <div class="decorative-heart" style="position: absolute; top: 10px; right: 15px;">💖</div>
+                    <div class="decorative-star" style="position: absolute; bottom: 10px; left: 15px;">✨</div>
                 </div>
                 {% endif %}
 
@@ -253,9 +1433,15 @@
             </div>
 
             {% if invitation.venue_address %}
-            <div class="venue-info">
-                <h4><i class="fas fa-map-marker-alt me-2"></i>Venue</h4>
-                <p>{{ invitation.venue_address }}</p>
+            <div class="venue-info" onclick="openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">
+                <h4><i class="fas fa-map-marker-alt me-2 event-icon"></i>📍 Location</h4>
+                <p class="address-text">{{ invitation.venue_address }}</p>
+                <a href="#" class="location-link" onclick="event.stopPropagation(); openLocation('{{ invitation.venue_address }}')" title="Click to view location on Google Maps">
+                    <i class="fas fa-map-marked-alt me-2"></i>Open in Google Maps
+                </a>
+                <!-- Decorative Elements -->
+                <div class="decorative-heart" style="position: absolute; top: 10px; right: 15px;">💖</div>
+                <div class="decorative-star" style="position: absolute; bottom: 10px; left: 15px;">✨</div>
             </div>
             {% endif %}
 
@@ -272,17 +1458,120 @@
             </div>
         </div>
     {% endif %}
+
+    <!-- Share Button (Creator Only) -->
+    {% if session.user_id and session.user_id == invitation.user_id %}
+    <div class="share-section text-center mt-5 mb-4">
+        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#shareModal">
+            <i class="fas fa-share-alt me-2"></i>Share Invitation
+        </button>
+    </div>
+    {% endif %}
+
+    <!-- Wishes Section -->
+    <div class="wishes-section mt-5 mb-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="wishes-container bg-white rounded shadow p-4">
+                        <h3 class="text-center mb-4">
+                            <i class="fas fa-heart text-danger me-2"></i>Convey Your Wishes
+                        </h3>
+                        
+                        <!-- Wish Form -->
+                        <div class="wish-form mb-4">
+                            <form id="wishForm" class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="wishName" name="name" 
+                                           placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Wish
+                                    </button>
+                                </div>
+                                <div class="col-12">
+                                    <textarea class="form-control" id="wishMessage" name="message" rows="3" 
+                                              placeholder="Wish them with your love..." required></textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- RSVP Section -->
+                        <div class="rsvp-section mb-5">
+                            <h5 class="mb-3">
+                                <i class="fas fa-calendar-check me-2"></i>RSVP
+                            </h5>
+                            <div class="rsvp-options">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-success btn-lg w-100 rsvp-btn" onclick="handleRSVP('attending')">
+                                            <i class="fas fa-check-circle me-2"></i>I'm Attending
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-danger btn-lg w-100 rsvp-btn" onclick="handleRSVP('unable')">
+                                            <i class="fas fa-times-circle me-2"></i>Unable to Attend
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="rsvp-status mt-3" id="rsvpStatus" style="display: none;">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <span id="rsvpMessage"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wishes Display -->
+                        <div class="wishes-display">
+                            <h5 class="mb-3">
+                                <i class="fas fa-gift me-2"></i>Wishes from Loved Ones
+                            </h5>
+                            <div class="wishes-scroll-container">
+                                <div id="wishesContainer" class="wishes-auto-scroll">
+                                    {% for wish in wishes %}
+                                    <div class="wish-item">
+                                        <div class="wish-card border rounded p-3 h-100">
+                                            <div class="d-flex align-items-start">
+                                                <div class="wish-avatar me-3">
+                                                    <i class="fas fa-user-circle fa-2x text-primary"></i>
+                                                </div>
+                                                <div class="wish-content flex-grow-1">
+                                                    <h6 class="wish-name mb-1">{{ wish.name }}</h6>
+                                                    <p class="wish-message mb-2">{{ wish.message }}</p>
+                                                    <small class="text-muted">{{ wish.created_at }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div id="noWishes" class="text-center text-muted py-4" {% if wishes %}style="display: none;"{% endif %}>
+                                <i class="fas fa-heart-broken fa-2x mb-2"></i>
+                                <p>No wishes yet. Be the first to send your love!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Share Button (Floating) -->
+<!-- Share Button (Floating) - Temporarily Disabled for Debugging -->
+<!--
 <div class="share-floating-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
     <button class="btn btn-primary btn-lg rounded-circle" data-bs-toggle="modal" data-bs-target="#shareModal" style="width: 60px; height: 60px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
         <i class="fas fa-share-alt fa-lg"></i>
     </button>
 </div>
+-->
 
 <!-- Share Modal -->
-<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
             <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
@@ -311,18 +1600,33 @@
                     <div class="social-share-buttons">
                         <h6 style="margin-bottom: 1rem; color: #2c3e50;">Share on Social Media:</h6>
                         <div class="d-flex gap-2 justify-content-center flex-wrap">
-                            <a href="https://wa.me/?text={{ invitation.title or 'Event Invitation' }} - {{ request.url }}" target="_blank" class="btn btn-success btn-sm">
+                            <a href="https://wa.me/?text={{ invitation.title or 'Event Invitation' }} - {{ request.url }}" target="_blank" class="btn btn-success btn-sm" onclick="trackShare('whatsapp')">
                                 <i class="fab fa-whatsapp me-1"></i> WhatsApp
                             </a>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" class="btn btn-primary btn-sm">
+                            <a href="https://t.me/share/url?url={{ request.url }}&text={{ invitation.title or 'Event Invitation' }}" target="_blank" class="btn btn-info btn-sm" onclick="trackShare('telegram')">
+                                <i class="fab fa-telegram me-1"></i> Telegram
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" class="btn btn-primary btn-sm" onclick="trackShare('facebook')">
                                 <i class="fab fa-facebook me-1"></i> Facebook
                             </a>
-                            <a href="https://twitter.com/intent/tweet?text={{ invitation.title or 'Event Invitation' }}&url={{ request.url }}" target="_blank" class="btn btn-info btn-sm">
+                            <a href="https://twitter.com/intent/tweet?text={{ invitation.title or 'Event Invitation' }}&url={{ request.url }}" target="_blank" class="btn btn-info btn-sm" onclick="trackShare('twitter')">
                                 <i class="fab fa-twitter me-1"></i> Twitter
                             </a>
-                            <a href="mailto:?subject={{ invitation.title or 'Event Invitation' }}&body=You're invited! {{ request.url }}" class="btn btn-secondary btn-sm">
+                            <a href="mailto:?subject={{ invitation.title or 'Event Invitation' }}&body=You're invited! {{ request.url }}" class="btn btn-secondary btn-sm" onclick="trackShare('email')">
                                 <i class="fas fa-envelope me-1"></i> Email
                             </a>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code Section -->
+                    <div class="qr-code-section mt-4">
+                        <h6 style="margin-bottom: 1rem; color: #2c3e50;">QR Code:</h6>
+                        <div class="text-center">
+                            <div id="qrcode" style="display: inline-block; padding: 1rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+                            <p class="mt-2 small text-muted">Scan to view invitation</p>
+                            <button class="btn btn-outline-primary btn-sm" onclick="downloadQRCode()">
+                                <i class="fas fa-download me-1"></i> Download QR
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -337,8 +1641,178 @@
     </div>
 </div>
 
+<!-- Test Modal -->
+<div class="modal fade" id="testModal" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="testModalLabel">Test Modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>This is a test modal to check if Bootstrap modals are working.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
+// Function to open share modal with fallback
+function openShareModal() {
+    console.log('openShareModal called');
+    const modal = document.getElementById('shareModal');
+    
+    if (!modal) {
+        console.error('Share modal not found!');
+        alert('Share modal not found. Please refresh the page.');
+        return;
+    }
+    
+    // Try Bootstrap modal first
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+        try {
+            console.log('Using Bootstrap modal');
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            
+            // Generate QR code when modal is shown
+            modal.addEventListener('shown.bs.modal', function() {
+                generateQRCode();
+            });
+        } catch (error) {
+            console.error('Bootstrap modal error:', error);
+            showModalManually(modal);
+        }
+    } else {
+        console.log('Bootstrap not available, using manual modal');
+        showModalManually(modal);
+        // Generate QR code for manual modal
+        setTimeout(generateQRCode, 100);
+    }
+}
+
+// Fallback function to show modal manually
+function showModalManually(modal) {
+    console.log('Showing modal manually');
+    modal.style.display = 'block';
+    modal.classList.add('show');
+    document.body.classList.add('modal-open');
+    
+    // Add backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop fade show';
+    backdrop.id = 'manualBackdrop';
+    document.body.appendChild(backdrop);
+    
+    // Close modal when clicking backdrop
+    backdrop.addEventListener('click', function() {
+        closeModalManually(modal);
+    });
+}
+
+// Function to close modal manually
+function closeModalManually(modal) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+    document.body.classList.remove('modal-open');
+    
+    // Remove backdrop
+    const backdrop = document.getElementById('manualBackdrop');
+    if (backdrop) {
+        backdrop.remove();
+    }
+}
+
+// Debug function to test modal
+function testModal() {
+    console.log('Testing modal...');
+    const modal = document.getElementById('shareModal');
+    if (modal) {
+        console.log('Modal found:', modal);
+        try {
+            const bsModal = new bootstrap.Modal(modal);
+            console.log('Bootstrap Modal instance:', bsModal);
+            bsModal.show();
+        } catch (error) {
+            console.error('Error creating Bootstrap modal:', error);
+            // Fallback: show modal manually
+            showModalManually(modal);
+        }
+    } else {
+        console.log('Modal not found!');
+    }
+}
+
+// Test modal on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, checking for share button...');
+    console.log('Bootstrap available:', typeof bootstrap !== 'undefined');
+    console.log('Bootstrap Modal available:', typeof bootstrap?.Modal !== 'undefined');
+    
+    const shareButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+    console.log('Share buttons found:', shareButtons.length);
+    
+    shareButtons.forEach(button => {
+        console.log('Share button:', button);
+        button.addEventListener('click', function(e) {
+            console.log('Share button clicked!');
+            console.log('Target modal:', this.getAttribute('data-bs-target'));
+            
+            // Check if Bootstrap is available
+            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const targetModal = this.getAttribute('data-bs-target');
+                const modalElement = document.querySelector(targetModal);
+                if (modalElement) {
+                    try {
+                        const bsModal = new bootstrap.Modal(modalElement);
+                        bsModal.show();
+                    } catch (error) {
+                        console.error('Error showing modal:', error);
+                        // Fallback: show modal manually
+                        showModalManually(modalElement);
+                    }
+                } else {
+                    console.error('Modal element not found:', targetModal);
+                }
+            } else {
+                console.error('Bootstrap Modal not available');
+                // Fallback: show modal manually
+                const targetModal = this.getAttribute('data-bs-target');
+                const modalElement = document.querySelector(targetModal);
+                if (modalElement) {
+                    showModalManually(modalElement);
+                }
+            }
+        });
+    });
+    
+    // Add manual modal close functionality
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal') || e.target.classList.contains('btn-close')) {
+            const modal = e.target.closest('.modal');
+            if (modal) {
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    try {
+                        const bsModal = bootstrap.Modal.getInstance(modal);
+                        if (bsModal) {
+                            bsModal.hide();
+                        } else {
+                            closeModalManually(modal);
+                        }
+                    } catch (error) {
+                        closeModalManually(modal);
+                    }
+                } else {
+                    closeModalManually(modal);
+                }
+            }
+        }
+    });
+});
+
 function copyShareUrl() {
     const shareUrl = document.getElementById('shareUrlInput').value;
     navigator.clipboard.writeText(shareUrl).then(function() {
@@ -351,6 +1825,9 @@ function copyShareUrl() {
 
         // Show toast notification
         showToast('Link copied to clipboard!', 'success');
+        
+        // Track share action
+        trackShare('copy');
 
         setTimeout(function() {
             btn.innerHTML = originalHTML;
@@ -361,6 +1838,144 @@ function copyShareUrl() {
         console.error('Could not copy text: ', err);
         showToast('Failed to copy link', 'error');
     });
+}
+
+// Track sharing actions
+function trackShare(method) {
+    fetch('/api/track-share', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            invitation_id: {{ invitation.id }},
+            share_method: method,
+            url: window.location.href
+        })
+    }).catch(error => {
+        console.log('Share tracking failed:', error);
+    });
+}
+
+// Generate QR Code
+function generateQRCode() {
+    const qrContainer = document.getElementById('qrcode');
+    if (qrContainer) {
+        // Clear existing QR code
+        qrContainer.innerHTML = '';
+        
+        // Check if QRCode library is available
+        if (typeof QRCode !== 'undefined') {
+            try {
+                // Generate QR code using QRCode library
+                new QRCode(qrContainer, {
+                    text: window.location.href,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#101357",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                console.log('QR Code generated successfully');
+            } catch (error) {
+                console.error('Error generating QR code with library:', error);
+                generateQRCodeFallback();
+            }
+        } else {
+            console.log('QRCode library not available, using fallback');
+            generateQRCodeFallback();
+        }
+    }
+}
+
+// Fallback QR code generation using external API
+function generateQRCodeFallback() {
+    const qrContainer = document.getElementById('qrcode');
+    if (qrContainer) {
+        const url = window.location.href;
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+        
+        qrContainer.innerHTML = `
+            <img src="${qrCodeUrl}" 
+                 alt="QR Code" 
+                 style="max-width: 200px; height: auto;"
+                 onerror="this.style.display='none'; this.parentNode.innerHTML='<p class=\\"text-muted\\">QR Code unavailable</p>';">
+        `;
+    }
+}
+
+// Download QR Code
+function downloadQRCode() {
+    const qrContainer = document.getElementById('qrcode');
+    let downloadUrl = null;
+    let filename = 'invitation-qr-code.png';
+    
+    if (!qrContainer) {
+        showToast('QR code container not found', 'error');
+        return;
+    }
+    
+    // Try to find canvas first (from QRCode library)
+    const canvas = qrContainer.querySelector('canvas');
+    if (canvas) {
+        try {
+            downloadUrl = canvas.toDataURL('image/png');
+            console.log('Using canvas for download');
+        } catch (error) {
+            console.error('Error getting canvas data:', error);
+        }
+    }
+    
+    // If no canvas, try to find img element
+    if (!downloadUrl) {
+        const img = qrContainer.querySelector('img');
+        if (img && img.src) {
+            downloadUrl = img.src;
+            console.log('Using img element for download');
+        }
+    }
+    
+    // If still no download URL, generate one
+    if (!downloadUrl) {
+        try {
+            const url = window.location.href;
+            downloadUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}`;
+            console.log('Using external API for download');
+        } catch (error) {
+            console.error('Error generating QR code URL:', error);
+            showToast('QR code not available', 'error');
+            return;
+        }
+    }
+    
+    if (downloadUrl) {
+        try {
+            // Create download link
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = downloadUrl;
+            link.style.display = 'none';
+            
+            // Add to DOM, click, and remove
+            document.body.appendChild(link);
+            link.click();
+            
+            // Clean up after a short delay
+            setTimeout(() => {
+                if (link.parentNode) {
+                    link.parentNode.removeChild(link);
+                }
+            }, 100);
+            
+            showToast('QR code downloaded successfully!', 'success');
+            console.log('QR code download initiated');
+        } catch (error) {
+            console.error('Error downloading QR code:', error);
+            showToast('Failed to download QR code', 'error');
+        }
+    } else {
+        showToast('QR code not available', 'error');
+    }
 }
 
 function downloadInvitation() {
@@ -397,6 +2012,236 @@ function showToast(message, type) {
         toast.remove();
     });
 }
+
+// Location functionality
+function openLocation(venueAddress) {
+    if (venueAddress && venueAddress.trim()) {
+        const encodedAddress = encodeURIComponent(venueAddress.trim());
+        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+        window.open(googleMapsUrl, '_blank');
+    } else {
+        showToast('Venue address not available', 'warning');
+    }
+}
+
+// RSVP functionality
+function handleRSVP(response) {
+    const rsvpStatus = document.getElementById('rsvpStatus');
+    const rsvpMessage = document.getElementById('rsvpMessage');
+    const rsvpButtons = document.querySelectorAll('.rsvp-btn');
+    
+    // Disable all buttons
+    rsvpButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+    });
+    
+    if (response === 'attending') {
+        // Add to Google Calendar
+        addToGoogleCalendar();
+        
+        // Show success message
+        rsvpMessage.textContent = 'Thank you for confirming your attendance! We\'ve added this event to your Google Calendar.';
+        rsvpStatus.style.display = 'block';
+        rsvpStatus.querySelector('.alert').className = 'alert alert-success';
+        
+        // Update button state
+        document.querySelector('.rsvp-btn.btn-success').innerHTML = '<i class="fas fa-check me-2"></i>Confirmed';
+        document.querySelector('.rsvp-btn.btn-success').classList.remove('btn-success');
+        document.querySelector('.rsvp-btn.btn-success').classList.add('btn-outline-success');
+        
+    } else if (response === 'unable') {
+        // Show unable to attend message and scroll to wishes
+        rsvpMessage.textContent = 'We understand you can\'t make it. Please share your wishes for the event below.';
+        rsvpStatus.style.display = 'block';
+        rsvpStatus.querySelector('.alert').className = 'alert alert-warning';
+        
+        // Scroll to wishes section
+        setTimeout(() => {
+            document.querySelector('.wishes-display').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 1000);
+        
+        // Update button state
+        document.querySelector('.rsvp-btn.btn-outline-danger').innerHTML = '<i class="fas fa-times me-2"></i>Not Attending';
+        document.querySelector('.rsvp-btn.btn-outline-danger').classList.remove('btn-outline-danger');
+        document.querySelector('.rsvp-btn.btn-outline-danger').classList.add('btn-danger');
+    }
+    
+    // Save RSVP to server
+    saveRSVP(response);
+}
+
+// Add event to Google Calendar
+function addToGoogleCalendar() {
+    const eventTitle = document.querySelector('h1')?.textContent || 'Event Invitation';
+    const eventDate = document.querySelector('.event-date')?.textContent || new Date().toISOString();
+    const venueAddress = document.querySelector('.venue-info p')?.textContent || '';
+    
+    // Create Google Calendar URL
+    const startDate = new Date();
+    const endDate = new Date(startDate.getTime() + (2 * 60 * 60 * 1000)); // 2 hours duration
+    
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${formatDateForGoogleCalendar(startDate)}/${formatDateForGoogleCalendar(endDate)}&details=${encodeURIComponent('Event invitation from EventCraft Pro')}&location=${encodeURIComponent(venueAddress)}`;
+    
+    // Open Google Calendar
+    window.open(googleCalendarUrl, '_blank');
+}
+
+// Format date for Google Calendar
+function formatDateForGoogleCalendar(date) {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+// Save RSVP to server
+function saveRSVP(response) {
+    const invitationId = window.location.pathname.split('/').pop();
+    
+    fetch('/save-rsvp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            invitation_id: invitationId,
+            response: response,
+            timestamp: new Date().toISOString()
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('RSVP saved successfully');
+        } else {
+            console.error('Failed to save RSVP:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error saving RSVP:', error);
+    });
+}
+
+// Wish form functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const wishForm = document.getElementById('wishForm');
+    const wishesContainer = document.getElementById('wishesContainer');
+    const noWishes = document.getElementById('noWishes');
+    
+    if (wishForm) {
+        wishForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('wishName').value.trim(),
+                message: document.getElementById('wishMessage').value.trim()
+            };
+            
+            if (!formData.name || !formData.message) {
+                showToast('Please fill in both name and message', 'warning');
+                return;
+            }
+            
+            // Show processing state
+            const submitBtn = wishForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            submitBtn.disabled = true;
+            
+            // Send wish to server
+            fetch('/add-wish/{{ invitation.share_url }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Add new wish to display
+                    addWishToDisplay(data.wish);
+                    
+                    // Clear form
+                    wishForm.reset();
+                    
+                    // Hide no wishes message
+                    if (noWishes) {
+                        noWishes.style.display = 'none';
+                    }
+                    
+                    showToast('Wish sent successfully!', 'success');
+                } else {
+                    showToast(data.message || 'Failed to send wish', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Failed to send wish. Please try again.', 'error');
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+    
+    function addWishToDisplay(wish) {
+        const wishItem = document.createElement('div');
+        wishItem.className = 'wish-item';
+        wishItem.innerHTML = `
+            <div class="wish-card border rounded p-3 h-100">
+                <div class="d-flex align-items-start">
+                    <div class="wish-avatar me-3">
+                        <i class="fas fa-user-circle fa-2x text-primary"></i>
+                    </div>
+                    <div class="wish-content flex-grow-1">
+                        <h6 class="wish-name mb-1">${wish.name}</h6>
+                        <p class="wish-message mb-2">${wish.message}</p>
+                        <small class="text-muted">${wish.created_at}</small>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add to beginning of container
+        wishesContainer.insertBefore(wishItem, wishesContainer.firstChild);
+        
+        // Auto-scroll to new wish (horizontal scroll)
+        wishItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }
+    
+    function showToast(message, type) {
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : type === 'error' ? '#dc3545' : '#17a2b8'};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+            font-weight: 500;
+        `;
+        toast.textContent = message;
+        
+        // Add to body
+        document.body.appendChild(toast);
+        
+        // Auto-remove after 3 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 3000);
+    }
+});
 </script>
 
 <!-- Add html2canvas library for downloading -->

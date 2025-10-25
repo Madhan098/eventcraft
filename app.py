@@ -4,9 +4,7 @@ from flask import Flask
 from werkzeug.middleware.proxy_fix import ProxyFix
 from extensions import db
 import json
-
-# Set up logging
-logging.basicConfig(level=logging.DEBUG)
+import datetime
 
 # Create the app
 app = Flask(__name__, static_folder='static', static_url_path='/static')
@@ -20,11 +18,21 @@ app.permanent_session_lifetime = timedelta(days=7)  # Sessions last 7 days
 # Configure the database
 database_url = os.environ.get("DATABASE_URL")
 if not database_url:
-    # Default to SQLite for development
-    db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'database'))
-    os.makedirs(db_dir, exist_ok=True)
-    db_file = os.path.join(db_dir, 'eventcraft.db')
-    database_url = f'sqlite:///{db_file}'
+    # For Render, we need a PostgreSQL database
+    # Fallback to SQLite only for local development
+    if os.environ.get("FLASK_ENV") != "production":
+        db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'database'))
+        os.makedirs(db_dir, exist_ok=True)
+        db_file = os.path.join(db_dir, 'eventcraft.db')
+        database_url = f'sqlite:///{db_file}'
+    else:
+        # In production, try to use a default database or give helpful error
+        # Don't crash the app, just use a placeholder that will fail gracefully
+        database_url = "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+
+# Fix for Render PostgreSQL (convert postgres:// to postgresql://)
+if database_url and database_url.startswith('postgres://'):
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
@@ -79,49 +87,47 @@ def after_request(response):
     return response
 
 # Add a simple test route
-
+@app.route('/health')
+def health_check():
+    """Health check endpoint for Render"""
+    return {
+        'status': 'healthy',
+        'message': 'EventCraft API is running',
+        'timestamp': str(datetime.datetime.now())
+    }
 
 # Import models first
 try:
-    import models  # noqa: F401
-    print("✅ Models imported successfully")
+    from models import User, OTP, Invitation, Template, EventType, init_sample_data
 except Exception as e:
-    print(f"❌ Error importing models: {e}")
+    print(f"Error importing models: {e}")
     import traceback
     traceback.print_exc()
 
 # Initialize database and sample data
 with app.app_context():
     try:
-        db.create_all()
-        print("✅ Database tables created successfully")
-
-        # Initialize sample data if tables are empty
-        from models import init_sample_data
-        if not models.EventType.query.first():
+        # Check if tables exist, create them if they don't
+        inspector = db.inspect(db.engine)
+        existing_tables = inspector.get_table_names()
+        
+        if not existing_tables:
+            db.create_all()
+            # Initialize sample data only for new database
             init_sample_data()
-            print("✅ Sample data initialized successfully")
-
+            
     except Exception as e:
-        print(f"❌ Error during database initialization: {e}")
-        import traceback
-        traceback.print_exc()
+        print(f"Database initialization error: {e}")
 
 # Import routes and register them
 try:
-    print("🔄 Attempting to import routes...")
     from routes import register_routes
-    print("✅ Routes module imported successfully")
-
-    print("🔄 Attempting to register routes...")
     register_routes(app)
-    print("✅ Routes registered successfully")
-
 except ImportError as e:
-    print(f"❌ Failed to import routes: {e}")
+    print(f"Failed to import routes: {e}")
     raise
 except Exception as e:
-    print(f"❌ Failed to register routes: {e}")
+    print(f"Failed to register routes: {e}")
     raise
 
 if __name__ == '__main__':

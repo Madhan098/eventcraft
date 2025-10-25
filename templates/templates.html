@@ -153,6 +153,47 @@
             
             <!-- Templates Grid -->
             <div class="col-lg-9">
+                <!-- Search and Sort Bar -->
+                <div class="templates-controls mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="search-box">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0" id="template-search" placeholder="Search templates...">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end gap-3">
+                                <div class="sort-dropdown">
+                                    <select class="form-select" id="sort-templates">
+                                        <option value="popular">Most Popular</option>
+                                        <option value="newest">Newest First</option>
+                                        <option value="alphabetical">A-Z</option>
+                                        <option value="event-type">Event Type</option>
+                                    </select>
+                                </div>
+                                <div class="view-toggle">
+                                    <button class="btn btn-outline-secondary active" id="grid-view" title="Grid View">
+                                        <i class="fas fa-th"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary" id="list-view" title="List View">
+                                        <i class="fas fa-list"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Results Counter -->
+                <div class="results-info mb-3">
+                    <span class="text-muted">Showing <span id="results-count">8</span> templates</span>
+                </div>
+                
                 <div class="templates-grid">
                     <div class="row g-4" id="templates-container">
                         <!-- Wedding Templates -->
@@ -380,39 +421,96 @@
 
 {% block extra_scripts %}
 <script>
-// Filter functionality
+// Enhanced Filter and Search functionality
 document.addEventListener('DOMContentLoaded', function() {
     const filterCheckboxes = document.querySelectorAll('.filter-check-input');
     const templateItems = document.querySelectorAll('.template-item');
     const clearFiltersLink = document.querySelector('.clear-filters');
+    const searchInput = document.getElementById('template-search');
+    const sortSelect = document.getElementById('sort-templates');
+    const gridViewBtn = document.getElementById('grid-view');
+    const listViewBtn = document.getElementById('list-view');
+    const resultsCount = document.getElementById('results-count');
+    const templatesContainer = document.getElementById('templates-container');
     
-    // Function to apply filters
+    let currentView = 'grid';
+    
+    // Function to apply filters and search
     function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase();
         const selectedEventTypes = Array.from(document.querySelectorAll('input[value*="wedding"]:checked, input[value*="birthday"]:checked, input[value*="anniversary"]:checked, input[value*="babyshower"]:checked, input[value*="graduation"]:checked, input[value*="retirement"]:checked')).map(cb => cb.value);
         const selectedStyles = Array.from(document.querySelectorAll('input[value*="traditional"]:checked, input[value*="modern"]:checked, input[value*="elegant"]:checked, input[value*="fun"]:checked, input[value*="classic"]:checked')).map(cb => cb.value);
         const selectedThemes = Array.from(document.querySelectorAll('input[value*="hindu"]:checked, input[value*="muslim"]:checked, input[value*="christian"]:checked, input[value*="secular"]:checked')).map(cb => cb.value);
+        
+        let visibleCount = 0;
         
         templateItems.forEach(item => {
             const eventType = item.dataset.eventType;
             const style = item.dataset.style;
             const theme = item.dataset.theme;
+            const title = item.querySelector('.template-title').textContent.toLowerCase();
+            const description = item.querySelector('.template-description').textContent.toLowerCase();
+            const tags = Array.from(item.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
             
             const eventTypeMatch = selectedEventTypes.length === 0 || selectedEventTypes.includes(eventType);
             const styleMatch = selectedStyles.length === 0 || selectedStyles.includes(style);
             const themeMatch = selectedThemes.length === 0 || selectedThemes.includes(theme);
+            const searchMatch = searchTerm === '' || title.includes(searchTerm) || description.includes(searchTerm) || tags.includes(searchTerm);
             
-            if (eventTypeMatch && styleMatch && themeMatch) {
+            if (eventTypeMatch && styleMatch && themeMatch && searchMatch) {
                 item.style.display = 'block';
+                visibleCount++;
             } else {
                 item.style.display = 'none';
             }
         });
+        
+        // Update results count
+        resultsCount.textContent = visibleCount;
+        
+        // Apply sorting
+        applySorting();
     }
     
-    // Add event listeners to all filter checkboxes
+    // Function to apply sorting
+    function applySorting() {
+        const sortValue = sortSelect.value;
+        const visibleItems = Array.from(templateItems).filter(item => item.style.display !== 'none');
+        
+        visibleItems.sort((a, b) => {
+            const titleA = a.querySelector('.template-title').textContent;
+            const titleB = b.querySelector('.template-title').textContent;
+            
+            switch(sortValue) {
+                case 'alphabetical':
+                    return titleA.localeCompare(titleB);
+                case 'newest':
+                    // For demo purposes, reverse alphabetical order
+                    return titleB.localeCompare(titleA);
+                case 'event-type':
+                    const eventTypeA = a.dataset.eventType;
+                    const eventTypeB = b.dataset.eventType;
+                    return eventTypeA.localeCompare(eventTypeB);
+                case 'popular':
+                default:
+                    // Keep original order for popular
+                    return 0;
+            }
+        });
+        
+        // Reorder elements in DOM
+        visibleItems.forEach(item => {
+            templatesContainer.appendChild(item);
+        });
+    }
+    
+    // Add event listeners
     filterCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', applyFilters);
     });
+    
+    searchInput.addEventListener('input', applyFilters);
+    sortSelect.addEventListener('change', applySorting);
     
     // Clear filters functionality
     clearFiltersLink.addEventListener('click', function(e) {
@@ -420,7 +518,29 @@ document.addEventListener('DOMContentLoaded', function() {
         filterCheckboxes.forEach(checkbox => {
             checkbox.checked = false;
         });
+        searchInput.value = '';
         applyFilters();
+    });
+    
+    // View toggle functionality
+    gridViewBtn.addEventListener('click', function() {
+        currentView = 'grid';
+        gridViewBtn.classList.add('active');
+        listViewBtn.classList.remove('active');
+        templatesContainer.className = 'row g-4';
+        templateItems.forEach(item => {
+            item.className = 'col-lg-4 col-md-6 template-item';
+        });
+    });
+    
+    listViewBtn.addEventListener('click', function() {
+        currentView = 'list';
+        listViewBtn.classList.add('active');
+        gridViewBtn.classList.remove('active');
+        templatesContainer.className = 'row g-2';
+        templateItems.forEach(item => {
+            item.className = 'col-12 template-item';
+        });
     });
     
     // Initialize filters - show all templates by default

@@ -70,10 +70,10 @@
                     {% endif %}
 
                     <!-- Main Image as Background with Overlay Text -->
-                    {% if invitation.main_image %}
-                    <div class="hero-background mb-4" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ url_for('uploaded_file', filename=invitation.main_image) }}'); background-size: cover; background-position: center; min-height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 15px;">
+                    {% if event_data.mainImage %}
+                    <div class="hero-background mb-4" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ url_for('uploaded_file', filename=event_data.mainImage) }}'); background-size: cover; background-position: center; min-height: 400px; display: flex; align-items: center; justify-content: center; border-radius: 15px;">
                         <div class="text-center text-white">
-                            <h2 class="display-4 fw-bold mb-3 text-overlay">{{ invitation.family_name or event_data.familyName }}</h2>
+                            <h2 class="display-4 fw-bold mb-3 text-overlay">{{ event_data.familyName }}</h2>
                             <p class="fs-5 mb-0 text-overlay">cordially invites you to</p>
                         </div>
                     </div>
@@ -196,13 +196,12 @@
                         {% endif %}
 
                         <!-- Gallery Section -->
-                        {% if invitation.gallery_images and invitation.gallery_images != '[]' and invitation.gallery_images != 'null' %}
+                        {% if event_data.galleryImages and event_data.galleryImages|length > 0 %}
                         <div class="gallery-section mb-4">
                             <h5 class="mb-3">Our Memories</h5>
                             <p class="text-muted mb-3">All Pre Event & Celebration Moments</p>
                             <div class="row g-3">
-                                {% set gallery_list = invitation.gallery_images | safe_from_json %}
-                                {% for image in gallery_list %}
+                                {% for image in event_data.galleryImages %}
                                     {% if image and image.strip() and image != '' %}
                                     <div class="col-6 col-md-4 col-lg-3">
                                         <div class="gallery-item" onclick="openGalleryModal('{{ url_for('uploaded_file', filename=image) }}')">
@@ -368,12 +367,63 @@
 
 {% block extra_scripts %}
 <script>
+// Global error handler to prevent page freezing
+window.addEventListener('error', function(e) {
+    console.error('Global error caught:', e.error);
+    e.preventDefault();
+    return false;
+});
 
+window.addEventListener('unhandledrejection', function(e) {
+    console.error('Unhandled promise rejection:', e.reason);
+    e.preventDefault();
+    return false;
+});
+
+// Timeout wrapper to prevent hanging operations
+function withTimeout(promise, timeoutMs = 5000) {
+    return Promise.race([
+        promise,
+        new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Operation timed out')), timeoutMs)
+        )
+    ]);
+}
+
+// Toast notification function
+function showToast(message, type = 'info') {
+    try {
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        toast.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(toast);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 3000);
+    } catch (error) {
+        console.error('Error showing toast:', error);
+        // Fallback to alert if toast fails
+        alert(message);
+    }
+}
 
 // Gallery modal
 function openGalleryModal(imageSrc) {
-    document.getElementById('modalImage').src = imageSrc;
-    new bootstrap.Modal(document.getElementById('galleryModal')).show();
+    try {
+        document.getElementById('modalImage').src = imageSrc;
+        new bootstrap.Modal(document.getElementById('galleryModal')).show();
+    } catch (error) {
+        console.error('Error opening gallery modal:', error);
+    }
 }
 
 // Google Calendar integration
@@ -425,25 +475,45 @@ function shareEmail() {
 }
 
 function copyLink() {
-    const shareLink = document.getElementById('shareLink');
-    shareLink.select();
-    navigator.clipboard.writeText(shareLink.value).then(function() {
-        // Show temporary success message
-        const btn = event.target.closest('button');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i>';
-        btn.classList.remove('btn-outline-secondary');
-        btn.classList.add('btn-success');
+    try {
+        const shareLink = document.getElementById('shareLink');
+        if (!shareLink) {
+            console.error('Share link element not found');
+            showToast('Share link not found', 'error');
+            return;
+        }
         
-        // Show toast notification
-        showToast('Link copied to clipboard!', 'success');
+        shareLink.select();
         
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.classList.remove('btn-success');
-            btn.classList.add('btn-outline-secondary');
-        }, 2000);
-    });
+        // Try modern clipboard API first, fallback to execCommand
+        if (navigator.clipboard && window.isSecureContext) {
+            withTimeout(navigator.clipboard.writeText(shareLink.value), 3000).then(function() {
+                showToast('Link copied to clipboard!', 'success');
+            }).catch(function(err) {
+                console.error('Clipboard API failed, trying fallback:', err);
+                fallbackCopy();
+            });
+        } else {
+            fallbackCopy();
+        }
+        
+        function fallbackCopy() {
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast('Link copied to clipboard!', 'success');
+                } else {
+                    showToast('Failed to copy link. Please try again.', 'error');
+                }
+            } catch (err) {
+                console.error('Fallback copy failed:', err);
+                showToast('Failed to copy link. Please try again.', 'error');
+            }
+        }
+    } catch (error) {
+        console.error('Error copying link:', error);
+        showToast('Failed to copy link. Please try again.', 'error');
+    }
 }
 
 function generateQR() {
@@ -482,30 +552,78 @@ function showToast(message, type = 'info') {
 
 // Popup-specific functions
 function openSharePopup() {
-    const modal = new bootstrap.Modal(document.getElementById('shareInvitationModal'));
-    modal.show();
+    try {
+        console.log('Opening share popup...');
+        
+        // Check if Bootstrap is available
+        if (typeof bootstrap === 'undefined') {
+            console.error('Bootstrap is not loaded');
+            showToast('Error: Bootstrap not loaded. Please refresh the page.', 'error');
+            return;
+        }
+        
+        // Check if modal element exists
+        const modalElement = document.getElementById('shareInvitationModal');
+        if (!modalElement) {
+            console.error('Share invitation modal element not found');
+            showToast('Error: Modal not found. Please refresh the page.', 'error');
+            return;
+        }
+        
+        console.log('Modal element found:', modalElement);
+        
+        // Create and show the modal
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+        
+        console.log('Modal should be visible now');
+        
+    } catch (error) {
+        console.error('Error opening share popup:', error);
+        showToast('Failed to open share popup. Please try again.', 'error');
+    }
 }
 
 function copyPopupLink() {
-    const shareLink = document.getElementById('popupShareLink');
-    shareLink.select();
-    navigator.clipboard.writeText(shareLink.value).then(function() {
-        // Show temporary success message
-        const btn = event.target.closest('button');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i>';
-        btn.classList.remove('btn-outline-secondary');
-        btn.classList.add('btn-success');
+    try {
+        const shareLink = document.getElementById('popupShareLink');
+        if (!shareLink) {
+            console.error('Popup share link element not found');
+            showToast('Share link not found', 'error');
+            return;
+        }
         
-        // Show toast notification
-        showToast('Link copied to clipboard!', 'success');
+        shareLink.select();
         
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.classList.remove('btn-success');
-            btn.classList.add('btn-outline-secondary');
-        }, 2000);
-    });
+        // Try modern clipboard API first, fallback to execCommand
+        if (navigator.clipboard && window.isSecureContext) {
+            withTimeout(navigator.clipboard.writeText(shareLink.value), 3000).then(function() {
+                showToast('Link copied to clipboard!', 'success');
+            }).catch(function(err) {
+                console.error('Clipboard API failed, trying fallback:', err);
+                fallbackCopy();
+            });
+        } else {
+            fallbackCopy();
+        }
+        
+        function fallbackCopy() {
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast('Link copied to clipboard!', 'success');
+                } else {
+                    showToast('Failed to copy link. Please try again.', 'error');
+                }
+            } catch (err) {
+                console.error('Fallback copy failed:', err);
+                showToast('Failed to copy link. Please try again.', 'error');
+            }
+        }
+    } catch (error) {
+        console.error('Error copying popup link:', error);
+        showToast('Failed to copy link. Please try again.', 'error');
+    }
 }
 
 function generatePopupQR() {

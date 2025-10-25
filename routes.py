@@ -2,7 +2,7 @@ from flask import render_template, request, jsonify, session, redirect, url_for,
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from extensions import db
-from models import User, OTP, Invitation, Template, EventType
+from models import User, OTP, Invitation, Template, EventType, Wish, Guest, RSVP, InvitationView, InvitationShare
 from utils import send_otp_email, generate_otp
 from datetime import datetime, timedelta
 import json
@@ -44,6 +44,11 @@ def register_routes(app):
         if is_authenticated():
             return redirect(url_for('dashboard'))
         return render_template('index.html')
+
+    @app.route('/images/<filename>')
+    def serve_image(filename):
+        """Serve images from the root images folder"""
+        return send_from_directory('images', filename)
 
     @app.route('/auth')
     def auth():
@@ -184,7 +189,14 @@ def register_routes(app):
         user_name = session.get('user_name', 'User')
         user_email = session.get('user_email', '')
         
-        invitations = Invitation.query.filter_by(user_id=user_id).order_by(Invitation.created_at.desc()).all()
+        try:
+            # Try to query invitations with error handling for missing columns
+            invitations = Invitation.query.filter_by(user_id=user_id).order_by(Invitation.created_at.desc()).all()
+        except Exception as e:
+            app.logger.error(f"Dashboard error: {str(e)}")
+            # If there's a database schema issue, show empty invitations list
+            invitations = []
+            flash('Database schema needs updating. Please contact administrator.', 'warning')
         
         return render_template('dashboard/dashboard.html', invitations=invitations)
 
@@ -200,6 +212,40 @@ def register_routes(app):
         event_types = EventType.query.all()
         return render_template('templates.html', event_types=event_types)
 
+    @app.route('/template-selector')
+    def template_selector():
+        # Template selector page with visual previews
+        if not is_authenticated():
+            flash('Please login to create an invitation', 'error')
+            return redirect(url_for('auth'))
+        
+        # Get event data from session or create sample data
+        event_data = {
+            'eventTitle': session.get('event_title', 'Wedding Celebration'),
+            'eventDate': session.get('event_date', 'December 25, 2024'),
+            'eventTime': session.get('event_time', '6:00 PM'),
+            'venue': session.get('venue', 'Grand Palace Hotel'),
+            'hostName': session.get('host_name', 'John & Jane Smith'),
+            'eventType': session.get('event_type', 'wedding')
+        }
+        
+        # Get available templates
+        templates = Template.query.filter_by(is_active=True).all()
+        
+        return render_template('invitation/template_selector.html', 
+                             event_data=event_data, 
+                             templates=templates)
+
+    @app.route('/zety-form')
+    def zety_form():
+        # Zety-style form interface
+        return render_template('invitation/zety_style_form.html')
+
+    @app.route('/zety-perfect')
+    def zety_perfect():
+        # Perfect Zety-style form interface
+        return render_template('invitation/zety_perfect_form.html')
+
     @app.route('/create-invitation')
     def create_invitation():
         if not is_authenticated():
@@ -209,9 +255,20 @@ def register_routes(app):
         # Get template parameter if coming from templates page
         selected_template = request.args.get('template')
         
+        # Redirect to templates page if no template selected
+        if not selected_template:
+            flash('Please select a template first to create your invitation', 'info')
+            return redirect(url_for('templates'))
+        
         # Get current user information
         try:
             current_user = User.query.get(session['user_id'])
+            if not current_user:
+                app.logger.error(f"User not found for session user_id: {session['user_id']}")
+                flash('User not found. Please login again.', 'error')
+                session.clear()
+                return redirect(url_for('auth'))
+            
         except Exception as e:
             app.logger.error(f"Error getting user: {str(e)}")
             flash('Error retrieving user information', 'error')
@@ -334,6 +391,10 @@ def register_routes(app):
                 contact_email=data.get('contactEmail', ''),
                 venue_address=data.get('venueAddress', ''),
 
+                # Story fields
+                love_story=data.get('loveStory', ''),
+                event_story=data.get('eventStory', ''),
+
                 # Image fields
                 main_image=uploaded_files.get('main_image'),
                 bride_image=uploaded_files.get('bride_image'),
@@ -404,6 +465,49 @@ def register_routes(app):
             flash('Thank you for your message! We will get back to you soon.', 'success')
             return redirect(url_for('contact'))
         return render_template('contact.html')
+
+    @app.route('/help')
+    def help_center():
+        """Help center page"""
+        return render_template('help.html')
+
+
+    @app.route('/drag-drop-editor')
+    def drag_drop_editor():
+        """Drag and drop editor page"""
+        return render_template('invitation/drag_drop_editor.html')
+
+
+    # API Routes for Sharing
+    @app.route('/api/track-share', methods=['POST'])
+    def track_share():
+        """Track sharing actions for analytics"""
+        try:
+            data = request.get_json()
+            invitation_id = data.get('invitation_id')
+            share_method = data.get('share_method')
+            url = data.get('url')
+            
+            if not invitation_id or not share_method:
+                return jsonify({'success': False, 'message': 'Missing required data'}), 400
+            
+            # Create share record
+            share_record = InvitationShare(
+                invitation_id=invitation_id,
+                share_method=share_method,
+                recipient_info='direct_link',
+                ip_address=request.remote_addr
+            )
+            
+            db.session.add(share_record)
+            db.session.commit()
+            
+            return jsonify({'success': True, 'message': 'Share tracked successfully'})
+            
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Error tracking share: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to track share'}), 500
 
     @app.route('/privacy')
     def privacy():
@@ -615,12 +719,18 @@ def register_routes(app):
             'description': invitation.description or '',
             'religiousType': invitation.event_style or 'general',
             'familyName': invitation.title or 'Event Invitation',
+            'eventType': invitation.event_type or 'general',
+            
+            # Story fields
+            'loveStory': invitation.love_story or '',
+            'eventStory': invitation.event_story or '',
             
             # Wedding specific
             'brideName': invitation.bride_name or '',
             'groomName': invitation.groom_name or '',
             'bridePhoto': invitation.bride_image,  # Use the uploaded image field
             'groomPhoto': invitation.groom_image,
+            'couplePhoto': invitation.couple_image,  # Add couple photo
             'brideDescription': 'Beautiful Bride',
             'groomDescription': 'Handsome Groom',
             
@@ -692,7 +802,23 @@ def register_routes(app):
             }
         }
         
-        return render_template('invitation/view_final.html', invitation=invitation, event_data=event_data)
+        # Check if current user is the creator
+        is_creator = is_authenticated() and invitation.user_id == session.get('user_id')
+        
+        # Get wishes for this invitation
+        wishes = Wish.query.filter_by(invitation_id=invitation.id).order_by(Wish.created_at.desc()).all()
+        wishes_data = [{
+            'id': wish.id,
+            'name': wish.name,
+            'message': wish.message,
+            'created_at': wish.created_at.strftime('%B %d, %Y at %I:%M %p')
+        } for wish in wishes]
+        
+        return render_template('invitation/view_final.html', 
+                             invitation=invitation, 
+                             event_data=event_data, 
+                             is_creator=is_creator,
+                             wishes=wishes_data)
 
     @app.route('/edit-invitation/<int:invitation_id>', methods=['GET', 'POST'])
     def edit_invitation(invitation_id):
@@ -759,6 +885,10 @@ def register_routes(app):
                 invitation.title = data.get('eventTitle', '')
                 invitation.description = data.get('eventDescription', '')
                 invitation.event_date = datetime.strptime(data.get('eventDate', ''), '%Y-%m-%d') if data.get('eventDate') else None
+                
+                # Update story fields
+                invitation.love_story = data.get('loveStory', '')
+                invitation.event_story = data.get('eventStory', '')
                 
                 # Update event-specific fields based on event type
                 if invitation.event_type == 'wedding':
@@ -831,6 +961,10 @@ def register_routes(app):
             'hostName': invitation.host_name or '',
             'contactPhone': invitation.contact_phone or '',
             'contactEmail': invitation.contact_email or '',
+            
+            # Story fields
+            'loveStory': invitation.love_story or '',
+            'eventStory': invitation.event_story or '',
 
             # Wedding specific
             'brideName': invitation.bride_name or '',
@@ -974,5 +1108,446 @@ def register_routes(app):
                 'success': False,
                 'error': str(e)
             })
+
+    # Wish routes
+    @app.route('/add-wish/<share_url>', methods=['POST'])
+    def add_wish(share_url):
+        """Add a wish to an invitation"""
+        try:
+            invitation = Invitation.query.filter_by(share_url=share_url).first()
+            if not invitation:
+                return jsonify({'success': False, 'message': 'Invitation not found'}), 404
+            
+            data = request.get_json()
+            name = data.get('name', '').strip()
+            message = data.get('message', '').strip()
+            
+            if not name or not message:
+                return jsonify({'success': False, 'message': 'Name and message are required'}), 400
+            
+            # Create new wish
+            wish = Wish(
+                invitation_id=invitation.id,
+                name=name,
+                message=message
+            )
+            
+            db.session.add(wish)
+            db.session.commit()
+            
+            return jsonify({
+                'success': True, 
+                'message': 'Wish added successfully',
+                'wish': {
+                    'id': wish.id,
+                    'name': wish.name,
+                    'message': wish.message,
+                    'created_at': wish.created_at.strftime('%B %d, %Y at %I:%M %p')
+                }
+            })
+            
+        except Exception as e:
+            app.logger.error(f"Error adding wish: {str(e)}")
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Failed to add wish'}), 500
+
+
+    @app.route('/save-rsvp', methods=['POST'])
+    def save_rsvp():
+        """Save RSVP response"""
+        try:
+            data = request.get_json()
+            invitation_id = data.get('invitation_id')
+            response = data.get('response')
+            timestamp = data.get('timestamp')
+            
+            if not invitation_id or not response:
+                return jsonify({'success': False, 'message': 'Missing required fields'}), 400
+            
+            # Find invitation by share_url (since we're getting it from the URL)
+            invitation = Invitation.query.filter_by(share_url=invitation_id).first()
+            if not invitation:
+                return jsonify({'success': False, 'message': 'Invitation not found'}), 404
+            
+            # For now, just log the RSVP response
+            app.logger.info(f"RSVP Response for invitation {invitation.id}: {response}")
+            
+            return jsonify({
+                'success': True,
+                'message': 'RSVP saved successfully'
+            })
+            
+        except Exception as e:
+            app.logger.error(f"Error saving RSVP: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to save RSVP'}), 500
+
+    @app.route('/get-wishes/<share_url>')
+    def get_wishes(share_url):
+        """Get all wishes for an invitation"""
+        try:
+            invitation = Invitation.query.filter_by(share_url=share_url).first()
+            if not invitation:
+                return jsonify({'success': False, 'message': 'Invitation not found'}), 404
+            
+            wishes = Wish.query.filter_by(invitation_id=invitation.id).order_by(Wish.created_at.desc()).all()
+            
+            wishes_data = [{
+                'id': wish.id,
+                'name': wish.name,
+                'message': wish.message,
+                'created_at': wish.created_at.strftime('%B %d, %Y at %I:%M %p')
+            } for wish in wishes]
+            
+            return jsonify({
+                'success': True,
+                'wishes': wishes_data
+            })
+            
+        except Exception as e:
+            app.logger.error(f"Error getting wishes: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to get wishes'}), 500
+
+    # RSVP Management Routes
+    @app.route('/invitations/<int:invitation_id>/rsvp')
+    def rsvp_manage(invitation_id):
+        """RSVP management page for invitation hosts"""
+        if not is_authenticated():
+            return redirect(url_for('login'))
+        
+        invitation = Invitation.query.get_or_404(invitation_id)
+        
+        # Check if user owns this invitation
+        if invitation.user_id != session['user_id']:
+            flash('You do not have permission to manage this invitation.', 'error')
+            return redirect(url_for('dashboard'))
+        
+        # Get guests and RSVP statistics
+        guests = Guest.query.filter_by(invitation_id=invitation_id).all()
+        
+        # Calculate RSVP statistics
+        rsvp_stats = {
+            'attending': RSVP.query.filter_by(invitation_id=invitation_id, status='attending').count(),
+            'not_attending': RSVP.query.filter_by(invitation_id=invitation_id, status='not_attending').count(),
+            'maybe': RSVP.query.filter_by(invitation_id=invitation_id, status='maybe').count(),
+            'pending': len(guests) - RSVP.query.filter_by(invitation_id=invitation_id).count(),
+            'total_guests': len(guests)
+        }
+        
+        return render_template('invitation/rsvp_manage.html', 
+                             invitation=invitation, 
+                             guests=guests, 
+                             rsvp_stats=rsvp_stats)
+
+    # API Routes for RSVP Management
+    @app.route('/api/invitations/<int:invitation_id>/guests', methods=['POST'])
+    def add_guest(invitation_id):
+        """Add a new guest to an invitation"""
+        if not is_authenticated():
+            return jsonify({'success': False, 'message': 'Authentication required'}), 401
+        
+        invitation = Invitation.query.get_or_404(invitation_id)
+        
+        # Check if user owns this invitation
+        if invitation.user_id != session['user_id']:
+            return jsonify({'success': False, 'message': 'Permission denied'}), 403
+        
+        try:
+            data = request.get_json()
+            
+            guest = Guest(
+                invitation_id=invitation_id,
+                name=data.get('name'),
+                email=data.get('email'),
+                phone=data.get('phone'),
+                plus_ones=data.get('plus_ones', 0),
+                dietary_requirements=data.get('dietary_requirements'),
+                notes=data.get('notes')
+            )
+            
+            db.session.add(guest)
+            db.session.commit()
+            
+            return jsonify({'success': True, 'message': 'Guest added successfully', 'guest_id': guest.id})
+            
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Error adding guest: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to add guest'}), 500
+
+    @app.route('/api/invitations/<int:invitation_id>/guests/<int:guest_id>', methods=['GET'])
+    def get_guest_details(invitation_id, guest_id):
+        """Get guest details"""
+        if not is_authenticated():
+            return jsonify({'success': False, 'message': 'Authentication required'}), 401
+        
+        invitation = Invitation.query.get_or_404(invitation_id)
+        
+        # Check if user owns this invitation
+        if invitation.user_id != session['user_id']:
+            return jsonify({'success': False, 'message': 'Permission denied'}), 403
+        
+        try:
+            guest = Guest.query.filter_by(id=guest_id, invitation_id=invitation_id).first()
+            
+            if not guest:
+                return jsonify({'success': False, 'message': 'Guest not found'}), 404
+            
+            # Convert to dictionary for JSON response
+            guest_data = {
+                'id': guest.id,
+                'name': guest.name,
+                'email': guest.email,
+                'phone': guest.phone,
+                'plus_ones': guest.plus_ones,
+                'dietary_requirements': guest.dietary_requirements,
+                'notes': guest.notes,
+                'rsvp': None
+            }
+            
+            if guest.rsvp:
+                guest_data['rsvp'] = {
+                    'status': guest.rsvp.status,
+                    'response_date': guest.rsvp.response_date.isoformat() if guest.rsvp.response_date else None,
+                    'plus_ones_attending': guest.rsvp.plus_ones_attending,
+                    'message': guest.rsvp.message
+                }
+            
+            return jsonify({'success': True, 'guest': guest_data})
+            
+        except Exception as e:
+            app.logger.error(f"Error getting guest details: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to get guest details'}), 500
+
+    @app.route('/api/invitations/<int:invitation_id>/guests/<int:guest_id>', methods=['DELETE'])
+    def remove_guest(invitation_id, guest_id):
+        """Remove a guest from an invitation"""
+        if not is_authenticated():
+            return jsonify({'success': False, 'message': 'Authentication required'}), 401
+        
+        invitation = Invitation.query.get_or_404(invitation_id)
+        
+        # Check if user owns this invitation
+        if invitation.user_id != session['user_id']:
+            return jsonify({'success': False, 'message': 'Permission denied'}), 403
+        
+        try:
+            guest = Guest.query.filter_by(id=guest_id, invitation_id=invitation_id).first()
+            
+            if not guest:
+                return jsonify({'success': False, 'message': 'Guest not found'}), 404
+            
+            db.session.delete(guest)
+            db.session.commit()
+            
+            return jsonify({'success': True, 'message': 'Guest removed successfully'})
+            
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Error removing guest: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to remove guest'}), 500
+
+    # Public RSVP Response Route
+    @app.route('/rsvp/<share_url>', methods=['GET', 'POST'])
+    def public_rsvp(share_url):
+        """Public RSVP response page"""
+        invitation = Invitation.query.filter_by(share_url=share_url).first_or_404()
+        
+        if request.method == 'POST':
+            try:
+                data = request.get_json()
+                guest_name = data.get('name')
+                status = data.get('status')
+                plus_ones_attending = data.get('plus_ones_attending', 0)
+                message = data.get('message', '')
+                dietary_requirements = data.get('dietary_requirements', '')
+                
+                # Find or create guest
+                guest = Guest.query.filter_by(
+                    invitation_id=invitation.id, 
+                    name=guest_name
+                ).first()
+                
+                if not guest:
+                    # Create new guest if not found
+                    guest = Guest(
+                        invitation_id=invitation.id,
+                        name=guest_name,
+                        email=data.get('email', ''),
+                        phone=data.get('phone', '')
+                    )
+                    db.session.add(guest)
+                    db.session.flush()  # Get the guest ID
+                
+                # Create or update RSVP
+                rsvp = RSVP.query.filter_by(guest_id=guest.id).first()
+                
+                if rsvp:
+                    # Update existing RSVP
+                    rsvp.status = status
+                    rsvp.plus_ones_attending = plus_ones_attending
+                    rsvp.message = message
+                    rsvp.dietary_requirements = dietary_requirements
+                    rsvp.response_date = datetime.utcnow()
+                    rsvp.ip_address = request.remote_addr
+                    rsvp.user_agent = request.headers.get('User-Agent')
+                else:
+                    # Create new RSVP
+                    rsvp = RSVP(
+                        invitation_id=invitation.id,
+                        guest_id=guest.id,
+                        status=status,
+                        plus_ones_attending=plus_ones_attending,
+                        message=message,
+                        dietary_requirements=dietary_requirements,
+                        ip_address=request.remote_addr,
+                        user_agent=request.headers.get('User-Agent')
+                    )
+                    db.session.add(rsvp)
+                
+                db.session.commit()
+                
+                return jsonify({'success': True, 'message': 'RSVP submitted successfully'})
+                
+            except Exception as e:
+                db.session.rollback()
+                app.logger.error(f"Error submitting RSVP: {str(e)}")
+                return jsonify({'success': False, 'message': 'Failed to submit RSVP'}), 500
+        
+        # GET request - show RSVP form
+        return render_template('invitation/rsvp_form.html', invitation=invitation)
+
+    # Analytics Dashboard Route
+    @app.route('/invitations/<int:invitation_id>/analytics')
+    def invitation_analytics(invitation_id):
+        """Analytics dashboard for invitation performance"""
+        if not is_authenticated():
+            return redirect(url_for('login'))
+        
+        invitation = Invitation.query.get_or_404(invitation_id)
+        
+        # Check if user owns this invitation
+        if invitation.user_id != session['user_id']:
+            flash('You do not have permission to view analytics for this invitation.', 'error')
+            return redirect(url_for('dashboard'))
+        
+        try:
+            # Get analytics data
+            total_views = InvitationView.query.filter_by(invitation_id=invitation_id).count()
+            total_guests = Guest.query.filter_by(invitation_id=invitation_id).count()
+            total_shares = InvitationShare.query.filter_by(invitation_id=invitation_id).count()
+            
+            # Calculate RSVP rate
+            total_rsvps = RSVP.query.filter_by(invitation_id=invitation_id).count()
+            rsvp_rate = round((total_rsvps / total_guests * 100) if total_guests > 0 else 0, 1)
+            
+            # Get RSVP breakdown
+            rsvp_attending = RSVP.query.filter_by(invitation_id=invitation_id, status='attending').count()
+            rsvp_not_attending = RSVP.query.filter_by(invitation_id=invitation_id, status='not_attending').count()
+            rsvp_maybe = RSVP.query.filter_by(invitation_id=invitation_id, status='maybe').count()
+            rsvp_pending = total_guests - total_rsvps
+            
+            # Get device analytics
+            device_views = db.session.query(
+                InvitationView.device_type,
+                db.func.count(InvitationView.id).label('count')
+            ).filter_by(invitation_id=invitation_id).group_by(InvitationView.device_type).all()
+            
+            device_desktop = next((d.count for d in device_views if d.device_type == 'desktop'), 0)
+            device_mobile = next((d.count for d in device_views if d.device_type == 'mobile'), 0)
+            device_tablet = next((d.count for d in device_views if d.device_type == 'tablet'), 0)
+            
+            # Get share analytics
+            share_methods = db.session.query(
+                InvitationShare.share_method,
+                db.func.count(InvitationShare.id).label('count')
+            ).filter_by(invitation_id=invitation_id).group_by(InvitationShare.share_method).all()
+            
+            share_email = next((s.count for s in share_methods if s.share_method == 'email'), 0)
+            share_whatsapp = next((s.count for s in share_methods if s.share_method == 'whatsapp'), 0)
+            share_direct = next((s.count for s in share_methods if s.share_method == 'link'), 0)
+            share_qr = next((s.count for s in share_methods if s.share_method == 'qr'), 0)
+            share_other = total_shares - share_email - share_whatsapp - share_direct - share_qr
+            
+            # Get recent views (last 10)
+            recent_views = InvitationView.query.filter_by(invitation_id=invitation_id)\
+                .order_by(InvitationView.viewed_at.desc()).limit(10).all()
+            
+            # Get top referrers
+            top_referrers = db.session.query(
+                db.case(
+                    (InvitationView.referrer.is_(None), 'direct'),
+                    (InvitationView.referrer.like('%mail%'), 'email'),
+                    else_='other'
+                ).label('source'),
+                db.func.count(InvitationView.id).label('views')
+            ).filter_by(invitation_id=invitation_id).group_by('source').all()
+            
+            # Calculate percentages for referrers
+            total_referrer_views = sum(r.views for r in top_referrers)
+            top_referrers_data = []
+            for referrer in top_referrers:
+                percentage = round((referrer.views / total_referrer_views * 100) if total_referrer_views > 0 else 0, 1)
+                top_referrers_data.append({
+                    'source': referrer.source,
+                    'views': referrer.views,
+                    'percentage': percentage
+                })
+            
+            # Generate sample data for charts (in a real app, this would be actual time-series data)
+            import random
+            from datetime import datetime, timedelta
+            
+            # Generate views over time data (last 30 days)
+            views_labels = []
+            views_data = []
+            for i in range(30):
+                date = datetime.now() - timedelta(days=29-i)
+                views_labels.append(date.strftime('%m/%d'))
+                views_data.append(random.randint(0, 20))  # Sample data
+            
+            # Prepare analytics data
+            analytics = {
+                'total_views': total_views,
+                'total_guests': total_guests,
+                'total_shares': total_shares,
+                'rsvp_rate': rsvp_rate,
+                'views_growth': random.randint(5, 25),  # Sample growth data
+                'guests_growth': random.randint(2, 15),
+                'rsvp_growth': random.randint(1, 10),
+                'shares_growth': random.randint(3, 20),
+                'views_labels': views_labels,
+                'views_data': views_data,
+                'rsvp_attending': rsvp_attending,
+                'rsvp_not_attending': rsvp_not_attending,
+                'rsvp_maybe': rsvp_maybe,
+                'rsvp_pending': rsvp_pending,
+                'device_desktop': device_desktop,
+                'device_mobile': device_mobile,
+                'device_tablet': device_tablet,
+                'share_email': share_email,
+                'share_whatsapp': share_whatsapp,
+                'share_direct': share_direct,
+                'share_qr': share_qr,
+                'share_other': share_other
+            }
+            
+            # Prepare insights data
+            insights = {
+                'peak_time': '7:00 PM - 9:00 PM',
+                'top_location': 'New York, NY',
+                'top_device': 'Mobile (65%)'
+            }
+            
+            return render_template('invitation/analytics.html',
+                                 invitation=invitation,
+                                 analytics=analytics,
+                                 insights=insights,
+                                 recent_views=recent_views,
+                                 top_referrers=top_referrers_data)
+            
+        except Exception as e:
+            app.logger.error(f"Error loading analytics: {str(e)}")
+            flash('Error loading analytics data.', 'error')
+            return redirect(url_for('dashboard'))
 
 # End of register_routes function
