@@ -215,10 +215,25 @@ def register_routes(app):
     def google_callback():
         """Handle Google OAuth callback"""
         try:
-            # Verify state parameter
-            if request.args.get('state') != session.get('oauth_state'):
-                flash('Invalid state parameter', 'error')
+            # Check for OAuth errors
+            error = request.args.get('error')
+            if error:
+                error_description = request.args.get('error_description', 'Unknown error')
+                app.logger.error(f"Google OAuth error: {error} - {error_description}")
+                flash(f'Google authentication failed: {error_description}', 'error')
                 return redirect(url_for('auth'))
+            
+            # Verify state parameter
+            received_state = request.args.get('state')
+            stored_state = session.get('oauth_state')
+            
+            if not received_state or not stored_state or received_state != stored_state:
+                app.logger.error(f"State mismatch: received={received_state}, stored={stored_state}")
+                flash('Invalid state parameter. Please try again.', 'error')
+                return redirect(url_for('auth'))
+            
+            # Clear the state parameter after successful verification
+            session.pop('oauth_state', None)
             
             code = request.args.get('code')
             if not code:
@@ -236,10 +251,17 @@ def register_routes(app):
             }
             
             token_response = requests.post(token_url, data=token_data)
+            
+            if token_response.status_code != 200:
+                app.logger.error(f"Token exchange failed: {token_response.status_code} - {token_response.text}")
+                flash('Failed to exchange authorization code for token', 'error')
+                return redirect(url_for('auth'))
+            
             token_json = token_response.json()
             
             if 'access_token' not in token_json:
-                flash('Failed to get access token', 'error')
+                app.logger.error(f"Token response missing access_token: {token_json}")
+                flash('Failed to get access token from Google', 'error')
                 return redirect(url_for('auth'))
             
             # Get user info from Google

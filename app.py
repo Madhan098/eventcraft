@@ -14,7 +14,13 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 # Google OAuth Configuration
 app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID')
 app.config['GOOGLE_CLIENT_SECRET'] = os.environ.get('GOOGLE_CLIENT_SECRET')
-app.config['GOOGLE_REDIRECT_URI'] = os.environ.get('GOOGLE_REDIRECT_URI', 'http://localhost:5000/auth/google/callback')
+# Use the deployed URL for production, localhost for development
+if os.environ.get('RENDER'):
+    # Running on Render
+    app.config['GOOGLE_REDIRECT_URI'] = 'https://eventcraft-aysl.onrender.com/auth/google/callback'
+else:
+    # Running locally
+    app.config['GOOGLE_REDIRECT_URI'] = os.environ.get('GOOGLE_REDIRECT_URI', 'http://localhost:5000/auth/google/callback')
 
 # Configure session
 from datetime import timedelta
