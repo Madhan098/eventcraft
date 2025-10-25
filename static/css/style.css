@@ -663,19 +663,279 @@ p {
 .rounded-2xl { border-radius: 2rem !important; }
 
 /* Responsive Utilities */
+/* Enhanced Mobile Responsive Design */
 @media (max-width: 576px) {
     .container {
         padding-left: 1rem;
         padding-right: 1rem;
+        max-width: 100%;
     }
     
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.75rem; }
-    h3 { font-size: 1.5rem; }
+    /* Typography adjustments for mobile */
+    h1 { 
+        font-size: 1.75rem; 
+        line-height: 1.3;
+        margin-bottom: 0.75rem;
+    }
+    h2 { 
+        font-size: 1.5rem; 
+        line-height: 1.3;
+        margin-bottom: 0.75rem;
+    }
+    h3 { 
+        font-size: 1.25rem; 
+        line-height: 1.3;
+        margin-bottom: 0.75rem;
+    }
+    h4 { 
+        font-size: 1.125rem; 
+        line-height: 1.3;
+        margin-bottom: 0.5rem;
+    }
     
+    /* Button adjustments */
     .btn-lg {
-        padding: 0.875rem 1.5rem;
-        font-size: 1rem;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+        border-radius: 0.75rem;
+    }
+    
+    /* Hero section mobile fixes */
+    .hero-section {
+        min-height: 100vh;
+        padding: 2rem 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 1.75rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 1rem !important;
+        padding: 0 0.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+        margin-bottom: 1.5rem !important;
+        padding: 0 0.5rem;
+    }
+    
+    /* Stats section mobile */
+    .hero-stats {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        margin: 1.5rem 0 !important;
+        width: 100%;
+    }
+    
+    .stat-item {
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .stat-number {
+        font-size: 2rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Action buttons mobile */
+    .hero-actions {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        width: 100%;
+        margin-top: 1.5rem !important;
+    }
+    
+    .hero-actions .btn {
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 0.25rem 0 !important;
+        padding: 0.875rem 1.5rem !important;
+        font-size: 1rem !important;
+        justify-content: center !important;
+    }
+    
+    /* Navigation mobile fixes */
+    .navbar {
+        padding: 0.75rem 0 !important;
+    }
+    
+    .navbar-brand {
+        font-size: 1.25rem !important;
+    }
+    
+    .navbar-collapse {
+        margin-top: 0.75rem !important;
+        padding: 1rem !important;
+        border-radius: 0.75rem !important;
+    }
+    
+    .nav-link {
+        padding: 0.75rem 1rem !important;
+        margin: 0.25rem 0 !important;
+        text-align: center !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    /* Cards mobile */
+    .card {
+        margin-bottom: 1rem !important;
+        border-radius: 1rem !important;
+    }
+    
+    .card-body {
+        padding: 1.25rem !important;
+    }
+    
+    /* Feature cards mobile */
+    .feature-card {
+        padding: 1.5rem 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .feature-icon {
+        margin-bottom: 1rem !important;
+    }
+    
+    .feature-icon i {
+        font-size: 2rem !important;
+    }
+    
+    .feature-title {
+        font-size: 1.125rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .feature-description {
+        font-size: 0.9rem !important;
+        line-height: 1.5 !important;
+    }
+    
+    /* Section spacing mobile */
+    .section {
+        padding: 3rem 0 !important;
+    }
+    
+    .section-title {
+        font-size: 1.75rem !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem !important;
+        margin-bottom: 2rem !important;
+        text-align: center !important;
+    }
+    
+    /* Template cards mobile */
+    .template-card {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .template-preview {
+        height: 200px !important;
+        border-radius: 0.75rem !important;
+    }
+    
+    /* Trust badges mobile */
+    .trust-badge {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        margin: 0.5rem 0 !important;
+        padding: 0.75rem !important;
+    }
+    
+    .trust-badge i {
+        font-size: 1.5rem !important;
+    }
+    
+    .trust-badge span {
+        font-size: 0.85rem !important;
+    }
+    
+    /* Footer mobile */
+    .footer {
+        padding: 2rem 0 !important;
+    }
+    
+    .footer .row {
+        gap: 2rem !important;
+    }
+    
+    .footer h5, .footer h6 {
+        font-size: 1.125rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .footer ul li {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .footer ul li a {
+        font-size: 0.9rem !important;
+    }
+    
+    /* Form elements mobile */
+    .form-control {
+        font-size: 1rem !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 0.75rem !important;
+    }
+    
+    .form-label {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    /* Alert messages mobile */
+    .alert {
+        padding: 0.75rem 1rem !important;
+        margin: 0.75rem 0 !important;
+        border-radius: 0.75rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* Utility classes mobile */
+    .text-center-mobile {
+        text-align: center !important;
+    }
+    
+    .d-block-mobile {
+        display: block !important;
+    }
+    
+    .w-100-mobile {
+        width: 100% !important;
+    }
+    
+    /* Spacing adjustments */
+    .py-5 {
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    .my-5 {
+        margin-top: 2rem !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    .mb-5 {
+        margin-bottom: 2rem !important;
+    }
+    
+    .mt-5 {
+        margin-top: 2rem !important;
     }
 }
 
@@ -686,6 +946,75 @@ p {
     
     .table-responsive {
         border-radius: 1rem;
+    }
+    
+    /* Enhanced tablet and small mobile styles */
+    .hero-title {
+        font-size: 2.25rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.125rem !important;
+        line-height: 1.5 !important;
+    }
+    
+    .hero-actions {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1rem !important;
+    }
+    
+    .hero-actions .btn {
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 0.25rem 0 !important;
+    }
+    
+    .hero-stats {
+        flex-direction: row !important;
+        justify-content: space-around !important;
+        flex-wrap: wrap !important;
+        gap: 1rem !important;
+    }
+    
+    .stat-item {
+        flex: 1 !important;
+        min-width: 120px !important;
+        text-align: center !important;
+    }
+    
+    .section-title {
+        font-size: 2rem !important;
+        text-align: center !important;
+    }
+    
+    .section-subtitle {
+        font-size: 1.125rem !important;
+        text-align: center !important;
+    }
+    
+    .feature-card {
+        margin-bottom: 2rem !important;
+        text-align: center !important;
+    }
+    
+    .template-preview {
+        height: 250px !important;
+    }
+    
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.98) !important;
+        border-radius: 1rem !important;
+        padding: 1.5rem !important;
+        margin-top: 1rem !important;
+        box-shadow: var(--shadow-lg) !important;
+    }
+    
+    .nav-link {
+        text-align: center !important;
+        margin: 0.5rem 0 !important;
+        padding: 0.75rem 1rem !important;
     }
 }
 
