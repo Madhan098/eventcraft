@@ -394,37 +394,49 @@
     transform: scale(1.1);
 }
 
-/* Template-specific styling */
+/* Template-specific styling with event images */
 .template-item:nth-child(1) .template-preview {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/wedding.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .template-item:nth-child(1) .magnify-icon {
-    color: #2c3e50;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .template-item:nth-child(2) .template-preview {
-    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/birthday.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .template-item:nth-child(2) .magnify-icon {
-    color: #3498db;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .template-item:nth-child(3) .template-preview {
-    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/anniversery.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .template-item:nth-child(3) .magnify-icon {
-    color: #e91e63;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .template-item:nth-child(4) .template-preview {
-    background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/babyshower.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 .template-item:nth-child(4) .magnify-icon {
-    color: #00bcd4;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 /* Enhanced selection state */
@@ -536,8 +548,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const preview = templateItem.querySelector('.template-preview');
             const color = this.dataset.color;
             
-            // Apply gradient with selected color
-            preview.style.background = `linear-gradient(135deg, ${color} 0%, ${adjustColor(color, -20)} 100%)`;
+            // Apply gradient with selected color over the existing image
+            const currentBackground = preview.style.backgroundImage || getComputedStyle(preview).backgroundImage;
+            preview.style.background = `linear-gradient(135deg, ${color}80 0%, ${adjustColor(color, -20)}80 100%), ${currentBackground}`;
         });
     });
 });
