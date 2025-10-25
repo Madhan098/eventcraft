@@ -199,6 +199,38 @@ def register_routes(app):
             'environment': 'Production' if os.environ.get('RENDER') else 'Development'
         }
         return f"<pre>{debug_info}</pre>"
+    
+    @app.route('/oauth-test')
+    def oauth_test():
+        """Test OAuth URL generation"""
+        from urllib.parse import urlencode
+        import random
+        import string
+        
+        # Generate state parameter
+        state = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+        
+        # OAuth parameters
+        params = {
+            'client_id': app.config.get('GOOGLE_CLIENT_ID', 'NOT_SET'),
+            'redirect_uri': app.config.get('GOOGLE_REDIRECT_URI', 'NOT_SET'),
+            'scope': 'openid email profile',
+            'response_type': 'code',
+            'state': state,
+            'access_type': 'offline',
+            'prompt': 'consent'
+        }
+        
+        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+        
+        return f"""
+        <h2>OAuth Test</h2>
+        <p><strong>Client ID:</strong> {params['client_id']}</p>
+        <p><strong>Redirect URI:</strong> {params['redirect_uri']}</p>
+        <p><strong>State:</strong> {state}</p>
+        <p><strong>Generated URL:</strong></p>
+        <a href="{auth_url}" target="_blank">{auth_url}</a>
+        """
 
     @app.route('/auth/google')
     def google_auth():
@@ -221,18 +253,12 @@ def register_routes(app):
         app.logger.info(f"Redirect URI: {app.config['GOOGLE_REDIRECT_URI']}")
         app.logger.info(f"Client ID: {app.config['GOOGLE_CLIENT_ID']}")
         
-        # Google OAuth URL
-        params = {
-            'client_id': app.config['GOOGLE_CLIENT_ID'],
-            'redirect_uri': app.config['GOOGLE_REDIRECT_URI'],
-            'scope': 'openid email profile',
-            'response_type': 'code',
-            'state': state,
-            'access_type': 'offline',
-            'prompt': 'consent'
-        }
+        # Google OAuth URL - Use direct URL construction to avoid any encoding issues
+        client_id = app.config['GOOGLE_CLIENT_ID']
+        redirect_uri = app.config['GOOGLE_REDIRECT_URI']
         
-        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?client_id={client_id}&redirect_uri={redirect_uri}&scope=openid%20email%20profile&response_type=code&state={state}&access_type=offline&prompt=consent"
+        
         app.logger.info(f"OAuth URL: {auth_url}")
         return redirect(auth_url)
 
