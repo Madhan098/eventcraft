@@ -11,6 +11,14 @@ def generate_otp():
 def send_otp_email(email, otp_code, purpose='verification'):
     """Send OTP via email using Gmail SMTP"""
     
+    # Always display OTP in terminal for debugging
+    print(f"\n🔐 OTP GENERATED FOR {email.upper()}")
+    print(f"📧 Purpose: {purpose}")
+    print(f"🔑 OTP Code: {otp_code}")
+    print(f"⏰ Valid for 10 minutes")
+    print(f"🔗 Use this OTP to complete your {purpose}")
+    print(f"{'='*50}\n")
+    
     try:
         # Gmail SMTP configuration from environment variables
         smtp_server = 'smtp.gmail.com'
@@ -140,7 +148,14 @@ If you didn't request this, please ignore this email.
         print(f"=== OTP EMAIL (FALLBACK) ===")
         print(f"To: {email}")
         print(f"OTP Code: {otp_code}")
+        print(f"Purpose: {purpose}")
         print(f"================")
+        
+        # Always show OTP in terminal for debugging
+        print(f"\n🔐 OTP FOR {email.upper()}: {otp_code}")
+        print(f"📧 Purpose: {purpose}")
+        print(f"⏰ Valid for 10 minutes")
+        print(f"🔗 Use this OTP to complete your {purpose}\n")
         
         # Provide troubleshooting suggestions
         print("TROUBLESHOOTING SUGGESTIONS:")
