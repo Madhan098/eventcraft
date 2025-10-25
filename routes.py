@@ -9,6 +9,8 @@ import json
 import random
 import string
 import os
+import requests
+from urllib.parse import urlencode
 
 # Helper function to check authentication (moved outside register_routes)
 def is_authenticated():
@@ -162,11 +164,17 @@ def register_routes(app):
                     user.is_verified = True
                     db.session.commit()
                     
+                    # Automatically log in the user
+                    session['user_id'] = user.id
+                    session['user_name'] = user.name
+                    session['user_email'] = user.email
+                    session.permanent = True
+                    
                     # Clear temp session
                     session.pop('temp_email', None)
                     
-                    flash('Email verified successfully! Please login.', 'success')
-                    return redirect(url_for('auth'))
+                    flash('Email verified successfully! Welcome to EventCraft!', 'success')
+                    return redirect(url_for('dashboard'))
                 else:
                     flash('User not found', 'error')
                     return redirect(url_for('auth'))
@@ -178,6 +186,111 @@ def register_routes(app):
             app.logger.error(f"OTP verification error: {str(e)}")
             flash('Verification failed. Please try again.', 'error')
             return redirect(url_for('verify_otp'))
+
+    @app.route('/auth/google')
+    def google_auth():
+        """Initiate Google OAuth flow"""
+        if is_authenticated():
+            return redirect(url_for('dashboard'))
+        
+        # Generate state parameter for security
+        state = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+        session['oauth_state'] = state
+        
+        # Google OAuth URL
+        params = {
+            'client_id': app.config['GOOGLE_CLIENT_ID'],
+            'redirect_uri': app.config['GOOGLE_REDIRECT_URI'],
+            'scope': 'openid email profile',
+            'response_type': 'code',
+            'state': state,
+            'access_type': 'offline',
+            'prompt': 'consent'
+        }
+        
+        auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+        return redirect(auth_url)
+
+    @app.route('/auth/google/callback')
+    def google_callback():
+        """Handle Google OAuth callback"""
+        try:
+            # Verify state parameter
+            if request.args.get('state') != session.get('oauth_state'):
+                flash('Invalid state parameter', 'error')
+                return redirect(url_for('auth'))
+            
+            code = request.args.get('code')
+            if not code:
+                flash('Authorization code not received', 'error')
+                return redirect(url_for('auth'))
+            
+            # Exchange code for tokens
+            token_url = 'https://oauth2.googleapis.com/token'
+            token_data = {
+                'client_id': app.config['GOOGLE_CLIENT_ID'],
+                'client_secret': app.config['GOOGLE_CLIENT_SECRET'],
+                'code': code,
+                'grant_type': 'authorization_code',
+                'redirect_uri': app.config['GOOGLE_REDIRECT_URI']
+            }
+            
+            token_response = requests.post(token_url, data=token_data)
+            token_json = token_response.json()
+            
+            if 'access_token' not in token_json:
+                flash('Failed to get access token', 'error')
+                return redirect(url_for('auth'))
+            
+            # Get user info from Google
+            user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
+            headers = {'Authorization': f"Bearer {token_json['access_token']}"}
+            user_response = requests.get(user_info_url, headers=headers)
+            user_info = user_response.json()
+            
+            if 'email' not in user_info:
+                flash('Failed to get user information', 'error')
+                return redirect(url_for('auth'))
+            
+            # Check if user exists
+            user = User.query.filter_by(email=user_info['email']).first()
+            
+            if not user:
+                # Create new user
+                user = User(
+                    name=user_info.get('name', ''),
+                    email=user_info['email'],
+                    mobile='',  # Google doesn't provide mobile
+                    password_hash='',  # No password for OAuth users
+                    is_verified=True,  # Google users are pre-verified
+                    google_id=user_info.get('id', '')
+                )
+                db.session.add(user)
+                db.session.commit()
+                flash('Account created successfully! Welcome to EventCraft!', 'success')
+            else:
+                # Update existing user with Google ID if not set
+                if not user.google_id:
+                    user.google_id = user_info.get('id', '')
+                    user.is_verified = True
+                    db.session.commit()
+                flash('Welcome back!', 'success')
+            
+            # Log in the user
+            session['user_id'] = user.id
+            session['user_name'] = user.name
+            session['user_email'] = user.email
+            session.permanent = True
+            
+            # Clear OAuth state
+            session.pop('oauth_state', None)
+            
+            return redirect(url_for('dashboard'))
+            
+        except Exception as e:
+            app.logger.error(f"Google OAuth error: {str(e)}")
+            flash('Google authentication failed. Please try again.', 'error')
+            return redirect(url_for('auth'))
 
     @app.route('/dashboard')
     def dashboard():
