@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block title %}User Management - Admin Dashboard{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <!-- Admin Header -->
+    <div class="admin-header bg-primary text-white py-4 mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-users me-2"></i>
+                        User Management
+                    </h1>
+                    <p class="mb-0">Manage users and their permissions</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="admin-nav">
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-light btn-sm me-2">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                        <a href="{{ url_for('admin_users') }}" class="btn btn-outline-light btn-sm me-2 active">
+                            <i class="fas fa-users"></i> Users
+                        </a>
+                        <a href="{{ url_for('admin_activities') }}" class="btn btn-outline-light btn-sm me-2">
+                            <i class="fas fa-history"></i> Activities
+                        </a>
+                        <a href="{{ url_for('admin_analytics') }}" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-chart-line"></i> Analytics
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- User Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stat-card bg-gradient-primary text-white">
+                    <div class="card-body text-center">
+                        <h3 class="mb-0">{{ users.total }}</h3>
+                        <p class="mb-0">Total Users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-gradient-success text-white">
+                    <div class="card-body text-center">
+                        <h3 class="mb-0">{{ users.items | selectattr('is_verified') | list | length }}</h3>
+                        <p class="mb-0">Verified Users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-gradient-info text-white">
+                    <div class="card-body text-center">
+                        <h3 class="mb-0">{{ users.items | selectattr('is_admin') | list | length }}</h3>
+                        <p class="mb-0">Admin Users</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card bg-gradient-warning text-white">
+                    <div class="card-body text-center">
+                        <h3 class="mb-0">{{ users.items | selectattr('google_id') | list | length }}</h3>
+                        <p class="mb-0">Google Users</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            All Users
+                        </h5>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="refreshUsers()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 admin-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Status</th>
+                                <th>Login Count</th>
+                                <th>Last Login</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users.items %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar me-3">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                {{ user.name[0].upper() }}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <strong>{{ user.name }}</strong>
+                                            {% if user.is_admin %}
+                                            <br><span class="badge bg-danger">Admin</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="mailto:{{ user.email }}" class="text-decoration-none">
+                                        {{ user.email }}
+                                    </a>
+                                </td>
+                                <td>{{ user.mobile or 'N/A' }}</td>
+                                <td>
+                                    {% if user.is_verified %}
+                                        <span class="badge bg-success">Verified</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Unverified</span>
+                                    {% endif %}
+                                    {% if user.google_id %}
+                                        <br><span class="badge bg-info">Google</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">{{ user.login_count or 0 }}</span>
+                                </td>
+                                <td>
+                                    {% if user.last_login %}
+                                        {{ user.last_login.strftime('%m/%d/%Y %H:%M') }}
+                                    {% else %}
+                                        <span class="text-muted">Never</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.created_at.strftime('%m/%d/%Y') }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        {% if not user.is_admin %}
+                                        <a href="{{ url_for('admin_make_admin', user_id=user.id) }}" 
+                                           class="btn btn-outline-success btn-sm admin-btn btn-admin-success"
+                                           onclick="return confirm('Make {{ user.name }} an admin?')"
+                                           title="Make Admin">
+                                            <i class="fas fa-crown"></i>
+                                        </a>
+                                        {% else %}
+                                        <a href="{{ url_for('admin_remove_admin', user_id=user.id) }}" 
+                                           class="btn btn-outline-danger btn-sm admin-btn btn-admin-danger"
+                                           onclick="return confirm('Remove admin privileges from {{ user.name }}?')"
+                                           title="Remove Admin">
+                                            <i class="fas fa-user-minus"></i>
+                                        </a>
+                                        {% endif %}
+                                        
+                                        {% if not user.is_verified %}
+                                        <a href="{{ url_for('admin_verify_user', user_id=user.id) }}" 
+                                           class="btn btn-outline-primary btn-sm admin-btn btn-admin-primary"
+                                           title="Verify User">
+                                            <i class="fas fa-check-circle"></i>
+                                        </a>
+                                        {% endif %}
+                                        
+                                        {% if user.is_verified %}
+                                        <a href="{{ url_for('admin_ban_user', user_id=user.id) }}" 
+                                           class="btn btn-outline-warning btn-sm admin-btn btn-admin-warning"
+                                           onclick="return confirm('Ban {{ user.name }}?')"
+                                           title="Ban User">
+                                            <i class="fas fa-ban"></i>
+                                        </a>
+                                        {% else %}
+                                        <a href="{{ url_for('admin_unban_user', user_id=user.id) }}" 
+                                           class="btn btn-outline-success btn-sm admin-btn btn-admin-success"
+                                           title="Unban User">
+                                            <i class="fas fa-unlock"></i>
+                                        </a>
+                                        {% endif %}
+                                        
+                                        <button class="btn btn-outline-info btn-sm admin-btn btn-admin-info" onclick="viewUserDetails({{ user.id }})" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        
+                                        <a href="{{ url_for('admin_delete_user', user_id=user.id) }}" 
+                                           class="btn btn-outline-danger btn-sm admin-btn btn-admin-danger"
+                                           onclick="return confirm('DELETE {{ user.name }} and ALL their data? This cannot be undone!')"
+                                           title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            {% if users.pages > 1 %}
+            <div class="card-footer">
+                <nav aria-label="User pagination">
+                    <ul class="pagination justify-content-center mb-0">
+                        {% if users.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin_users', page=users.prev_num) }}">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for page_num in users.iter_pages() %}
+                            {% if page_num %}
+                                {% if page_num != users.page %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('admin_users', page=page_num) }}">{{ page_num }}</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ page_num }}</span>
+                                </li>
+                                {% endif %}
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if users.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('admin_users', page=users.next_num) }}">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.admin-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.stat-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background: white;
+    border-bottom: 1px solid #eee;
+    border-radius: 15px 15px 0 0 !important;
+}
+
+.table th {
+    border-top: none;
+    font-weight: 600;
+    color: #495057;
+}
+
+.avatar {
+    flex-shrink: 0;
+}
+
+.btn-group-sm .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+</style>
+
+<script>
+function refreshUsers() {
+    location.reload();
+}
+
+function viewUserDetails(userId) {
+    // TODO: Implement user details modal
+    alert('User details for ID: ' + userId);
+}
+</script>
+{% endblock %}

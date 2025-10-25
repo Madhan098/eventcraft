@@ -1,0 +1,433 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Admin Dashboard{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <!-- Admin Header -->
+    <div class="admin-header bg-primary text-white py-4 mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="h3 mb-0">
+                        <i class="fas fa-chart-line me-2"></i>
+                        Analytics Dashboard
+                    </h1>
+                    <p class="mb-0">Advanced analytics and insights</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="admin-nav">
+                        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-light btn-sm me-2">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                        <a href="{{ url_for('admin_users') }}" class="btn btn-outline-light btn-sm me-2">
+                            <i class="fas fa-users"></i> Users
+                        </a>
+                        <a href="{{ url_for('admin_activities') }}" class="btn btn-outline-light btn-sm me-2">
+                            <i class="fas fa-history"></i> Activities
+                        </a>
+                        <a href="{{ url_for('admin_analytics') }}" class="btn btn-outline-light btn-sm active">
+                            <i class="fas fa-chart-line"></i> Analytics
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Date Range Selector -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h6 class="mb-0">Analytics Period</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="btn-group" role="group">
+                            <a href="{{ url_for('admin_analytics', days=7) }}" 
+                               class="btn btn-outline-primary btn-sm {{ 'active' if analytics.date_range.days == 7 else '' }}">
+                                7 Days
+                            </a>
+                            <a href="{{ url_for('admin_analytics', days=30) }}" 
+                               class="btn btn-outline-primary btn-sm {{ 'active' if analytics.date_range.days == 30 else '' }}">
+                                30 Days
+                            </a>
+                            <a href="{{ url_for('admin_analytics', days=90) }}" 
+                               class="btn btn-outline-primary btn-sm {{ 'active' if analytics.date_range.days == 90 else '' }}">
+                                90 Days
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card stat-card bg-gradient-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 class="mb-0">{{ analytics.user_registrations | length }}</h3>
+                                <p class="mb-0">User Registrations</p>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-user-plus fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <small>Last {{ analytics.date_range.days }} days</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card stat-card bg-gradient-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 class="mb-0">{{ analytics.invitation_creations | length }}</h3>
+                                <p class="mb-0">Invitations Created</p>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-envelope fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <small>Last {{ analytics.date_range.days }} days</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card stat-card bg-gradient-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 class="mb-0">{{ analytics.view_trends | length }}</h3>
+                                <p class="mb-0">Total Views</p>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-eye fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <small>Last {{ analytics.date_range.days }} days</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card stat-card bg-gradient-warning text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h3 class="mb-0">{{ analytics.activity_distribution | length }}</h3>
+                                <p class="mb-0">Activity Types</p>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-pie fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <small>Different activities</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="row">
+            <!-- User Registration Trends -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-plus me-2"></i>
+                            User Registration Trends
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="userRegistrationsChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invitation Creation Trends -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-envelope me-2"></i>
+                            Invitation Creation Trends
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="invitationCreationsChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Distribution -->
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-pie me-2"></i>
+                            Activity Distribution
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="activityDistributionChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Trends -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-eye me-2"></i>
+                            View Trends
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="viewTrendsChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Type Breakdown -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            Activity Type Breakdown
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for activity in analytics.activity_distribution %}
+                            <div class="col-md-3 mb-3">
+                                <div class="activity-type-card">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-0">{{ activity.type.replace('_', ' ').title() }}</h6>
+                                            <small class="text-muted">Activity Type</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <h4 class="mb-0 text-primary">{{ activity.count }}</h4>
+                                            <small class="text-muted">Count</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+.admin-dashboard {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.admin-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.stat-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background: white;
+    border-bottom: 1px solid #eee;
+    border-radius: 15px 15px 0 0 !important;
+}
+
+.stat-icon {
+    opacity: 0.3;
+}
+
+.activity-type-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid #e9ecef;
+}
+</style>
+
+<script>
+// User Registration Chart
+const userRegistrationsCtx = document.getElementById('userRegistrationsChart').getContext('2d');
+new Chart(userRegistrationsCtx, {
+    type: 'line',
+    data: {
+        labels: {{ analytics.user_registrations | map(attribute='date') | list | tojson }},
+        datasets: [{
+            label: 'User Registrations',
+            data: {{ analytics.user_registrations | map(attribute='count') | list | tojson }},
+            borderColor: '#667eea',
+            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Invitation Creation Chart
+const invitationCreationsCtx = document.getElementById('invitationCreationsChart').getContext('2d');
+new Chart(invitationCreationsCtx, {
+    type: 'line',
+    data: {
+        labels: {{ analytics.invitation_creations | map(attribute='date') | list | tojson }},
+        datasets: [{
+            label: 'Invitations Created',
+            data: {{ analytics.invitation_creations | map(attribute='count') | list | tojson }},
+            borderColor: '#11998e',
+            backgroundColor: 'rgba(17, 153, 142, 0.1)',
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Activity Distribution Chart
+const activityDistributionCtx = document.getElementById('activityDistributionChart').getContext('2d');
+new Chart(activityDistributionCtx, {
+    type: 'doughnut',
+    data: {
+        labels: {{ analytics.activity_distribution | map(attribute='type') | list | tojson }},
+        datasets: [{
+            data: {{ analytics.activity_distribution | map(attribute='count') | list | tojson }},
+            backgroundColor: [
+                '#667eea',
+                '#11998e',
+                '#f093fb',
+                '#f5576c',
+                '#4ecdc4',
+                '#45b7d1',
+                '#96ceb4',
+                '#feca57'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// View Trends Chart
+const viewTrendsCtx = document.getElementById('viewTrendsChart').getContext('2d');
+new Chart(viewTrendsCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ analytics.view_trends | map(attribute='date') | list | tojson }},
+        datasets: [{
+            label: 'Views',
+            data: {{ analytics.view_trends | map(attribute='count') | list | tojson }},
+            backgroundColor: '#f093fb',
+            borderColor: '#f093fb',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+{% endblock %}
