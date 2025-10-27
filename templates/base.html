@@ -1182,18 +1182,20 @@
             height: 100vh;
             background: white;
             z-index: 1050;
-            transition: right 0.3s ease;
+            transition: all 0.3s ease;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
             border-left: 3px solid #667eea;
             visibility: hidden;
             opacity: 0;
+            transform: translateX(100%);
         }
 
         .mobile-nav-drawer.open {
             right: 0;
             visibility: visible;
             opacity: 1;
+            transform: translateX(0);
         }
 
         .mobile-nav-overlay {
@@ -1336,8 +1338,8 @@
         /* Mobile Hamburger Button */
         .mobile-nav-toggle {
             display: none;
-            background: none;
-            border: none;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
             font-size: 1.5rem;
             color: var(--text-primary);
             cursor: pointer;
@@ -1346,6 +1348,11 @@
             transition: all 0.3s ease;
             z-index: 1001;
             position: relative;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
         }
 
         .mobile-nav-toggle:hover {
@@ -1772,7 +1779,7 @@
                     <i class="fas fa-rocket me-1"></i>Get Started
                 </a>
                 {% endif %}
-                <button class="mobile-nav-toggle" type="button" id="mobileNavToggle" aria-label="Toggle mobile navigation">
+                <button class="mobile-nav-toggle" type="button" id="mobileNavToggle" aria-label="Toggle mobile navigation" onclick="window.toggleMobileNav && window.toggleMobileNav()">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
@@ -2086,144 +2093,113 @@
             }
         });
 
-        // Mobile Navigation Drawer
+        // Simple Mobile Navigation Implementation
         document.addEventListener('DOMContentLoaded', function() {
-            const mobileNavToggle = document.getElementById('mobileNavToggle');
-            const mobileNavDrawer = document.getElementById('mobileNavDrawer');
-            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
-            const mobileNavClose = document.getElementById('mobileNavClose');
-
-            // Debug: Log all elements
-            console.log('Mobile Nav Elements:', {
-                toggle: mobileNavToggle,
-                drawer: mobileNavDrawer,
-                overlay: mobileNavOverlay,
-                close: mobileNavClose
+            console.log('Initializing mobile navigation...');
+            
+            // Get elements
+            const toggleBtn = document.getElementById('mobileNavToggle');
+            const drawer = document.getElementById('mobileNavDrawer');
+            const overlay = document.getElementById('mobileNavOverlay');
+            const closeBtn = document.getElementById('mobileNavClose');
+            
+            console.log('Elements found:', {
+                toggle: !!toggleBtn,
+                drawer: !!drawer,
+                overlay: !!overlay,
+                close: !!closeBtn
             });
-
-            // Open mobile navigation
-            function openMobileNav() {
-                console.log('Opening mobile nav');
-                if (mobileNavDrawer && mobileNavOverlay) {
-                    mobileNavDrawer.classList.add('open');
-                    mobileNavOverlay.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                    
-                    // Add animation to menu items
-                    const menuItems = mobileNavDrawer.querySelectorAll('.mobile-nav-item');
-                    menuItems.forEach((item, index) => {
-                        item.style.opacity = '0';
-                        item.style.transform = 'translateX(20px)';
-                        setTimeout(() => {
-                            item.style.transition = 'all 0.3s ease';
-                            item.style.opacity = '1';
-                            item.style.transform = 'translateX(0)';
-                        }, index * 50);
-                    });
+            
+            // Simple toggle function
+            function toggleMobileNav() {
+                console.log('Toggling mobile nav...');
+                if (drawer && overlay) {
+                    const isOpen = drawer.classList.contains('open');
+                    if (isOpen) {
+                        // Close
+                        drawer.classList.remove('open');
+                        overlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                        console.log('Mobile nav closed');
+                    } else {
+                        // Open
+                        drawer.classList.add('open');
+                        overlay.classList.add('show');
+                        document.body.style.overflow = 'hidden';
+                        console.log('Mobile nav opened');
+                    }
                 } else {
                     console.error('Mobile nav elements not found');
                 }
             }
-
-            // Close mobile navigation
-            function closeMobileNav() {
-                console.log('Closing mobile nav');
-                if (mobileNavDrawer && mobileNavOverlay) {
-                    mobileNavDrawer.classList.remove('open');
-                    mobileNavOverlay.classList.remove('show');
-                    document.body.style.overflow = '';
-                }
-            }
-
-            // Event listeners
-            if (mobileNavToggle) {
-                // Click event
-                mobileNavToggle.addEventListener('click', function(e) {
+            
+            // Add event listeners
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Mobile nav toggle clicked');
-                    openMobileNav();
+                    console.log('Toggle button clicked');
+                    toggleMobileNav();
                 });
                 
-                // Touch event for mobile devices
-                mobileNavToggle.addEventListener('touchstart', function(e) {
+                // Also try touch events
+                toggleBtn.addEventListener('touchstart', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Mobile nav toggle touched');
-                    openMobileNav();
-                });
-                
-                // Mouse down event as fallback
-                mobileNavToggle.addEventListener('mousedown', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Mobile nav toggle mouse down');
-                    openMobileNav();
-                });
-                
-                // Add visual feedback
-                mobileNavToggle.addEventListener('mousedown', function() {
-                    this.style.transform = 'scale(0.95)';
-                });
-                
-                mobileNavToggle.addEventListener('mouseup', function() {
-                    this.style.transform = 'scale(1)';
-                });
-                
-                mobileNavToggle.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
+                    console.log('Toggle button touched');
+                    toggleMobileNav();
                 });
             } else {
-                console.log('Mobile nav toggle button not found');
+                console.error('Toggle button not found');
             }
             
-            // Fallback: Try to find the button by class if ID fails
-            if (!mobileNavToggle) {
-                const fallbackToggle = document.querySelector('.mobile-nav-toggle');
-                if (fallbackToggle) {
-                    console.log('Using fallback mobile nav toggle');
-                    fallbackToggle.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log('Fallback mobile nav toggle clicked');
-                        openMobileNav();
-                    });
-                }
-            }
-
-            // Debug function for mobile nav
-            window.debugMobileNav = function() {
-                console.log('Mobile Nav Debug:', {
-                    toggleButton: mobileNavToggle,
-                    drawer: mobileNavDrawer,
-                    overlay: mobileNavOverlay,
-                    closeButton: mobileNavClose,
-                    isDrawerOpen: mobileNavDrawer ? mobileNavDrawer.classList.contains('open') : 'N/A'
+            // Close button
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Close button clicked');
+                    if (drawer && overlay) {
+                        drawer.classList.remove('open');
+                        overlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
                 });
+            }
+            
+            // Overlay click to close
+            if (overlay) {
+                overlay.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Overlay clicked');
+                    if (drawer && overlay) {
+                        drawer.classList.remove('open');
+                        overlay.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+            
+            // Global functions for testing
+            window.toggleMobileNav = toggleMobileNav;
+            window.openMobileNav = function() {
+                if (drawer && overlay) {
+                    drawer.classList.add('open');
+                    overlay.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            };
+            window.closeMobileNav = function() {
+                if (drawer && overlay) {
+                    drawer.classList.remove('open');
+                    overlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
             };
             
-            // Test function to manually open mobile nav
-            window.testMobileNav = function() {
-                console.log('Testing mobile nav...');
-                openMobileNav();
-            };
-            
-            // Make functions globally available
-            window.openMobileNav = openMobileNav;
-            window.closeMobileNav = closeMobileNav;
-
-            if (mobileNavClose) {
-                mobileNavClose.addEventListener('click', closeMobileNav);
-            }
-
-            if (mobileNavOverlay) {
-                mobileNavOverlay.addEventListener('click', closeMobileNav);
-            }
-
             // Close on escape key
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && mobileNavDrawer.classList.contains('open')) {
-                    closeMobileNav();
+                if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) {
+                    toggleMobileNav();
                 }
             });
 
@@ -2232,7 +2208,13 @@
             mobileNavItems.forEach(item => {
                 item.addEventListener('click', function() {
                     // Add a small delay to allow navigation
-                    setTimeout(closeMobileNav, 100);
+                    setTimeout(() => {
+                        if (drawer && overlay) {
+                            drawer.classList.remove('open');
+                            overlay.classList.remove('show');
+                            document.body.style.overflow = '';
+                        }
+                    }, 100);
                 });
             });
 
@@ -2243,6 +2225,8 @@
                     item.classList.add('active');
                 }
             });
+            
+            console.log('Mobile navigation initialized successfully');
         });
 
         // Accessibility and Keyboard Navigation
