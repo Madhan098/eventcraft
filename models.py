@@ -1,5 +1,5 @@
 from extensions import db
-from datetime import datetime
+from datetime import datetime, timedelta
 import secrets
 import json
 
@@ -129,6 +129,7 @@ class Invitation(db.Model):
     share_url = db.Column(db.String(100), unique=True, nullable=False)
     view_count = db.Column(db.Integer, default=0)
     is_active = db.Column(db.Boolean, default=True)
+    expires_at = db.Column(db.DateTime, default=lambda: datetime.utcnow() + timedelta(days=365))  # Default 1 year expiration
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

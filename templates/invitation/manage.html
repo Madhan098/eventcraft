@@ -310,16 +310,46 @@
 
 <script>
 function copyShareUrl() {
-    const shareUrl = document.getElementById('shareUrlInput');
-    shareUrl.select();
-    shareUrl.setSelectionRange(0, 99999);
+    const shareUrlInput = document.getElementById('shareUrlInput');
+    if (!shareUrlInput) {
+        console.error('Share URL input not found');
+        showToast('Share link not found', 'error');
+        return;
+    }
+    
+    const shareUrl = shareUrlInput.value;
+    
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareUrl).then(function() {
+            showToast('Share link copied to clipboard!', 'success');
+        }).catch(function(err) {
+            console.error('Clipboard API failed, trying fallback:', err);
+            fallbackCopy(shareUrlInput);
+        });
+    } else {
+        // Fallback for older browsers or non-secure contexts
+        fallbackCopy(shareUrlInput);
+    }
+}
 
-    navigator.clipboard.writeText(shareUrl.value).then(function() {
-        showToast('Share link copied to clipboard!', 'success');
-    }).catch(function(err) {
-        console.error('Could not copy text: ', err);
-        showToast('Failed to copy link', 'error');
-    });
+function fallbackCopy(input) {
+    try {
+        // Select the text
+        input.select();
+        input.setSelectionRange(0, 99999); // For mobile devices
+        
+        // Try execCommand
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showToast('Share link copied to clipboard!', 'success');
+        } else {
+            throw new Error('execCommand failed');
+        }
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        showToast('Failed to copy link. Please select and copy manually.', 'error');
+    }
 }
 
 function duplicateInvitation() {

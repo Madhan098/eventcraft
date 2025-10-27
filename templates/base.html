@@ -1335,7 +1335,7 @@
             font-weight: 400;
         }
 
-        /* Mobile Hamburger Button */
+        /* Enhanced Mobile Navigation Styles */
         .mobile-nav-toggle {
             display: none;
             background: var(--bg-primary);
@@ -1353,11 +1353,17 @@
             align-items: center;
             justify-content: center;
             box-shadow: var(--shadow-sm);
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            touch-action: manipulation;
         }
 
         .mobile-nav-toggle:hover {
             background: var(--bg-accent);
             color: var(--primary-color);
+            transform: scale(1.05);
         }
 
         .mobile-nav-toggle:active {
@@ -1367,6 +1373,64 @@
         .mobile-nav-toggle:focus {
             outline: 2px solid var(--primary-color);
             outline-offset: 2px;
+        }
+
+        .mobile-nav-toggle i {
+            pointer-events: none;
+        }
+
+        /* Mobile Navigation Drawer Enhanced */
+        .mobile-nav-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 75%;
+            height: 100vh;
+            background: white;
+            z-index: 1050;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            border-left: 3px solid #667eea;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateX(100%);
+            will-change: transform, opacity, visibility;
+        }
+
+        .mobile-nav-drawer.open {
+            right: 0;
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            will-change: opacity, visibility;
+        }
+
+        .mobile-nav-overlay.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* Prevent body scroll when nav is open */
+        body.nav-open {
+            overflow: hidden !important;
+            position: fixed;
+            width: 100%;
         }
 
         /* Responsive Design */
@@ -2093,11 +2157,11 @@
             }
         });
 
-        // Simple Mobile Navigation Implementation
+        // Enhanced Mobile Navigation Implementation
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Initializing mobile navigation...');
+            console.log('Initializing enhanced mobile navigation...');
             
-            // Get elements
+            // Get elements with more robust selectors
             const toggleBtn = document.getElementById('mobileNavToggle');
             const drawer = document.getElementById('mobileNavDrawer');
             const overlay = document.getElementById('mobileNavOverlay');
@@ -2110,58 +2174,84 @@
                 close: !!closeBtn
             });
             
-            // Simple toggle function
+            // Enhanced toggle function with better error handling
             function toggleMobileNav() {
                 console.log('Toggling mobile nav...');
-                if (drawer && overlay) {
+                try {
+                    if (!drawer || !overlay) {
+                        console.error('Required elements not found');
+                        return;
+                    }
+                    
                     const isOpen = drawer.classList.contains('open');
+                    console.log('Current state:', isOpen ? 'open' : 'closed');
+                    
                     if (isOpen) {
                         // Close
                         drawer.classList.remove('open');
                         overlay.classList.remove('show');
                         document.body.style.overflow = '';
+                        document.body.classList.remove('nav-open');
                         console.log('Mobile nav closed');
                     } else {
                         // Open
                         drawer.classList.add('open');
                         overlay.classList.add('show');
                         document.body.style.overflow = 'hidden';
+                        document.body.classList.add('nav-open');
                         console.log('Mobile nav opened');
                     }
-                } else {
-                    console.error('Mobile nav elements not found');
+                } catch (error) {
+                    console.error('Error toggling mobile nav:', error);
                 }
             }
             
-            // Add event listeners
+            // Enhanced event listeners with better handling
             if (toggleBtn) {
+                // Remove any existing listeners first
+                toggleBtn.removeEventListener('click', toggleMobileNav);
+                toggleBtn.removeEventListener('touchstart', toggleMobileNav);
+                
+                // Add click event
                 toggleBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('Toggle button clicked');
                     toggleMobileNav();
-                });
+                }, { passive: false });
                 
-                // Also try touch events
+                // Add touch event for mobile
                 toggleBtn.addEventListener('touchstart', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('Toggle button touched');
                     toggleMobileNav();
-                });
+                }, { passive: false });
+                
+                // Add mousedown as backup
+                toggleBtn.addEventListener('mousedown', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Toggle button mousedown');
+                    toggleMobileNav();
+                }, { passive: false });
+                
+                console.log('Event listeners added to toggle button');
             } else {
                 console.error('Toggle button not found');
             }
             
-            // Close button
+            // Close button functionality
             if (closeBtn) {
                 closeBtn.addEventListener('click', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
                     console.log('Close button clicked');
                     if (drawer && overlay) {
                         drawer.classList.remove('open');
                         overlay.classList.remove('show');
                         document.body.style.overflow = '';
+                        document.body.classList.remove('nav-open');
                     }
                 });
             }
@@ -2170,35 +2260,42 @@
             if (overlay) {
                 overlay.addEventListener('click', function(e) {
                     e.preventDefault();
+                    e.stopPropagation();
                     console.log('Overlay clicked');
                     if (drawer && overlay) {
                         drawer.classList.remove('open');
                         overlay.classList.remove('show');
                         document.body.style.overflow = '';
+                        document.body.classList.remove('nav-open');
                     }
                 });
             }
             
-            // Global functions for testing
+            // Global functions for testing and external access
             window.toggleMobileNav = toggleMobileNav;
             window.openMobileNav = function() {
+                console.log('Opening mobile nav externally');
                 if (drawer && overlay) {
                     drawer.classList.add('open');
                     overlay.classList.add('show');
                     document.body.style.overflow = 'hidden';
+                    document.body.classList.add('nav-open');
                 }
             };
             window.closeMobileNav = function() {
+                console.log('Closing mobile nav externally');
                 if (drawer && overlay) {
                     drawer.classList.remove('open');
                     overlay.classList.remove('show');
                     document.body.style.overflow = '';
+                    document.body.classList.remove('nav-open');
                 }
             };
             
             // Close on escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) {
+                    console.log('Escape key pressed, closing nav');
                     toggleMobileNav();
                 }
             });
@@ -2207,12 +2304,14 @@
             const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
             mobileNavItems.forEach(item => {
                 item.addEventListener('click', function() {
+                    console.log('Navigation item clicked, closing nav');
                     // Add a small delay to allow navigation
                     setTimeout(() => {
                         if (drawer && overlay) {
                             drawer.classList.remove('open');
                             overlay.classList.remove('show');
                             document.body.style.overflow = '';
+                            document.body.classList.remove('nav-open');
                         }
                     }, 100);
                 });
@@ -2226,7 +2325,29 @@
                 }
             });
             
-            console.log('Mobile navigation initialized successfully');
+            // Test function to verify everything is working
+            window.testMobileNav = function() {
+                console.log('Testing mobile navigation...');
+                console.log('Toggle button:', toggleBtn);
+                console.log('Drawer:', drawer);
+                console.log('Overlay:', overlay);
+                console.log('Close button:', closeBtn);
+                
+                if (toggleBtn) {
+                    console.log('Toggle button styles:', window.getComputedStyle(toggleBtn));
+                    console.log('Toggle button display:', window.getComputedStyle(toggleBtn).display);
+                    console.log('Toggle button visibility:', window.getComputedStyle(toggleBtn).visibility);
+                }
+                
+                return {
+                    toggleBtn: !!toggleBtn,
+                    drawer: !!drawer,
+                    overlay: !!overlay,
+                    closeBtn: !!closeBtn
+                };
+            };
+            
+            console.log('Enhanced mobile navigation initialized successfully');
         });
 
         // Accessibility and Keyboard Navigation

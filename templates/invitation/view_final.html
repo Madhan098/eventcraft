@@ -1905,8 +1905,8 @@
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" class="btn btn-primary btn-sm" onclick="trackShare('facebook')">
                                 <i class="fab fa-facebook me-1"></i> Facebook
                             </a>
-                            <a href="https://twitter.com/intent/tweet?text={{ invitation.title or 'Event Invitation' }}&url={{ request.url }}" target="_blank" class="btn btn-info btn-sm" onclick="trackShare('twitter')">
-                                <i class="fab fa-twitter me-1"></i> Twitter
+                            <a href="https://twitter.com/intent/tweet?text={{ invitation.title or 'Event Invitation' }}&url={{ request.url }}" target="_blank" class="btn btn-dark btn-sm" onclick="trackShare('twitter')">
+                                <i class="fab fa-x-twitter me-1"></i> X
                             </a>
                             <a href="https://www.instagram.com/" target="_blank" class="btn btn-danger btn-sm" onclick="shareToInstagram()">
                                 <i class="fab fa-instagram me-1"></i> Instagram
@@ -2107,30 +2107,66 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function copyShareUrl() {
-    const shareUrl = document.getElementById('shareUrlInput').value;
-    navigator.clipboard.writeText(shareUrl).then(function() {
-        // Show success feedback
-        const btn = event.target.closest('button');
-        const originalHTML = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i>';
-        btn.classList.remove('btn-outline-primary');
-        btn.classList.add('btn-success');
+    const shareUrlInput = document.getElementById('shareUrlInput');
+    if (!shareUrlInput) {
+        console.error('Share URL input not found');
+        showToast('Share link not found', 'error');
+        return;
+    }
+    
+    const shareUrl = shareUrlInput.value;
+    const btn = event.target.closest('button');
+    
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareUrl).then(function() {
+            showSuccessFeedback(btn);
+            showToast('Link copied to clipboard!', 'success');
+            trackShare('copy');
+        }).catch(function(err) {
+            console.error('Clipboard API failed, trying fallback:', err);
+            fallbackCopy(shareUrlInput, btn);
+        });
+    } else {
+        // Fallback for older browsers or non-secure contexts
+        fallbackCopy(shareUrlInput, btn);
+    }
+}
 
-        // Show toast notification
-        showToast('Link copied to clipboard!', 'success');
+function fallbackCopy(input, btn) {
+    try {
+        // Select the text
+        input.select();
+        input.setSelectionRange(0, 99999); // For mobile devices
         
-        // Track share action
-        trackShare('copy');
+        // Try execCommand
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showSuccessFeedback(btn);
+            showToast('Link copied to clipboard!', 'success');
+            trackShare('copy');
+        } else {
+            throw new Error('execCommand failed');
+        }
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        showToast('Failed to copy link. Please select and copy manually.', 'error');
+    }
+}
 
-        setTimeout(function() {
-            btn.innerHTML = originalHTML;
-            btn.classList.remove('btn-success');
-            btn.classList.add('btn-outline-primary');
-        }, 2000);
-    }).catch(function(err) {
-        console.error('Could not copy text: ', err);
-        showToast('Failed to copy link', 'error');
-    });
+function showSuccessFeedback(btn) {
+    if (!btn) return;
+    
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i>';
+    btn.classList.remove('btn-outline-primary');
+    btn.classList.add('btn-success');
+
+    setTimeout(function() {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove('btn-success');
+        btn.classList.add('btn-outline-primary');
+    }, 2000);
 }
 
 // Instagram sharing function

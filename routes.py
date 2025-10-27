@@ -52,6 +52,12 @@ def generate_unique_share_url():
         if not Invitation.query.filter_by(share_url=share_url).first():
             return share_url
 
+def is_invitation_expired(invitation):
+    """Check if an invitation has expired"""
+    if not invitation.expires_at:
+        return False
+    return datetime.utcnow() > invitation.expires_at
+
 def register_routes(app):
     # Custom Jinja2 filter for safe JSON parsing
     @app.template_filter('safe_from_json')
@@ -753,7 +759,8 @@ def register_routes(app):
                 # Generate unique share URL
                 share_url=generate_unique_share_url(),
                 is_active=True,
-                view_count=0
+                view_count=0,
+                expires_at=datetime.utcnow() + timedelta(days=365)  # Set expiration to 1 year
             )
             
             db.session.add(invitation)
@@ -1058,6 +1065,11 @@ def register_routes(app):
         invitation = Invitation.query.filter_by(share_url=share_url).first()
         if not invitation:
             flash('Invitation not found', 'error')
+            return redirect(url_for('dashboard'))
+        
+        # Check if invitation has expired
+        if is_invitation_expired(invitation):
+            flash('This invitation has expired', 'error')
             return redirect(url_for('dashboard'))
         
         # Increment view count if user is not the owner
