@@ -1186,10 +1186,14 @@
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
             border-left: 3px solid #667eea;
+            visibility: hidden;
+            opacity: 0;
         }
 
         .mobile-nav-drawer.open {
             right: 0;
+            visibility: visible;
+            opacity: 1;
         }
 
         .mobile-nav-overlay {
@@ -1203,11 +1207,13 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            pointer-events: none;
         }
 
         .mobile-nav-overlay.show {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
 
         .mobile-nav-header {
@@ -1340,8 +1346,6 @@
             transition: all 0.3s ease;
             z-index: 1001;
             position: relative;
-            min-width: 44px;
-            min-height: 44px;
         }
 
         .mobile-nav-toggle:hover {
@@ -1361,11 +1365,20 @@
         /* Responsive Design */
         @media (max-width: 991.98px) {
             .mobile-nav-toggle {
-                display: block !important;
+                display: flex !important;
                 visibility: visible !important;
                 opacity: 1 !important;
                 position: relative;
                 z-index: 1001;
+                align-items: center;
+                justify-content: center;
+                width: 44px;
+                height: 44px;
+                border-radius: 8px;
+                background: var(--bg-primary);
+                border: 1px solid var(--border-color);
+                box-shadow: var(--shadow-sm);
+                cursor: pointer;
             }
             
             .navbar-collapse {
@@ -1385,20 +1398,7 @@
                 font-size: 0.85rem;
             }
             
-            /* Ensure mobile nav toggle is always visible */
-            .navbar .mobile-nav-toggle {
-                display: flex !important;
-                align-items: center;
-                justify-content: center;
-                width: 44px;
-                height: 44px;
-                border-radius: 8px;
-                background: var(--bg-primary);
-                border: 1px solid var(--border-color);
-                box-shadow: var(--shadow-sm);
-            }
-            
-            /* Mobile navigation controls */
+            /* Ensure mobile nav controls are visible */
             .mobile-nav-controls {
                 display: flex !important;
                 align-items: center;
@@ -2093,7 +2093,8 @@
             const mobileNavOverlay = document.getElementById('mobileNavOverlay');
             const mobileNavClose = document.getElementById('mobileNavClose');
 
-            console.log('Mobile nav elements:', {
+            // Debug: Log all elements
+            console.log('Mobile Nav Elements:', {
                 toggle: mobileNavToggle,
                 drawer: mobileNavDrawer,
                 overlay: mobileNavOverlay,
@@ -2136,6 +2137,7 @@
 
             // Event listeners
             if (mobileNavToggle) {
+                // Click event
                 mobileNavToggle.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -2143,26 +2145,50 @@
                     openMobileNav();
                 });
                 
-                // Add touch event for mobile devices
+                // Touch event for mobile devices
                 mobileNavToggle.addEventListener('touchstart', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('Mobile nav toggle touched');
                     openMobileNav();
                 });
+                
+                // Mouse down event as fallback
+                mobileNavToggle.addEventListener('mousedown', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Mobile nav toggle mouse down');
+                    openMobileNav();
+                });
+                
+                // Add visual feedback
+                mobileNavToggle.addEventListener('mousedown', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                mobileNavToggle.addEventListener('mouseup', function() {
+                    this.style.transform = 'scale(1)';
+                });
+                
+                mobileNavToggle.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
             } else {
                 console.log('Mobile nav toggle button not found');
             }
             
-            // Fallback: Add click listener to the entire mobile-nav-controls div
-            const mobileNavControls = document.querySelector('.mobile-nav-controls');
-            if (mobileNavControls && !mobileNavToggle) {
-                mobileNavControls.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Mobile nav controls clicked (fallback)');
-                    openMobileNav();
-                });
+            // Fallback: Try to find the button by class if ID fails
+            if (!mobileNavToggle) {
+                const fallbackToggle = document.querySelector('.mobile-nav-toggle');
+                if (fallbackToggle) {
+                    console.log('Using fallback mobile nav toggle');
+                    fallbackToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Fallback mobile nav toggle clicked');
+                        openMobileNav();
+                    });
+                }
             }
 
             // Debug function for mobile nav
@@ -2176,33 +2202,15 @@
                 });
             };
             
-            // Additional debugging and fallback
-            setTimeout(() => {
-                console.log('Mobile nav elements after timeout:', {
-                    toggle: document.getElementById('mobileNavToggle'),
-                    drawer: document.getElementById('mobileNavDrawer'),
-                    overlay: document.getElementById('mobileNavOverlay'),
-                    close: document.getElementById('mobileNavClose')
-                });
-                
-                // Force add event listener if not already added
-                const toggleBtn = document.getElementById('mobileNavToggle');
-                if (toggleBtn && !toggleBtn.hasAttribute('data-listener-added')) {
-                    toggleBtn.setAttribute('data-listener-added', 'true');
-                    toggleBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log('Force mobile nav toggle clicked');
-                        openMobileNav();
-                    });
-                }
-                
-                // Add global test function
-                window.testMobileNav = function() {
-                    console.log('Testing mobile nav...');
-                    openMobileNav();
-                };
-            }, 1000);
+            // Test function to manually open mobile nav
+            window.testMobileNav = function() {
+                console.log('Testing mobile nav...');
+                openMobileNav();
+            };
+            
+            // Make functions globally available
+            window.openMobileNav = openMobileNav;
+            window.closeMobileNav = closeMobileNav;
 
             if (mobileNavClose) {
                 mobileNavClose.addEventListener('click', closeMobileNav);
