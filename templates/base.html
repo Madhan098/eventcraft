@@ -1429,21 +1429,21 @@
         /* Enhanced Mobile Navigation Styles */
         .mobile-nav-toggle {
             display: none;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            font-size: 1.5rem;
-            color: var(--text-primary);
+            background: var(--primary-teal);
+            border: none;
+            font-size: 1.2rem;
+            color: white;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 8px;
             transition: all 0.3s ease;
             z-index: 1001;
             position: relative;
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             align-items: center;
             justify-content: center;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 2px 8px rgba(0, 163, 136, 0.3);
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -1452,22 +1452,23 @@
         }
 
         .mobile-nav-toggle:hover {
-            background: var(--bg-accent);
-            color: var(--primary-color);
-            transform: scale(1.05);
+            background: var(--secondary-coral);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
         }
 
         .mobile-nav-toggle:active {
-            transform: scale(0.95);
+            transform: translateY(0) scale(0.95);
         }
 
         .mobile-nav-toggle:focus {
-            outline: 2px solid var(--primary-color);
+            outline: 2px solid var(--accent-yellow);
             outline-offset: 2px;
         }
 
         .mobile-nav-toggle i {
             pointer-events: none;
+            font-size: 1.1rem;
         }
 
         /* Mobile Navigation Drawer Enhanced */
@@ -2135,28 +2136,6 @@
                             <i class="fas fa-palette me-1" aria-hidden="true"></i>Templates
                         </a>
                     </li>
-                    <li class="nav-item" role="none">
-                        <a class="nav-link" href="{{ url_for('about') }}" role="menuitem" aria-label="Learn about EventCraft Pro">
-                            <i class="fas fa-info-circle me-1" aria-hidden="true"></i>About
-                        </a>
-                    </li>
-                    <li class="nav-item" role="none">
-                        <a class="nav-link" href="{{ url_for('contact') }}" role="menuitem" aria-label="Contact us for support">
-                            <i class="fas fa-envelope me-1" aria-hidden="true"></i>Contact
-                        </a>
-                    </li>
-                    <li class="nav-item" role="none">
-                        <a class="nav-link" href="{{ url_for('help_center') }}" role="menuitem" aria-label="Get help and support">
-                            <i class="fas fa-question-circle me-1" aria-hidden="true"></i>Help
-                        </a>
-                    </li>
-                    {% if session.user_id %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('drag_drop_editor') }}">
-                            <i class="fas fa-edit me-1"></i>Editor
-                        </a>
-                    </li>
-                    {% endif %}
                 </ul>
                 
                 <ul class="navbar-nav ms-auto">
@@ -2185,6 +2164,12 @@
                                 </a></li>
                             </ul>
                         </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="btn-primary-custom" href="{{ url_for('auth') }}">
+                                <i class="fas fa-rocket me-1"></i>Get Started
+                            </a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
@@ -2209,44 +2194,29 @@
                 <span class="nav-text">Home</span>
             </a>
             
-            {% if session.user_id %}
-            <a href="{{ url_for('drag_drop_editor') }}" class="mobile-nav-item">
-                <i class="fas fa-plus"></i>
-                <span class="nav-text">Create Listing</span>
-            </a>
-            {% endif %}
-            
-            <a href="{{ url_for('templates') }}?category=birthday" class="mobile-nav-item">
-                <i class="fas fa-birthday-cake"></i>
-                <span class="nav-text">Birthday</span>
-            </a>
-            
-            <a href="{{ url_for('templates') }}?category=wedding" class="mobile-nav-item">
-                <i class="fas fa-heart"></i>
-                <span class="nav-text">Wedding</span>
-            </a>
-            
-            <a href="{{ url_for('templates') }}?category=baby-shower" class="mobile-nav-item">
-                <i class="fas fa-baby"></i>
-                <span class="nav-text">Baby Shower</span>
-            </a>
-            
-            <a href="{{ url_for('templates') }}?category=graduation" class="mobile-nav-item">
-                <i class="fas fa-graduation-cap"></i>
-                <span class="nav-text">Graduation</span>
-            </a>
-            
-            <a href="{{ url_for('templates') }}?category=corporate" class="mobile-nav-item">
-                <i class="fas fa-briefcase"></i>
-                <span class="nav-text">Corporate</span>
+            <a href="{{ url_for('templates') }}" class="mobile-nav-item">
+                <i class="fas fa-palette"></i>
+                <span class="nav-text">Templates</span>
             </a>
             
             <div class="mobile-nav-divider"></div>
             
-            <a href="#" class="mobile-nav-item">
-                <i class="fas fa-bell"></i>
-                <span class="nav-text">Notifications</span>
+            <a href="{{ url_for('about') }}" class="mobile-nav-item">
+                <i class="fas fa-info-circle"></i>
+                <span class="nav-text">About</span>
             </a>
+            
+            <a href="{{ url_for('contact') }}" class="mobile-nav-item">
+                <i class="fas fa-envelope"></i>
+                <span class="nav-text">Contact</span>
+            </a>
+            
+            <a href="{{ url_for('help_center') }}" class="mobile-nav-item">
+                <i class="fas fa-question-circle"></i>
+                <span class="nav-text">Help</span>
+            </a>
+            
+            <div class="mobile-nav-divider"></div>
             
             {% if session.user_id %}
             <div class="mobile-nav-user">
@@ -2404,15 +2374,15 @@
                         <ul class="list-unstyled">
                             <li><a href="{{ url_for('templates') }}" class="footer-link">Templates</a></li>
                             <li><a href="{{ url_for('about') }}" class="footer-link">Features</a></li>
-                            <li><a href="{{ url_for('contact') }}" class="footer-link">Support</a></li>
+                            <li><a href="{{ url_for('help_center') }}" class="footer-link">Help Center</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
-                        <h6 class="fw-bold mb-3 text-white">Resources</h6>
+                        <h6 class="fw-bold mb-3 text-white">Company</h6>
                         <ul class="list-unstyled">
-                            <li><a href="{{ url_for('about') }}" class="footer-link">About</a></li>
-                            <li><a href="{{ url_for('contact') }}" class="footer-link">Contact</a></li>
-                            <li><a href="{{ url_for('privacy') }}" class="footer-link">Privacy</a></li>
+                            <li><a href="{{ url_for('about') }}" class="footer-link">About Us</a></li>
+                            <li><a href="{{ url_for('contact') }}" class="footer-link">Contact Us</a></li>
+                            <li><a href="{{ url_for('privacy') }}" class="footer-link">Privacy Policy</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-12">
@@ -2472,71 +2442,48 @@
                 close: !!closeBtn
             });
             
-            // Enhanced toggle function with better error handling
+            // Simplified and reliable toggle function
             function toggleMobileNav() {
-                console.log('Toggling mobile nav...');
                 try {
                     if (!drawer || !overlay) {
-                        console.error('Required elements not found');
+                        console.error('Mobile nav elements not found');
                         return;
                     }
                     
                     const isOpen = drawer.classList.contains('open');
-                    console.log('Current state:', isOpen ? 'open' : 'closed');
                     
                     if (isOpen) {
-                        // Close
+                        // Close navigation
                         drawer.classList.remove('open');
                         overlay.classList.remove('show');
                         document.body.style.overflow = '';
                         document.body.classList.remove('nav-open');
-                        console.log('Mobile nav closed');
                     } else {
-                        // Open
+                        // Open navigation
                         drawer.classList.add('open');
                         overlay.classList.add('show');
                         document.body.style.overflow = 'hidden';
                         document.body.classList.add('nav-open');
-                        console.log('Mobile nav opened');
                     }
                 } catch (error) {
                     console.error('Error toggling mobile nav:', error);
                 }
             }
             
-            // Enhanced event listeners with better handling
+            // Simple and reliable event listeners
             if (toggleBtn) {
-                // Remove any existing listeners first
-                toggleBtn.removeEventListener('click', toggleMobileNav);
-                toggleBtn.removeEventListener('touchstart', toggleMobileNav);
+                // Clear any existing listeners
+                const newToggleBtn = toggleBtn.cloneNode(true);
+                toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
                 
-                // Add click event
-                toggleBtn.addEventListener('click', function(e) {
+                // Add single click event listener
+                newToggleBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Toggle button clicked');
                     toggleMobileNav();
-                }, { passive: false });
+                });
                 
-                // Add touch event for mobile
-                toggleBtn.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Toggle button touched');
-                    toggleMobileNav();
-                }, { passive: false });
-                
-                // Add mousedown as backup
-                toggleBtn.addEventListener('mousedown', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Toggle button mousedown');
-                    toggleMobileNav();
-                }, { passive: false });
-                
-                console.log('Event listeners added to toggle button');
-            } else {
-                console.error('Toggle button not found');
+                console.log('Mobile nav toggle button ready');
             }
             
             // Close button functionality
