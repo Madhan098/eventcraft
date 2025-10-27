@@ -1340,6 +1340,8 @@
             transition: all 0.3s ease;
             z-index: 1001;
             position: relative;
+            min-width: 44px;
+            min-height: 44px;
         }
 
         .mobile-nav-toggle:hover {
@@ -2091,6 +2093,13 @@
             const mobileNavOverlay = document.getElementById('mobileNavOverlay');
             const mobileNavClose = document.getElementById('mobileNavClose');
 
+            console.log('Mobile nav elements:', {
+                toggle: mobileNavToggle,
+                drawer: mobileNavDrawer,
+                overlay: mobileNavOverlay,
+                close: mobileNavClose
+            });
+
             // Open mobile navigation
             function openMobileNav() {
                 console.log('Opening mobile nav');
@@ -2133,8 +2142,27 @@
                     console.log('Mobile nav toggle clicked');
                     openMobileNav();
                 });
+                
+                // Add touch event for mobile devices
+                mobileNavToggle.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Mobile nav toggle touched');
+                    openMobileNav();
+                });
             } else {
                 console.log('Mobile nav toggle button not found');
+            }
+            
+            // Fallback: Add click listener to the entire mobile-nav-controls div
+            const mobileNavControls = document.querySelector('.mobile-nav-controls');
+            if (mobileNavControls && !mobileNavToggle) {
+                mobileNavControls.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Mobile nav controls clicked (fallback)');
+                    openMobileNav();
+                });
             }
 
             // Debug function for mobile nav
@@ -2147,6 +2175,34 @@
                     isDrawerOpen: mobileNavDrawer ? mobileNavDrawer.classList.contains('open') : 'N/A'
                 });
             };
+            
+            // Additional debugging and fallback
+            setTimeout(() => {
+                console.log('Mobile nav elements after timeout:', {
+                    toggle: document.getElementById('mobileNavToggle'),
+                    drawer: document.getElementById('mobileNavDrawer'),
+                    overlay: document.getElementById('mobileNavOverlay'),
+                    close: document.getElementById('mobileNavClose')
+                });
+                
+                // Force add event listener if not already added
+                const toggleBtn = document.getElementById('mobileNavToggle');
+                if (toggleBtn && !toggleBtn.hasAttribute('data-listener-added')) {
+                    toggleBtn.setAttribute('data-listener-added', 'true');
+                    toggleBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Force mobile nav toggle clicked');
+                        openMobileNav();
+                    });
+                }
+                
+                // Add global test function
+                window.testMobileNav = function() {
+                    console.log('Testing mobile nav...');
+                    openMobileNav();
+                };
+            }, 1000);
 
             if (mobileNavClose) {
                 mobileNavClose.addEventListener('click', closeMobileNav);
