@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ invitation.title }} - EventCraft Pro</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Modern Pop Palette - EventCraft Color Scheme */
+            --primary-teal: #00A388;
+            --secondary-coral: #FF6B6B;
+            --accent-yellow: #FFC300;
+            
+            /* Backgrounds */
+            --bg-main: #F7F8FC;
+            --bg-white: #FFFFFF;
+            
+            /* Text */
+            --text-primary: #2F4858;
+            --text-secondary: #5A6C7D;
+            --text-light: #8B9CAD;
+            
+            /* Semantic Colors */
+            --success: var(--primary-teal);
+            --warning: var(--accent-yellow);
+            --error: var(--secondary-coral);
+            
+            /* Hover States */
+            --primary-teal-hover: #008C75;
+            --secondary-coral-hover: #FF5252;
+            --accent-yellow-hover: #FFB700;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+        }
+
+        .invitation-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .invitation-header {
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-coral) 100%);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .invitation-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .invitation-content {
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        .invitation-footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .invitation-footer a {
+            color: var(--accent-yellow);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .invitation-footer a:hover {
+            color: var(--accent-yellow-hover);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .invitation-header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .invitation-content {
+                padding: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invitation-container">
+        <!-- Invitation Header -->
+        <div class="invitation-header">
+            <div class="container">
+                <h1><i class="fas fa-calendar-alt me-2"></i>{{ invitation.title }}</h1>
+            </div>
+        </div>
+
+        <!-- Invitation Content -->
+        <div class="invitation-content">
+            <div class="container">
+                <!-- Include the invitation template content here -->
+                {% if invitation.template_type == 'wedding_elegant' %}
+                    {% include 'invitation/templates/wedding_elegant.html' %}
+                {% elif invitation.template_type == 'wedding_hindu_traditional' %}
+                    {% include 'invitation/templates/wedding_hindu_traditional.html' %}
+                {% elif invitation.template_type == 'wedding_muslim_elegant' %}
+                    {% include 'invitation/templates/wedding_muslim_elegant.html' %}
+                {% elif invitation.template_type == 'birthday_fun_colorful' %}
+                    {% include 'invitation/templates/birthday_fun_colorful.html' %}
+                {% elif invitation.template_type == 'babyshower_sweet_pink' %}
+                    {% include 'invitation/templates/babyshower_sweet_pink.html' %}
+                {% elif invitation.template_type == 'graduation_success_modern' %}
+                    {% include 'invitation/templates/graduation_success_modern.html' %}
+                {% elif invitation.template_type == 'retirement_golden_classic' %}
+                    {% include 'invitation/templates/retirement_golden_classic.html' %}
+                {% elif invitation.template_type == 'anniversary_golden_elegant' %}
+                    {% include 'invitation/templates/anniversary_golden_elegant.html' %}
+                {% else %}
+                    {% include 'invitation/templates/wedding_elegant.html' %}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Invitation Footer -->
+        <div class="invitation-footer">
+            <div class="container">
+                <p class="mb-0">
+                    <i class="fas fa-heart me-1" style="color: var(--secondary-coral);"></i>
+                    Made with <a href="https://eventcraftpro.com" target="_blank">EventCraft Pro</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

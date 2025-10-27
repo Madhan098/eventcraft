@@ -713,15 +713,16 @@
     /* Auto-scrolling wishes styles */
     .wishes-auto-scroll {
         display: flex;
-        overflow: hidden;
+        overflow-x: auto;
+        overflow-y: hidden;
         gap: 1rem;
         padding: 1rem 0;
-        animation: scrollWishes 30s linear infinite;
         white-space: nowrap;
+        scroll-behavior: smooth;
     }
 
     .wishes-auto-scroll:hover {
-        animation-play-state: paused;
+        scroll-behavior: smooth;
     }
 
     .wishes-auto-scroll .wish-item {
@@ -731,42 +732,32 @@
         max-width: 300px;
     }
 
-    @keyframes scrollWishes {
-        0% {
-            transform: translateX(100%);
-        }
-        100% {
-            transform: translateX(-100%);
-        }
-    }
-
     .wishes-scroll-container {
         position: relative;
-        overflow: hidden;
+        overflow-x: auto;
+        overflow-y: hidden;
         border-radius: 10px;
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
+        scroll-behavior: smooth;
     }
 
-    .wishes-scroll-container::before,
-    .wishes-scroll-container::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 50px;
-        z-index: 2;
-        pointer-events: none;
+    .wishes-scroll-container::-webkit-scrollbar {
+        height: 6px;
     }
 
-    .wishes-scroll-container::before {
-        left: 0;
-        background: linear-gradient(to right, rgba(255, 255, 255, 0.8), transparent);
+    .wishes-scroll-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
     }
 
-    .wishes-scroll-container::after {
-        right: 0;
-        background: linear-gradient(to left, rgba(255, 255, 255, 0.8), transparent);
+    .wishes-scroll-container::-webkit-scrollbar-thumb {
+        background: var(--primary-teal);
+        border-radius: 3px;
+    }
+
+    .wishes-scroll-container::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-teal-hover);
     }
 
     /* Grid view for wishes */
@@ -1919,7 +1910,7 @@
                 <div class="share-options">
                     <label class="form-label" style="font-weight: 600; color: #2c3e50;">Share Link:</label>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="shareUrlInput" value="{{ request.url }}" readonly style="background: #f8f9fa; border: 2px solid #e9ecef;">
+                        <input type="text" class="form-control" id="shareUrlInput" value="{{ request.url_root }}invitation/{{ invitation.share_url }}" readonly style="background: #f8f9fa; border: 2px solid #e9ecef;">
                         <button class="btn btn-outline-primary" type="button" onclick="copyShareUrl()">
                             <i class="fas fa-copy"></i>
                         </button>
@@ -1983,6 +1974,9 @@
         </div>
     </div>
 </div>
+
+<!-- QR Code Library -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 
 <script>
 // Function to open share modal with fallback

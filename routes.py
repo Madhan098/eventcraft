@@ -1091,6 +1091,121 @@ def register_routes(app):
 
         return render_template('invitation/manage.html', invitation=invitation, event_data=event_data)
 
+    @app.route('/invitation/<share_url>')
+    def standalone_invitation(share_url):
+        """Standalone invitation view without site navigation"""
+        invitation = Invitation.query.filter_by(share_url=share_url).first()
+        if not invitation:
+            flash('Invitation not found', 'error')
+            return redirect(url_for('index'))
+        
+        # Check if invitation has expired
+        if is_invitation_expired(invitation):
+            flash('This invitation has expired', 'error')
+            return redirect(url_for('index'))
+        
+        # Increment view count
+        invitation.view_count += 1
+        db.session.commit()
+        
+        # Prepare event_data in the format the templates expect
+        event_data = {
+            'eventTitle': invitation.title or 'Event Invitation',
+            'eventDescription': invitation.description or '',
+            'eventDate': invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else '',
+            'eventTime': invitation.muhurtham_time or invitation.start_time or invitation.anniversary_dinner_time or invitation.babyshower_start_time or '',
+            'venue': invitation.venue_address or '',
+            'address': invitation.venue_address or '',
+            'description': invitation.description or '',
+            'religiousType': invitation.event_style or 'general',
+            'familyName': invitation.title or 'Event Invitation',
+            'eventType': invitation.event_type or 'general',
+            
+            # Story fields
+            'loveStory': invitation.love_story or '',
+            'eventStory': invitation.event_story or '',
+            
+            # Wedding specific
+            'brideName': invitation.bride_name or '',
+            'groomName': invitation.groom_name or '',
+            'bridePhoto': invitation.bride_image,
+            'groomPhoto': invitation.groom_image,
+            'couplePhoto': invitation.couple_image,
+            'brideDescription': 'Beautiful Bride',
+            'groomDescription': 'Handsome Groom',
+            
+            # Birthday specific
+            'birthdayPerson': invitation.birthday_person or '',
+            'age': invitation.age or '',
+            'startTime': invitation.start_time or '',
+            'dinnerTime': invitation.dinner_time or '',
+            'birthdayPhoto': invitation.birthday_image,
+            
+            # Baby shower specific
+            'motherName': invitation.mother_name or '',
+            'fatherName': invitation.father_name or '',
+            'startTime': invitation.babyshower_start_time or '',
+            'endTime': invitation.babyshower_end_time or '',
+            'babyGender': '👶',
+            'gender': 'Baby',
+            'babyName': 'Little Angel',
+            'dueDate': 'Coming Soon',
+            
+            # Graduation specific
+            'graduateName': invitation.graduate_name or '',
+            'degree': invitation.degree or '',
+            'school': invitation.school or '',
+            'major': invitation.major or '',
+            'graduatePhoto': invitation.graduate_image,
+            
+            # Anniversary specific
+            'coupleNames': invitation.couple_names or '',
+            'marriageYears': invitation.marriage_years or '',
+            'husbandName': invitation.couple_names.split('&')[0].strip() if invitation.couple_names and '&' in invitation.couple_names else '',
+            'wifeName': invitation.couple_names.split('&')[1].strip() if invitation.couple_names and '&' in invitation.couple_names else '',
+            'husbandDescription': 'Loving Husband',
+            'wifeDescription': 'Beloved Wife',
+            'marriageYear': '1999',
+            'firstMilestone': '2005',
+            'secondMilestone': '2015',
+            
+            # Retirement specific
+            'honoreeName': invitation.honoree_name or '',
+            'position': invitation.position or '',
+            'company': invitation.company or '',
+            'startYear': invitation.start_year or '',
+            'honoreePhoto': invitation.honoree_image,
+            
+            # Main and Gallery images
+            'mainImage': invitation.main_image,
+            'galleryImages': json.loads(invitation.gallery_images) if invitation.gallery_images else [],
+            
+            # Contact info
+            'hostName': invitation.host_name or '',
+            'contactPhone': invitation.contact_phone or '',
+            'contactEmail': invitation.contact_email or '',
+            
+            # Time and venue data (structured format)
+            'timeData': {
+                'muhurthamTime': invitation.muhurtham_time or '',
+                'receptionTime': invitation.reception_time or '',
+                'startTime': invitation.start_time or '',
+                'dinnerTime': invitation.dinner_time or '',
+                'partyTime': invitation.party_time or '',
+                'anniversaryDinnerTime': invitation.anniversary_dinner_time or '',
+                'babyshowerStartTime': invitation.babyshower_start_time or '',
+                'babyshowerEndTime': invitation.babyshower_end_time or ''
+            },
+            'venueData': {
+                'venue': invitation.venue_address or '',
+                'address': invitation.venue_address or ''
+            }
+        }
+        
+        return render_template('invitation/standalone.html', 
+                             invitation=invitation, 
+                             event_data=event_data)
+
     @app.route('/view-invitation-final/<share_url>')
     def view_invitation_final(share_url):
         """View the final invitation as guests would see it"""
