@@ -297,6 +297,96 @@
             object-fit: cover;
         }
 
+        /* Location Section */
+        .location-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .venue-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .venue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .venue-icon {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .venue-details {
+            flex: 1;
+        }
+
+        .venue-details h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #2d3436;
+            margin-bottom: 1rem;
+        }
+
+        .venue-address {
+            font-size: 1.1rem;
+            color: #636e72;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .location-btn {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .location-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .location-btn i {
+            font-size: 1.1rem;
+        }
+
         /* Contact Section */
         .contact-section {
             padding: 100px 0;
@@ -731,7 +821,32 @@
         </div>
     </section>
 
-    <!-- RSVP Section -->
+        <!-- Location Section -->
+        {% if invitation.venue_address %}
+        <section class="location-section">
+            <div class="location-container">
+                <h2 class="section-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Wedding Location
+                </h2>
+                <div class="venue-card">
+                    <div class="venue-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="venue-details">
+                        <h3>Wedding Venue</h3>
+                        <p class="venue-address">{{ invitation.venue_address }}</p>
+                        <a href="https://maps.google.com/?q={{ invitation.venue_address|urlencode }}" target="_blank" class="location-btn">
+                            <i class="fas fa-directions"></i>
+                            Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- RSVP Section -->
     <section class="rsvp-section">
         <div class="container">
             <div class="rsvp-form">
