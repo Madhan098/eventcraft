@@ -1810,80 +1810,18 @@ def register_routes(app):
             return jsonify({'success': False, 'message': 'Failed to remove guest'}), 500
 
     # Public RSVP Response Route
-    @app.route('/rsvp/<share_url>', methods=['GET', 'POST'])
+    @app.route('/rsvp/<share_url>', methods=['GET'])
     def public_rsvp(share_url):
-        """Public RSVP response page"""
+        """Public RSVP response page - Auto Calendar"""
         invitation = Invitation.query.filter_by(share_url=share_url).first_or_404()
         
-        if request.method == 'POST':
-            try:
-                data = request.get_json()
-                guest_name = data.get('name')
-                guest_email = data.get('email')
-                status = data.get('status')
-                message = data.get('message', '')
-                
-                # Find or create guest
-                guest = Guest.query.filter_by(
-                    invitation_id=invitation.id, 
-                    name=guest_name
-                ).first()
-                
-                if not guest:
-                    # Create new guest if not found
-                    guest = Guest(
-                        invitation_id=invitation.id,
-                        name=guest_name,
-                        email=guest_email or '',
-                        phone=''
-                    )
-                    db.session.add(guest)
-                    db.session.flush()  # Get the guest ID
-                
-                # Create or update RSVP
-                rsvp = RSVP.query.filter_by(guest_id=guest.id).first()
-                
-                if rsvp:
-                    # Update existing RSVP
-                    rsvp.status = status
-                    rsvp.message = message
-                    rsvp.response_date = datetime.utcnow()
-                    rsvp.ip_address = request.remote_addr
-                    rsvp.user_agent = request.headers.get('User-Agent')
-                else:
-                    # Create new RSVP
-                    rsvp = RSVP(
-                        invitation_id=invitation.id,
-                        guest_id=guest.id,
-                        status=status,
-                        message=message,
-                        response_date=datetime.utcnow(),
-                        ip_address=request.remote_addr,
-                        user_agent=request.headers.get('User-Agent')
-                    )
-                    db.session.add(rsvp)
-                
-                db.session.commit()
-                
-                # Generate Google Calendar URL if attending
-                calendar_url = None
-                if status == 'attending' and invitation.event_date:
-                    calendar_url = generate_google_calendar_url(invitation)
-                
-                return jsonify({
-                    'success': True,
-                    'message': 'RSVP submitted successfully',
-                    'status': status,
-                    'calendar_url': calendar_url
-                })
-                
-            except Exception as e:
-                db.session.rollback()
-                app.logger.error(f"Error submitting RSVP: {str(e)}")
-                return jsonify({'success': False, 'message': 'Failed to submit RSVP'}), 500
+        # Generate Google Calendar URL
+        google_calendar_url = generate_google_calendar_url(invitation)
         
-        # GET request - show RSVP form
-        return render_template('invitation/rsvp_form.html', invitation=invitation)
+        # Render the auto-calendar page
+        return render_template('invitation/rsvp_form.html', 
+                             invitation=invitation, 
+                             google_calendar_url=google_calendar_url)
 
     # Analytics Dashboard Route
     @app.route('/invitations/<int:invitation_id>/analytics')

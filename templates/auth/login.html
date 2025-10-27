@@ -162,19 +162,19 @@
         }
     }
 </style>
-<section class="py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); min-height: 100vh; display: flex; align-items: center;">
+<section class="py-5" style="background: #f8f9fa; min-height: 100vh; display: flex; align-items: center;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
                 <!-- Header Section -->
                 <div class="text-center mb-5">
-                    <div class="logo-container mb-4" style="width: 100px; height: 100px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); border: 2px solid rgba(255, 255, 255, 0.3);">
+                    <div class="logo-container mb-4" style="width: 100px; height: 100px; background: var(--primary-teal); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 163, 136, 0.3);">
                         <i class="fas fa-calendar-alt fa-3x" style="color: #ffffff;"></i>
                     </div>
-                    <h1 class="text-white fw-bold mb-2" style="font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-                        EventCraft <span style="color: #ffd700;">Pro</span>
+                    <h1 class="fw-bold mb-2" style="font-size: 2.5rem; color: var(--text-primary);">
+                        EventCraft <span style="color: var(--secondary-coral);">Pro</span>
                     </h1>
-                    <p class="text-white-50 mb-0" style="font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
+                    <p class="mb-0" style="font-size: 1.1rem; color: var(--text-secondary);">
                         Create beautiful digital invitations in minutes
                     </p>
                 </div>
@@ -213,7 +213,7 @@
                             <!-- Login Form -->
                             <div class="tab-pane fade show active" id="login">
                                 <div class="text-center mb-4">
-                                    <div class="login-icon mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);">
+                                    <div class="login-icon mb-3" style="width: 70px; height: 70px; background: var(--primary-teal); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(0, 163, 136, 0.3);">
                                         <i class="fas fa-user-circle fa-2x" style="color: #ffffff;"></i>
                                     </div>
                                     <h3 class="fw-bold" style="color: #2c3e50; margin-bottom: 10px;">Welcome Back!</h3>
@@ -223,7 +223,7 @@
                                 <form method="POST" action="{{ url_for('login') }}">
                                     <div class="mb-4">
                                         <label for="login-email" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-envelope me-2" style="color: #667eea;"></i>Email Address
+                                            <i class="fas fa-envelope me-2" style="color: var(--primary-teal);"></i>Email Address
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -236,7 +236,7 @@
                                     
                                     <div class="mb-4">
                                         <label for="login-password" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-lock me-2" style="color: #667eea;"></i>Password
+                                            <i class="fas fa-lock me-2" style="color: var(--primary-teal);"></i>Password
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -249,7 +249,7 @@
                                     
                                     <div class="d-grid">
                                         <button type="submit" class="btn btn-lg" 
-                                                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
+                                                style="background: var(--primary-teal); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(0, 163, 136, 0.3); transition: all 0.3s ease;">
                                             <i class="fas fa-sign-in-alt me-2"></i>Sign In
                                         </button>
                                     </div>
@@ -286,7 +286,7 @@
                             <!-- Register Form -->
                             <div class="tab-pane fade" id="register">
                                 <div class="text-center mb-4">
-                                    <div class="register-icon mb-3" style="width: 70px; height: 70px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);">
+                                    <div class="register-icon mb-3" style="width: 70px; height: 70px; background: var(--primary-teal); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(0, 163, 136, 0.3);">
                                         <i class="fas fa-user-plus fa-2x" style="color: #ffffff;"></i>
                                     </div>
                                     <h3 class="fw-bold" style="color: #2c3e50; margin-bottom: 10px;">Create Account</h3>
@@ -296,7 +296,7 @@
                                 <form method="POST" action="{{ url_for('register') }}">
                                     <div class="mb-4">
                                         <label for="register-name" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-user me-2" style="color: #f093fb;"></i>Full Name
+                                            <i class="fas fa-user me-2" style="color: var(--primary-teal);"></i>Full Name
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -309,7 +309,7 @@
                                     
                                     <div class="mb-4">
                                         <label for="register-email" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-envelope me-2" style="color: #f093fb;"></i>Email Address
+                                            <i class="fas fa-envelope me-2" style="color: var(--primary-teal);"></i>Email Address
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -322,7 +322,7 @@
                                     
                                     <div class="mb-4">
                                         <label for="register-mobile" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-phone me-2" style="color: #f093fb;"></i>Mobile Number
+                                            <i class="fas fa-phone me-2" style="color: var(--primary-teal);"></i>Mobile Number
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -335,7 +335,7 @@
                                     
                                     <div class="mb-4">
                                         <label for="register-password" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-lock me-2" style="color: #f093fb;"></i>Password
+                                            <i class="fas fa-lock me-2" style="color: var(--primary-teal);"></i>Password
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -345,14 +345,14 @@
                                                    style="border: 2px solid #e9ecef; border-left: none; border-radius: 0 12px 12px 0; padding: 15px 20px; font-size: 1rem; transition: all 0.3s ease;">
                                         </div>
                                         <div class="form-text">
-                                            <i class="fas fa-info-circle me-1" style="color: #f093fb;"></i>
+                                            <i class="fas fa-info-circle me-1" style="color: var(--primary-teal);"></i>
                                             <span style="color: #6c757d;">Minimum 6 characters required</span>
                                         </div>
                                     </div>
                                     
                                     <div class="mb-4">
                                         <label for="register-confirm-password" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-check-double me-2" style="color: #f093fb;"></i>Confirm Password
+                                            <i class="fas fa-check-double me-2" style="color: var(--primary-teal);"></i>Confirm Password
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -365,7 +365,7 @@
                                     
                                     <div class="d-grid">
                                         <button type="submit" class="btn btn-lg" 
-                                                style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3); transition: all 0.3s ease;">
+                                                style="background: var(--primary-teal); border: none; color: white; padding: 15px; border-radius: 12px; font-weight: 600; box-shadow: 0 8px 25px rgba(0, 163, 136, 0.3); transition: all 0.3s ease;">
                                             <i class="fas fa-user-plus me-2"></i>Create Account
                                         </button>
                                     </div>

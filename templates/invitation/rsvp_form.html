@@ -3,65 +3,85 @@
 {% block title %}RSVP - {{ invitation.title }}{% endblock %}
 
 {% block content %}
-<!-- Simplified RSVP Form Section -->
-<section class="rsvp-form-section py-5">
+<!-- Auto Calendar RSVP Section -->
+<section class="auto-calendar-section py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="rsvp-form-card">
+            <div class="col-lg-8">
+                <div class="auto-calendar-card">
                     <div class="text-center mb-5">
-                        <h1 class="display-5 fw-bold mb-3">RSVP Response</h1>
-                        <p class="lead text-muted">Please let us know if you'll be joining us for this special event</p>
+                        <div class="calendar-icon mb-4">
+                            <i class="fas fa-calendar-check fa-4x text-primary"></i>
+                        </div>
+                        <h1 class="display-5 fw-bold mb-3">Event Details</h1>
+                        <p class="lead text-muted">Add this event to your calendar automatically</p>
                     </div>
                     
-                    <form id="rsvpForm" class="rsvp-form">
+                    <div class="event-info mb-5">
                         <div class="row g-4">
-                            <div class="col-12">
-                                <label for="guest-name" class="form-label">Your Name *</label>
-                                <input type="text" class="form-control" id="guest-name" required>
-                            </div>
-                            <div class="col-12">
-                                <label for="guest-email" class="form-label">Email Address *</label>
-                                <input type="email" class="form-control" id="guest-email" required>
-                            </div>
-                            
-                            <div class="col-12">
-                                <label class="form-label">Will you be attending? *</label>
-                                <div class="rsvp-options">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="attendance" id="attending" value="attending" required>
-                                        <label class="form-check-label attending-option" for="attending">
-                                            <i class="fas fa-check-circle me-2"></i>Yes, I'll be there!
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="attendance" id="not-attending" value="not_attending" required>
-                                        <label class="form-check-label not-attending-option" for="not-attending">
-                                            <i class="fas fa-times-circle me-2"></i>Sorry, can't make it
-                                        </label>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <i class="fas fa-calendar-alt text-primary me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Event Date</h6>
+                                        <p class="mb-0">{{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else 'TBD' }}</p>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="col-12" id="calendar-section" style="display: none;">
-                                <div class="alert alert-info">
-                                    <i class="fas fa-calendar-plus me-2"></i>
-                                    <strong>Add to Calendar:</strong> If you're attending, we'll help you add this event to your Google Calendar.
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <i class="fas fa-clock text-primary me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Event Time</h6>
+                                        <p class="mb-0">{{ invitation.event_time if invitation.event_time else 'TBD' }}</p>
+                                    </div>
                                 </div>
                             </div>
-                            
-                            <div class="col-12">
-                                <label for="rsvp-message" class="form-label">Message (Optional)</label>
-                                <textarea class="form-control" id="rsvp-message" rows="3" placeholder="Any special message or dietary requirements..."></textarea>
+                            {% if invitation.venue_address %}
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Location</h6>
+                                        <p class="mb-0">{{ invitation.venue_address }}</p>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-paper-plane me-2"></i>Submit RSVP
-                                </button>
+                            {% endif %}
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <i class="fas fa-user text-primary me-3"></i>
+                                    <div>
+                                        <h6 class="mb-1">Host</h6>
+                                        <p class="mb-0">{{ invitation.host_name if invitation.host_name else 'Event Host' }}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    
+                    <div class="calendar-actions text-center">
+                        <div class="mb-4">
+                            <h4 class="mb-3">Add to Your Calendar</h4>
+                            <p class="text-muted">Click below to automatically add this event to your Google Calendar</p>
+                        </div>
+                        
+                        <div class="calendar-buttons">
+                            <a href="{{ google_calendar_url }}" target="_blank" class="btn btn-primary btn-lg me-3">
+                                <i class="fab fa-google me-2"></i>Add to Google Calendar
+                            </a>
+                            <a href="/view-invitation-final/{{ invitation.share_url }}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Invitation
+                            </a>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                This will open Google Calendar in a new tab with the event details pre-filled
+                            </small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,7 +89,7 @@
 </section>
 
 <style>
-.rsvp-form-card {
+.auto-calendar-card {
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -77,55 +97,43 @@
     border: 1px solid #e9ecef;
 }
 
-.rsvp-options {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
+.calendar-icon {
+    color: var(--primary-teal);
 }
 
-.form-check {
+.info-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
     background: #f8f9fa;
     border-radius: 15px;
-    padding: 1rem;
-    border: 2px solid transparent;
+    border: 1px solid #e9ecef;
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
-.form-check:hover {
+.info-item:hover {
     background: #e9ecef;
     transform: translateY(-2px);
 }
 
-.form-check-input:checked + .form-check-label {
-    color: #198754;
+.info-item i {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.info-item h6 {
+    color: var(--text-primary);
     font-weight: 600;
 }
 
-.form-check-input:checked ~ .form-check {
-    background: #d1e7dd;
-    border-color: #198754;
-}
-
-.attending-option {
-    color: #198754;
-}
-
-.not-attending-option {
-    color: #dc3545;
-}
-
-.form-check-input:checked + .attending-option {
-    color: #198754;
-}
-
-.form-check-input:checked + .not-attending-option {
-    color: #dc3545;
+.info-item p {
+    color: var(--text-secondary);
+    margin: 0;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--primary-teal);
     border: none;
     padding: 1rem 2rem;
     font-size: 1.1rem;
@@ -134,130 +142,45 @@
 }
 
 .btn-primary:hover {
+    background: var(--primary-teal-hover);
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 163, 136, 0.3);
 }
 
-.alert-info {
-    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
-    border: 1px solid #bee5eb;
+.btn-outline-secondary {
+    border: 2px solid #6c757d;
+    color: #6c757d;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
     border-radius: 15px;
-    color: #0c5460;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background: #6c757d;
+    color: white;
+    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
-    .rsvp-form-card {
+    .auto-calendar-card {
         padding: 2rem;
         margin: 1rem;
     }
     
-    .rsvp-options {
-        gap: 0.5rem;
+    .calendar-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
     }
     
-    .form-check {
+    .calendar-buttons .btn {
+        width: 100%;
+    }
+    
+    .info-item {
         padding: 0.75rem;
     }
 }
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('rsvpForm');
-    const calendarSection = document.getElementById('calendar-section');
-    const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
-    
-    // Show/hide calendar section based on attendance
-    attendanceRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.value === 'attending') {
-                calendarSection.style.display = 'block';
-            } else {
-                calendarSection.style.display = 'none';
-            }
-        });
-    });
-    
-    // Form submission
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = {
-            name: document.getElementById('guest-name').value,
-            email: document.getElementById('guest-email').value,
-            status: document.querySelector('input[name="attendance"]:checked').value,
-            message: document.getElementById('rsvp-message').value
-        };
-        
-        // Disable submit button and show loading
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
-        submitBtn.disabled = true;
-        
-        // Submit RSVP
-        fetch(`/rsvp/{{ invitation.share_url }}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Show success message
-                showSuccessMessage(data);
-            } else {
-                alert('Error submitting RSVP: ' + data.message);
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error submitting RSVP. Please try again.');
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        });
-    });
-});
-
-function showSuccessMessage(data) {
-    const form = document.getElementById('rsvpForm');
-    const formCard = form.closest('.rsvp-form-card');
-    
-    let successHtml = `
-        <div class="text-center">
-            <div class="success-icon mb-4">
-                <i class="fas fa-check-circle fa-5x text-success"></i>
-            </div>
-            <h2 class="text-success mb-3">Thank You!</h2>
-            <p class="lead mb-4">Your RSVP has been submitted successfully.</p>
-    `;
-    
-    // If attending, show Google Calendar option
-    if (data.status === 'attending' && data.calendar_url) {
-        successHtml += `
-            <div class="calendar-option mb-4">
-                <p class="mb-3">Add this event to your calendar:</p>
-                <a href="${data.calendar_url}" target="_blank" class="btn btn-outline-primary btn-lg">
-                    <i class="fab fa-google me-2"></i>Add to Google Calendar
-                </a>
-            </div>
-        `;
-    }
-    
-    successHtml += `
-            <div class="mt-4">
-                <a href="/view-invitation-final/{{ invitation.share_url }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Back to Invitation
-                </a>
-            </div>
-        </div>
-    `;
-    
-    formCard.innerHTML = successHtml;
-}
-</script>
 {% endblock %}
