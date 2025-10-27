@@ -798,7 +798,7 @@
     </div>
                 </div>
                 
-                <div class="templates-count">
+                <div class="templates-count" style="display: none;">
                     <span id="templatesCount">Showing 8 templates</span>
                 </div>
                 
@@ -1195,8 +1195,8 @@ document.addEventListener('DOMContentLoaded', function() {
             templatesGrid.appendChild(template);
         });
         
-        // Update count
-        templatesCount.textContent = `Showing ${filteredTemplates.length} templates`;
+        // Update count (hidden)
+        // templatesCount.textContent = `Showing ${filteredTemplates.length} templates`;
     }
     
     // Event listeners
@@ -1241,7 +1241,7 @@ function clearAllFilters() {
         templatesGrid.appendChild(template);
     });
     
-    templatesCount.textContent = `Showing ${allTemplates.length} templates`;
+    // templatesCount.textContent = `Showing ${allTemplates.length} templates`;
 }
 </script>
 {% endblock %}

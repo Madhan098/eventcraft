@@ -1497,24 +1497,117 @@
                 color: white;
             }
             
-            /* Mobile footer improvements */
-            .footer .row {
+        /* Modern Footer Styles */
+        .footer-modern {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            margin-top: 5rem;
+        }
+
+        .footer-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .footer-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .footer-content {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        .social-link {
+            color: #bdc3c7;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .social-link:hover {
+            color: white;
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .footer-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        .newsletter-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .newsletter-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .newsletter-btn {
+            background: var(--primary-color);
+            border: none;
+        }
+
+        .newsletter-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Mobile footer improvements */
+        @media (max-width: 768px) {
+            .footer-title {
+                font-size: 2rem;
+            }
+            
+            .footer-subtitle {
+                font-size: 1rem;
+            }
+            
+            .footer-modern .row {
                 flex-direction: row;
                 flex-wrap: wrap;
             }
             
-            .footer .col-lg-2 {
+            .footer-modern .col-lg-2 {
                 flex: 0 0 50%;
                 max-width: 50%;
             }
             
-            .footer .col-lg-4:first-child {
+            .footer-modern .col-lg-4:first-child {
                 flex: 0 0 100%;
                 max-width: 100%;
                 margin-bottom: 2rem;
             }
             
-            .footer .col-lg-4:last-child {
+            .footer-modern .col-lg-4:last-child {
                 flex: 0 0 100%;
                 max-width: 100%;
             }
@@ -2086,60 +2179,78 @@
     </main>
 
     <!-- Modern Footer -->
-    <footer class="bg-light border-top mt-5">
-        <div class="container py-5">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="fw-bold mb-3 text-primary">
-                        <i class="fas fa-sparkles me-2"></i>EventCraft Pro
-                    </h5>
-                    <p class="text-dark mb-3">Creating unforgettable digital experiences for your special moments. Professional, elegant, and modern invitation designs.</p>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="text-primary hover-primary"><i class="fab fa-facebook-f fa-lg"></i></a>
-                        <a href="#" class="text-primary hover-primary"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#" class="text-primary hover-primary"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#" class="text-primary hover-primary"><i class="fab fa-linkedin-in fa-lg"></i></a>
+    <footer class="footer-modern">
+        <div class="footer-header">
+            <div class="container">
+                <div class="row justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h2 class="footer-title mb-3">
+                            <i class="fas fa-heart text-primary me-2"></i>
+                            Ready to Create Something Amazing?
+                        </h2>
+                        <p class="footer-subtitle mb-4">Join thousands of users creating beautiful invitations with EventCraft Pro</p>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-rocket me-2"></i>Get Started Free
+                        </a>
                     </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-6">
-                    <h6 class="fw-bold mb-3 text-dark">Product</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{{ url_for('templates') }}" class="text-dark text-decoration-none hover-primary">Templates</a></li>
-                        <li><a href="{{ url_for('about') }}" class="text-dark text-decoration-none hover-primary">Features</a></li>
-                        <li><a href="{{ url_for('contact') }}" class="text-dark text-decoration-none hover-primary">Support</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-3 col-6">
-                    <h6 class="fw-bold mb-3 text-dark">Company</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{{ url_for('about') }}" class="text-dark text-decoration-none hover-primary">About</a></li>
-                        <li><a href="{{ url_for('contact') }}" class="text-dark text-decoration-none hover-primary">Contact</a></li>
-                        <li><a href="{{ url_for('privacy') }}" class="text-dark text-decoration-none hover-primary">Privacy</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <h6 class="fw-bold mb-3 text-dark">Newsletter</h6>
-                    <p class="text-dark mb-3">Stay updated with our latest features and templates.</p>
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Enter your email" style="border-radius: 0.75rem 0 0 0.75rem; border: 1px solid var(--border-color);">
-                        <button class="btn btn-primary" type="button" style="border-radius: 0 0.75rem 0.75rem 0; background: var(--gradient-primary); border: none;">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="text-dark mb-0">&copy; 2025 EventCraft Pro. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <a href="{{ url_for('terms') }}" class="text-dark text-decoration-none me-3 hover-primary">Terms</a>
-                    <a href="{{ url_for('privacy') }}" class="text-dark text-decoration-none hover-primary">Privacy</a>
                 </div>
             </div>
         </div>
-    </div> <!-- End main-content -->
+        
+        <div class="footer-content">
+            <div class="container py-5">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <h5 class="fw-bold mb-3 text-white">
+                            <i class="fas fa-sparkles me-2"></i>EventCraft Pro
+                        </h5>
+                        <p class="text-light mb-3">Creating unforgettable digital experiences for your special moments. Professional, elegant, and modern invitation designs.</p>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f fa-lg"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter fa-lg"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-instagram fa-lg"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6">
+                        <h6 class="fw-bold mb-3 text-white">Product</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ url_for('templates') }}" class="footer-link">Templates</a></li>
+                            <li><a href="{{ url_for('about') }}" class="footer-link">Features</a></li>
+                            <li><a href="{{ url_for('contact') }}" class="footer-link">Support</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-6">
+                        <h6 class="fw-bold mb-3 text-white">Resources</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ url_for('about') }}" class="footer-link">About</a></li>
+                            <li><a href="{{ url_for('contact') }}" class="footer-link">Contact</a></li>
+                            <li><a href="{{ url_for('privacy') }}" class="footer-link">Privacy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <h6 class="fw-bold mb-3 text-white">Stay Updated</h6>
+                        <p class="text-light mb-3">Get the latest features and templates delivered to your inbox.</p>
+                        <div class="input-group">
+                            <input type="email" class="form-control newsletter-input" placeholder="Enter your email">
+                            <button class="btn btn-primary newsletter-btn" type="button">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4 border-light">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="text-light mb-0">&copy; 2025 EventCraft Pro. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="{{ url_for('terms') }}" class="footer-link me-3">Terms</a>
+                        <a href="{{ url_for('privacy') }}" class="footer-link">Privacy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Bootstrap JS -->
