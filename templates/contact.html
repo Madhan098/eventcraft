@@ -2,6 +2,153 @@
 
 {% block title %}Contact EventCraft Pro - Get Support & Help{% endblock %}
 
+{% block extra_head %}
+<style>
+/* Contact Page Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0 !important;
+    }
+    
+    .hero-title {
+        font-size: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .contact-illustration i {
+        font-size: 3rem !important;
+    }
+    
+    .contact-illustration h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    .contact-form-card {
+        padding: 1.5rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.75rem !important;
+    }
+    
+    .section-subtitle {
+        font-size: 0.9rem !important;
+    }
+    
+    .form-control {
+        padding: 0.75rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .form-label {
+        font-size: 0.9rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        padding: 1.5rem 0 !important;
+    }
+    
+    .hero-title {
+        font-size: 1.75rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.95rem !important;
+    }
+    
+    .contact-illustration i {
+        font-size: 2.5rem !important;
+    }
+    
+    .contact-illustration h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .contact-form-card {
+        padding: 1rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .section-subtitle {
+        font-size: 0.85rem !important;
+    }
+    
+    .form-control {
+        padding: 0.6rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .form-label {
+        font-size: 0.85rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.6rem 1.25rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9rem !important;
+    }
+    
+    .contact-illustration i {
+        font-size: 2rem !important;
+    }
+    
+    .contact-illustration h3 {
+        font-size: 1rem !important;
+    }
+    
+    .contact-form-card {
+        padding: 0.75rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.25rem !important;
+    }
+    
+    .section-subtitle {
+        font-size: 0.8rem !important;
+    }
+    
+    .form-control {
+        padding: 0.5rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .form-label {
+        font-size: 0.8rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.8rem !important;
+    }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section class="hero-section py-5">
@@ -40,19 +187,36 @@
                         <p class="section-subtitle text-muted">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
                     </div>
                     
-                    <form class="contact-form" method="POST" action="{{ url_for('contact') }}">
+                    <!-- Success/Error Messages -->
+                    <div id="form-messages" class="mb-4" style="display: none;">
+                        <div id="success-message" class="alert alert-success alert-dismissible fade show" style="display: none;">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>Success!</strong> Your message has been sent successfully. We'll get back to you within 24 hours.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <div id="error-message" class="alert alert-danger alert-dismissible fade show" style="display: none;">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong>Error!</strong> There was a problem sending your message. Please try again.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </div>
+                    
+                    <form class="contact-form" id="contactForm" method="POST" action="{{ url_for('contact') }}">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="name" class="form-label">Full Name *</label>
                                 <input type="text" class="form-control" id="name" name="name" required>
+                                <div class="invalid-feedback" id="name-error"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">Email Address *</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback" id="email-error"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="phone" class="form-label">Phone Number</label>
                                 <input type="tel" class="form-control" id="phone" name="phone">
+                                <div class="invalid-feedback" id="phone-error"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="subject" class="form-label">Subject *</label>
@@ -65,10 +229,12 @@
                                     <option value="partnership">Partnership</option>
                                     <option value="other">Other</option>
                                 </select>
+                                <div class="invalid-feedback" id="subject-error"></div>
                             </div>
                             <div class="col-12">
                                 <label for="message" class="form-label">Message *</label>
                                 <textarea class="form-control" id="message" name="message" rows="6" required placeholder="Tell us how we can help you..."></textarea>
+                                <div class="invalid-feedback" id="message-error"></div>
                             </div>
                             <div class="col-12">
                                 <div class="form-check">
@@ -79,9 +245,15 @@
                                 </div>
                             </div>
                             <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-primary-custom btn-lg">
+                                <button type="submit" class="btn btn-primary-custom btn-lg" id="submitBtn">
                                     <i class="fas fa-paper-plane me-2"></i>Send Message
                                 </button>
+                                <div class="loading-spinner mt-3" id="loadingSpinner" style="display: none;">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Sending...</span>
+                                    </div>
+                                    <p class="mt-2 text-muted">Sending your message...</p>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -253,38 +425,195 @@ function openLiveChat() {
     alert('Live chat feature coming soon! For now, please use our email support.');
 }
 
-// Form validation and submission
+// Enhanced Form validation and submission
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('.contact-form');
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const formMessages = document.getElementById('form-messages');
+    const successMessage = document.getElementById('success-message');
+    const errorMessage = document.getElementById('error-message');
     
     if (form) {
+        // Real-time validation
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+            
+            input.addEventListener('input', function() {
+                clearFieldError(this);
+            });
+        });
+        
         form.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Clear previous messages
+            hideMessages();
+            
+            // Validate all fields
+            let isValid = true;
+            inputs.forEach(input => {
+                if (!validateField(input)) {
+                    isValid = false;
+                }
+            });
+            
+            if (!isValid) {
+                showError('Please correct the errors below and try again.');
+                return;
+            }
+            
+            // Show loading state
+            showLoading();
             
             // Get form data
             const formData = new FormData(form);
             const data = Object.fromEntries(formData);
             
-            // Basic validation
-            if (!data.name || !data.email || !data.subject || !data.message) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-            
-            // Simulate form submission
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
-            submitBtn.disabled = true;
-            
+            // Simulate form submission with better feedback
             setTimeout(() => {
-                alert('Thank you for your message! We\'ll get back to you within 24 hours.');
-                form.reset();
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
+                // Simulate success (90% success rate for demo)
+                if (Math.random() > 0.1) {
+                    showSuccess();
+                    form.reset();
+                    clearAllErrors();
+                } else {
+                    showError('There was a problem sending your message. Please try again or contact us directly.');
+                }
+                hideLoading();
             }, 2000);
         });
+    }
+    
+    function validateField(field) {
+        const value = field.value.trim();
+        const fieldName = field.name;
+        let isValid = true;
+        let errorMessage = '';
+        
+        // Clear previous errors
+        clearFieldError(field);
+        
+        // Required field validation
+        if (field.hasAttribute('required') && !value) {
+            errorMessage = `${getFieldLabel(fieldName)} is required.`;
+            isValid = false;
+        }
+        
+        // Email validation
+        if (fieldName === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                errorMessage = 'Please enter a valid email address.';
+                isValid = false;
+            }
+        }
+        
+        // Phone validation
+        if (fieldName === 'phone' && value) {
+            const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+            if (!phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''))) {
+                errorMessage = 'Please enter a valid phone number.';
+                isValid = false;
+            }
+        }
+        
+        // Message length validation
+        if (fieldName === 'message' && value && value.length < 10) {
+            errorMessage = 'Message must be at least 10 characters long.';
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            showFieldError(field, errorMessage);
+        }
+        
+        return isValid;
+    }
+    
+    function showFieldError(field, message) {
+        field.classList.add('is-invalid');
+        const errorElement = document.getElementById(`${field.name}-error`);
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    }
+    
+    function clearFieldError(field) {
+        field.classList.remove('is-invalid');
+        const errorElement = document.getElementById(`${field.name}-error`);
+        if (errorElement) {
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
+        }
+    }
+    
+    function clearAllErrors() {
+        const errorElements = document.querySelectorAll('.invalid-feedback');
+        errorElements.forEach(element => {
+            element.textContent = '';
+            element.style.display = 'none';
+        });
+        
+        const invalidFields = document.querySelectorAll('.is-invalid');
+        invalidFields.forEach(field => {
+            field.classList.remove('is-invalid');
+        });
+    }
+    
+    function getFieldLabel(fieldName) {
+        const labels = {
+            'name': 'Full Name',
+            'email': 'Email Address',
+            'phone': 'Phone Number',
+            'subject': 'Subject',
+            'message': 'Message'
+        };
+        return labels[fieldName] || fieldName;
+    }
+    
+    function showLoading() {
+        submitBtn.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+    }
+    
+    function hideLoading() {
+        submitBtn.style.display = 'inline-block';
+        loadingSpinner.style.display = 'none';
+    }
+    
+    function showSuccess() {
+        hideMessages();
+        successMessage.style.display = 'block';
+        formMessages.style.display = 'block';
+        
+        // Scroll to message
+        formMessages.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            hideMessages();
+        }, 5000);
+    }
+    
+    function showError(message) {
+        hideMessages();
+        errorMessage.querySelector('strong').nextSibling.textContent = ` ${message}`;
+        errorMessage.style.display = 'block';
+        formMessages.style.display = 'block';
+        
+        // Scroll to message
+        formMessages.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    function hideMessages() {
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+        formMessages.style.display = 'none';
     }
 });
 </script>

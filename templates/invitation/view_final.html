@@ -3,6 +3,83 @@
 {% block title %}{{ invitation.title }} - EventCraft Pro{% endblock %}
 
 {% block content %}
+<!-- Language Translation Support Macro -->
+{% macro translate_text(key) %}
+    {% if invitation.customization_data %}
+        {% set customization = invitation.customization_data|from_json %}
+        {% if customization.language == 'hindi' %}
+            {% if key == 'convey_your_wishes' %}अपनी शुभकामनाएं व्यक्त करें
+            {% elif key == 'your_name' %}आपका नाम
+            {% elif key == 'send_wish' %}शुभकामना भेजें
+            {% elif key == 'wish_them_with_love' %}अपने प्यार से उन्हें शुभकामनाएं दें...
+            {% elif key == 'rsvp' %}आरएसवीपी
+            {% elif key == 'im_attending' %}मैं आ रहा हूं
+            {% elif key == 'unable_to_attend' %}शामिल नहीं हो सकते
+            {% elif key == 'wishes_from_loved_ones' %}प्रियजनों से शुभकामनाएं
+            {% elif key == 'view_all' %}सभी देखें
+            {% elif key == 'no_wishes_yet' %}अभी तक कोई शुभकामना नहीं। पहली शुभकामना भेजें!
+            {% elif key == 'our_memories' %}हमारी यादें
+            {% elif key == 'wedding_gallery' %}विवाह गैलरी
+            {% else %}{{ key }}{% endif %}
+        {% elif customization.language == 'telugu' %}
+            {% if key == 'convey_your_wishes' %}మీ ఆశీస్సులను తెలియజేయండి
+            {% elif key == 'your_name' %}మీ పేరు
+            {% elif key == 'send_wish' %}ఆశీస్సు పంపండి
+            {% elif key == 'wish_them_with_love' %}మీ ప్రేమతో వారికి ఆశీస్సులు తెలియజేయండి...
+            {% elif key == 'rsvp' %}ఆర్ఎస్వీపీ
+            {% elif key == 'im_attending' %}నేను వస్తున్నాను
+            {% elif key == 'unable_to_attend' %}వెళ్లలేను
+            {% elif key == 'wishes_from_loved_ones' %}ప్రియమైన వారి ఆశీస్సులు
+            {% elif key == 'view_all' %}అన్నీ చూడండి
+            {% elif key == 'no_wishes_yet' %}ఇంకా ఆశీస్సులు లేవు. మొదటి ఆశీస్సు పంపండి!
+            {% elif key == 'our_memories' %}మా జ్ఞాపకాలు
+            {% elif key == 'wedding_gallery' %}వెడ్డింగ్ గ్యాలరీ
+            {% else %}{{ key }}{% endif %}
+        {% elif customization.language == 'kannada' %}
+            {% if key == 'convey_your_wishes' %}ನಿಮ್ಮ ಆಶೀರ್ವಾದಗಳನ್ನು ತಿಳಿಸಿ
+            {% elif key == 'your_name' %}ನಿಮ್ಮ ಹೆಸರು
+            {% elif key == 'send_wish' %}ಆಶೀರ್ವಾದ ಕಳುಹಿಸಿ
+            {% elif key == 'wish_them_with_love' %}ನಿಮ್ಮ ಪ್ರೀತಿಯಿಂದ ಅವರಿಗೆ ಆಶೀರ್ವಾದಗಳನ್ನು ತಿಳಿಸಿ...
+            {% elif key == 'rsvp' %}ಆರ್ಎಸ್ವಿಪಿ
+            {% elif key == 'im_attending' %}ನಾನು ಬರುತ್ತಿದ್ದೇನೆ
+            {% elif key == 'unable_to_attend' %}ಬರಲು ಸಾಧ್ಯವಿಲ್ಲ
+            {% elif key == 'wishes_from_loved_ones' %}ಪ್ರಿಯರ ಆಶೀರ್ವಾದಗಳು
+            {% elif key == 'view_all' %}ಎಲ್ಲವನ್ನೂ ನೋಡಿ
+            {% elif key == 'no_wishes_yet' %}ಇನ್ನೂ ಆಶೀರ್ವಾದಗಳಿಲ್ಲ. ಮೊದಲ ಆಶೀರ್ವಾದ ಕಳುಹಿಸಿ!
+            {% elif key == 'our_memories' %}ನಮ್ಮ ನೆನಪುಗಳು
+            {% elif key == 'wedding_gallery' %}ಮದುವೆ ಗ್ಯಾಲರಿ
+            {% else %}{{ key }}{% endif %}
+        {% else %}
+            {% if key == 'convey_your_wishes' %}Convey Your Wishes
+            {% elif key == 'your_name' %}Your Name
+            {% elif key == 'send_wish' %}Send Wish
+            {% elif key == 'wish_them_with_love' %}Wish them with your love...
+            {% elif key == 'rsvp' %}RSVP
+            {% elif key == 'im_attending' %}I'm Attending
+            {% elif key == 'unable_to_attend' %}Unable to Attend
+            {% elif key == 'wishes_from_loved_ones' %}Wishes from Loved Ones
+            {% elif key == 'view_all' %}View All
+            {% elif key == 'no_wishes_yet' %}No wishes yet. Be the first to send your love!
+            {% elif key == 'our_memories' %}Our Memories
+            {% elif key == 'wedding_gallery' %}Wedding Gallery
+            {% else %}{{ key }}{% endif %}
+        {% endif %}
+    {% else %}
+        {% if key == 'convey_your_wishes' %}Convey Your Wishes
+        {% elif key == 'your_name' %}Your Name
+        {% elif key == 'send_wish' %}Send Wish
+        {% elif key == 'wish_them_with_love' %}Wish them with your love...
+        {% elif key == 'rsvp' %}RSVP
+        {% elif key == 'im_attending' %}I'm Attending
+        {% elif key == 'unable_to_attend' %}Unable to Attend
+        {% elif key == 'wishes_from_loved_ones' %}Wishes from Loved Ones
+        {% elif key == 'view_all' %}View All
+        {% elif key == 'no_wishes_yet' %}No wishes yet. Be the first to send your love!
+        {% elif key == 'our_memories' %}Our Memories
+        {% elif key == 'wedding_gallery' %}Wedding Gallery
+        {% else %}{{ key }}{% endif %}
+    {% endif %}
+{% endmacro %}
 <style>
     /* Enhanced Invitation Styling */
     .template-container {
@@ -426,6 +503,69 @@
             min-width: 280px;
             max-width: 280px;
         }
+        
+        .invitation-container {
+            padding: 1rem !important;
+        }
+        
+        .invitation-header h1 {
+            font-size: 1.75rem !important;
+        }
+        
+        .invitation-header .lead {
+            font-size: 1rem !important;
+        }
+        
+        .invitation-details {
+            padding: 1rem !important;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .detail-item i {
+            font-size: 1rem !important;
+        }
+        
+        .detail-item span {
+            font-size: 0.9rem !important;
+        }
+        
+        .rsvp-section {
+            padding: 1rem !important;
+        }
+        
+        .rsvp-section h3 {
+            font-size: 1.25rem !important;
+        }
+        
+        .btn-lg {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 0.9rem !important;
+        }
+        
+        .wishes-section {
+            padding: 1rem !important;
+        }
+        
+        .wishes-section h3 {
+            font-size: 1.25rem !important;
+        }
+        
+        .wish-form {
+            padding: 1rem !important;
+        }
+        
+        .form-control {
+            padding: 0.75rem !important;
+            font-size: 0.9rem !important;
+        }
+        
+        .btn {
+            padding: 0.75rem 1rem !important;
+            font-size: 0.9rem !important;
+        }
     }
 
     @media (max-width: 576px) {
@@ -433,6 +573,140 @@
             flex: 0 0 250px;
             min-width: 250px;
             max-width: 250px;
+        }
+        
+        .invitation-container {
+            padding: 0.75rem !important;
+        }
+        
+        .invitation-header h1 {
+            font-size: 1.5rem !important;
+        }
+        
+        .invitation-header .lead {
+            font-size: 0.95rem !important;
+        }
+        
+        .invitation-details {
+            padding: 0.75rem !important;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .detail-item i {
+            font-size: 0.9rem !important;
+        }
+        
+        .detail-item span {
+            font-size: 0.85rem !important;
+        }
+        
+        .rsvp-section {
+            padding: 0.75rem !important;
+        }
+        
+        .rsvp-section h3 {
+            font-size: 1.1rem !important;
+        }
+        
+        .btn-lg {
+            padding: 0.6rem 1.25rem !important;
+            font-size: 0.85rem !important;
+        }
+        
+        .wishes-section {
+            padding: 0.75rem !important;
+        }
+        
+        .wishes-section h3 {
+            font-size: 1.1rem !important;
+        }
+        
+        .wish-form {
+            padding: 0.75rem !important;
+        }
+        
+        .form-control {
+            padding: 0.6rem !important;
+            font-size: 0.85rem !important;
+        }
+        
+        .btn {
+            padding: 0.6rem 0.8rem !important;
+            font-size: 0.85rem !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .wish-item {
+            flex: 0 0 220px;
+            min-width: 220px;
+            max-width: 220px;
+        }
+        
+        .invitation-container {
+            padding: 0.5rem !important;
+        }
+        
+        .invitation-header h1 {
+            font-size: 1.25rem !important;
+        }
+        
+        .invitation-header .lead {
+            font-size: 0.9rem !important;
+        }
+        
+        .invitation-details {
+            padding: 0.5rem !important;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.4rem !important;
+        }
+        
+        .detail-item i {
+            font-size: 0.8rem !important;
+        }
+        
+        .detail-item span {
+            font-size: 0.8rem !important;
+        }
+        
+        .rsvp-section {
+            padding: 0.5rem !important;
+        }
+        
+        .rsvp-section h3 {
+            font-size: 1rem !important;
+        }
+        
+        .btn-lg {
+            padding: 0.5rem 1rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .wishes-section {
+            padding: 0.5rem !important;
+        }
+        
+        .wishes-section h3 {
+            font-size: 1rem !important;
+        }
+        
+        .wish-form {
+            padding: 0.5rem !important;
+        }
+        
+        .form-control {
+            padding: 0.5rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .btn {
+            padding: 0.5rem 0.7rem !important;
+            font-size: 0.8rem !important;
         }
     }
 
@@ -493,6 +767,23 @@
     .wishes-scroll-container::after {
         right: 0;
         background: linear-gradient(to left, rgba(255, 255, 255, 0.8), transparent);
+    }
+
+    /* Grid view for wishes */
+    .wishes-grid-view {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        padding: 1rem 0;
+        overflow: visible;
+        animation: none;
+    }
+
+    .wishes-grid-view .wish-item {
+        flex: none;
+        min-width: auto;
+        max-width: none;
+        white-space: normal;
     }
 
     /* Enhanced RSVP Section Styles */
@@ -1475,7 +1766,7 @@
                 <div class="col-lg-8">
                     <div class="wishes-container bg-white rounded shadow p-4">
                         <h3 class="text-center mb-4">
-                            <i class="fas fa-heart text-danger me-2"></i>Convey Your Wishes
+                            <i class="fas fa-heart text-danger me-2"></i>{{ translate_text('convey_your_wishes') }}
                         </h3>
                         
                         <!-- Wish Form -->
@@ -1483,16 +1774,16 @@
                             <form id="wishForm" class="row g-3">
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" id="wishName" name="name" 
-                                           placeholder="Your Name" required>
+                                           placeholder="{{ translate_text('your_name') }}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-primary w-100">
-                                        <i class="fas fa-paper-plane me-2"></i>Send Wish
+                                        <i class="fas fa-paper-plane me-2"></i>{{ translate_text('send_wish') }}
                                     </button>
                                 </div>
                                 <div class="col-12">
                                     <textarea class="form-control" id="wishMessage" name="message" rows="3" 
-                                              placeholder="Wish them with your love..." required></textarea>
+                                              placeholder="{{ translate_text('wish_them_with_love') }}" required></textarea>
                                 </div>
                             </form>
                         </div>
@@ -1500,19 +1791,19 @@
                         <!-- RSVP Section -->
                         <div class="rsvp-section mb-5">
                             <h5 class="mb-3">
-                                <i class="fas fa-calendar-check me-2"></i>RSVP
+                                <i class="fas fa-calendar-check me-2"></i>{{ translate_text('rsvp') }}
                             </h5>
                             <div class="rsvp-options">
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <button class="btn btn-success btn-lg w-100 rsvp-btn" onclick="handleRSVP('attending')">
-                                            <i class="fas fa-check-circle me-2"></i>I'm Attending
-                                        </button>
+                                        <a href="/rsvp/{{ invitation.share_url }}" target="_blank" class="btn btn-success btn-lg w-100 rsvp-btn">
+                                            <i class="fas fa-check-circle me-2"></i>{{ translate_text('im_attending') }}
+                                        </a>
                                     </div>
                                     <div class="col-md-6">
-                                        <button class="btn btn-outline-danger btn-lg w-100 rsvp-btn" onclick="handleRSVP('unable')">
-                                            <i class="fas fa-times-circle me-2"></i>Unable to Attend
-                                        </button>
+                                        <a href="/rsvp/{{ invitation.share_url }}" target="_blank" class="btn btn-outline-danger btn-lg w-100 rsvp-btn">
+                                            <i class="fas fa-times-circle me-2"></i>{{ translate_text('unable_to_attend') }}
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="rsvp-status mt-3" id="rsvpStatus" style="display: none;">
@@ -1526,9 +1817,14 @@
 
                         <!-- Wishes Display -->
                         <div class="wishes-display">
-                            <h5 class="mb-3">
-                                <i class="fas fa-gift me-2"></i>Wishes from Loved Ones
-                            </h5>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-gift me-2"></i>{{ translate_text('wishes_from_loved_ones') }}
+                                </h5>
+                                <button class="btn btn-outline-primary btn-sm" id="viewAllWishesBtn" onclick="toggleWishesView()">
+                                    <i class="fas fa-expand-arrows-alt me-1"></i>{{ translate_text('view_all') }}
+                                </button>
+                            </div>
                             <div class="wishes-scroll-container">
                                 <div id="wishesContainer" class="wishes-auto-scroll">
                                     {% for wish in wishes %}
@@ -1541,7 +1837,7 @@
                                                 <div class="wish-content flex-grow-1">
                                                     <h6 class="wish-name mb-1">{{ wish.name }}</h6>
                                                     <p class="wish-message mb-2">{{ wish.message }}</p>
-                                                    <small class="text-muted">{{ wish.created_at }}</small>
+                                                    <small class="text-muted">{{ wish.created_at.strftime('%B %d, %Y at %I:%M %p') if wish.created_at else 'Recently' }}</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -1551,7 +1847,7 @@
                             </div>
                             <div id="noWishes" class="text-center text-muted py-4" {% if wishes %}style="display: none;"{% endif %}>
                                 <i class="fas fa-heart-broken fa-2x mb-2"></i>
-                                <p>No wishes yet. Be the first to send your love!</p>
+                                <p>{{ translate_text('no_wishes_yet') }}</p>
                             </div>
                         </div>
                     </div>
@@ -1612,6 +1908,9 @@
                             <a href="https://twitter.com/intent/tweet?text={{ invitation.title or 'Event Invitation' }}&url={{ request.url }}" target="_blank" class="btn btn-info btn-sm" onclick="trackShare('twitter')">
                                 <i class="fab fa-twitter me-1"></i> Twitter
                             </a>
+                            <a href="https://www.instagram.com/" target="_blank" class="btn btn-danger btn-sm" onclick="shareToInstagram()">
+                                <i class="fab fa-instagram me-1"></i> Instagram
+                            </a>
                             <a href="mailto:?subject={{ invitation.title or 'Event Invitation' }}&body=You're invited! {{ request.url }}" class="btn btn-secondary btn-sm" onclick="trackShare('email')">
                                 <i class="fas fa-envelope me-1"></i> Email
                             </a>
@@ -1624,18 +1923,12 @@
                         <div class="text-center">
                             <div id="qrcode" style="display: inline-block; padding: 1rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
                             <p class="mt-2 small text-muted">Scan to view invitation</p>
-                            <button class="btn btn-outline-primary btn-sm" onclick="downloadQRCode()">
-                                <i class="fas fa-download me-1"></i> Download QR
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer" style="border: none; padding: 1rem 2rem;">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="downloadInvitation()">
-                    <i class="fas fa-download me-2"></i>Download Image
-                </button>
             </div>
         </div>
     </div>
@@ -1840,8 +2133,24 @@ function copyShareUrl() {
     });
 }
 
+// Instagram sharing function
+function shareToInstagram() {
+    // Copy the invitation URL to clipboard first
+    copyShareUrl();
+    
+    // Show instructions for Instagram sharing
+    setTimeout(function() {
+        showToast('Link copied! Open Instagram and paste it in your story or post.', 'info');
+    }, 1000);
+    
+    // Track the share
+    trackShare('instagram');
+}
+
 // Track sharing actions
 function trackShare(method) {
+    console.log('Tracking share:', method, 'for invitation:', {{ invitation.id }});
+    
     fetch('/api/track-share', {
         method: 'POST',
         headers: {
@@ -1852,8 +2161,25 @@ function trackShare(method) {
             share_method: method,
             url: window.location.href
         })
-    }).catch(error => {
-        console.log('Share tracking failed:', error);
+    })
+    .then(response => {
+        console.log('Share tracking response:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Share tracked successfully:', data);
+        // Optional: Show success message
+        if (data.success) {
+            console.log('Share count updated');
+        }
+    })
+    .catch(error => {
+        console.error('Share tracking failed:', error);
+        // Optional: Show error message to user
+        showToast('Failed to track share action', 'warning');
     });
 }
 
@@ -1877,6 +2203,8 @@ function generateQRCode() {
                     correctLevel: QRCode.CorrectLevel.H
                 });
                 console.log('QR Code generated successfully');
+                // Track QR code generation as a share action
+                trackShare('qr');
             } catch (error) {
                 console.error('Error generating QR code with library:', error);
                 generateQRCodeFallback();
@@ -1901,91 +2229,12 @@ function generateQRCodeFallback() {
                  style="max-width: 200px; height: auto;"
                  onerror="this.style.display='none'; this.parentNode.innerHTML='<p class=\\"text-muted\\">QR Code unavailable</p>';">
         `;
+        
+        // Track QR code generation as a share action
+        trackShare('qr');
     }
 }
 
-// Download QR Code
-function downloadQRCode() {
-    const qrContainer = document.getElementById('qrcode');
-    let downloadUrl = null;
-    let filename = 'invitation-qr-code.png';
-    
-    if (!qrContainer) {
-        showToast('QR code container not found', 'error');
-        return;
-    }
-    
-    // Try to find canvas first (from QRCode library)
-    const canvas = qrContainer.querySelector('canvas');
-    if (canvas) {
-        try {
-            downloadUrl = canvas.toDataURL('image/png');
-            console.log('Using canvas for download');
-        } catch (error) {
-            console.error('Error getting canvas data:', error);
-        }
-    }
-    
-    // If no canvas, try to find img element
-    if (!downloadUrl) {
-        const img = qrContainer.querySelector('img');
-        if (img && img.src) {
-            downloadUrl = img.src;
-            console.log('Using img element for download');
-        }
-    }
-    
-    // If still no download URL, generate one
-    if (!downloadUrl) {
-        try {
-            const url = window.location.href;
-            downloadUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}`;
-            console.log('Using external API for download');
-        } catch (error) {
-            console.error('Error generating QR code URL:', error);
-            showToast('QR code not available', 'error');
-            return;
-        }
-    }
-    
-    if (downloadUrl) {
-        try {
-            // Create download link
-            const link = document.createElement('a');
-            link.download = filename;
-            link.href = downloadUrl;
-            link.style.display = 'none';
-            
-            // Add to DOM, click, and remove
-            document.body.appendChild(link);
-            link.click();
-            
-            // Clean up after a short delay
-            setTimeout(() => {
-                if (link.parentNode) {
-                    link.parentNode.removeChild(link);
-                }
-            }, 100);
-            
-            showToast('QR code downloaded successfully!', 'success');
-            console.log('QR code download initiated');
-        } catch (error) {
-            console.error('Error downloading QR code:', error);
-            showToast('Failed to download QR code', 'error');
-        }
-    } else {
-        showToast('QR code not available', 'error');
-    }
-}
-
-function downloadInvitation() {
-    // Create a canvas element to capture the invitation
-    html2canvas(document.querySelector('.template-container')).then(canvas => {
-        const link = document.createElement('a');
-        link.download = '{{ invitation.title|replace(" ", "_") or "invitation" }}.png';
-        link.href = canvas.toDataURL();
-        link.click();
-    });
 }
 
 function showToast(message, type) {
@@ -2123,11 +2372,95 @@ function saveRSVP(response) {
     });
 }
 
+// Toggle wishes view between scroll and grid
+function toggleWishesView() {
+    const container = document.getElementById('wishesContainer');
+    const btn = document.getElementById('viewAllWishesBtn');
+    
+    if (container.classList.contains('wishes-auto-scroll')) {
+        // Switch to grid view
+        container.classList.remove('wishes-auto-scroll');
+        container.classList.add('wishes-grid-view');
+        btn.innerHTML = '<i class="fas fa-compress-arrows-alt me-1"></i>Scroll View';
+    } else {
+        // Switch to scroll view
+        container.classList.remove('wishes-grid-view');
+        container.classList.add('wishes-auto-scroll');
+        btn.innerHTML = '<i class="fas fa-expand-arrows-alt me-1"></i>View All';
+    }
+}
+
 // Wish form functionality
 document.addEventListener('DOMContentLoaded', function() {
     const wishForm = document.getElementById('wishForm');
     const wishesContainer = document.getElementById('wishesContainer');
     const noWishes = document.getElementById('noWishes');
+    
+    // Check if user has already wished when page loads
+    checkWishStatus();
+    
+    function checkWishStatus() {
+        fetch(`/check-wish-status/{{ invitation.share_url }}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.already_wished) {
+                    // User has already wished, disable form
+                    disableWishForm();
+                }
+            })
+            .catch(error => {
+                console.error('Error checking wish status:', error);
+            });
+    }
+
+    function disableWishForm() {
+        const form = document.getElementById('wishForm');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        // Disable all form inputs
+        form.querySelectorAll('input, textarea, button').forEach(input => {
+            input.disabled = true;
+        });
+        
+        // Update submit button
+        submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Already Wished';
+        submitBtn.classList.remove('btn-primary');
+        submitBtn.classList.add('btn-secondary');
+        
+        // Add message
+        const message = document.createElement('div');
+        message.className = 'alert alert-info mt-3';
+        message.innerHTML = '<i class="fas fa-info-circle me-2"></i>You have already sent your wish. Thank you for your kind words!';
+        form.appendChild(message);
+    }
+                if (data.success && data.already_wished) {
+                    // User has already wished, show their previous wish
+                    showAlreadyWishedMessage(data.existing_wish);
+                    disableWishForm();
+                }
+            })
+            .catch(error => {
+                console.error('Error checking wish status:', error);
+            });
+    }
+    
+    function disableWishForm() {
+        if (wishForm) {
+            // Disable form fields
+            const nameInput = document.getElementById('wishName');
+            const messageInput = document.getElementById('wishMessage');
+            const submitBtn = wishForm.querySelector('button[type="submit"]');
+            
+            if (nameInput) nameInput.disabled = true;
+            if (messageInput) messageInput.disabled = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Already Wished';
+                submitBtn.classList.add('btn-success');
+                submitBtn.classList.remove('btn-primary');
+            }
+        }
+    }
     
     if (wishForm) {
         wishForm.addEventListener('submit', function(e) {
@@ -2171,9 +2504,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         noWishes.style.display = 'none';
                     }
                     
-                    showToast('Wish sent successfully!', 'success');
+                    showToast(data.message, 'success');
                 } else {
-                    showToast(data.message || 'Failed to send wish', 'error');
+                    if (data.already_wished) {
+                        // Show existing wish information
+                        showAlreadyWishedMessage(data.existing_wish);
+                        showToast(data.message, 'warning');
+                    } else {
+                        showToast(data.message || 'Failed to send wish', 'error');
+                    }
                 }
             })
             .catch(error => {
@@ -2185,6 +2524,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
             });
+        });
+    }
+    
+    function formatWishTime(dateString) {
+        if (!dateString) return 'Just now';
+        
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+        
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+        
+        // For older dates, show formatted date
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         });
     }
     
@@ -2200,7 +2564,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="wish-content flex-grow-1">
                         <h6 class="wish-name mb-1">${wish.name}</h6>
                         <p class="wish-message mb-2">${wish.message}</p>
-                        <small class="text-muted">${wish.created_at}</small>
+                        <small class="text-muted">${formatWishTime(wish.created_at)}</small>
                     </div>
                 </div>
             </div>
@@ -2211,6 +2575,36 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Auto-scroll to new wish (horizontal scroll)
         wishItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }
+    
+    function showAlreadyWishedMessage(existingWish) {
+        // Create a special message card for already wished users
+        const alreadyWishedCard = document.createElement('div');
+        alreadyWishedCard.className = 'wish-item';
+        alreadyWishedCard.innerHTML = `
+            <div class="wish-card border rounded p-3 h-100" style="border-color: #ffc107 !important; background: linear-gradient(145deg, #fff3cd 0%, #ffeaa7 100%) !important;">
+                <div class="d-flex align-items-start">
+                    <div class="wish-avatar me-3">
+                        <i class="fas fa-check-circle fa-2x text-warning"></i>
+                    </div>
+                    <div class="wish-content flex-grow-1">
+                        <h6 class="wish-name mb-1 text-warning">
+                            <i class="fas fa-heart me-1"></i>Your Previous Wish
+                        </h6>
+                        <p class="wish-message mb-2">${existingWish.message}</p>
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>Sent ${formatWishTime(existingWish.created_at)}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add to beginning of container
+        wishesContainer.insertBefore(alreadyWishedCard, wishesContainer.firstChild);
+        
+        // Auto-scroll to the message
+        alreadyWishedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
     
     function showToast(message, type) {

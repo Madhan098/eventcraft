@@ -3,6 +3,291 @@
 {% block title %}Drag & Drop Editor - EventCraft Pro{% endblock %}
 
 {% block content %}
+<style>
+/* Enhanced Drag & Drop Editor Styles */
+.editor-canvas {
+    min-height: 600px;
+    border: 2px dashed #e9ecef;
+    border-radius: 15px;
+    background: #f8f9fa;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.editor-canvas.drag-over {
+    border-color: #007bff;
+    background: rgba(0, 123, 255, 0.05);
+    transform: scale(1.02);
+}
+
+.canvas-drop-zone {
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.canvas-drop-zone.has-elements {
+    min-height: auto;
+    padding: 20px;
+}
+
+.drop-zone-content {
+    text-align: center;
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+
+.drop-zone-content:hover {
+    transform: scale(1.05);
+}
+
+.draggable-element {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    cursor: grab;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.draggable-element:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: #007bff;
+}
+
+.draggable-element:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+.canvas-element {
+    position: absolute;
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: move;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-width: 100px;
+    min-height: 40px;
+}
+
+.canvas-element:hover {
+    border-color: #007bff;
+    box-shadow: 0 8px 25px rgba(0,123,255,0.2);
+    transform: scale(1.02);
+}
+
+.canvas-element.selected {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+    transform: scale(1.05);
+}
+
+.element-controls {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: none;
+    gap: 5px;
+}
+
+.canvas-element:hover .element-controls,
+.canvas-element.selected .element-controls {
+    display: flex;
+}
+
+.element-controls .btn {
+    padding: 5px 8px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Real-time Preview Styles */
+.preview-panel {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.preview-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-content {
+    padding: 20px;
+    min-height: 400px;
+    background: #f8f9fa;
+}
+
+/* Animation Classes */
+@keyframes elementDrop {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes elementHover {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-3px);
+    }
+}
+
+.element-drop-animation {
+    animation: elementDrop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.element-hover-animation {
+    animation: elementHover 0.3s ease;
+}
+
+/* Enhanced Sidebar Styles */
+.editor-sidebar {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.sidebar-section {
+    margin-bottom: 25px;
+}
+
+.sidebar-title {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.element-category h6 {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Template Thumbnails */
+.template-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.template-thumb {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.template-thumb:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+}
+
+.template-thumb img {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+.template-thumb span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Properties Sidebar */
+.properties-sidebar {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.properties-title {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-group label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .editor-canvas {
+        min-height: 400px;
+    }
+    
+    .canvas-drop-zone {
+        min-height: 300px;
+    }
+    
+    .draggable-element {
+        padding: 10px;
+        margin: 5px 0;
+    }
+}
+</style>
 <!-- Editor Hero -->
 <section class="editor-hero py-4 bg-light">
     <div class="container">
@@ -91,16 +376,36 @@
                         <h5 class="sidebar-title">Templates</h5>
                         <div class="template-thumbnails">
                             <div class="template-thumb" onclick="loadTemplate('wedding')">
-                                <img src="/static/images/wedding_elegant_preview.png" alt="Wedding Template">
+                                <img src="/images/weddingelegant.jpg" alt="Wedding Template">
                                 <span>Wedding</span>
                             </div>
                             <div class="template-thumb" onclick="loadTemplate('birthday')">
-                                <img src="/static/images/birthday_fun_preview.png" alt="Birthday Template">
+                                <img src="/images/birthday.jpg" alt="Birthday Template">
                                 <span>Birthday</span>
                             </div>
                             <div class="template-thumb" onclick="loadTemplate('anniversary')">
-                                <img src="/static/images/anniversary_golden_preview.png" alt="Anniversary Template">
+                                <img src="/images/anniversery.jpg" alt="Anniversary Template">
                                 <span>Anniversary</span>
+                            </div>
+                            <div class="template-thumb" onclick="loadTemplate('graduation')">
+                                <img src="/images/graduation.jpg" alt="Graduation Template">
+                                <span>Graduation</span>
+                            </div>
+                            <div class="template-thumb" onclick="loadTemplate('babyshower')">
+                                <img src="/images/babyshower.jpg" alt="Baby Shower Template">
+                                <span>Baby Shower</span>
+                            </div>
+                            <div class="template-thumb" onclick="loadTemplate('retirement')">
+                                <img src="/images/retirement.jpg" alt="Retirement Template">
+                                <span>Retirement</span>
+                            </div>
+                            <div class="template-thumb" onclick="loadTemplate('corporate')">
+                                <img src="/images/corporateevent.jpg" alt="Corporate Template">
+                                <span>Corporate</span>
+                            </div>
+                            <div class="template-thumb" onclick="loadTemplate('genderreveal')">
+                                <img src="/images/genderreveal.jpg" alt="Gender Reveal Template">
+                                <span>Gender Reveal</span>
                             </div>
                         </div>
                     </div>
@@ -112,12 +417,15 @@
                 <div class="editor-canvas-container">
                     <div class="canvas-toolbar">
                         <div class="toolbar-group">
-                            <button class="btn btn-sm btn-outline-secondary" onclick="zoomOut()">
+                            <button class="btn btn-sm btn-outline-secondary" onclick="zoomOut()" title="Zoom Out">
                                 <i class="fas fa-search-minus"></i>
                             </button>
-                            <span class="zoom-level">100%</span>
-                            <button class="btn btn-sm btn-outline-secondary" onclick="zoomIn()">
+                            <span class="zoom-level" id="zoom-level">100%</span>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="zoomIn()" title="Zoom In">
                                 <i class="fas fa-search-plus"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="resetZoom()" title="Reset Zoom">
+                                <i class="fas fa-expand-arrows-alt"></i>
                             </button>
                         </div>
                         <div class="toolbar-group">
@@ -131,11 +439,41 @@
                     </div>
                     
                     <div class="editor-canvas" id="editor-canvas">
-                        <div class="canvas-drop-zone">
+                        <!-- Real-time Preview Toggle -->
+                        <div class="preview-toggle mb-3">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary active" id="edit-mode">
+                                    <i class="fas fa-edit me-1"></i>Edit Mode
+                                </button>
+                                <button type="button" class="btn btn-outline-success" id="preview-mode">
+                                    <i class="fas fa-eye me-1"></i>Live Preview
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="canvas-drop-zone" id="canvas-drop-zone">
                             <div class="drop-zone-content">
                                 <i class="fas fa-plus-circle fa-3x text-muted mb-3"></i>
                                 <h4 class="text-muted">Drag elements here to start building</h4>
                                 <p class="text-muted">Choose from the sidebar or start with a template</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Real-time Preview Panel -->
+                        <div class="preview-panel" id="preview-panel" style="display: none;">
+                            <div class="preview-header">
+                                <h5>Live Preview</h5>
+                                <div class="preview-controls">
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="downloadPreview()">
+                                        <i class="fas fa-download me-1"></i>Download
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="sharePreview()">
+                                        <i class="fas fa-share me-1"></i>Share
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="preview-content" id="preview-content">
+                                <!-- Preview content will be generated here -->
                             </div>
                         </div>
                     </div>
@@ -432,8 +770,175 @@ function updatePropertiesPanel(element) {
 function updateElementProperty(property, value) {
     if (selectedElement) {
         selectedElement.style[property] = value;
+        // Trigger real-time preview update
+        updateRealTimePreview();
     }
 }
+
+// Real-time Preview Functions
+function updateRealTimePreview() {
+    const previewContent = document.getElementById('preview-content');
+    const canvas = document.getElementById('canvas-drop-zone');
+    const elements = canvas.querySelectorAll('.canvas-element');
+    
+    if (elements.length === 0) {
+        previewContent.innerHTML = '<div class="text-center text-muted py-5"><i class="fas fa-image fa-3x mb-3"></i><p>No elements to preview</p></div>';
+        return;
+    }
+    
+    // Create preview HTML
+    let previewHTML = '<div class="invitation-preview" style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">';
+    
+    elements.forEach(element => {
+        const elementType = element.dataset.element;
+        const elementContent = element.innerHTML;
+        
+        // Clean up element content for preview
+        let cleanContent = elementContent
+            .replace(/<div class="element-controls">[\s\S]*?<\/div>/g, '') // Remove controls
+            .replace(/contenteditable="true"/g, '') // Remove contenteditable
+            .replace(/onclick="[^"]*"/g, ''); // Remove onclick handlers
+        
+        previewHTML += `<div class="preview-element" style="margin-bottom: 15px;">${cleanContent}</div>`;
+    });
+    
+    previewHTML += '</div>';
+    previewContent.innerHTML = previewHTML;
+}
+
+// Preview Mode Toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const editModeBtn = document.getElementById('edit-mode');
+    const previewModeBtn = document.getElementById('preview-mode');
+    const canvasDropZone = document.getElementById('canvas-drop-zone');
+    const previewPanel = document.getElementById('preview-panel');
+    
+    editModeBtn.addEventListener('click', function() {
+        editModeBtn.classList.add('active');
+        previewModeBtn.classList.remove('active');
+        canvasDropZone.style.display = 'block';
+        previewPanel.style.display = 'none';
+    });
+    
+    previewModeBtn.addEventListener('click', function() {
+        previewModeBtn.classList.add('active');
+        editModeBtn.classList.remove('active');
+        canvasDropZone.style.display = 'none';
+        previewPanel.style.display = 'block';
+        updateRealTimePreview();
+    });
+});
+
+// Enhanced Drag and Drop with Animations
+function enhanceDragAndDrop() {
+    const draggableElements = document.querySelectorAll('.draggable-element');
+    const canvas = document.getElementById('canvas-drop-zone');
+    
+    draggableElements.forEach(element => {
+        element.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', JSON.stringify({
+                type: this.dataset.type,
+                element: this.dataset.element
+            }));
+            this.style.opacity = '0.5';
+        });
+        
+        element.addEventListener('dragend', function(e) {
+            this.style.opacity = '1';
+        });
+        
+        element.addEventListener('mouseenter', function() {
+            this.classList.add('element-hover-animation');
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            this.classList.remove('element-hover-animation');
+        });
+    });
+    
+    canvas.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('drag-over');
+    });
+    
+    canvas.addEventListener('dragleave', function(e) {
+        if (!this.contains(e.relatedTarget)) {
+            this.classList.remove('drag-over');
+        }
+    });
+    
+    canvas.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('drag-over');
+        
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        createCanvasElement(data.type, data.element, x, y);
+        
+        // Hide drop zone content if elements exist
+        const dropZoneContent = this.querySelector('.drop-zone-content');
+        if (dropZoneContent && this.querySelectorAll('.canvas-element').length > 0) {
+            dropZoneContent.style.display = 'none';
+            this.classList.add('has-elements');
+        }
+    });
+}
+
+// Download Preview Function
+function downloadPreview() {
+    const previewContent = document.getElementById('preview-content');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Create a simple download (in a real implementation, you'd use html2canvas or similar)
+    const link = document.createElement('a');
+    link.download = 'invitation-preview.png';
+    link.href = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+    link.click();
+}
+
+// Share Preview Function
+function sharePreview() {
+    if (navigator.share) {
+        navigator.share({
+            title: 'My Event Invitation',
+            text: 'Check out my beautiful invitation!',
+            url: window.location.href
+        });
+    } else {
+        // Fallback to copying to clipboard
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            alert('Link copied to clipboard!');
+        });
+    }
+}
+
+// Initialize enhanced functionality
+document.addEventListener('DOMContentLoaded', function() {
+    enhanceDragAndDrop();
+    
+    // Add animation to new elements
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.classList && node.classList.contains('canvas-element')) {
+                    node.classList.add('element-drop-animation');
+                    setTimeout(() => {
+                        node.classList.remove('element-drop-animation');
+                    }, 500);
+                }
+            });
+        });
+    });
+    
+    observer.observe(document.getElementById('canvas-drop-zone'), {
+        childList: true,
+        subtree: true
+    });
+});
 
 function editElement(elementId) {
     const element = document.querySelector(`[data-id="${elementId}"]`);
@@ -474,11 +979,61 @@ function loadTemplate(templateType) {
             createElement('event', 'date', 50, 200);
             createElement('event', 'rsvp', 50, 250);
             break;
+        case 'anniversary':
+            createElement('text', 'heading', 50, 50);
+            createElement('text', 'subheading', 50, 100);
+            createElement('event', 'date', 50, 150);
+            createElement('event', 'time', 50, 200);
+            createElement('event', 'location', 50, 250);
+            createElement('event', 'rsvp', 50, 300);
+            break;
+        case 'graduation':
+            createElement('text', 'heading', 50, 50);
+            createElement('text', 'subheading', 50, 100);
+            createElement('event', 'date', 50, 150);
+            createElement('event', 'time', 50, 200);
+            createElement('event', 'location', 50, 250);
+            createElement('event', 'rsvp', 50, 300);
+            break;
+        case 'babyshower':
+            createElement('text', 'heading', 50, 50);
+            createElement('text', 'subheading', 50, 100);
+            createElement('event', 'date', 50, 150);
+            createElement('event', 'time', 50, 200);
+            createElement('event', 'location', 50, 250);
+            createElement('event', 'rsvp', 50, 300);
+            break;
+        case 'retirement':
+            createElement('text', 'heading', 50, 50);
+            createElement('text', 'subheading', 50, 100);
+            createElement('event', 'date', 50, 150);
+            createElement('event', 'time', 50, 200);
+            createElement('event', 'location', 50, 250);
+            createElement('event', 'rsvp', 50, 300);
+            break;
+        case 'corporate':
+            createElement('text', 'heading', 50, 50);
+            createElement('text', 'subheading', 50, 100);
+            createElement('event', 'date', 50, 150);
+            createElement('event', 'time', 50, 200);
+            createElement('event', 'location', 50, 250);
+            createElement('event', 'rsvp', 50, 300);
+            break;
+        case 'genderreveal':
+            createElement('text', 'heading', 50, 50);
+            createElement('text', 'subheading', 50, 100);
+            createElement('event', 'date', 50, 150);
+            createElement('event', 'time', 50, 200);
+            createElement('event', 'location', 50, 250);
+            createElement('event', 'rsvp', 50, 300);
+            break;
     }
+    
+    showNotification(`Loaded ${templateType} template!`, 'success');
 }
 
 function zoomIn() {
-    currentZoom += 25;
+    currentZoom = Math.min(200, currentZoom + 25);
     updateZoom();
 }
 
@@ -487,10 +1042,28 @@ function zoomOut() {
     updateZoom();
 }
 
+function resetZoom() {
+    currentZoom = 100;
+    updateZoom();
+}
+
 function updateZoom() {
     const canvas = document.getElementById('editor-canvas');
+    const zoomLevel = document.getElementById('zoom-level');
+    
     canvas.style.transform = `scale(${currentZoom / 100})`;
-    document.querySelector('.zoom-level').textContent = currentZoom + '%';
+    canvas.style.transformOrigin = 'top left';
+    zoomLevel.textContent = currentZoom + '%';
+    
+    // Update canvas container size to accommodate zoom
+    const container = canvas.parentElement;
+    if (currentZoom > 100) {
+        container.style.overflow = 'auto';
+        container.style.maxHeight = '80vh';
+    } else {
+        container.style.overflow = 'visible';
+        container.style.maxHeight = 'none';
+    }
 }
 
 function previewInvitation() {

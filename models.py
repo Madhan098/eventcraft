@@ -464,6 +464,7 @@ class Wish(db.Model):
     invitation_id = db.Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     message = db.Column(db.Text, nullable=False)
+    ip_address = db.Column(db.String(45), nullable=False)  # Store IP address to prevent duplicate wishes
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 # RSVP Models

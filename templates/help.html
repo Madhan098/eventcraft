@@ -2,6 +2,272 @@
 
 {% block title %}Help Center - EventCraft Pro Support{% endblock %}
 
+{% block extra_head %}
+<style>
+/* Help Page Mobile Responsiveness */
+@media (max-width: 768px) {
+    .help-hero {
+        padding: 2rem 0 !important;
+    }
+    
+    .help-hero h1 {
+        font-size: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .help-hero .lead {
+        font-size: 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .help-illustration i {
+        font-size: 3rem !important;
+    }
+    
+    .help-illustration h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    .help-category-card {
+        padding: 1.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .help-category-card h4 {
+        font-size: 1.1rem !important;
+    }
+    
+    .help-category-card p {
+        font-size: 0.9rem !important;
+    }
+    
+    .help-category-card .btn {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .help-sidebar {
+        margin-top: 2rem !important;
+    }
+    
+    .support-card {
+        padding: 1.5rem !important;
+    }
+    
+    .support-card h4 {
+        font-size: 1.25rem !important;
+    }
+    
+    .support-card p {
+        font-size: 0.9rem !important;
+    }
+    
+    .support-card .btn {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .popular-articles h5 {
+        font-size: 1.1rem !important;
+    }
+    
+    .popular-articles a {
+        font-size: 0.9rem !important;
+    }
+    
+    .video-tutorials h5 {
+        font-size: 1.1rem !important;
+    }
+    
+    .video-item h6 {
+        font-size: 0.95rem !important;
+    }
+    
+    .video-item small {
+        font-size: 0.8rem !important;
+    }
+    
+    .accordion-button {
+        padding: 0.75rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .accordion-body {
+        padding: 1rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .help-hero {
+        padding: 1.5rem 0 !important;
+    }
+    
+    .help-hero h1 {
+        font-size: 1.75rem !important;
+    }
+    
+    .help-hero .lead {
+        font-size: 0.95rem !important;
+    }
+    
+    .help-illustration i {
+        font-size: 2.5rem !important;
+    }
+    
+    .help-illustration h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .help-category-card {
+        padding: 1rem !important;
+    }
+    
+    .help-category-card h4 {
+        font-size: 1rem !important;
+    }
+    
+    .help-category-card p {
+        font-size: 0.85rem !important;
+    }
+    
+    .help-category-card .btn {
+        padding: 0.4rem 0.8rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .support-card {
+        padding: 1rem !important;
+    }
+    
+    .support-card h4 {
+        font-size: 1.1rem !important;
+    }
+    
+    .support-card p {
+        font-size: 0.85rem !important;
+    }
+    
+    .support-card .btn {
+        padding: 0.6rem 0.8rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .popular-articles h5 {
+        font-size: 1rem !important;
+    }
+    
+    .popular-articles a {
+        font-size: 0.85rem !important;
+    }
+    
+    .video-tutorials h5 {
+        font-size: 1rem !important;
+    }
+    
+    .video-item h6 {
+        font-size: 0.9rem !important;
+    }
+    
+    .video-item small {
+        font-size: 0.75rem !important;
+    }
+    
+    .accordion-button {
+        padding: 0.6rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .accordion-body {
+        padding: 0.8rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .help-hero h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .help-hero .lead {
+        font-size: 0.9rem !important;
+    }
+    
+    .help-illustration i {
+        font-size: 2rem !important;
+    }
+    
+    .help-illustration h3 {
+        font-size: 1rem !important;
+    }
+    
+    .help-category-card {
+        padding: 0.75rem !important;
+    }
+    
+    .help-category-card h4 {
+        font-size: 0.95rem !important;
+    }
+    
+    .help-category-card p {
+        font-size: 0.8rem !important;
+    }
+    
+    .help-category-card .btn {
+        padding: 0.35rem 0.7rem !important;
+        font-size: 0.75rem !important;
+    }
+    
+    .support-card {
+        padding: 0.75rem !important;
+    }
+    
+    .support-card h4 {
+        font-size: 1rem !important;
+    }
+    
+    .support-card p {
+        font-size: 0.8rem !important;
+    }
+    
+    .support-card .btn {
+        padding: 0.5rem 0.7rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .popular-articles h5 {
+        font-size: 0.95rem !important;
+    }
+    
+    .popular-articles a {
+        font-size: 0.8rem !important;
+    }
+    
+    .video-tutorials h5 {
+        font-size: 0.95rem !important;
+    }
+    
+    .video-item h6 {
+        font-size: 0.85rem !important;
+    }
+    
+    .video-item small {
+        font-size: 0.7rem !important;
+    }
+    
+    .accordion-button {
+        padding: 0.5rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .accordion-body {
+        padding: 0.7rem !important;
+        font-size: 0.8rem !important;
+    }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Help Center Hero -->
 <section class="help-hero py-5 bg-light">
@@ -41,16 +307,6 @@
                     <h4>Getting Started</h4>
                     <p>Learn the basics of creating your first invitation</p>
                     <a href="#getting-started" class="btn btn-outline-primary">View Articles</a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="help-category-card">
-                    <div class="category-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h4>Customization</h4>
-                    <p>Customize templates and make them your own</p>
-                    <a href="#customization" class="btn btn-outline-primary">View Articles</a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
@@ -99,7 +355,6 @@
                                         <li>Click "Create New Invitation" on the homepage</li>
                                         <li>Choose a template that matches your event type</li>
                                         <li>Fill in your event details using our step-by-step wizard</li>
-                                        <li>Customize colors, fonts, and images to match your style</li>
                                         <li>Preview your invitation and make any final adjustments</li>
                                         <li>Share your invitation with guests</li>
                                     </ol>
@@ -127,7 +382,7 @@
                                         <li><strong>Corporate Events</strong> - Business gatherings</li>
                                         <li><strong>Holiday Parties</strong> - Seasonal celebrations</li>
                                     </ul>
-                                    <p>Each event type has specialized templates and customization options.</p>
+                                    <p>Each event type has specialized templates designed for that occasion.</p>
                                 </div>
                             </div>
                         </div>
@@ -149,82 +404,6 @@
                                         <li>Collaborate with others on event planning</li>
                                     </ul>
                                     <p>Creating an account is quick and free. You just need to provide your name, email, and phone number.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Customization Section -->
-                <div id="customization" class="help-section mb-5">
-                    <h2 class="section-title mb-4">Customization</h2>
-                    <div class="accordion" id="customizationAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="c1">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseC1" aria-expanded="true" aria-controls="collapseC1">
-                                    How can I customize my invitation template?
-                                </button>
-                            </h2>
-                            <div id="collapseC1" class="accordion-collapse collapse show" aria-labelledby="c1" data-bs-parent="#customizationAccordion">
-                                <div class="accordion-body">
-                                    <p>You can customize almost every aspect of your invitation:</p>
-                                    <ul>
-                                        <li><strong>Text</strong> - Change all text content, fonts, and sizes</li>
-                                        <li><strong>Colors</strong> - Modify color schemes to match your theme</li>
-                                        <li><strong>Images</strong> - Upload your own photos or choose from our library</li>
-                                        <li><strong>Layout</strong> - Adjust spacing, alignment, and positioning</li>
-                                        <li><strong>Backgrounds</strong> - Change background colors or patterns</li>
-                                        <li><strong>Borders</strong> - Add decorative borders and frames</li>
-                                    </ul>
-                                    <p>Use our drag-and-drop editor to make changes visually, or use the text editor for precise control.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="c2">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseC2" aria-expanded="false" aria-controls="collapseC2">
-                                    Can I upload my own images?
-                                </button>
-                            </h2>
-                            <div id="collapseC2" class="accordion-collapse collapse" aria-labelledby="c2" data-bs-parent="#customizationAccordion">
-                                <div class="accordion-body">
-                                    <p>Yes! You can upload your own images in several ways:</p>
-                                    <ul>
-                                        <li><strong>Main Images</strong> - Upload photos for the main invitation image</li>
-                                        <li><strong>Profile Photos</strong> - Add photos of the couple, birthday person, etc.</li>
-                                        <li><strong>Gallery Images</strong> - Create a photo gallery for your event</li>
-                                        <li><strong>Background Images</strong> - Use custom backgrounds</li>
-                                    </ul>
-                                    <p><strong>Supported formats:</strong> JPG, PNG, GIF (up to 10MB each)</p>
-                                    <p><strong>Recommended size:</strong> At least 800x600 pixels for best quality</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="c3">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseC3" aria-expanded="false" aria-controls="collapseC3">
-                                    How do I change the font and text styling?
-                                </button>
-                            </h2>
-                            <div id="collapseC3" class="accordion-collapse collapse" aria-labelledby="c3" data-bs-parent="#customizationAccordion">
-                                <div class="accordion-body">
-                                    <p>To change fonts and text styling:</p>
-                                    <ol>
-                                        <li>Click on any text element in your invitation</li>
-                                        <li>Use the text toolbar that appears</li>
-                                        <li>Select from our curated font collection</li>
-                                        <li>Adjust size, color, and alignment</li>
-                                        <li>Apply bold, italic, or underline formatting</li>
-                                    </ol>
-                                    <p>We offer a variety of fonts including:</p>
-                                    <ul>
-                                        <li>Elegant serif fonts for formal events</li>
-                                        <li>Modern sans-serif fonts for contemporary style</li>
-                                        <li>Script fonts for romantic occasions</li>
-                                        <li>Fun fonts for casual celebrations</li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -371,7 +550,6 @@
                         <h5>Popular Articles</h5>
                         <ul class="list-unstyled">
                             <li><a href="#getting-started" class="text-decoration-none">Getting Started Guide</a></li>
-                            <li><a href="#customization" class="text-decoration-none">Customizing Templates</a></li>
                             <li><a href="#rsvp-management" class="text-decoration-none">Managing RSVPs</a></li>
                             <li><a href="#analytics" class="text-decoration-none">Understanding Analytics</a></li>
                             <li><a href="#" class="text-decoration-none">Troubleshooting Common Issues</a></li>
@@ -388,15 +566,6 @@
                             <div class="video-info">
                                 <h6>Creating Your First Invitation</h6>
                                 <small class="text-muted">5 min video</small>
-                            </div>
-                        </div>
-                        <div class="video-item mb-3">
-                            <div class="video-thumbnail">
-                                <i class="fas fa-play-circle fa-3x text-primary"></i>
-                            </div>
-                            <div class="video-info">
-                                <h6>Advanced Customization</h6>
-                                <small class="text-muted">8 min video</small>
                             </div>
                         </div>
                         <div class="video-item">

@@ -2,6 +2,220 @@
 
 {% block title %}About EventCraft Pro - Professional Invitation Platform{% endblock %}
 
+{% block extra_head %}
+<style>
+/* About Page Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0 !important;
+    }
+    
+    .hero-title {
+        font-size: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .hero-visual i {
+        font-size: 3rem !important;
+    }
+    
+    .hero-visual h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.75rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .section-subtitle {
+        font-size: 0.9rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .team-card {
+        padding: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .team-avatar img {
+        width: 100px !important;
+        height: 100px !important;
+    }
+    
+    .team-name {
+        font-size: 1.25rem !important;
+    }
+    
+    .team-role {
+        font-size: 0.9rem !important;
+    }
+    
+    .team-bio {
+        font-size: 0.9rem !important;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    .value-card {
+        padding: 1.5rem !important;
+    }
+    
+    .value-icon {
+        font-size: 2rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .value-title {
+        font-size: 1.1rem !important;
+    }
+    
+    .value-description {
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        padding: 1.5rem 0 !important;
+    }
+    
+    .hero-title {
+        font-size: 1.75rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.95rem !important;
+    }
+    
+    .hero-visual i {
+        font-size: 2.5rem !important;
+    }
+    
+    .hero-visual h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .section-subtitle {
+        font-size: 0.85rem !important;
+    }
+    
+    .team-card {
+        padding: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .team-avatar img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+    
+    .team-name {
+        font-size: 1.1rem !important;
+    }
+    
+    .team-role {
+        font-size: 0.85rem !important;
+    }
+    
+    .team-bio {
+        font-size: 0.85rem !important;
+    }
+    
+    .value-card {
+        padding: 1rem !important;
+    }
+    
+    .value-icon {
+        font-size: 1.75rem !important;
+    }
+    
+    .value-title {
+        font-size: 1rem !important;
+    }
+    
+    .value-description {
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.5rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9rem !important;
+    }
+    
+    .hero-visual i {
+        font-size: 2rem !important;
+    }
+    
+    .hero-visual h3 {
+        font-size: 1rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.25rem !important;
+    }
+    
+    .section-subtitle {
+        font-size: 0.8rem !important;
+    }
+    
+    .team-card {
+        padding: 0.75rem !important;
+    }
+    
+    .team-avatar img {
+        width: 70px !important;
+        height: 70px !important;
+    }
+    
+    .team-name {
+        font-size: 1rem !important;
+    }
+    
+    .team-role {
+        font-size: 0.8rem !important;
+    }
+    
+    .team-bio {
+        font-size: 0.8rem !important;
+    }
+    
+    .value-card {
+        padding: 0.75rem !important;
+    }
+    
+    .value-icon {
+        font-size: 1.5rem !important;
+    }
+    
+    .value-title {
+        font-size: 0.95rem !important;
+    }
+    
+    .value-description {
+        font-size: 0.8rem !important;
+    }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section class="hero-section py-5">
@@ -165,7 +379,7 @@
         <div class="row align-items-center">
             <div class="col-lg-4">
                 <div class="founder-image text-center">
-                    <img src="/static/images/developer.jpg" alt="J Madhan - Founder & CEO" class="rounded-circle shadow-lg" style="width: 200px; height: 200px; object-fit: cover;">
+                    <img src="/images/about/developer.jpg" alt="J Madhan - Founder & CEO" class="rounded-circle shadow-lg" style="width: 200px; height: 200px; object-fit: cover;">
                 </div>
             </div>
             <div class="col-lg-8">
@@ -200,7 +414,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="team-card text-center">
                     <div class="team-avatar mb-4">
-                        <img src="/static/images/developer.jpg" alt="J Madhan - Founder & CEO" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+                        <img src="/images/about/developer.jpg" alt="J Madhan - Founder & CEO" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
                     </div>
                     <h4 class="team-name mb-2">J Madhan</h4>
                     <p class="team-role text-primary mb-3">Founder & CEO</p>
@@ -209,8 +423,6 @@
                     </p>
                     <div class="team-social">
                         <a href="#" class="text-primary me-3"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-primary"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
             </div>
@@ -219,19 +431,15 @@
             <div class="col-lg-4 col-md-6">
                 <div class="team-card text-center">
                     <div class="team-avatar mb-4">
-                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; margin: 0 auto;">
-                            <i class="fas fa-bug fa-3x text-white"></i>
-                        </div>
+                        <img src="/images/about/ashwinprofile.jpg" alt="Ashwin Sri Chandra Chinni - Head of Testing & Quality Assurance" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
                     </div>
-                    <h4 class="team-name mb-2">Ashwin</h4>
+                    <h4 class="team-name mb-2">Ashwin Sri Chandra Chinni</h4>
                     <p class="team-role text-primary mb-3">Head of Testing & Quality Assurance</p>
                     <p class="team-bio">
                         Quality assurance expert ensuring our platform delivers flawless experiences. Ashwin leads our testing initiatives to guarantee reliability, performance, and user satisfaction across all features and devices.
                     </p>
                     <div class="team-social">
-                        <a href="#" class="text-primary me-3"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-primary"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/ashwin-sri-chandra-chinni-185772370/" target="_blank" class="text-primary me-3"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
@@ -239,19 +447,15 @@
             <div class="col-lg-4 col-md-6">
                 <div class="team-card text-center">
                     <div class="team-avatar mb-4">
-                        <div class="rounded-circle bg-success d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; margin: 0 auto;">
-                            <i class="fas fa-search fa-3x text-white"></i>
-                        </div>
+                        <img src="/images/about/mahathi profile.jpg" alt="Mahathi Tarugu - Lead Researcher" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
                     </div>
-                    <h4 class="team-name mb-2">Mahati</h4>
+                    <h4 class="team-name mb-2">Mahathi Tarugu</h4>
                     <p class="team-role text-primary mb-3">Lead Researcher</p>
                     <p class="team-bio">
-                        Research specialist focused on user experience and market trends. Mahati conducts in-depth research to understand user needs and market dynamics, helping us build features that truly matter to our community.
+                        Research specialist focused on user experience and market trends. Mahathi conducts in-depth research to understand user needs and market dynamics, helping us build features that truly matter to our community.
                     </p>
                     <div class="team-social">
-                        <a href="#" class="text-primary me-3"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-primary"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/mahathi-tarugu-02351235b" target="_blank" class="text-primary me-3"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
@@ -259,19 +463,15 @@
             <div class="col-lg-4 col-md-6">
                 <div class="team-card text-center">
                     <div class="team-avatar mb-4">
-                        <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; margin: 0 auto;">
-                            <i class="fas fa-pen-fancy fa-3x text-white"></i>
-                        </div>
+                        <img src="/images/about/baajiprofile.png" alt="Shaik Baaji - Content Creation Specialist" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
                     </div>
-                    <h4 class="team-name mb-2">Shaik Bablu</h4>
+                    <h4 class="team-name mb-2">Shaik Baaji</h4>
                     <p class="team-role text-primary mb-3">Content Creation Specialist</p>
                     <p class="team-bio">
-                        Creative content strategist responsible for developing engaging content and marketing materials. Shaik Bablu creates compelling content that showcases our platform's capabilities and helps users understand the value of EventCraft Pro.
+                        Creative content strategist responsible for developing engaging content and marketing materials. Shaik Baaji creates compelling content that showcases our platform's capabilities and helps users understand the value of EventCraft Pro.
                     </p>
                     <div class="team-social">
-                        <a href="#" class="text-primary me-3"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-primary"><i class="fab fa-dribbble"></i></a>
+                        <a href="https://www.linkedin.com/in/shaik-baaji-b4bb65363?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="text-primary me-3"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
@@ -279,9 +479,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="team-card text-center">
                     <div class="team-avatar mb-4">
-                        <div class="rounded-circle bg-info d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; margin: 0 auto;">
-                            <i class="fas fa-chart-line fa-3x text-white"></i>
-                        </div>
+                        <img src="/images/about/yoshitha.png" alt="Yoshitha - Marketing Specialist" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
                     </div>
                     <h4 class="team-name mb-2">Yoshitha</h4>
                     <p class="team-role text-primary mb-3">Marketing Specialist</p>
@@ -290,8 +488,6 @@
                     </p>
                     <div class="team-social">
                         <a href="#" class="text-primary me-3"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-primary"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>

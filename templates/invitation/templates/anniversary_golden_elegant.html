@@ -419,6 +419,174 @@
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, #673ab7 0%, #9c27b0 100%);
         }
+
+        /* Location Section Styles */
+        .location-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .venue-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .venue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(156, 39, 176, 0.2);
+            border-color: #9c27b0;
+        }
+
+        .venue-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+            border-radius: 20px;
+            padding: 3px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            z-index: -1;
+        }
+
+        .venue-icon {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .venue-icon i {
+            font-size: 3rem;
+            color: #9c27b0;
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .venue-details h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #2d3436;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .venue-address {
+            font-size: 1.1rem;
+            color: #555;
+            text-align: center;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .location-btn {
+            background: linear-gradient(135deg, #9c27b0, #673ab7);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
+        }
+
+        .location-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(156, 39, 176, 0.4);
+        }
+
+        .location-btn i {
+            margin-right: 8px;
+        }
+
+        .decorative-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-emoji, .ring-emoji, .celebration-emoji {
+            position: absolute;
+            font-size: 2rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .heart-emoji {
+            top: 10px;
+            right: 20px;
+            animation-delay: 0s;
+        }
+
+        .ring-emoji {
+            bottom: 15px;
+            left: 20px;
+            animation-delay: 0.7s;
+        }
+
+        .celebration-emoji {
+            top: 50%;
+            right: 10px;
+            animation-delay: 1.4s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Responsive Design for Location */
+        @media (max-width: 768px) {
+            .location-section {
+                padding: 2rem 1rem;
+            }
+            
+            .venue-card {
+                padding: 1.5rem;
+            }
+            
+            .venue-details h3 {
+                font-size: 1.5rem;
+            }
+            
+            .venue-address {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -572,6 +740,37 @@
         </section>
         {% endif %}
 
+        <!-- Location Section -->
+        {% if event_data.venueAddress %}
+        <section class="location-section">
+            <div class="location-container">
+                <h2 class="section-title" style="color: #2d3436; text-align: center; margin-bottom: 2rem;">
+                    <i class="fas fa-map-marker-alt" style="color: #9c27b0; margin-right: 10px;"></i>
+                    Celebration Location
+                </h2>
+                
+                <div class="venue-card" onclick="openLocation('{{ event_data.venueAddress }}')" title="Click to view location on Google Maps">
+                    <div class="venue-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="venue-details">
+                        <h3>💕 Venue Address</h3>
+                        <p class="venue-address">{{ event_data.venueAddress }}</p>
+                        <button class="location-btn" onclick="event.stopPropagation(); openLocation('{{ event_data.venueAddress }}')">
+                            <i class="fas fa-directions"></i>
+                            Get Directions
+                        </button>
+                    </div>
+                    <div class="decorative-elements">
+                        <div class="heart-emoji">💕</div>
+                        <div class="ring-emoji">💍</div>
+                        <div class="celebration-emoji">🎉</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
         <!-- RSVP Section -->
         <section class="rsvp-section">
             <div class="rsvp-container">
@@ -680,6 +879,15 @@
                 });
             });
         });
+
+        // Location functionality
+        function openLocation(address) {
+            if (address && address.trim()) {
+                const encodedAddress = encodeURIComponent(address.trim());
+                const googleMapsUrl = `https://maps.google.com/?q=${encodedAddress}`;
+                window.open(googleMapsUrl, '_blank');
+            }
+        }
     </script>
 </body>
 </html>

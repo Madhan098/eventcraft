@@ -225,20 +225,22 @@
                             
 
 
-                        <!-- Share Section - Popup for Everyone -->
+                        <!-- Share Section - Creator Only -->
+                        {% if session.user_id and session.user_id == invitation.user_id %}
                         <div class="share-section bg-light rounded p-4 mb-4">
                             <h5 class="text-center mb-3">
                                 <i class="fas fa-share-alt me-2"></i>Share this invitation
                             </h5>
                             <p class="text-center text-muted mb-3">Spread the joy! Share with friends and family</p>
                             
-                            <!-- Share Button for Everyone -->
+                            <!-- Share Button for Creator Only -->
                             <div class="text-center">
                                 <button type="button" class="btn btn-primary btn-lg" onclick="openSharePopup()">
                                     <i class="fas fa-share-alt me-2"></i>Share Invitation
                                 </button>
                             </div>
                         </div>
+                        {% endif %}
 
                         <!-- Contact Information -->
                         {% if event_data.contactPhone or event_data.contactEmail %}

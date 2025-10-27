@@ -3,6 +3,262 @@
 {% block title %}Analytics - {{ invitation.title }}{% endblock %}
 
 {% block content %}
+<style>
+/* Enhanced Analytics Styles */
+.heatmap-container {
+    margin: 20px 0;
+}
+
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    gap: 2px;
+    margin-bottom: 20px;
+}
+
+.heatmap-cell {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.2);
+    z-index: 10;
+}
+
+.heatmap-cell[data-intensity="0"] { background: #f5f5f5; }
+.heatmap-cell[data-intensity="1"] { background: #e3f2fd; }
+.heatmap-cell[data-intensity="2"] { background: #90caf9; }
+.heatmap-cell[data-intensity="3"] { background: #2196f3; }
+.heatmap-cell[data-intensity="4"] { background: #1976d2; }
+
+.heatmap-legend {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+.legend-color {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}
+
+/* Funnel Styles */
+.funnel-container {
+    padding: 20px 0;
+}
+
+.funnel-step {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.funnel-bar {
+    height: 50px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.funnel-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.funnel-bar:hover::before {
+    left: 100%;
+}
+
+.funnel-label {
+    font-size: 1rem;
+}
+
+.funnel-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Engagement Insights */
+.insight-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.insight-item:last-child {
+    border-bottom: none;
+}
+
+.insight-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.insight-content {
+    flex: 1;
+}
+
+.insight-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.insight-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* Enhanced Chart Cards */
+.chart-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.chart-card .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #e9ecef;
+    padding: 20px;
+}
+
+.chart-card .card-body {
+    padding: 25px;
+}
+
+/* Metric Cards Enhancement */
+.metric-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.metric-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 1.5rem;
+}
+
+.metric-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.metric-label {
+    font-size: 1rem;
+    color: #6c757d;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.metric-change {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .heatmap-grid {
+        grid-template-columns: repeat(12, 1fr);
+    }
+    
+    .funnel-bar {
+        height: 40px;
+        padding: 0 15px;
+    }
+    
+    .funnel-label {
+        font-size: 0.9rem;
+    }
+    
+    .funnel-value {
+        font-size: 1rem;
+    }
+    
+    .insight-item {
+        padding: 10px 0;
+    }
+    
+    .insight-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .insight-value {
+        font-size: 1.2rem;
+    }
+}
+</style>
 <!-- Analytics Header -->
 <section class="analytics-header py-4 bg-light">
     <div class="container">
@@ -20,9 +276,22 @@
             </div>
             <div class="col-md-4 text-end">
                 <div class="d-flex gap-2 justify-content-end">
-                    <button class="btn btn-outline-primary" onclick="exportAnalytics()">
-                        <i class="fas fa-download me-2"></i>Export Data
-                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-download me-2"></i>Export Data
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="exportAnalytics('csv')">
+                                <i class="fas fa-file-csv me-2"></i>Export as CSV
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="exportAnalytics('pdf')">
+                                <i class="fas fa-file-pdf me-2"></i>Export as PDF
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="exportAnalytics('excel')">
+                                <i class="fas fa-file-excel me-2"></i>Export as Excel
+                            </a></li>
+                        </ul>
+                    </div>
                     <button class="btn btn-primary" onclick="refreshAnalytics()">
                         <i class="fas fa-sync-alt me-2"></i>Refresh
                     </button>
@@ -143,6 +412,132 @@
                     </div>
                     <div class="card-body">
                         <canvas id="shareChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Guest Engagement Heatmap -->
+            <div class="col-lg-12">
+                <div class="chart-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Guest Engagement Heatmap</h5>
+                        <div class="heatmap-controls">
+                            <select class="form-select form-select-sm" id="heatmap-metric">
+                                <option value="views">Views</option>
+                                <option value="clicks">Clicks</option>
+                                <option value="time">Time Spent</option>
+                                <option value="interactions">Interactions</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="heatmap-container">
+                            <div class="heatmap-grid" id="engagement-heatmap">
+                                <!-- Heatmap will be generated by JavaScript -->
+                            </div>
+                            <div class="heatmap-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #e3f2fd;"></div>
+                                    <span>Low</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #90caf9;"></div>
+                                    <span>Medium</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #2196f3;"></div>
+                                    <span>High</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #1976d2;"></div>
+                                    <span>Very High</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Engagement Funnel -->
+            <div class="col-lg-8">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Guest Engagement Funnel</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="funnel-container">
+                            <div class="funnel-step">
+                                <div class="funnel-bar" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <span class="funnel-label">Invitation Sent</span>
+                                    <span class="funnel-value">{{ analytics.total_guests }}</span>
+                                </div>
+                            </div>
+                            <div class="funnel-step">
+                                <div class="funnel-bar" style="width: 85%; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                    <span class="funnel-label">Invitation Opened</span>
+                                    <span class="funnel-value">{{ analytics.total_views }}</span>
+                                </div>
+                            </div>
+                            <div class="funnel-step">
+                                <div class="funnel-bar" style="width: 70%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <span class="funnel-label">RSVP Clicked</span>
+                                    <span class="funnel-value">{{ analytics.rsvp_clicks }}</span>
+                                </div>
+                            </div>
+                            <div class="funnel-step">
+                                <div class="funnel-bar" style="width: 55%; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                    <span class="funnel-label">RSVP Submitted</span>
+                                    <span class="funnel-value">{{ analytics.rsvp_submissions }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Engagement Insights -->
+            <div class="col-lg-4">
+                <div class="chart-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Engagement Insights</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="insight-item">
+                            <div class="insight-icon bg-primary-subtle">
+                                <i class="fas fa-clock text-primary"></i>
+                            </div>
+                            <div class="insight-content">
+                                <div class="insight-value">{{ analytics.avg_time_spent }}s</div>
+                                <div class="insight-label">Avg. Time Spent</div>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon bg-success-subtle">
+                                <i class="fas fa-mouse-pointer text-success"></i>
+                            </div>
+                            <div class="insight-content">
+                                <div class="insight-value">{{ analytics.avg_clicks }}</div>
+                                <div class="insight-label">Avg. Clicks per Visit</div>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon bg-warning-subtle">
+                                <i class="fas fa-share-alt text-warning"></i>
+                            </div>
+                            <div class="insight-content">
+                                <div class="insight-value">{{ analytics.share_rate }}%</div>
+                                <div class="insight-label">Share Rate</div>
+                            </div>
+                        </div>
+                        <div class="insight-item">
+                            <div class="insight-icon bg-info-subtle">
+                                <i class="fas fa-redo text-info"></i>
+                            </div>
+                            <div class="insight-content">
+                                <div class="insight-value">{{ analytics.return_rate }}%</div>
+                                <div class="insight-label">Return Rate</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -407,12 +802,16 @@ function initializeCharts() {
     new Chart(shareCtx, {
         type: 'pie',
         data: {
-            labels: ['Email', 'WhatsApp', 'Direct Link', 'QR Code', 'Other'],
+            labels: ['Email', 'WhatsApp', 'Facebook', 'Instagram', 'Twitter', 'Telegram', 'Direct Link', 'QR Code', 'Other'],
             datasets: [{
-                data: [{{ analytics.share_email }}, {{ analytics.share_whatsapp }}, {{ analytics.share_direct }}, {{ analytics.share_qr }}, {{ analytics.share_other }}],
+                data: [{{ analytics.share_email }}, {{ analytics.share_whatsapp }}, {{ analytics.share_facebook }}, {{ analytics.share_instagram }}, {{ analytics.share_twitter }}, {{ analytics.share_telegram }}, {{ analytics.share_direct }}, {{ analytics.share_qr }}, {{ analytics.share_other }}],
                 backgroundColor: [
                     '#101357',
                     '#25d366',
+                    '#1877f2',
+                    '#e4405f',
+                    '#1da1f2',
+                    '#0088cc',
                     '#c7af6b',
                     '#00a0a0',
                     '#6b7280'
@@ -457,9 +856,180 @@ function refreshAnalytics() {
     }, 1000);
 }
 
-function exportAnalytics() {
-    // In a real implementation, this would generate and download a CSV/PDF
-    alert('Export functionality coming soon!');
+// Enhanced Export Functionality
+function exportAnalytics(format) {
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Exporting...';
+    btn.disabled = true;
+    
+    // Simulate export based on format
+    setTimeout(() => {
+        switch(format) {
+            case 'csv':
+                exportToCSV();
+                break;
+            case 'pdf':
+                exportToPDF();
+                break;
+            case 'excel':
+                exportToExcel();
+                break;
+            default:
+                exportToCSV();
+        }
+        
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }, 1500);
 }
+
+function exportToCSV() {
+    const csvContent = generateCSVData();
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'analytics-data.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function exportToPDF() {
+    // In a real implementation, you'd use a library like jsPDF
+    alert('PDF export functionality will be implemented with jsPDF library');
+}
+
+function exportToExcel() {
+    // In a real implementation, you'd use a library like SheetJS
+    alert('Excel export functionality will be implemented with SheetJS library');
+}
+
+function generateCSVData() {
+    const headers = ['Date', 'Views', 'RSVPs', 'Shares', 'Device Type', 'Location'];
+    const data = [
+        ['2024-01-01', '45', '12', '8', 'Mobile', 'New York'],
+        ['2024-01-02', '52', '15', '12', 'Desktop', 'Los Angeles'],
+        ['2024-01-03', '38', '8', '6', 'Mobile', 'Chicago'],
+        // Add more data as needed
+    ];
+    
+    return [headers, ...data].map(row => row.join(',')).join('\n');
+}
+
+// Heatmap Generation
+function generateHeatmap() {
+    const heatmapContainer = document.getElementById('engagement-heatmap');
+    const days = 7; // Last 7 days
+    const hours = 24; // 24 hours per day
+    
+    // Clear existing heatmap
+    heatmapContainer.innerHTML = '';
+    
+    // Generate heatmap cells
+    for (let day = 0; day < days; day++) {
+        for (let hour = 0; hour < hours; hour++) {
+            const cell = document.createElement('div');
+            cell.className = 'heatmap-cell';
+            
+            // Simulate engagement data (0-4 intensity)
+            const intensity = Math.floor(Math.random() * 5);
+            cell.setAttribute('data-intensity', intensity);
+            cell.setAttribute('data-day', day);
+            cell.setAttribute('data-hour', hour);
+            
+            // Add tooltip
+            cell.title = `Day ${day + 1}, Hour ${hour}: ${intensity * 25}% engagement`;
+            
+            // Add click handler for detailed view
+            cell.addEventListener('click', function() {
+                showHeatmapDetails(day, hour, intensity);
+            });
+            
+            heatmapContainer.appendChild(cell);
+        }
+    }
+}
+
+function showHeatmapDetails(day, hour, intensity) {
+    const modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.innerHTML = `
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Engagement Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Day:</strong> ${day + 1}</p>
+                    <p><strong>Hour:</strong> ${hour}:00</p>
+                    <p><strong>Engagement Level:</strong> ${intensity * 25}%</p>
+                    <p><strong>Views:</strong> ${Math.floor(Math.random() * 50) + 10}</p>
+                    <p><strong>Clicks:</strong> ${Math.floor(Math.random() * 20) + 5}</p>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    const bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+    
+    modal.addEventListener('hidden.bs.modal', function() {
+        document.body.removeChild(modal);
+    });
+}
+
+// Heatmap metric change handler
+function setupHeatmapControls() {
+    const metricSelect = document.getElementById('heatmap-metric');
+    if (metricSelect) {
+        metricSelect.addEventListener('change', function() {
+            generateHeatmap();
+        });
+    }
+}
+
+// Initialize enhanced analytics
+document.addEventListener('DOMContentLoaded', function() {
+    generateHeatmap();
+    setupHeatmapControls();
+    
+    // Add animation to metric cards
+    const metricCards = document.querySelectorAll('.metric-card');
+    metricCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.classList.add('animate-in');
+    });
+    
+    // Add animation to chart cards
+    const chartCards = document.querySelectorAll('.chart-card');
+    chartCards.forEach((card, index) => {
+        card.style.animationDelay = `${(index + metricCards.length) * 0.1}s`;
+        card.classList.add('animate-in');
+    });
+});
+
+// Add CSS for animations
+const style = document.createElement('style');
+style.textContent = `
+    .animate-in {
+        animation: slideInUp 0.6s ease forwards;
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    
+    @keyframes slideInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+`;
+document.head.appendChild(style);
 </script>
 {% endblock %}

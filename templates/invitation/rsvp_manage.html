@@ -421,8 +421,54 @@ function removeGuest(guestId) {
 
 // Export guest list
 function exportGuestList() {
-    // Implementation for exporting guest list
-    alert('Export functionality coming soon!');
+    // Show export options
+    const exportModal = document.createElement('div');
+    exportModal.className = 'modal fade';
+    exportModal.innerHTML = `
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Export Guest List</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Choose export format:</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary" onclick="exportToCSV()">
+                            <i class="fas fa-file-csv me-2"></i>Export as CSV
+                        </button>
+                        <button class="btn btn-outline-success" onclick="exportToExcel()">
+                            <i class="fas fa-file-excel me-2"></i>Export as Excel
+                        </button>
+                        <button class="btn btn-outline-info" onclick="exportToPDF()">
+                            <i class="fas fa-file-pdf me-2"></i>Export as PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(exportModal);
+    const modal = new bootstrap.Modal(exportModal);
+    modal.show();
+    
+    // Remove modal after hiding
+    exportModal.addEventListener('hidden.bs.modal', () => {
+        document.body.removeChild(exportModal);
+    });
+}
+
+function exportToCSV() {
+    window.location.href = `/api/invitations/{{ invitation.id }}/export/csv`;
+}
+
+function exportToExcel() {
+    window.location.href = `/api/invitations/{{ invitation.id }}/export/excel`;
+}
+
+function exportToPDF() {
+    window.location.href = `/api/invitations/{{ invitation.id }}/export/pdf`;
 }
 </script>
 {% endblock %}

@@ -2,6 +2,11 @@
 
 {% block title %}Create Invitation - EventCraft Pro{% endblock %}
 
+{% block extra_head %}
+<!-- Google Fonts for different font styles -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&family=Dancing+Script:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&family=Pacifico&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <style>
     /* Modern Form Styling */
@@ -474,6 +479,50 @@
     </div>
     {% endif %}
 
+    <!-- Font & Language Selection (Top Priority) -->
+    <div class="form-section" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 2px solid #dee2e6;">
+        <div class="section-header text-center mb-4">
+            <i class="fas fa-magic" style="font-size: 2rem; color: #667eea; margin-bottom: 1rem;"></i>
+            <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Customize Your Invitation</h3>
+            <p style="color: #6c757d; margin: 0;">Choose your preferred font style and language</p>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label" style="font-weight: 600; color: #2c3e50;">Font Style</label>
+                <select class="form-input" id="fontStyle" name="fontStyle" onchange="changeFontStyle(this.value)" style="font-size: 1.1rem; padding: 0.75rem;">
+                    <option value="default">Default (Inter)</option>
+                    <option value="elegant">Elegant (Playfair Display)</option>
+                    <option value="modern">Modern (Roboto)</option>
+                    <option value="classic">Classic (Times New Roman)</option>
+                    <option value="script">Script (Dancing Script)</option>
+                    <option value="bold">Bold (Montserrat)</option>
+                    <option value="cursive">Cursive (Pacifico)</option>
+                    <option value="minimal">Minimal (Open Sans)</option>
+                </select>
+                <small class="form-text" style="color: #6c757d;">Choose a font style for your entire invitation</small>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" style="font-weight: 600; color: #2c3e50;">Language</label>
+                <select class="form-input" id="language" name="language" onchange="changeLanguage(this.value)" style="font-size: 1.1rem; padding: 0.75rem;">
+                    <option value="english">English</option>
+                    <option value="hindi">हिन्दी (Hindi)</option>
+                    <option value="telugu">తెలుగు (Telugu)</option>
+                    <option value="kannada">ಕನ್ನಡ (Kannada)</option>
+                </select>
+                <small class="form-text" style="color: #6c757d;">Select the language for your invitation text</small>
+            </div>
+        </div>
+        
+        <!-- Live Preview Indicator -->
+        <div id="livePreviewIndicator" style="text-align: center; margin-top: 1rem; padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 10px; display: none;">
+            <i class="fas fa-eye" style="color: #667eea; margin-right: 0.5rem;"></i>
+            <span style="color: #667eea; font-weight: 600;">Live Preview Active</span>
+            <p style="color: #6c757d; margin: 0.5rem 0 0 0; font-size: 0.9rem;">Your changes are applied in real-time to the form below</p>
+        </div>
+    </div>
+
     <!-- Step Indicators -->
     <div class="form-steps">
         <div class="step-indicator active" id="step1-indicator">
@@ -555,7 +604,7 @@
             </div>
 
             <!-- Style Selection -->
-            <div class="form-section">
+            <div class="form-section" id="eventStyleSection">
                 <div class="section-header">
                     <i class="fas fa-palette"></i>
                     <h3>Event Style (Optional)</h3>
@@ -591,6 +640,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- Event-Specific Information -->
             <div class="form-section" id="eventSpecificSection">
@@ -911,9 +961,547 @@
                 preview.style.display = 'none';
                 preview.querySelector('img').src = '';
             }
-            if (input) {
-                input.value = '';
+        }
+
+        // Initialize language and font on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial language to English if not already set
+            const languageSelect = document.getElementById('language');
+            if (languageSelect && !languageSelect.getAttribute('data-language')) {
+                changeLanguage('english');
             }
+            
+            // Set initial font to default if not already set
+            const fontSelect = document.getElementById('fontStyle');
+            if (fontSelect && !fontSelect.getAttribute('data-font-family')) {
+                changeFontStyle('default');
+            }
+        });
+
+        // Font style change function
+        function changeFontStyle(fontValue) {
+            console.log('Changing font style to:', fontValue);
+            
+            // Define font mappings
+            const fontMappings = {
+                'default': 'Inter, sans-serif',
+                'elegant': 'Playfair Display, serif',
+                'modern': 'Roboto, sans-serif',
+                'classic': 'Times New Roman, serif',
+                'script': 'Dancing Script, cursive',
+                'bold': 'Montserrat, sans-serif',
+                'cursive': 'Pacifico, cursive',
+                'minimal': 'Open Sans, sans-serif'
+            };
+            
+            const selectedFont = fontMappings[fontValue] || 'Inter, sans-serif';
+            
+            // Apply font to all form elements
+            const allTextElements = document.querySelectorAll(`
+                input[type="text"], 
+                textarea, 
+                .form-input, 
+                .form-textarea,
+                .form-label,
+                .section-header h3,
+                .step-indicator span,
+                .form-header h1,
+                .form-header p,
+                .template-info h3,
+                .template-info p,
+                .form-text,
+                select,
+                button
+            `);
+            
+            allTextElements.forEach(element => {
+                element.style.fontFamily = selectedFont;
+            });
+            
+            // Apply font to the entire form container
+            const formContainer = document.querySelector('.create-invitation-container');
+            if (formContainer) {
+                formContainer.style.fontFamily = selectedFont;
+            }
+            
+            // Store the font choice for later use
+            document.getElementById('fontStyle').setAttribute('data-font-family', selectedFont);
+            
+            console.log('Font applied to entire form:', selectedFont);
+            
+            // Show live preview indicator
+            showLivePreviewIndicator();
+        }
+
+        // Language change function
+        function changeLanguage(languageValue) {
+            console.log('Changing language to:', languageValue);
+            
+            // Define comprehensive language translations
+            const translations = {
+                'english': {
+                    'eventTitle': 'Event Title',
+                    'eventDate': 'Event Date',
+                    'eventDescription': 'Event Description',
+                    'loveStory': 'Love Story',
+                    'eventStory': 'Event Story',
+                    'hostName': 'Host Name',
+                    'contactPhone': 'Contact Phone',
+                    'contactEmail': 'Contact Email',
+                    'venueAddress': 'Venue Address',
+                    'brideName': 'Bride\'s Name',
+                    'groomName': 'Groom\'s Name',
+                    'birthdayPerson': 'Birthday Person\'s Name',
+                    'age': 'Age',
+                    'startTime': 'Start Time',
+                    'dinnerTime': 'Dinner Time',
+                    'muhurthamTime': 'Muhurtham Time',
+                    'receptionTime': 'Reception Time',
+                    'motherName': 'Mother\'s Name',
+                    'fatherName': 'Father\'s Name',
+                    'graduateName': 'Graduate\'s Name',
+                    'degree': 'Degree',
+                    'school': 'School',
+                    'major': 'Major',
+                    'coupleNames': 'Couple Names',
+                    'marriageYears': 'Marriage Years',
+                    'honoreeName': 'Honoree Name',
+                    'position': 'Position',
+                    'company': 'Company',
+                    'startYear': 'Start Year',
+                    'placeholder': {
+                        'eventTitle': 'e.g., Sarah & John\'s Wedding',
+                        'eventDescription': 'Describe your event, add special instructions, or include a personal message...',
+                        'loveStory': 'Share your beautiful love story...',
+                        'eventStory': 'Share your event story...',
+                        'contactPhone': 'Phone number for inquiries',
+                        'contactEmail': 'Email for inquiries',
+                        'venueAddress': 'Enter the venue address...',
+                        'brideName': 'Bride\'s full name',
+                        'groomName': 'Groom\'s full name',
+                        'birthdayPerson': 'Name of the birthday person',
+                        'age': 'Age',
+                        'motherName': 'Mother\'s full name',
+                        'fatherName': 'Father\'s full name',
+                        'graduateName': 'Graduate\'s full name',
+                        'degree': 'e.g., Bachelor of Science',
+                        'school': 'University/School name',
+                        'major': 'Field of study',
+                        'coupleNames': 'Couple\'s names',
+                        'marriageYears': 'Years of marriage',
+                        'honoreeName': 'Honoree\'s full name',
+                        'position': 'Job position',
+                        'company': 'Company name',
+                        'startYear': 'Start year'
+                    },
+                    'defaultText': {
+                        'weddingDescription': 'With immense joy and love, we invite you to celebrate our special day as we begin our journey of forever together. Your presence will make our celebration complete.',
+                        'birthdayDescription': 'Join us for a day filled with laughter, joy, and wonderful memories as we celebrate another year of life\'s beautiful journey.',
+                        'anniversaryDescription': 'Celebrate with us the beautiful years of love, commitment, and countless memories we\'ve shared together.',
+                        'graduationDescription': 'Join us in celebrating this significant milestone and the beginning of a new chapter in life\'s journey.',
+                        'babyshowerDescription': 'Share in our excitement as we prepare to welcome a precious new life into our family.',
+                        'retirementDescription': 'Celebrate with us as we mark the end of one chapter and the beginning of new adventures in life.',
+                        'loveStoryText': 'Our love story began with a simple hello and grew into something beautiful. Every moment together has been a blessing, and now we\'re ready to take the next step in our journey of love and commitment.',
+                        'eventStoryText': 'A celebration of life\'s beautiful moments, filled with love, joy, and wonderful memories that we\'ll cherish forever.'
+                    }
+                },
+                'hindi': {
+                    'eventTitle': 'कार्यक्रम का शीर्षक',
+                    'eventDate': 'कार्यक्रम की तारीख',
+                    'eventDescription': 'कार्यक्रम का विवरण',
+                    'loveStory': 'प्रेम कहानी',
+                    'eventStory': 'कार्यक्रम की कहानी',
+                    'hostName': 'मेजबान का नाम',
+                    'contactPhone': 'संपर्क फोन',
+                    'contactEmail': 'संपर्क ईमेल',
+                    'venueAddress': 'स्थल का पता',
+                    'brideName': 'दुल्हन का नाम',
+                    'groomName': 'दूल्हे का नाम',
+                    'birthdayPerson': 'जन्मदिन व्यक्ति का नाम',
+                    'age': 'आयु',
+                    'startTime': 'शुरुआत का समय',
+                    'dinnerTime': 'डिनर का समय',
+                    'muhurthamTime': 'मुहूर्त का समय',
+                    'receptionTime': 'रिसेप्शन का समय',
+                    'motherName': 'माता का नाम',
+                    'fatherName': 'पिता का नाम',
+                    'graduateName': 'स्नातक का नाम',
+                    'degree': 'डिग्री',
+                    'school': 'स्कूल',
+                    'major': 'विषय',
+                    'coupleNames': 'दंपति के नाम',
+                    'marriageYears': 'विवाह के वर्ष',
+                    'honoreeName': 'सम्मानित व्यक्ति का नाम',
+                    'position': 'पद',
+                    'company': 'कंपनी',
+                    'startYear': 'शुरुआत का वर्ष',
+                    'placeholder': {
+                        'eventTitle': 'जैसे, सारा और जॉन की शादी',
+                        'eventDescription': 'अपने कार्यक्रम का वर्णन करें, विशेष निर्देश जोड़ें, या व्यक्तिगत संदेश शामिल करें...',
+                        'loveStory': 'अपनी सुंदर प्रेम कहानी साझा करें...',
+                        'eventStory': 'अपनी कार्यक्रम की कहानी साझा करें...',
+                        'contactPhone': 'जांच के लिए फोन नंबर',
+                        'contactEmail': 'जांच के लिए ईमेल',
+                        'venueAddress': 'स्थल का पता दर्ज करें...',
+                        'brideName': 'दुल्हन का पूरा नाम',
+                        'groomName': 'दूल्हे का पूरा नाम',
+                        'birthdayPerson': 'जन्मदिन व्यक्ति का नाम',
+                        'age': 'आयु',
+                        'motherName': 'माता का पूरा नाम',
+                        'fatherName': 'पिता का पूरा नाम',
+                        'graduateName': 'स्नातक का पूरा नाम',
+                        'degree': 'जैसे, विज्ञान स्नातक',
+                        'school': 'विश्वविद्यालय/स्कूल का नाम',
+                        'major': 'अध्ययन का क्षेत्र',
+                        'coupleNames': 'दंपति के नाम',
+                        'marriageYears': 'विवाह के वर्ष',
+                        'honoreeName': 'सम्मानित व्यक्ति का पूरा नाम',
+                        'position': 'नौकरी का पद',
+                        'company': 'कंपनी का नाम',
+                        'startYear': 'शुरुआत का वर्ष'
+                    },
+                    'defaultText': {
+                        'weddingDescription': 'अत्यधिक खुशी और प्यार के साथ, हम आपको अपने विशेष दिन का जश्न मनाने के लिए आमंत्रित करते हैं क्योंकि हम हमेशा के लिए एक साथ रहने की अपनी यात्रा शुरू कर रहे हैं। आपकी उपस्थिति हमारे जश्न को पूरा बनाएगी।',
+                        'birthdayDescription': 'हंसी, खुशी और अद्भुत यादों से भरे दिन में हमारे साथ जुड़ें क्योंकि हम जीवन की सुंदर यात्रा के एक और वर्ष का जश्न मनाते हैं।',
+                        'anniversaryDescription': 'हमारे साथ प्यार, प्रतिबद्धता और अनगिनत यादों के सुंदर वर्षों का जश्न मनाएं जो हमने एक साथ साझा किए हैं।',
+                        'graduationDescription': 'इस महत्वपूर्ण मील के पत्थर और जीवन की यात्रा में एक नए अध्याय की शुरुआत का जश्न मनाने में हमारे साथ जुड़ें।',
+                        'babyshowerDescription': 'हमारे परिवार में एक कीमती नई जिंदगी का स्वागत करने की तैयारी में हमारे उत्साह में साझा करें।',
+                        'retirementDescription': 'हमारे साथ एक अध्याय के अंत और जीवन में नए रोमांच की शुरुआत का जश्न मनाएं।',
+                        'loveStoryText': 'हमारी प्रेम कहानी एक साधारण नमस्ते से शुरू हुई और कुछ सुंदर में बदल गई। एक साथ बिताया हर पल एक आशीर्वाद रहा है, और अब हम प्यार और प्रतिबद्धता की अपनी यात्रा में अगला कदम उठाने के लिए तैयार हैं।',
+                        'eventStoryText': 'जीवन के सुंदर क्षणों का जश्न, प्यार, खुशी और अद्भुत यादों से भरा जिसे हम हमेशा संजोएंगे।'
+                    }
+                },
+                'telugu': {
+                    'eventTitle': 'ఈవెంట్ శీర్షిక',
+                    'eventDate': 'ఈవెంట్ తేదీ',
+                    'eventDescription': 'ఈవెంట్ వివరణ',
+                    'loveStory': 'ప్రేమ కథ',
+                    'eventStory': 'ఈవెంట్ కథ',
+                    'hostName': 'హోస్ట్ పేరు',
+                    'contactPhone': 'కాంటాక్ట్ ఫోన్',
+                    'contactEmail': 'కాంటాక్ట్ ఇమెయిల్',
+                    'venueAddress': 'వేన్యూ చిరునామా',
+                    'brideName': 'అమ్మాయి పేరు',
+                    'groomName': 'అబ్బాయి పేరు',
+                    'birthdayPerson': 'పుట్టినరోజు వ్యక్తి పేరు',
+                    'age': 'వయస్సు',
+                    'startTime': 'ప్రారంభ సమయం',
+                    'dinnerTime': 'డిన్నర్ సమయం',
+                    'muhurthamTime': 'ముహూర్తం సమయం',
+                    'receptionTime': 'రిసెప్షన్ సమయం',
+                    'motherName': 'అమ్మ పేరు',
+                    'fatherName': 'నాన్న పేరు',
+                    'graduateName': 'గ్రాడ్యుయేట్ పేరు',
+                    'degree': 'డిగ్రీ',
+                    'school': 'స్కూల్',
+                    'major': 'విషయం',
+                    'coupleNames': 'దంపతుల పేర్లు',
+                    'marriageYears': 'వివాహ సంవత్సరాలు',
+                    'honoreeName': 'గౌరవించబడిన వ్యక్తి పేరు',
+                    'position': 'పదవి',
+                    'company': 'కంపెనీ',
+                    'startYear': 'ప్రారంభ సంవత్సరం',
+                    'placeholder': {
+                        'eventTitle': 'ఉదా., సారా & జాన్ వెడ్డింగ్',
+                        'eventDescription': 'మీ ఈవెంట్ గురించి వివరించండి, ప్రత్యేక సూచనలు జోడించండి, లేదా వ్యక్తిగత సందేశం చేర్చండి...',
+                        'loveStory': 'మీ అందమైన ప్రేమ కథను పంచుకోండి...',
+                        'eventStory': 'మీ ఈవెంట్ కథను పంచుకోండి...',
+                        'contactPhone': 'విచారణల కోసం ఫోన్ నంబర్',
+                        'contactEmail': 'విచారణల కోసం ఇమెయిల్',
+                        'venueAddress': 'వేన్యూ చిరునామాను నమోదు చేయండి...',
+                        'brideName': 'అమ్మాయి పూర్తి పేరు',
+                        'groomName': 'అబ్బాయి పూర్తి పేరు',
+                        'birthdayPerson': 'పుట్టినరోజు వ్యక్తి పేరు',
+                        'age': 'వయస్సు',
+                        'motherName': 'అమ్మ పూర్తి పేరు',
+                        'fatherName': 'నాన్న పూర్తి పేరు',
+                        'graduateName': 'గ్రాడ్యుయేట్ పూర్తి పేరు',
+                        'degree': 'ఉదా., సైన్స్ బ్యాచిలర్',
+                        'school': 'విశ్వవిద్యాలయం/స్కూల్ పేరు',
+                        'major': 'అధ్యయన రంగం',
+                        'coupleNames': 'దంపతుల పేర్లు',
+                        'marriageYears': 'వివాహ సంవత్సరాలు',
+                        'honoreeName': 'గౌరవించబడిన వ్యక్తి పూర్తి పేరు',
+                        'position': 'ఉద్యోగ పదవి',
+                        'company': 'కంపెనీ పేరు',
+                        'startYear': 'ప్రారంభ సంవత్సరం'
+                    },
+                    'defaultText': {
+                        'weddingDescription': 'అత్యంత ఆనందం మరియు ప్రేమతో, మేము ఎప్పటికీ కలిసి ఉండే మా ప్రయాణాన్ని ప్రారంభిస్తున్నందున మా ప్రత్యేక రోజును జరుపుకోవడానికి మిమ్మల్ని ఆహ్వానిస్తున్నాము. మీ హాజరు మా వేడుకను పూర్తి చేస్తుంది.',
+                        'birthdayDescription': 'జీవితం యొక్క అందమైన ప్రయాణం యొక్క మరో సంవత్సరాన్ని జరుపుకుంటున్నందున, నవ్వులు, ఆనందం మరియు అద్భుతమైన జ్ఞాపకాలతో నిండిన రోజులో మాతో చేరండి.',
+                        'anniversaryDescription': 'మేము కలిసి పంచుకున్న ప్రేమ, కట్టుబాటు మరియు అనంతమైన జ్ఞాపకాల యొక్క అందమైన సంవత్సరాలను జరుపుకోవడానికి మాతో జరుపుకోండి.',
+                        'graduationDescription': 'ఈ ముఖ్యమైన మైలురాయి మరియు జీవిత ప్రయాణంలో కొత్త అధ్యాయం యొక్క ప్రారంభాన్ని జరుపుకోవడానికి మాతో చేరండి.',
+                        'babyshowerDescription': 'మా కుటుంబంలోకి ఒక విలువైన కొత్త జీవితాన్ని స్వాగతించడానికి సిద్ధమవుతున్నందున మా ఉత్సాహంలో పంచుకోండి.',
+                        'retirementDescription': 'ఒక అధ్యాయం యొక్క ముగింపు మరియు జీవితంలో కొత్త సాహసాల ప్రారంభాన్ని గుర్తించడానికి మాతో జరుపుకోండి.',
+                        'loveStoryText': 'మా ప్రేమ కథ ఒక సాధారణ హలోతో ప్రారంభమైంది మరియు అందమైనదిగా మారింది. కలిసి గడిపిన ప్రతి క్షణం ఒక ఆశీర్వాదం, మరియు ఇప్పుడు మేము ప్రేమ మరియు కట్టుబాటు యొక్క మా ప్రయాణంలో తదుపరి అడుగు వేయడానికి సిద్ధంగా ఉన్నాము.',
+                        'eventStoryText': 'జీవితం యొక్క అందమైన క్షణాల వేడుక, ప్రేమ, ఆనందం మరియు అద్భుతమైన జ్ఞాపకాలతో నిండి ఉంటుంది, వీటిని మేము ఎప్పటికీ సంరక్షిస్తాము.'
+                    }
+                },
+                'kannada': {
+                    'eventTitle': 'ಈವೆಂಟ್ ಶೀರ್ಷಿಕೆ',
+                    'eventDate': 'ಈವೆಂಟ್ ದಿನಾಂಕ',
+                    'eventDescription': 'ಈವೆಂಟ್ ವಿವರಣೆ',
+                    'loveStory': 'ಪ್ರೀತಿಯ ಕಥೆ',
+                    'eventStory': 'ಈವೆಂಟ್ ಕಥೆ',
+                    'hostName': 'ಹೋಸ್ಟ್ ಹೆಸರು',
+                    'contactPhone': 'ಸಂಪರ್ಕ ಫೋನ್',
+                    'contactEmail': 'ಸಂಪರ್ಕ ಇಮೇಲ್',
+                    'venueAddress': 'ವೇನ್ಯೂ ವಿಳಾಸ',
+                    'brideName': 'ಮದುವೆಯ ಹೆಣ್ಣು ಹೆಸರು',
+                    'groomName': 'ಮದುವೆಯ ಗಂಡು ಹೆಸರು',
+                    'birthdayPerson': 'ಹುಟ್ಟುಹಬ್ಬದ ವ್ಯಕ್ತಿಯ ಹೆಸರು',
+                    'age': 'ವಯಸ್ಸು',
+                    'startTime': 'ಪ್ರಾರಂಭ ಸಮಯ',
+                    'dinnerTime': 'ಡಿನ್ನರ್ ಸಮಯ',
+                    'muhurthamTime': 'ಮುಹೂರ್ತ ಸಮಯ',
+                    'receptionTime': 'ರಿಸೆಪ್ಷನ್ ಸಮಯ',
+                    'motherName': 'ಅಮ್ಮ ಹೆಸರು',
+                    'fatherName': 'ಅಪ್ಪ ಹೆಸರು',
+                    'graduateName': 'ಗ್ರ್ಯಾಜುಯೇಟ್ ಹೆಸರು',
+                    'degree': 'ಪದವಿ',
+                    'school': 'ಶಾಲೆ',
+                    'major': 'ವಿಷಯ',
+                    'coupleNames': 'ದಂಪತಿಗಳ ಹೆಸರುಗಳು',
+                    'marriageYears': 'ವಿವಾಹದ ವರ್ಷಗಳು',
+                    'honoreeName': 'ಗೌರವಿಸಲಾದ ವ್ಯಕ್ತಿಯ ಹೆಸರು',
+                    'position': 'ಹುದ್ದೆ',
+                    'company': 'ಕಂಪನಿ',
+                    'startYear': 'ಪ್ರಾರಂಭದ ವರ್ಷ',
+                    'placeholder': {
+                        'eventTitle': 'ಉದಾ., ಸಾರಾ & ಜಾನ್ ವೆಡ್ಡಿಂಗ್',
+                        'eventDescription': 'ನಿಮ್ಮ ಈವೆಂಟ್ ಬಗ್ಗೆ ವಿವರಿಸಿ, ವಿಶೇಷ ಸೂಚನೆಗಳನ್ನು ಸೇರಿಸಿ, ಅಥವಾ ವೈಯಕ್ತಿಕ ಸಂದೇಶವನ್ನು ಸೇರಿಸಿ...',
+                        'loveStory': 'ನಿಮ್ಮ ಸುಂದರ ಪ್ರೀತಿಯ ಕಥೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳಿ...',
+                        'eventStory': 'ನಿಮ್ಮ ಈವೆಂಟ್ ಕಥೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳಿ...',
+                        'contactPhone': 'ಪ್ರಶ್ನೆಗಳಿಗಾಗಿ ಫೋನ್ ನಂಬರ್',
+                        'contactEmail': 'ಪ್ರಶ್ನೆಗಳಿಗಾಗಿ ಇಮೇಲ್',
+                        'venueAddress': 'ವೇನ್ಯೂ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ...',
+                        'brideName': 'ಮದುವೆಯ ಹೆಣ್ಣಿನ ಪೂರ್ಣ ಹೆಸರು',
+                        'groomName': 'ಮದುವೆಯ ಗಂಡಿನ ಪೂರ್ಣ ಹೆಸರು',
+                        'birthdayPerson': 'ಹುಟ್ಟುಹಬ್ಬದ ವ್ಯಕ್ತಿಯ ಹೆಸರು',
+                        'age': 'ವಯಸ್ಸು',
+                        'motherName': 'ಅಮ್ಮ ಪೂರ್ಣ ಹೆಸರು',
+                        'fatherName': 'ಅಪ್ಪ ಪೂರ್ಣ ಹೆಸರು',
+                        'graduateName': 'ಗ್ರ್ಯಾಜುಯೇಟ್ ಪೂರ್ಣ ಹೆಸರು',
+                        'degree': 'ಉದಾ., ಸೈನ್ಸ್ ಬ್ಯಾಚಿಲರ್',
+                        'school': 'ವಿಶ್ವವಿದ್ಯಾಲಯ/ಶಾಲೆಯ ಹೆಸರು',
+                        'major': 'ಅಧ್ಯಯನದ ಕ್ಷೇತ್ರ',
+                        'coupleNames': 'ದಂಪತಿಗಳ ಹೆಸರುಗಳು',
+                        'marriageYears': 'ವಿವಾಹದ ವರ್ಷಗಳು',
+                        'honoreeName': 'ಗೌರವಿಸಲಾದ ವ್ಯಕ್ತಿಯ ಪೂರ್ಣ ಹೆಸರು',
+                        'position': 'ಉದ್ಯೋಗದ ಹುದ್ದೆ',
+                        'company': 'ಕಂಪನಿಯ ಹೆಸರು',
+                        'startYear': 'ಪ್ರಾರಂಭದ ವರ್ಷ'
+                    },
+                    'defaultText': {
+                        'weddingDescription': 'ಅತ್ಯಂತ ಸಂತೋಷ ಮತ್ತು ಪ್ರೀತಿಯೊಂದಿಗೆ, ನಾವು ಶಾಶ್ವತವಾಗಿ ಒಟ್ಟಿಗೆ ಇರುವ ನಮ್ಮ ಪ್ರಯಾಣವನ್ನು ಪ್ರಾರಂಭಿಸುತ್ತಿರುವಾಗ ನಮ್ಮ ವಿಶೇಷ ದಿನವನ್ನು ಆಚರಿಸಲು ನಿಮ್ಮನ್ನು ಆಹ್ವಾನಿಸುತ್ತೇವೆ. ನಿಮ್ಮ ಉಪಸ್ಥಿತಿ ನಮ್ಮ ಆಚರಣೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುತ್ತದೆ.',
+                        'birthdayDescription': 'ಜೀವನದ ಸುಂದರ ಪ್ರಯಾಣದ ಮತ್ತೊಂದು ವರ್ಷವನ್ನು ಆಚರಿಸುತ್ತಿರುವಾಗ, ನಗು, ಸಂತೋಷ ಮತ್ತು ಅದ್ಭುತ ಸ್ಮರಣೆಗಳಿಂದ ತುಂಬಿದ ದಿನದಲ್ಲಿ ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ.',
+                        'anniversaryDescription': 'ನಾವು ಒಟ್ಟಿಗೆ ಹಂಚಿಕೊಂಡ ಪ್ರೀತಿ, ಬದ್ಧತೆ ಮತ್ತು ಅನಂತ ಸ್ಮರಣೆಗಳ ಸುಂದರ ವರ್ಷಗಳನ್ನು ಆಚರಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಆಚರಿಸಿ.',
+                        'graduationDescription': 'ಈ ಮಹತ್ವಪೂರ್ಣ ಮೈಲಿಗಲ್ಲು ಮತ್ತು ಜೀವನದ ಪ್ರಯಾಣದಲ್ಲಿ ಹೊಸ ಅಧ್ಯಾಯದ ಪ್ರಾರಂಭವನ್ನು ಆಚರಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ.',
+                        'babyshowerDescription': 'ನಮ್ಮ ಕುಟುಂಬಕ್ಕೆ ಅಮೂಲ್ಯವಾದ ಹೊಸ ಜೀವನವನ್ನು ಸ್ವಾಗತಿಸಲು ಸಿದ್ಧರಾಗುತ್ತಿರುವಾಗ ನಮ್ಮ ಉತ್ಸಾಹದಲ್ಲಿ ಪಾಲುಗೊಳ್ಳಿ.',
+                        'retirementDescription': 'ಒಂದು ಅಧ್ಯಾಯದ ಅಂತ್ಯ ಮತ್ತು ಜೀವನದಲ್ಲಿ ಹೊಸ ಸಾಹಸಗಳ ಪ್ರಾರಂಭವನ್ನು ಗುರುತಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಆಚರಿಸಿ.',
+                        'loveStoryText': 'ನಮ್ಮ ಪ್ರೀತಿಯ ಕಥೆ ಸರಳ ಹಲೋದಿಂದ ಪ್ರಾರಂಭವಾಯಿತು ಮತ್ತು ಸುಂದರವಾದದ್ದಾಗಿ ಬೆಳೆಯಿತು. ಒಟ್ಟಿಗೆ ಕಳೆದ ಪ್ರತಿ ಕ್ಷಣವೂ ಒಂದು ಆಶೀರ್ವಾದವಾಗಿದೆ, ಮತ್ತು ಈಗ ನಾವು ಪ್ರೀತಿ ಮತ್ತು ಬದ್ಧತೆಯ ನಮ್ಮ ಪ್ರಯಾಣದಲ್ಲಿ ಮುಂದಿನ ಹೆಜ್ಜೆ ಹಾಕಲು ಸಿದ್ಧರಾಗಿದ್ದೇವೆ.',
+                        'eventStoryText': 'ಜೀವನದ ಸುಂದರ ಕ್ಷಣಗಳ ಆಚರಣೆ, ಪ್ರೀತಿ, ಸಂತೋಷ ಮತ್ತು ಅದ್ಭುತ ಸ್ಮರಣೆಗಳಿಂದ ತುಂಬಿದ್ದು, ಅದನ್ನು ನಾವು ಶಾಶ್ವತವಾಗಿ ಸಂರಕ್ಷಿಸುತ್ತೇವೆ.'
+                    }
+                }
+            };
+            
+            const currentLang = translations[languageValue] || translations['english'];
+            
+            // Update all labels
+            Object.keys(currentLang).forEach(key => {
+                if (key !== 'placeholder' && key !== 'defaultText') {
+                    const elements = document.querySelectorAll(`label[for="${key}"], .form-label`);
+                    elements.forEach(element => {
+                        if (element.textContent.includes(key) || element.getAttribute('for') === key) {
+                            element.textContent = currentLang[key];
+                        }
+                    });
+                }
+            });
+            
+            // Update section headers and other text elements
+            updateSectionHeaders(languageValue);
+            
+            // Update placeholders
+            Object.keys(currentLang.placeholder).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.placeholder = currentLang.placeholder[key];
+                }
+            });
+            
+            // Update default text content based on template type
+            const selectedTemplate = document.querySelector('input[name="selectedTemplate"]').value;
+            if (selectedTemplate) {
+                const eventDescription = document.getElementById('eventDescription');
+                const loveStory = document.getElementById('loveStory');
+                const eventStory = document.getElementById('eventStory');
+                
+                // Always update the textareas with translated content, even if they have existing content
+                if (eventDescription) {
+                    if (selectedTemplate.includes('wedding')) {
+                        eventDescription.value = currentLang.defaultText.weddingDescription;
+                    } else if (selectedTemplate.includes('birthday')) {
+                        eventDescription.value = currentLang.defaultText.birthdayDescription;
+                    } else if (selectedTemplate.includes('anniversary')) {
+                        eventDescription.value = currentLang.defaultText.anniversaryDescription;
+                    } else if (selectedTemplate.includes('graduation')) {
+                        eventDescription.value = currentLang.defaultText.graduationDescription;
+                    } else if (selectedTemplate.includes('babyshower')) {
+                        eventDescription.value = currentLang.defaultText.babyshowerDescription;
+                    } else if (selectedTemplate.includes('retirement')) {
+                        eventDescription.value = currentLang.defaultText.retirementDescription;
+                    }
+                }
+                
+                if (loveStory) {
+                    loveStory.value = currentLang.defaultText.loveStoryText;
+                }
+                
+                if (eventStory) {
+                    eventStory.value = currentLang.defaultText.eventStoryText;
+                }
+            }
+            
+            // Store the language choice for later use
+            document.getElementById('language').setAttribute('data-language', languageValue);
+            
+            console.log('Language changed to:', languageValue);
+            
+            // Show live preview indicator
+            showLivePreviewIndicator();
+        }
+
+        // Function to update section headers and other text elements
+        function updateSectionHeaders(languageValue) {
+            // Define section header translations
+            const sectionTranslations = {
+                'english': {
+                    'eventDetails': 'Event Details',
+                    'eventSpecificDetails': 'Event-Specific Details',
+                    'contactInformation': 'Contact Information',
+                    'eventPhotos': 'Event Photos',
+                    'createInvitation': 'Create Invitation'
+                },
+                'hindi': {
+                    'eventDetails': 'कार्यक्रम विवरण',
+                    'eventSpecificDetails': 'कार्यक्रम-विशिष्ट विवरण',
+                    'contactInformation': 'संपर्क जानकारी',
+                    'eventPhotos': 'कार्यक्रम तस्वीरें',
+                    'createInvitation': 'निमंत्रण बनाएं'
+                },
+                'telugu': {
+                    'eventDetails': 'ఈవెంట్ వివరాలు',
+                    'eventSpecificDetails': 'ఈవెంట్-నిర్దిష్ట వివరాలు',
+                    'contactInformation': 'సంప్రదింపు సమాచారం',
+                    'eventPhotos': 'ఈవెంట్ ఫోటోలు',
+                    'createInvitation': 'ఆహ్వానం సృష్టించండి'
+                },
+                'kannada': {
+                    'eventDetails': 'ಈವೆಂಟ್ ವಿವರಗಳು',
+                    'eventSpecificDetails': 'ಈವೆಂಟ್-ನಿರ್ದಿಷ್ಟ ವಿವರಗಳು',
+                    'contactInformation': 'ಸಂಪರ್ಕ ಮಾಹಿತಿ',
+                    'eventPhotos': 'ಈವೆಂಟ್ ಫೋಟೋಗಳು',
+                    'createInvitation': 'ಆಹ್ವಾನವನ್ನು ರಚಿಸಿ'
+                }
+            };
+            
+            const currentSectionLang = sectionTranslations[languageValue] || sectionTranslations['english'];
+            
+            // Update section headers
+            const sectionHeaders = document.querySelectorAll('.section-header h3');
+            sectionHeaders.forEach(header => {
+                const text = header.textContent.toLowerCase();
+                if (text.includes('event details')) {
+                    header.textContent = currentSectionLang.eventDetails;
+                } else if (text.includes('event-specific') || text.includes('specific details')) {
+                    header.textContent = currentSectionLang.eventSpecificDetails;
+                } else if (text.includes('contact information')) {
+                    header.textContent = currentSectionLang.contactInformation;
+                } else if (text.includes('event photos')) {
+                    header.textContent = currentSectionLang.eventPhotos;
+                } else if (text.includes('create invitation')) {
+                    header.textContent = currentSectionLang.createInvitation;
+                }
+            });
+            
+            // Update step indicators
+            const stepIndicators = document.querySelectorAll('.step-indicator span');
+            stepIndicators.forEach(step => {
+                const text = step.textContent.toLowerCase();
+                if (text.includes('event details')) {
+                    step.textContent = currentSectionLang.eventDetails;
+                } else if (text.includes('photos') || text.includes('create')) {
+                    step.textContent = currentSectionLang.eventPhotos;
+                }
+            });
+        }
+
+        // Function to show live preview indicator
+        function showLivePreviewIndicator() {
+            const indicator = document.getElementById('livePreviewIndicator');
+            if (indicator) {
+                indicator.style.display = 'block';
+                
+                // Auto-hide after 3 seconds
+                setTimeout(() => {
+                    indicator.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Function to get translations object
+        function getTranslations() {
+            return {
+                'english': {
+                    'defaultText': {
+                        'weddingDescription': 'With immense joy and love, we invite you to celebrate our special day as we begin our journey of forever together. Your presence will make our celebration complete.',
+                        'birthdayDescription': 'Join us for a day filled with laughter, joy, and wonderful memories as we celebrate another year of life\'s beautiful journey.',
+                        'anniversaryDescription': 'Celebrate with us the beautiful years of love, commitment, and countless memories we\'ve shared together.',
+                        'graduationDescription': 'Join us in celebrating this significant milestone and the beginning of a new chapter in life\'s journey.',
+                        'babyshowerDescription': 'Share in our excitement as we prepare to welcome a precious new life into our family.',
+                        'retirementDescription': 'Celebrate with us as we mark the end of one chapter and the beginning of new adventures in life.',
+                        'loveStoryText': 'Our love story began with a simple hello and grew into something beautiful. Every moment together has been a blessing, and now we\'re ready to take the next step in our journey of love and commitment.',
+                        'eventStoryText': 'A celebration of life\'s beautiful moments, filled with love, joy, and wonderful memories that we\'ll cherish forever.'
+                    }
+                },
+                'hindi': {
+                    'defaultText': {
+                        'weddingDescription': 'अपार खुशी और प्यार के साथ, हम आपको हमारे विशेष दिन का जश्न मनाने के लिए आमंत्रित करते हैं क्योंकि हम हमेशा के लिए एक साथ रहने की अपनी यात्रा शुरू करते हैं। आपकी उपस्थिति हमारे उत्सव को पूरा करेगी।',
+                        'birthdayDescription': 'जीवन की सुंदर यात्रा के एक और वर्ष का जश्न मनाते हुए, हंसी, खुशी और अद्भुत यादों से भरे दिन में हमारे साथ जुड़ें।',
+                        'anniversaryDescription': 'हमारे साथ प्यार, प्रतिबद्धता और अनगिनत यादों के सुंदर वर्षों का जश्न मनाएं जो हमने साझा किए हैं।',
+                        'graduationDescription': 'इस महत्वपूर्ण मील के पत्थर और जीवन की यात्रा में एक नए अध्याय की शुरुआत का जश्न मनाने के लिए हमारे साथ जुड़ें।',
+                        'babyshowerDescription': 'हमारे परिवार में एक कीमती नए जीवन का स्वागत करने की तैयारी करते हुए हमारे उत्साह में साझा करें।',
+                        'retirementDescription': 'हमारे साथ एक अध्याय के अंत और जीवन में नए रोमांच की शुरुआत का जश्न मनाएं।',
+                        'loveStoryText': 'हमारी प्रेम कहानी एक साधारण नमस्ते से शुरू हुई और कुछ सुंदर में बदल गई। एक साथ बिताया हर पल एक आशीर्वाद रहा है, और अब हम प्यार और प्रतिबद्धता की अपनी यात्रा में अगला कदम उठाने के लिए तैयार हैं।',
+                        'eventStoryText': 'जीवन के सुंदर क्षणों का जश्न, प्यार, खुशी और अद्भुत यादों से भरा जिसे हम हमेशा संजोएंगे।'
+                    }
+                },
+                'telugu': {
+                    'defaultText': {
+                        'weddingDescription': 'అత్యంత ఆనందం మరియు ప్రేమతో, మేము ఎప్పటికీ కలిసి ఉండే మా ప్రయాణాన్ని ప్రారంభిస్తున్నందున మా ప్రత్యేక రోజును జరుపుకోవడానికి మిమ్మల్ని ఆహ్వానిస్తున్నాము. మీ హాజరు మా వేడుకను పూర్తి చేస్తుంది.',
+                        'birthdayDescription': 'జీవితం యొక్క అందమైన ప్రయాణం యొక్క మరో సంవత్సరాన్ని జరుపుకుంటున్నందున, నవ్వులు, ఆనందం మరియు అద్భుతమైన జ్ఞాపకాలతో నిండిన రోజులో మాతో చేరండి.',
+                        'anniversaryDescription': 'మేము కలిసి పంచుకున్న ప్రేమ, కట్టుబాటు మరియు అనంతమైన జ్ఞాపకాల యొక్క అందమైన సంవత్సరాలను జరుపుకోవడానికి మాతో జరుపుకోండి.',
+                        'graduationDescription': 'ఈ ముఖ్యమైన మైలురాయి మరియు జీవిత ప్రయాణంలో కొత్త అధ్యాయం యొక్క ప్రారంభాన్ని జరుపుకోవడానికి మాతో చేరండి.',
+                        'babyshowerDescription': 'మా కుటుంబంలోకి ఒక విలువైన కొత్త జీవితాన్ని స్వాగతించడానికి సిద్ధమవుతున్నందున మా ఉత్సాహంలో పంచుకోండి.',
+                        'retirementDescription': 'ఒక అధ్యాయం యొక్క ముగింపు మరియు జీవితంలో కొత్త సాహసాల ప్రారంభాన్ని గుర్తించడానికి మాతో జరుపుకోండి.',
+                        'loveStoryText': 'మా ప్రేమ కథ ఒక సాధారణ హలోతో ప్రారంభమైంది మరియు అందమైనదిగా మారింది. కలిసి గడిపిన ప్రతి క్షణం ఒక ఆశీర్వాదం, మరియు ఇప్పుడు మేము ప్రేమ మరియు కట్టుబాటు యొక్క మా ప్రయాణంలో తదుపరి అడుగు వేయడానికి సిద్ధంగా ఉన్నాము.',
+                        'eventStoryText': 'జీవితం యొక్క అందమైన క్షణాల వేడుక, ప్రేమ, ఆనందం మరియు అద్భుతమైన జ్ఞాపకాలతో నిండి ఉంటుంది, వీటిని మేము ఎప్పటికీ సంరక్షిస్తాము.'
+                    }
+                },
+                'kannada': {
+                    'defaultText': {
+                        'weddingDescription': 'ಅತ್ಯಂತ ಸಂತೋಷ ಮತ್ತು ಪ್ರೀತಿಯೊಂದಿಗೆ, ನಾವು ಶಾಶ್ವತವಾಗಿ ಒಟ್ಟಿಗೆ ಇರುವ ನಮ್ಮ ಪ್ರಯಾಣವನ್ನು ಪ್ರಾರಂಭಿಸುತ್ತಿರುವಾಗ ನಮ್ಮ ವಿಶೇಷ ದಿನವನ್ನು ಆಚರಿಸಲು ನಿಮ್ಮನ್ನು ಆಹ್ವಾನಿಸುತ್ತೇವೆ. ನಿಮ್ಮ ಉಪಸ್ಥಿತಿ ನಮ್ಮ ಆಚರಣೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುತ್ತದೆ.',
+                        'birthdayDescription': 'ಜೀವನದ ಸುಂದರ ಪ್ರಯಾಣದ ಮತ್ತೊಂದು ವರ್ಷವನ್ನು ಆಚರಿಸುತ್ತಿರುವಾಗ, ನಗು, ಸಂತೋಷ ಮತ್ತು ಅದ್ಭುತ ಸ್ಮರಣೆಗಳಿಂದ ತುಂಬಿದ ದಿನದಲ್ಲಿ ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ.',
+                        'anniversaryDescription': 'ನಾವು ಒಟ್ಟಿಗೆ ಹಂಚಿಕೊಂಡ ಪ್ರೀತಿ, ಬದ್ಧತೆ ಮತ್ತು ಅನಂತ ಸ್ಮರಣೆಗಳ ಸುಂದರ ವರ್ಷಗಳನ್ನು ಆಚರಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಆಚರಿಸಿ.',
+                        'graduationDescription': 'ಈ ಮಹತ್ವಪೂರ್ಣ ಮೈಲಿಗಲ್ಲು ಮತ್ತು ಜೀವನದ ಪ್ರಯಾಣದಲ್ಲಿ ಹೊಸ ಅಧ್ಯಾಯದ ಪ್ರಾರಂಭವನ್ನು ಆಚರಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ.',
+                        'babyshowerDescription': 'ನಮ್ಮ ಕುಟುಂಬಕ್ಕೆ ಅಮೂಲ್ಯವಾದ ಹೊಸ ಜೀವನವನ್ನು ಸ್ವಾಗತಿಸಲು ಸಿದ್ಧರಾಗುತ್ತಿರುವಾಗ ನಮ್ಮ ಉತ್ಸಾಹದಲ್ಲಿ ಪಾಲುಗೊಳ್ಳಿ.',
+                        'retirementDescription': 'ಒಂದು ಅಧ್ಯಾಯದ ಅಂತ್ಯ ಮತ್ತು ಜೀವನದಲ್ಲಿ ಹೊಸ ಸಾಹಸಗಳ ಪ್ರಾರಂಭವನ್ನು ಗುರುತಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಆಚರಿಸಿ.',
+                        'loveStoryText': 'ನಮ್ಮ ಪ್ರೀತಿಯ ಕಥೆ ಸರಳ ಹಲೋದಿಂದ ಪ್ರಾರಂಭವಾಯಿತು ಮತ್ತು ಸುಂದರವಾದದ್ದಾಗಿ ಬೆಳೆಯಿತು. ಒಟ್ಟಿಗೆ ಕಳೆದ ಪ್ರತಿ ಕ್ಷಣವೂ ಒಂದು ಆಶೀರ್ವಾದವಾಗಿದೆ, ಮತ್ತು ಈಗ ನಾವು ಪ್ರೀತಿ ಮತ್ತು ಬದ್ಧತೆಯ ನಮ್ಮ ಪ್ರಯಾಣದಲ್ಲಿ ಮುಂದಿನ ಹೆಜ್ಜೆ ಹಾಕಲು ಸಿದ್ಧರಾಗಿದ್ದೇವೆ.',
+                        'eventStoryText': 'ಜೀವನದ ಸುಂದರ ಕ್ಷಣಗಳ ಆಚರಣೆ, ಪ್ರೀತಿ, ಸಂತೋಷ ಮತ್ತು ಅದ್ಭುತ ಸ್ಮರಣೆಗಳಿಂದ ತುಂಬಿದ್ದು, ಅದನ್ನು ನಾವು ಶಾಶ್ವತವಾಗಿ ಸಂರಕ್ಷಿಸುತ್ತೇವೆ.'
+                    }
+                }
+            };
         }
 
         function previewMultipleImages(input, previewId) {
@@ -999,6 +1587,16 @@
             document.querySelectorAll('.event-specific-fields').forEach(section => {
                 section.style.display = 'none';
             });
+
+            // Hide event style section for graduation and retirement
+            const eventStyleSection = document.getElementById('eventStyleSection');
+            if (eventStyleSection) {
+                if (template.includes('graduation') || template.includes('retirement')) {
+                    eventStyleSection.style.display = 'none';
+                } else {
+                    eventStyleSection.style.display = 'block';
+                }
+            }
 
             // Show the appropriate section based on template
             if (template.includes('wedding')) {
@@ -1443,20 +2041,24 @@
                     }
                 }
                 
-                // Set event description if empty
+                // Set event description if empty - use translated text
                 if (eventDescriptionField && !eventDescriptionField.value.trim()) {
+                    const currentLanguage = document.getElementById('language').getAttribute('data-language') || 'english';
+                    const translations = getTranslations();
+                    const currentLang = translations[currentLanguage] || translations['english'];
+                    
                     if (template.includes('wedding')) {
-                        eventDescriptionField.value = 'With immense joy and love, we invite you to celebrate our special day as we begin our journey of forever together. Your presence will make our celebration complete.';
+                        eventDescriptionField.value = currentLang.defaultText.weddingDescription;
                     } else if (template.includes('birthday')) {
-                        eventDescriptionField.value = 'Join us for a day filled with laughter, joy, and wonderful memories as we celebrate another year of life\'s beautiful journey.';
+                        eventDescriptionField.value = currentLang.defaultText.birthdayDescription;
                     } else if (template.includes('anniversary')) {
-                        eventDescriptionField.value = 'Celebrate with us the beautiful years of love, commitment, and countless memories we\'ve shared together.';
+                        eventDescriptionField.value = currentLang.defaultText.anniversaryDescription;
                     } else if (template.includes('graduation')) {
-                        eventDescriptionField.value = 'Join us in celebrating this significant milestone and the beginning of a new chapter in life\'s journey.';
+                        eventDescriptionField.value = currentLang.defaultText.graduationDescription;
                     } else if (template.includes('babyshower')) {
-                        eventDescriptionField.value = 'Share in our excitement as we prepare to welcome a precious new life into our family.';
+                        eventDescriptionField.value = currentLang.defaultText.babyshowerDescription;
                     } else if (template.includes('retirement')) {
-                        eventDescriptionField.value = 'Celebrate with us as we mark the end of one chapter and the beginning of new adventures in life.';
+                        eventDescriptionField.value = currentLang.defaultText.retirementDescription;
                     } else {
                         eventDescriptionField.value = 'We cordially invite you to join us for this special celebration. Your presence will make this day even more memorable.';
                     }

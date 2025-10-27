@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+
+{% block title %}RSVP - {{ invitation.title }}{% endblock %}
+
+{% block content %}
+<!-- Simple RSVP Section -->
+<section class="simple-rsvp-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="rsvp-card text-center">
+                    <div class="rsvp-header mb-4">
+                        <h1 class="display-5 fw-bold mb-3">{{ invitation.title }}</h1>
+                        <p class="lead text-muted">Will you be joining us for this special event?</p>
+                    </div>
+                    
+                    <div class="rsvp-options mb-4">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <button class="btn btn-success btn-lg w-100 rsvp-btn" data-status="attending">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <div class="btn-text">Yes, I'll be there!</div>
+                                    <div class="btn-subtext">Attending</div>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-outline-danger btn-lg w-100 rsvp-btn" data-status="not_attending">
+                                    <i class="fas fa-times-circle me-2"></i>
+                                    <div class="btn-text">Sorry, can't make it</div>
+                                    <div class="btn-subtext">Not Attending</div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rsvp-form" id="rsvpForm" style="display: none;">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Quick Details</h5>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" id="guest-name" placeholder="Your name" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="email" class="form-control" id="guest-email" placeholder="Email (optional)">
+                                    </div>
+                                    <div class="col-12">
+                                        <input type="number" class="form-control" id="plus-ones" placeholder="Number of guests" min="0" value="0">
+                                    </div>
+                                    <div class="col-12">
+                                        <textarea class="form-control" id="rsvp-message" rows="2" placeholder="Message (optional)"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-paper-plane me-2"></i>Submit RSVP
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Event Details Section -->
+<section class="event-details-section py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="event-details-card">
+                    <h3 class="mb-4">Event Details</h3>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar-alt text-primary me-3"></i>
+                                <div>
+                                    <strong>Date</strong>
+                                    <p class="mb-0">{{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else 'TBD' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                                <div>
+                                    <strong>Venue</strong>
+                                    <p class="mb-0">{{ invitation.venue_address or 'TBD' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% if invitation.contact_phone %}
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <i class="fas fa-phone text-primary me-3"></i>
+                                <div>
+                                    <strong>Contact</strong>
+                                    <p class="mb-0">{{ invitation.contact_phone }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if invitation.contact_email %}
+                        <div class="col-md-6">
+                            <div class="detail-item">
+                                <i class="fas fa-envelope text-primary me-3"></i>
+                                <div>
+                                    <strong>Email</strong>
+                                    <p class="mb-0">{{ invitation.contact_email }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.simple-rsvp-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.rsvp-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.rsvp-header h1 {
+    color: #333;
+    font-weight: 700;
+}
+
+.rsvp-header p {
+    color: #666;
+}
+
+.rsvp-btn {
+    height: 120px;
+    border-radius: 15px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.rsvp-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.rsvp-btn:hover::before {
+    left: 100%;
+}
+
+.rsvp-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.rsvp-btn.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-color: #28a745;
+}
+
+.rsvp-btn.btn-outline-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+    border-color: #dc3545;
+    color: white;
+}
+
+.btn-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.btn-subtext {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.rsvp-form {
+    margin-top: 2rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.event-details-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.detail-item i {
+    font-size: 1.5rem;
+}
+
+.detail-item strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.detail-item p {
+    color: #666;
+    margin: 0;
+}
+
+.success-message {
+    text-align: center;
+    padding: 2rem;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .rsvp-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .rsvp-btn {
+        height: 100px;
+    }
+    
+    .btn-text {
+        font-size: 1rem;
+    }
+    
+    .btn-subtext {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .rsvp-card {
+        padding: 1.5rem;
+        margin: 0.5rem;
+    }
+    
+    .rsvp-header h1 {
+        font-size: 1.75rem !important;
+    }
+    
+    .rsvp-header .lead {
+        font-size: 1rem !important;
+    }
+    
+    .rsvp-btn {
+        height: 80px;
+        padding: 0.75rem !important;
+    }
+    
+    .btn-text {
+        font-size: 0.9rem;
+    }
+    
+    .btn-subtext {
+        font-size: 0.75rem;
+    }
+    
+    .rsvp-btn i {
+        font-size: 1.25rem !important;
+    }
+    
+    .form-control {
+        padding: 0.75rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .rsvp-card {
+        padding: 1rem;
+        margin: 0.25rem;
+    }
+    
+    .rsvp-header h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .rsvp-header .lead {
+        font-size: 0.95rem !important;
+    }
+    
+    .rsvp-btn {
+        height: 70px;
+        padding: 0.5rem !important;
+    }
+    
+    .btn-text {
+        font-size: 0.85rem;
+    }
+    
+    .btn-subtext {
+        font-size: 0.7rem;
+    }
+    
+    .rsvp-btn i {
+        font-size: 1rem !important;
+    }
+    
+    .form-control {
+        padding: 0.6rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.6rem 1.25rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const rsvpButtons = document.querySelectorAll('.rsvp-btn');
+    const rsvpForm = document.getElementById('rsvpForm');
+    const form = rsvpForm.querySelector('form') || rsvpForm;
+    let selectedStatus = null;
+    
+    // Handle RSVP button clicks
+    rsvpButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            selectedStatus = this.dataset.status;
+            
+            // Update button states
+            rsvpButtons.forEach(btn => {
+                btn.classList.remove('btn-success', 'btn-outline-danger');
+                btn.classList.add('btn-outline-secondary');
+            });
+            
+            // Highlight selected button
+            if (selectedStatus === 'attending') {
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-success');
+            } else {
+                this.classList.remove('btn-outline-secondary');
+                this.classList.add('btn-outline-danger');
+            }
+            
+            // Show form
+            rsvpForm.style.display = 'block';
+            rsvpForm.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+    
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!selectedStatus) {
+            alert('Please select your attendance status first.');
+            return;
+        }
+        
+        const formData = {
+            name: document.getElementById('guest-name').value,
+            email: document.getElementById('guest-email').value,
+            status: selectedStatus,
+            plus_ones_attending: parseInt(document.getElementById('plus-ones').value) || 0,
+            message: document.getElementById('rsvp-message').value
+        };
+        
+        if (!formData.name.trim()) {
+            alert('Please enter your name.');
+            return;
+        }
+        
+        // Disable submit button and show loading
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        submitBtn.disabled = true;
+        
+        // Submit RSVP
+        fetch(`/rsvp/{{ invitation.share_url }}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showSuccessMessage();
+            } else {
+                alert('Error submitting RSVP: ' + data.message);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error submitting RSVP. Please try again.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+});
+
+function showSuccessMessage() {
+    const rsvpCard = document.querySelector('.rsvp-card');
+    rsvpCard.innerHTML = `
+        <div class="success-message">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="text-success mb-3">RSVP Submitted Successfully!</h2>
+            <p class="lead text-muted mb-4">Thank you for your response. We look forward to celebrating with you!</p>
+            <a href="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" class="btn btn-primary">
+                <i class="fas fa-eye me-2"></i>View Invitation
+            </a>
+        </div>
+    `;
+}
+</script>
+{% endblock %}

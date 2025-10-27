@@ -11,6 +11,32 @@ import string
 import os
 import requests
 from urllib.parse import urlencode
+import threading
+import time
+
+# Simple in-memory cache for OAuth states as fallback
+oauth_state_cache = {}
+cache_lock = threading.Lock()
+
+def store_oauth_state(state, timestamp):
+    """Store OAuth state in memory cache as fallback"""
+    with cache_lock:
+        oauth_state_cache[state] = timestamp
+        # Clean up old entries (older than 10 minutes)
+        current_time = time.time()
+        expired_keys = [k for k, v in oauth_state_cache.items() if current_time - v > 600]
+        for key in expired_keys:
+            del oauth_state_cache[key]
+
+def get_oauth_state(state):
+    """Get OAuth state from memory cache"""
+    with cache_lock:
+        return oauth_state_cache.get(state)
+
+def remove_oauth_state(state):
+    """Remove OAuth state from memory cache"""
+    with cache_lock:
+        oauth_state_cache.pop(state, None)
 
 # Helper function to check authentication (moved outside register_routes)
 def is_authenticated():
@@ -41,15 +67,63 @@ def register_routes(app):
         except (json.JSONDecodeError, AttributeError, TypeError):
             return []
 
+    # Error handlers
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return render_template('errors/404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_error(error):
+        return render_template('errors/500.html'), 500
+
+    @app.errorhandler(403)
+    def forbidden_error(error):
+        return render_template('errors/error.html', 
+                             error_code=403,
+                             error_title='Access Forbidden',
+                             error_message="You don't have permission to access this resource. Please check your credentials and try again."), 403
+
+    @app.errorhandler(400)
+    def bad_request_error(error):
+        return render_template('errors/error.html',
+                             error_code=400,
+                             error_title='Bad Request',
+                             error_message="The request was invalid. Please check your input and try again."), 400
+
+    # Export routes
+    @app.route('/api/invitations/<int:invitation_id>/export/<format>')
+    def export_guest_list(invitation_id, format):
+        """Export guest list in various formats"""
+        if not is_authenticated():
+            return jsonify({'error': 'Authentication required'}), 401
+        
+        invitation = Invitation.query.get_or_404(invitation_id)
+        
+        # Check if user owns this invitation
+        if invitation.user_id != session.get('user_id'):
+            return jsonify({'error': 'Access denied'}), 403
+        
+        # Get all guests and their RSVP data
+        guests = Guest.query.filter_by(invitation_id=invitation_id).all()
+        
+        if format == 'csv':
+            return export_csv(guests, invitation)
+        elif format == 'excel':
+            return export_excel(guests, invitation)
+        elif format == 'pdf':
+            return export_pdf(guests, invitation)
+        else:
+            return jsonify({'error': 'Invalid format'}), 400
+
     @app.route('/')
     def index():
         if is_authenticated():
             return redirect(url_for('dashboard'))
         return render_template('index.html')
 
-    @app.route('/images/<filename>')
+    @app.route('/images/<path:filename>')
     def serve_image(filename):
-        """Serve images from the root images folder"""
+        """Serve images from the root images folder and subdirectories"""
         return send_from_directory('images', filename)
 
     @app.route('/auth')
@@ -138,7 +212,7 @@ def register_routes(app):
     def verify_otp():
         if 'temp_email' not in session:
             return redirect(url_for('auth'))
-        return render_template('auth/verify_otp.html')
+        return render_template('auth/verify_otp.html', email=session['temp_email'])
 
     @app.route('/verify-otp', methods=['POST'])
     def verify_otp_post():
@@ -200,6 +274,24 @@ def register_routes(app):
         }
         return f"<pre>{debug_info}</pre>"
 
+    @app.route('/debug/oauth')
+    def debug_oauth():
+        """Debug OAuth configuration"""
+        if not app.config.get('GOOGLE_CLIENT_ID'):
+            return jsonify({
+                'error': 'GOOGLE_CLIENT_ID not configured',
+                'redirect_uri': app.config.get('GOOGLE_REDIRECT_URI'),
+                'session_secret_set': bool(app.secret_key)
+            })
+        
+        return jsonify({
+            'client_id': app.config['GOOGLE_CLIENT_ID'][:10] + '...',
+            'redirect_uri': app.config['GOOGLE_REDIRECT_URI'],
+            'session_secret_set': bool(app.secret_key),
+            'session_id': session.get('_id', 'No session ID'),
+            'session_keys': list(session.keys())
+        })
+
     @app.route('/auth/google')
     def google_auth():
         """Initiate Google OAuth flow"""
@@ -208,16 +300,27 @@ def register_routes(app):
         
         # Check if Google OAuth is configured
         if not app.config.get('GOOGLE_CLIENT_ID') or not app.config.get('GOOGLE_CLIENT_SECRET'):
-            flash('Google OAuth is not configured. Please contact support.', 'error')
+            app.logger.error("Google OAuth not configured - missing CLIENT_ID or CLIENT_SECRET")
+            flash('Google OAuth is not configured. Please contact support or check your environment variables.', 'error')
             return redirect(url_for('auth'))
         
         # Generate state parameter for security
         state = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+        
+        # Store state in session with additional security
         session['oauth_state'] = state
+        session['oauth_timestamp'] = datetime.utcnow().timestamp()
         session.permanent = True  # Make session persistent
+        
+        # Also store in memory cache as fallback
+        store_oauth_state(state, time.time())
+        
+        # Force session to be saved
+        session.modified = True
         
         # Debug logging
         app.logger.info(f"Generated OAuth state: {state}")
+        app.logger.info(f"Session ID: {session.get('_id', 'No session ID')}")
         app.logger.info(f"Redirect URI: {app.config['GOOGLE_REDIRECT_URI']}")
         app.logger.info(f"Client ID: {app.config['GOOGLE_CLIENT_ID']}")
         
@@ -251,14 +354,50 @@ def register_routes(app):
             # Verify state parameter
             received_state = request.args.get('state')
             stored_state = session.get('oauth_state')
+            stored_timestamp = session.get('oauth_timestamp')
             
-            if not received_state or not stored_state or received_state != stored_state:
-                app.logger.error(f"State mismatch: received={received_state}, stored={stored_state}")
-                flash('Invalid state parameter. Please try again.', 'error')
+            # Debug logging
+            app.logger.info(f"OAuth callback - Received state: {received_state}")
+            app.logger.info(f"OAuth callback - Stored state: {stored_state}")
+            app.logger.info(f"OAuth callback - Session ID: {session.get('_id', 'No session ID')}")
+            app.logger.info(f"OAuth callback - Session keys: {list(session.keys())}")
+            
+            # Check if state exists and matches
+            if not received_state:
+                app.logger.error("No state parameter received from Google")
+                flash('Missing state parameter. Please try again.', 'error')
+                return redirect(url_for('auth'))
+            
+            # Try session first, then fallback to cache
+            state_valid = False
+            if stored_state and received_state == stored_state:
+                # Check timestamp (state should be valid for 10 minutes)
+                if stored_timestamp:
+                    current_time = datetime.utcnow().timestamp()
+                    if current_time - stored_timestamp <= 600:  # 10 minutes
+                        state_valid = True
+                        app.logger.info("State validated from session")
+                else:
+                    state_valid = True
+            else:
+                # Try fallback cache
+                cache_timestamp = get_oauth_state(received_state)
+                if cache_timestamp:
+                    current_time = time.time()
+                    if current_time - cache_timestamp <= 600:  # 10 minutes
+                        state_valid = True
+                        app.logger.info("State validated from cache fallback")
+                        # Clear from cache
+                        remove_oauth_state(received_state)
+            
+            if not state_valid:
+                app.logger.error(f"State validation failed: received={received_state}, stored={stored_state}")
+                flash('Invalid or expired state parameter. Please try again.', 'error')
                 return redirect(url_for('auth'))
             
             # Clear the state parameter after successful verification
             session.pop('oauth_state', None)
+            session.pop('oauth_timestamp', None)
             
             code = request.args.get('code')
             if not code:
@@ -349,6 +488,13 @@ def register_routes(app):
         user_name = session.get('user_name', 'User')
         user_email = session.get('user_email', '')
         
+        # Create user object for template
+        user = {
+            'id': user_id,
+            'name': user_name,
+            'email': user_email
+        }
+        
         try:
             # Try to query invitations with error handling for missing columns
             invitations = Invitation.query.filter_by(user_id=user_id).order_by(Invitation.created_at.desc()).all()
@@ -358,7 +504,15 @@ def register_routes(app):
             invitations = []
             flash('Database schema needs updating. Please contact administrator.', 'warning')
         
-        return render_template('dashboard/dashboard.html', invitations=invitations)
+        # Calculate stats
+        total_guests = sum(len(invitation.guests) for invitation in invitations)
+        total_rsvps = sum(len([guest for guest in invitation.guests if guest.rsvp_status]) for invitation in invitations)
+        
+        return render_template('dashboard/dashboard.html', 
+                             invitations=invitations, 
+                             user=user,
+                             total_guests=total_guests,
+                             total_rsvps=total_rsvps)
 
     @app.route('/logout')
     def logout():
@@ -371,6 +525,31 @@ def register_routes(app):
         # Templates page is public - no login required
         event_types = EventType.query.all()
         return render_template('templates.html', event_types=event_types)
+
+    @app.route('/template-selector-demo')
+    def template_selector_demo():
+        # Public demo of template selector with images
+        # Sample event data for demo
+        event_data = {
+            'eventTitle': 'Wedding Celebration',
+            'eventDate': 'December 25, 2024',
+            'eventTime': '6:00 PM',
+            'venue': 'Grand Palace Hotel',
+            'hostName': 'John & Jane Smith',
+            'eventType': 'wedding'
+        }
+        
+        # Create sample templates for demo
+        templates = [
+            {'id': 1, 'name': 'Wedding Elegant', 'type': 'wedding'},
+            {'id': 2, 'name': 'Birthday Fun', 'type': 'birthday'},
+            {'id': 3, 'name': 'Anniversary Golden', 'type': 'anniversary'},
+            {'id': 4, 'name': 'Baby Shower Sweet', 'type': 'babyshower'}
+        ]
+        
+        return render_template('invitation/template_selector.html', 
+                             templates=templates, 
+                             event_data=event_data)
 
     @app.route('/template-selector')
     def template_selector():
@@ -565,6 +744,12 @@ def register_routes(app):
                 honoree_image=uploaded_files.get('honoree_image'),
                 gallery_images=json.dumps(gallery_images) if gallery_images else None,
 
+                # Font and language customization
+                customization_data=json.dumps({
+                    'font_style': data.get('fontStyle', 'default'),
+                    'language': data.get('language', 'english')
+                }),
+
                 # Generate unique share URL
                 share_url=generate_unique_share_url(),
                 is_active=True,
@@ -650,6 +835,18 @@ def register_routes(app):
             
             if not invitation_id or not share_method:
                 return jsonify({'success': False, 'message': 'Missing required data'}), 400
+            
+            # Check for duplicate shares from same IP within last 5 minutes
+            from datetime import datetime, timedelta
+            recent_share = InvitationShare.query.filter(
+                InvitationShare.invitation_id == invitation_id,
+                InvitationShare.share_method == share_method,
+                InvitationShare.ip_address == request.remote_addr,
+                InvitationShare.shared_at >= datetime.utcnow() - timedelta(minutes=5)
+            ).first()
+            
+            if recent_share:
+                return jsonify({'success': True, 'message': 'Share already tracked recently'})
             
             # Create share record
             share_record = InvitationShare(
@@ -1285,11 +1482,35 @@ def register_routes(app):
             if not name or not message:
                 return jsonify({'success': False, 'message': 'Name and message are required'}), 400
             
+            # Get client IP address
+            client_ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR', ''))
+            if ',' in client_ip:
+                client_ip = client_ip.split(',')[0].strip()
+            
+            # Check if this IP has already wished for this invitation
+            existing_wish = Wish.query.filter_by(
+                invitation_id=invitation.id,
+                ip_address=client_ip
+            ).first()
+            
+            if existing_wish:
+                return jsonify({
+                    'success': False, 
+                    'message': 'You have already sent a wish for this invitation. Each person can only wish once.',
+                    'already_wished': True,
+                    'existing_wish': {
+                        'name': existing_wish.name,
+                        'message': existing_wish.message,
+                        'created_at': existing_wish.created_at.strftime('%B %d, %Y at %I:%M %p')
+                    }
+                }), 400
+            
             # Create new wish
             wish = Wish(
                 invitation_id=invitation.id,
                 name=name,
-                message=message
+                message=message,
+                ip_address=client_ip
             )
             
             db.session.add(wish)
@@ -1297,7 +1518,7 @@ def register_routes(app):
             
             return jsonify({
                 'success': True, 
-                'message': 'Wish added successfully',
+                'message': 'Wish sent successfully!',
                 'wish': {
                     'id': wish.id,
                     'name': wish.name,
@@ -1311,6 +1532,44 @@ def register_routes(app):
             db.session.rollback()
             return jsonify({'success': False, 'message': 'Failed to add wish'}), 500
 
+    @app.route('/check-wish-status/<share_url>', methods=['GET'])
+    def check_wish_status(share_url):
+        """Check if current IP has already wished for this invitation"""
+        try:
+            invitation = Invitation.query.filter_by(share_url=share_url).first()
+            if not invitation:
+                return jsonify({'success': False, 'message': 'Invitation not found'}), 404
+            
+            # Get client IP address
+            client_ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR', ''))
+            if ',' in client_ip:
+                client_ip = client_ip.split(',')[0].strip()
+            
+            # Check if this IP has already wished
+            existing_wish = Wish.query.filter_by(
+                invitation_id=invitation.id,
+                ip_address=client_ip
+            ).first()
+            
+            if existing_wish:
+                return jsonify({
+                    'success': True,
+                    'already_wished': True,
+                    'existing_wish': {
+                        'name': existing_wish.name,
+                        'message': existing_wish.message,
+                        'created_at': existing_wish.created_at.strftime('%B %d, %Y at %I:%M %p')
+                    }
+                })
+            else:
+                return jsonify({
+                    'success': True,
+                    'already_wished': False
+                })
+                
+        except Exception as e:
+            app.logger.error(f"Error checking wish status: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to check wish status'}), 500
 
     @app.route('/save-rsvp', methods=['POST'])
     def save_rsvp():
@@ -1574,7 +1833,7 @@ def register_routes(app):
                 return jsonify({'success': False, 'message': 'Failed to submit RSVP'}), 500
         
         # GET request - show RSVP form
-        return render_template('invitation/rsvp_form.html', invitation=invitation)
+        return render_template('invitation/rsvp_simple.html', invitation=invitation)
 
     # Analytics Dashboard Route
     @app.route('/invitations/<int:invitation_id>/analytics')
@@ -1624,9 +1883,13 @@ def register_routes(app):
             
             share_email = next((s.count for s in share_methods if s.share_method == 'email'), 0)
             share_whatsapp = next((s.count for s in share_methods if s.share_method == 'whatsapp'), 0)
+            share_facebook = next((s.count for s in share_methods if s.share_method == 'facebook'), 0)
+            share_instagram = next((s.count for s in share_methods if s.share_method == 'instagram'), 0)
+            share_twitter = next((s.count for s in share_methods if s.share_method == 'twitter'), 0)
+            share_telegram = next((s.count for s in share_methods if s.share_method == 'telegram'), 0)
             share_direct = next((s.count for s in share_methods if s.share_method == 'link'), 0)
             share_qr = next((s.count for s in share_methods if s.share_method == 'qr'), 0)
-            share_other = total_shares - share_email - share_whatsapp - share_direct - share_qr
+            share_other = total_shares - share_email - share_whatsapp - share_facebook - share_instagram - share_twitter - share_telegram - share_direct - share_qr
             
             # Get recent views (last 10)
             recent_views = InvitationView.query.filter_by(invitation_id=invitation_id)\
@@ -1686,6 +1949,10 @@ def register_routes(app):
                 'device_tablet': device_tablet,
                 'share_email': share_email,
                 'share_whatsapp': share_whatsapp,
+                'share_facebook': share_facebook,
+                'share_instagram': share_instagram,
+                'share_twitter': share_twitter,
+                'share_telegram': share_telegram,
                 'share_direct': share_direct,
                 'share_qr': share_qr,
                 'share_other': share_other
@@ -1712,3 +1979,156 @@ def register_routes(app):
 
 
 # End of register_routes function
+
+# Export functions
+def export_csv(guests, invitation):
+    """Export guest list as CSV"""
+    import csv
+    from io import StringIO
+    
+    output = StringIO()
+    writer = csv.writer(output)
+    
+    # Write header
+    writer.writerow(['Name', 'Email', 'Phone', 'Plus Ones', 'Status', 'Response Date', 'Dietary Requirements', 'Notes'])
+    
+    # Write guest data
+    for guest in guests:
+        status = 'Pending'
+        response_date = ''
+        if guest.rsvp:
+            status = guest.rsvp.status.replace('_', ' ').title()
+            if guest.rsvp.response_date:
+                response_date = guest.rsvp.response_date.strftime('%Y-%m-%d %H:%M')
+        
+        writer.writerow([
+            guest.name,
+            guest.email or '',
+            guest.phone or '',
+            guest.plus_ones,
+            status,
+            response_date,
+            guest.dietary_requirements or '',
+            guest.notes or ''
+        ])
+    
+    output.seek(0)
+    
+    from flask import Response
+    return Response(
+        output.getvalue(),
+        mimetype='text/csv',
+        headers={'Content-Disposition': f'attachment; filename={invitation.title}_guest_list.csv'}
+    )
+
+def export_excel(guests, invitation):
+    """Export guest list as Excel"""
+    try:
+        import pandas as pd
+        from io import BytesIO
+        
+        # Prepare data
+        data = []
+        for guest in guests:
+            status = 'Pending'
+            response_date = ''
+            if guest.rsvp:
+                status = guest.rsvp.status.replace('_', ' ').title()
+                if guest.rsvp.response_date:
+                    response_date = guest.rsvp.response_date.strftime('%Y-%m-%d %H:%M')
+            
+            data.append({
+                'Name': guest.name,
+                'Email': guest.email or '',
+                'Phone': guest.phone or '',
+                'Plus Ones': guest.plus_ones,
+                'Status': status,
+                'Response Date': response_date,
+                'Dietary Requirements': guest.dietary_requirements or '',
+                'Notes': guest.notes or ''
+            })
+        
+        # Create DataFrame and export
+        df = pd.DataFrame(data)
+        output = BytesIO()
+        
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, sheet_name='Guest List', index=False)
+        
+        output.seek(0)
+        
+        from flask import Response
+        return Response(
+            output.getvalue(),
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            headers={'Content-Disposition': f'attachment; filename={invitation.title}_guest_list.xlsx'}
+        )
+    except ImportError:
+        # Fallback to CSV if pandas is not available
+        return export_csv(guests, invitation)
+
+def export_pdf(guests, invitation):
+    """Export guest list as PDF"""
+    try:
+        from reportlab.lib.pagesizes import letter
+        from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+        from reportlab.lib.styles import getSampleStyleSheet
+        from reportlab.lib import colors
+        from io import BytesIO
+        
+        output = BytesIO()
+        doc = SimpleDocTemplate(output, pagesize=letter)
+        styles = getSampleStyleSheet()
+        story = []
+        
+        # Title
+        title = Paragraph(f"Guest List - {invitation.title}", styles['Title'])
+        story.append(title)
+        story.append(Spacer(1, 20))
+        
+        # Prepare table data
+        data = [['Name', 'Email', 'Phone', 'Plus Ones', 'Status', 'Response Date']]
+        
+        for guest in guests:
+            status = 'Pending'
+            response_date = ''
+            if guest.rsvp:
+                status = guest.rsvp.status.replace('_', ' ').title()
+                if guest.rsvp.response_date:
+                    response_date = guest.rsvp.response_date.strftime('%Y-%m-%d')
+            
+            data.append([
+                guest.name,
+                guest.email or '',
+                guest.phone or '',
+                str(guest.plus_ones),
+                status,
+                response_date
+            ])
+        
+        # Create table
+        table = Table(data)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 14),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        
+        story.append(table)
+        doc.build(story)
+        output.seek(0)
+        
+        from flask import Response
+        return Response(
+            output.getvalue(),
+            mimetype='application/pdf',
+            headers={'Content-Disposition': f'attachment; filename={invitation.title}_guest_list.pdf'}
+        )
+    except ImportError:
+        # Fallback to CSV if reportlab is not available
+        return export_csv(guests, invitation)

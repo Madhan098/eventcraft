@@ -6,11 +6,13 @@
 <style>
 /* Professional Home Page Styles */
 .hero-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
+    background: var(--gradient-hero);
+    color: white;
     min-height: 100vh;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
 }
 
 .hero-section::before {
@@ -20,1456 +22,604 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(30, 58, 138, 0.2) 0%, transparent 50%);
     pointer-events: none;
 }
 
-.hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: white;
-    line-height: 1.2;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 1.5rem;
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
 }
 
-.hero-title .text-gradient-primary {
-    background: linear-gradient(135deg, #ffffff 0%, #c7af6b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: var(--spacing-lg);
+    letter-spacing: -0.02em;
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
-    color: rgba(255, 255, 255, 0.95);
+    font-weight: 400;
     line-height: 1.6;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
+    opacity: 0.9;
+    max-width: 600px;
 }
-
 
 .hero-actions {
-    margin-top: 2rem;
-}
-
-.hero-actions .btn {
-    margin: 0.5rem;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 1.25rem;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.hero-actions .btn-primary-custom {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    color: #667eea;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.hero-actions .btn-primary-custom:hover {
-    background: white;
-    color: #667eea;
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
-
-.hero-actions .btn-outline-light {
-    background: transparent;
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-}
-
-.hero-actions .btn-outline-light:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-3px);
-}
-
-.hero-trust {
-    margin-top: 3rem;
-}
-
-.hero-trust p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.trust-badge {
     display: flex;
-    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-xl);
+}
+
+.hero-stats {
+    display: flex;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
     font-size: 0.875rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0.5rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.trust-badge i {
-    margin-right: 0.5rem;
+/* Professional Features Section */
+.features-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--bg-secondary);
 }
 
-.cta-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
-    padding: 4rem 0;
+.feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
     position: relative;
     overflow: hidden;
 }
 
-.cta-section::before {
+.feature-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
-    pointer-events: none;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
 }
 
-.cta-title {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    color: white;
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.cta-subtitle {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-
-.cta-section .btn-primary-custom {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    color: #667eea;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 1.25rem;
-}
-
-.cta-section .btn-primary-custom:hover {
-    background: white;
-    color: #667eea;
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
-
-/* Features Section Styles */
-.features-section {
-    background: #f8f9fa !important;
-    padding: 5rem 0;
-}
-
-.section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.section-subtitle {
-    font-size: 1.1rem;
-    color: #6b7280;
-    max-width: 600px;
-    margin: 0 auto 3rem;
-    text-align: center;
-    line-height: 1.6;
-}
-
-.feature-card {
-    background: white;
-    padding: 2.5rem 2rem;
-    border-radius: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    border: 1px solid #e5e7eb;
-    height: 100%;
-    text-align: center;
+.feature-card:hover::before {
+    transform: scaleX(1);
 }
 
 .feature-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    border-color: #667eea;
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
 }
 
 .feature-icon {
-    color: #667eea;
-    margin-bottom: 1.5rem;
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-lg);
+    font-size: 2rem;
+    color: white;
 }
 
 .feature-title {
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 1rem;
     font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
 }
 
 .feature-description {
-    color: #6b7280;
+    color: var(--text-secondary);
     line-height: 1.6;
-    margin-bottom: 0;
 }
 
-/* Template Selection Styles */
-.template-selection {
-    background: white !important;
-    padding: 5rem 0;
+/* Professional Templates Section */
+.templates-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--bg-primary);
+}
+
+.templates-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.templates-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
 }
 
 .template-card {
-    background: white;
-    border-radius: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
     overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     height: 100%;
-    border: 1px solid #e5e7eb;
 }
 
 .template-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    border-color: #667eea;
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-color);
 }
 
-.template-preview {
-    height: 300px;
-    position: relative;
-    overflow: hidden;
-    background: #f3f4f6;
+.template-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.wedding-preview {
-    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
+.template-card:hover .template-image {
+    transform: scale(1.05);
 }
 
-.birthday-preview {
-    background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+.template-content {
+    padding: var(--spacing-lg);
 }
 
-.anniversary-preview {
-    background: linear-gradient(135deg, #9c27b0 0%, #673ab7 100%);
-}
-
-.babyshower-preview {
-    background: linear-gradient(135deg, #2196f3 0%, #00bcd4 100%);
-}
-
-.template-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-    padding: 2rem;
-}
-
-.template-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    opacity: 0.9;
-}
-
-.template-content h4 {
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
-    color: white;
-}
-
-.template-content p {
-    margin-bottom: 1rem;
-    opacity: 0.9;
-    color: white;
-}
-
-.template-tags {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.tag {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    backdrop-filter: blur(10px);
-}
-
-.template-actions {
-    padding: 1rem;
-}
-
-/* Process Section Styles */
-.process-section {
-    background: #f8f9fa !important;
-    padding: 5rem 0;
-}
-
-.process-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 1.5rem;
-    text-align: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    height: 100%;
-    border: 1px solid #e5e7eb;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.process-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    border-color: #667eea;
-}
-
-.process-icon {
-    color: #667eea;
-}
-
-.process-title {
-    font-weight: 700;
-    color: #1f2937;
-    margin-bottom: 1rem;
-}
-
-.process-description {
-    color: #6b7280;
-    line-height: 1.6;
-    flex-grow: 1;
-}
-
-/* Welcome Back Section Styles */
-.welcome-back-section {
-    background: #f8f9fa !important;
-    padding: 5rem 0;
-}
-
-/* Advanced Features Section Styles */
-.advanced-features-section {
-    background: #f8f9fa !important;
-    padding: 5rem 0;
-}
-
-.feature-badge {
-    margin-top: 1rem;
-}
-
-.feature-badge .badge {
-    font-size: 0.8rem;
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
+.template-title {
+    font-size: 1.125rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
 }
 
-.feature-badge .badge.bg-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+.template-description {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Professional CTA Section */
+.cta-section {
+    background: var(--gradient-primary);
     color: white;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-3xl) 0;
+    text-align: center;
 }
 
-/* Enhanced 3D Animation Container Styles */
-.lottie-hero-container {
-    position: relative;
-    height: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 1200px;
-    perspective-origin: center center;
-}
-
-.lottie-image-container {
-    position: relative;
-    transform-style: preserve-3d;
-    animation: image-float-3d 8s ease-in-out infinite;
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.lottie-image-container:hover {
-    animation-play-state: paused;
-    transform: rotateY(15deg) rotateX(5deg) scale(1.1);
-}
-
-.hero-lottie-image {
-    width: 450px;
-    height: auto;
-    border-radius: 25px;
-    box-shadow: 
-        0 25px 50px rgba(0,0,0,0.2),
-        0 0 0 1px rgba(255,255,255,0.1),
-        inset 0 1px 0 rgba(255,255,255,0.2);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: 
-        drop-shadow(0 15px 30px rgba(0,0,0,0.3))
-        brightness(1.1)
-        contrast(1.05);
-    transform: translateZ(20px);
-}
-
-.hero-lottie-image:hover {
-    transform: translateZ(40px) rotateY(10deg) rotateX(5deg) scale(1.05);
-    box-shadow: 
-        0 35px 70px rgba(0,0,0,0.3),
-        0 0 0 2px rgba(255,255,255,0.2),
-        inset 0 2px 0 rgba(255,255,255,0.3);
-    filter: 
-        drop-shadow(0 20px 40px rgba(0,0,0,0.4))
-        brightness(1.15)
-        contrast(1.1);
-}
-
-.lottie-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    border-radius: 20px;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.lottie-image-container:hover .lottie-overlay {
-    opacity: 1;
-}
-
-/* Floating Elements Animation */
-.floating-elements {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.floating-element {
-    position: absolute;
+.cta-title {
     font-size: 2.5rem;
-    animation: float-around-3d 6s ease-in-out infinite;
-    opacity: 0.8;
-    filter: 
-        drop-shadow(0 6px 12px rgba(0,0,0,0.3))
-        brightness(1.2);
-    transform-style: preserve-3d;
-    transition: all 0.3s ease;
+    font-weight: 700;
+    margin-bottom: var(--spacing-lg);
 }
 
-.floating-element:hover {
-    transform: scale(1.3) rotateY(180deg) translateZ(20px);
-    opacity: 1;
-    filter: 
-        drop-shadow(0 8px 16px rgba(0,0,0,0.4))
-        brightness(1.4);
-}
-
-.element-1 {
-    top: 15%;
-    left: 15%;
-    animation-delay: 0s;
-}
-
-.element-2 {
-    top: 25%;
-    right: 15%;
-    animation-delay: 1s;
-}
-
-.element-3 {
-    top: 65%;
-    left: 10%;
-    animation-delay: 2s;
-}
-
-.element-4 {
-    bottom: 25%;
-    right: 20%;
-    animation-delay: 3s;
-}
-
-.element-5 {
-    bottom: 15%;
-    left: 25%;
-    animation-delay: 4s;
-}
-
-/* Enhanced 3D Animations */
-@keyframes image-float-3d {
-    0% { 
-        transform: translateY(0px) rotateY(0deg) rotateX(0deg) scale(1) translateZ(0px); 
-    }
-    25% { 
-        transform: translateY(-15px) rotateY(5deg) rotateX(2deg) scale(1.02) translateZ(10px); 
-    }
-    50% { 
-        transform: translateY(-25px) rotateY(0deg) rotateX(0deg) scale(1.05) translateZ(20px); 
-    }
-    75% { 
-        transform: translateY(-15px) rotateY(-5deg) rotateX(-2deg) scale(1.02) translateZ(10px); 
-    }
-    100% { 
-        transform: translateY(0px) rotateY(0deg) rotateX(0deg) scale(1) translateZ(0px); 
-    }
-}
-
-@keyframes float-around-3d {
-    0%, 100% { 
-        transform: translateY(0px) rotate(0deg) scale(1) translateZ(0px);
-        opacity: 0.6;
-    }
-    25% { 
-        transform: translateY(-20px) rotate(90deg) scale(1.2) translateZ(15px);
-        opacity: 0.9;
-    }
-    50% { 
-        transform: translateY(-30px) rotate(180deg) scale(1.1) translateZ(25px);
-        opacity: 1;
-    }
-    75% { 
-        transform: translateY(-15px) rotate(270deg) scale(1.3) translateZ(10px);
-        opacity: 0.8;
-    }
+.cta-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: var(--spacing-xl);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Responsive Design */
-@media (max-width: 991.98px) {
+@media (max-width: 768px) {
     .hero-title {
         font-size: 2.5rem;
     }
     
-    .section-title {
-        font-size: 2rem;
-    }
-    
-    .cta-title {
-        font-size: 2rem;
-    }
-    
-    .hero-actions {
-        justify-content: center;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .section-title {
-        font-size: 1.75rem;
-    }
-    
-    .cta-title {
-        font-size: 1.75rem;
+    .hero-subtitle {
+        font-size: 1.125rem;
     }
     
     .hero-actions {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
     }
     
-    .hero-actions .btn {
-        width: 100%;
-        max-width: 300px;
-        margin: 0.5rem 0;
-    }
-    
-    .lottie-hero-container {
-        height: 300px;
-    }
-    
-    .hero-lottie-image {
-        width: 250px;
-    }
-    
-    .floating-element {
-        font-size: 1.5rem;
-    }
-    
-    .template-preview {
-        height: 200px;
-    }
-    
-    .feature-card,
-    .process-card,
-    .template-card {
-        margin-bottom: 2rem;
-    }
-    
-    
-    .trust-badge {
+    .hero-stats {
         justify-content: center;
-        margin: 0.25rem;
+    }
+    
+    .cta-title {
+        font-size: 2rem;
     }
 }
 
 @media (max-width: 576px) {
+    .hero-section {
+        min-height: 80vh;
+        padding: 2rem 0;
+    }
+    
     .hero-title {
-        font-size: 1.75rem !important;
-        line-height: 1.2 !important;
-        margin-bottom: 1rem !important;
-        padding: 0 0.5rem;
+        font-size: 2rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
     }
     
     .hero-subtitle {
-        font-size: 1rem !important;
-        line-height: 1.5 !important;
-        margin-bottom: 1.5rem !important;
-        padding: 0 0.5rem;
-    }
-    
-    .section-title {
-        font-size: 1.5rem !important;
-        text-align: center !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    .cta-title {
-        font-size: 1.5rem !important;
-        text-align: center !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    .hero-lottie-image {
-        width: 200px !important;
-    }
-    
-    .lottie-hero-container {
-        height: 250px !important;
-    }
-    
-    .template-preview {
-        height: 180px !important;
-    }
-    
-    .feature-card,
-    .process-card {
-        padding: 1.5rem 1rem !important;
-        margin-bottom: 1.5rem !important;
-        text-align: center !important;
-    }
-    
-    /* Enhanced mobile hero section */
-    .hero-section {
-        min-height: 100vh !important;
-        padding: 2rem 1rem !important;
-    }
-    
-    .hero-content {
-        text-align: center !important;
-        padding: 0 0.5rem !important;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
     }
     
     .hero-actions {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 0.75rem !important;
-        width: 100% !important;
-        margin-top: 1.5rem !important;
+        gap: 0.75rem;
     }
     
     .hero-actions .btn {
-        width: 100% !important;
-        max-width: 280px !important;
-        margin: 0.25rem 0 !important;
-        padding: 0.875rem 1.5rem !important;
-        font-size: 1rem !important;
-        justify-content: center !important;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
     }
     
-    
-    
-    
-    /* Container adjustments */
-    .container {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        max-width: 100% !important;
+    .hero-stats {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 2rem;
     }
     
-    /* Section spacing */
-    .section {
-        padding: 3rem 0 !important;
+    .stat-item {
+        text-align: center;
     }
     
-    .section-subtitle {
-        font-size: 1rem !important;
-        margin-bottom: 2rem !important;
-        text-align: center !important;
+    .cta-title {
+        font-size: 1.75rem;
     }
     
-    /* Feature icons mobile */
-    .feature-icon {
-        margin-bottom: 1rem !important;
+    .cta-subtitle {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.75rem;
     }
     
-    .feature-icon i {
-        font-size: 2rem !important;
+    .hero-subtitle {
+        font-size: 0.95rem;
     }
     
-    .feature-title {
-        font-size: 1.125rem !important;
-        margin-bottom: 0.75rem !important;
+    .hero-actions .btn {
+        padding: 0.7rem 1.25rem;
+        font-size: 0.85rem;
     }
     
-    .feature-description {
-        font-size: 0.9rem !important;
-        line-height: 1.5 !important;
+    .cta-title {
+        font-size: 1.5rem;
+    }
+    
+    .cta-subtitle {
+        font-size: 0.9rem;
     }
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section py-5">
-    <div class="container">
-        <div class="row align-items-center min-vh-100">
-            <div class="col-lg-6">
-                <div class="hero-content">
-                    <h1 class="hero-title display-3 fw-bold mb-4">
-                        Beautiful Invitations
-                        <span class="text-gradient-primary">Made Simple</span>
-                    </h1>
-                    <p class="hero-subtitle lead mb-4">
-                        Create, customize, and share stunning digital invitations in minutes. Perfect for any celebration.
-                    </p>
-                    <div class="hero-actions d-flex gap-3 flex-wrap">
-                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
-                            <i class="fas fa-rocket me-2"></i>Start Creating Free
-                        </a>
-                        <a href="#features" class="btn btn-outline-light btn-lg">
-                            <i class="fas fa-play me-2"></i>Watch Demo
-                        </a>
-                    </div>
-                    <div class="hero-trust mt-4">
-                        <p class="text-white-50 small mb-2">Trusted by event planners worldwide</p>
-                        <div class="d-flex gap-3 align-items-center">
-                            <div class="trust-badge">
-                                <i class="fas fa-shield-alt text-success me-1"></i>
-                                <span class="small">SSL Secured</span>
-                            </div>
-                            <div class="trust-badge">
-                                <i class="fas fa-lock text-success me-1"></i>
-                                <span class="small">GDPR Compliant</span>
-                            </div>
-                            <div class="trust-badge">
-                                <i class="fas fa-star text-warning me-1"></i>
-                                <span class="small">4.9/5 Rating</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="hero-visual text-center">
-                    <div class="lottie-hero-container">
-                        <div class="lottie-image-container">
-                            <img src="/images/homelottie.jpg" alt="EventCraft Pro Hero" class="hero-lottie-image">
-                            <div class="lottie-overlay"></div>
-                            
-                            <!-- Floating Background Elements -->
-                            <div class="floating-elements">
-                                <div class="floating-element element-1">🎉</div>
-                                <div class="floating-element element-2">🎂</div>
-                                <div class="floating-element element-3">🏆</div>
-                                <div class="floating-element element-4">💝</div>
-                                <div class="floating-element element-5">✨</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Features Section -->
-<section id="features" class="features-section py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title display-5 fw-bold mb-3">Why Choose EventCraft Pro?</h2>
-            <p class="section-subtitle lead text-muted">Everything you need to create, manage, and track your perfect event invitations</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-card text-center h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="fas fa-palette fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="feature-title mb-3">Drag & Drop Customization</h4>
-                    <p class="feature-description">Easily modify text, colors, fonts, and images with our intuitive drag-and-drop editor. Upload your own photos and logos for complete branding control.</p>
-                </div>
-            </div>
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-card text-center h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="fas fa-users fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="feature-title mb-3">RSVP Management</h4>
-                    <p class="feature-description">Track responses in real-time, send automated reminders, and manage guest lists with our comprehensive RSVP system and analytics dashboard.</p>
-                </div>
-            </div>
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-card text-center h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="fas fa-mobile-alt fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="feature-title mb-3">Multi-Channel Sharing</h4>
-                    <p class="feature-description">Share via email, WhatsApp, Telegram, or direct links. Generate QR codes for easy access and ensure your invitations reach everyone.</p>
-                </div>
-            </div>
-            
-            
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-card text-center h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="fas fa-chart-line fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="feature-title mb-3">Analytics Dashboard</h4>
-                    <p class="feature-description">Track views, RSVP rates, and engagement metrics. Get insights to improve your future events and measure success.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Template Selection Section -->
-<section class="template-selection py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title display-5 fw-bold mb-3">Pick an Invitation Template</h2>
-            <p class="section-subtitle lead text-muted">Choose a sleek design and layout to get started</p>
-        </div>
-        
-        <div class="row g-4">
-            <!-- Wedding Template -->
-            <div class="col-lg-3 col-md-6">
-                <div class="template-card">
-                    <div class="template-preview wedding-preview">
-                        <div class="template-overlay">
-                            <div class="template-icon">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                            <div class="template-content">
-                                <h4 class="template-title">Wedding Elegant</h4>
-                                <p class="template-description">Perfect for your special day</p>
-                                <div class="template-tags">
-                                    <span class="tag">Wedding</span>
-                                    <span class="tag">Elegant</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-actions text-center mt-3">
-                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom w-100">
-                            Choose Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Birthday Template -->
-            <div class="col-lg-3 col-md-6">
-                <div class="template-card">
-                    <div class="template-preview birthday-preview">
-                        <div class="template-overlay">
-                            <div class="template-icon">
-                                <i class="fas fa-birthday-cake"></i>
-                            </div>
-                            <div class="template-content">
-                                <h4 class="template-title">Birthday Fun</h4>
-                                <p class="template-description">Celebrate in style</p>
-                                <div class="template-tags">
-                                    <span class="tag">Birthday</span>
-                                    <span class="tag">Fun</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-actions text-center mt-3">
-                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom w-100">
-                            Choose Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Anniversary Template -->
-            <div class="col-lg-3 col-md-6">
-                <div class="template-card">
-                    <div class="template-preview anniversary-preview">
-                        <div class="template-overlay">
-                            <div class="template-icon">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                            <div class="template-content">
-                                <h4 class="template-title">Anniversary Golden</h4>
-                                <p class="template-description">Celebrate love & memories</p>
-                                <div class="template-tags">
-                                    <span class="tag">Anniversary</span>
-                                    <span class="tag">Golden</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-actions text-center mt-3">
-                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom w-100">
-                            Choose Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Baby Shower Template -->
-            <div class="col-lg-3 col-md-6">
-                <div class="template-card">
-                    <div class="template-preview babyshower-preview">
-                        <div class="template-overlay">
-                            <div class="template-icon">
-                                <i class="fas fa-baby"></i>
-                            </div>
-                            <div class="template-content">
-                                <h4 class="template-title">Baby Shower Sweet</h4>
-                                <p class="template-description">Welcome the little one</p>
-                                <div class="template-tags">
-                                    <span class="tag">Baby Shower</span>
-                                    <span class="tag">Sweet</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="template-actions text-center mt-3">
-                        <a href="{{ url_for('templates') }}" class="btn btn-primary-custom w-100">
-                            Choose Template
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="text-center mt-5">
-            <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
-                <i class="fas fa-eye me-2"></i>View All Templates
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Process Section -->
-<section class="process-section py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title display-5 fw-bold mb-3">How It Works</h2>
-            <p class="section-subtitle lead text-muted">Create your perfect invitation in three simple steps</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="process-card text-center">
-                    <div class="process-icon mb-4">
-                        <i class="fas fa-palette fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="process-title mb-3">Pick a Template</h4>
-                    <p class="process-description">Choose a sleek design and layout to get started.</p>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="process-card text-center">
-                    <div class="process-icon mb-4">
-                        <i class="fas fa-edit fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="process-title mb-3">Fill in the Details</h4>
-                    <p class="process-description">Type in a few words. Let our wizard fill the rest.</p>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="process-card text-center">
-                    <div class="process-icon mb-4">
-                        <i class="fas fa-magic fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="process-title mb-3">Customize & Share</h4>
-                    <p class="process-description">Make it truly yours. Uniqueness in a few clicks.</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="text-center mt-5">
-            <div class="d-flex gap-3 justify-content-center flex-wrap">
-                <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
-                    <i class="fas fa-plus me-2"></i>Create New Invitation
-                </a>
-                <a href="{{ url_for('templates') }}" class="btn btn-secondary-custom btn-lg">
-                    <i class="fas fa-edit me-2"></i>Improve My Invitation
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Welcome Back Section (for logged-in users) -->
-{% if session.user_id %}
-<section class="welcome-back-section py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title display-5 fw-bold mb-3">Welcome back, {{ session.user_name }}!</h2>
-            <p class="section-subtitle lead text-muted">Access your advanced features and continue creating amazing invitations</p>
-        </div>
-        
-        <div class="row g-4">
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-card text-center h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="fas fa-edit fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="feature-title mb-3">Advanced Editor</h4>
-                    <p class="feature-description">Access our powerful drag-and-drop editor with advanced customization options, layers, and professional design tools.</p>
-                    <a href="{{ url_for('drag_drop_editor') }}" class="btn btn-primary-custom">
-                        <i class="fas fa-edit me-2"></i>Open Editor
+<!-- Professional Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-12">
+                <h1 class="hero-title">Create Stunning Digital Invitations</h1>
+                <p class="hero-subtitle">
+                    Design beautiful, professional invitations for any event with our easy-to-use platform. 
+                    From weddings to corporate events, make every occasion memorable.
+                </p>
+                <div class="hero-actions">
+                    <a href="/auth" class="btn btn-primary btn-lg">
+                        <i class="fas fa-rocket me-2"></i>
+                        Get Started Free
+                    </a>
+                    <a href="/templates" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-eye me-2"></i>
+                        Browse Templates
                     </a>
                 </div>
-            </div>
-            
-        </div>
-        
-        <div class="text-center mt-5">
-            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary-custom btn-lg me-3">
-                <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
-            </a>
-            <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
-                <i class="fas fa-plus me-2"></i>Create New Invitation
-            </a>
-        </div>
-    </div>
-</section>
-{% else %}
-<!-- Advanced Features Section (for non-logged users) -->
-<section class="advanced-features-section py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title display-5 fw-bold mb-3">Unlock Advanced Features</h2>
-            <p class="section-subtitle lead text-muted">Sign in to access powerful tools and advanced features</p>
-        </div>
-        
-        <div class="row g-4">
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="feature-card text-center h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="fas fa-edit fa-3x text-primary"></i>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Happy Users</span>
                     </div>
-                    <h4 class="feature-title mb-3">Advanced Editor</h4>
-                    <p class="feature-description">Access our powerful drag-and-drop editor with advanced customization options, layers, and professional design tools.</p>
-                    <div class="feature-badge">
-                        <span class="badge bg-primary">Login Required</span>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Templates</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100K+</span>
+                        <span class="stat-label">Invitations Created</span>
                     </div>
                 </div>
             </div>
-            
+            <div class="col-lg-6 col-12">
+                <div class="text-center">
+                    <img src="/images/homelotiie1.jpg" alt="EventCraft Pro Hero" class="img-fluid rounded-3 shadow-lg">
+                </div>
+            </div>
         </div>
-        
+    </div>
+</section>
+
+<!-- Professional Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Why Choose EventCraft Pro?</h2>
+            <p class="lead text-muted">Everything you need to create professional invitations</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="feature-title">Beautiful Templates</h3>
+                    <p class="feature-description">
+                        Choose from our curated collection of professionally designed templates for every occasion.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 class="feature-title">Easy Customization</h3>
+                    <p class="feature-description">
+                        Drag and drop editor makes it simple to personalize your invitations with your own content.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Mobile Responsive</h3>
+                    <p class="feature-description">
+                        Your invitations look perfect on all devices - desktop, tablet, and mobile.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Easy Sharing</h3>
+                    <p class="feature-description">
+                        Share your invitations via email, social media, or direct links with your guests.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="feature-title">RSVP Tracking</h3>
+                    <p class="feature-description">
+                        Track responses and manage your guest list with our built-in RSVP system.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="feature-title">Quick Setup</h3>
+                    <p class="feature-description">
+                        Create and send professional invitations in minutes, not hours.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Professional Templates Preview Section -->
+<section class="templates-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="templates-title">Popular Templates</h2>
+            <p class="templates-subtitle">Get inspired by our most popular invitation designs</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="template-card">
+                    <img src="/images/weddingelegant.jpg" alt="Wedding Elegant Template" class="template-image">
+                    <div class="template-content">
+                        <h3 class="template-title">Wedding Elegant</h3>
+                        <p class="template-description">Classic and timeless design perfect for your special day.</p>
+                        <a href="/create-invitation?template=wedding_elegant" class="btn btn-primary btn-sm">Use Template</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="template-card">
+                    <img src="/images/birthday.jpg" alt="Birthday Fun Template" class="template-image">
+                    <div class="template-content">
+                        <h3 class="template-title">Birthday Fun</h3>
+                        <p class="template-description">Colorful and playful design for birthday celebrations.</p>
+                        <a href="/create-invitation?template=birthday_fun_colorful" class="btn btn-primary btn-sm">Use Template</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="template-card">
+                    <img src="/images/anniversery.jpg" alt="Anniversary Golden Template" class="template-image">
+                    <div class="template-content">
+                        <h3 class="template-title">Anniversary Golden</h3>
+                        <p class="template-description">Elegant golden design for milestone celebrations.</p>
+                        <a href="/create-invitation?template=anniversary_golden_elegant" class="btn btn-primary btn-sm">Use Template</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="text-center mt-5">
-            <a href="{{ url_for('auth') }}" class="btn btn-primary-custom btn-lg me-3">
-                <i class="fas fa-sign-in-alt me-2"></i>Sign In for Advanced Features
-            </a>
-            <a href="{{ url_for('templates') }}" class="btn btn-secondary-custom btn-lg">
-                <i class="fas fa-eye me-2"></i>Browse Templates
+            <a href="/templates" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-th-large me-2"></i>
+                View All Templates
             </a>
         </div>
     </div>
 </section>
-{% endif %}
 
-<!-- CTA Section -->
-<section class="cta-section py-5">
-    <div class="container text-center">
-        <h2 class="cta-title display-4 fw-bold mb-4">Ready to Create Something Amazing?</h2>
-        <p class="cta-subtitle lead mb-4">Join thousands of users who trust EventCraft Pro for their special moments</p>
-        {% if session.user_id %}
-            <a href="{{ url_for('templates') }}" class="btn btn-primary-custom btn-lg">
-                <i class="fas fa-plus me-2"></i>Create New Invitation
-            </a>
-        {% else %}
-            <a href="{{ url_for('auth') }}" class="btn btn-primary-custom btn-lg me-3">
-                <i class="fas fa-sign-in-alt me-2"></i>Get Started Free
-            </a>
-            <a href="{{ url_for('templates') }}" class="btn btn-outline-light btn-lg">
-                <i class="fas fa-eye me-2"></i>Browse Templates
-            </a>
-        {% endif %}
+<!-- FAQ Section -->
+<section class="faq-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Frequently Asked Questions</h2>
+            <p class="lead text-muted">Everything you need to know about EventCraft Pro</p>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                <i class="fas fa-question-circle me-2 text-primary"></i>
+                                How do I create my first invitation?
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Creating your first invitation is easy! Simply click "Get Started" to register, then browse our template gallery to find a design you love. Click "Use Template" and fill in your event details. You can customize colors, fonts, and add your own photos to make it unique.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                <i class="fas fa-images me-2 text-primary"></i>
+                                Can I upload my own photos?
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! You can upload your own photos for the main background, couple photos, birthday person, graduate, and more. We support JPG, PNG, and other common image formats. For best results, use high-resolution images.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                <i class="fas fa-share-alt me-2 text-primary"></i>
+                                How do I share my invitation with guests?
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Once your invitation is created, you'll get a unique shareable link. You can share this link via WhatsApp, email, social media, or copy it to send through any messaging app. Your guests can view the invitation and RSVP directly from the link.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq4">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                <i class="fas fa-mobile-alt me-2 text-primary"></i>
+                                Are invitations mobile-friendly?
+                            </button>
+                        </h2>
+                        <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Absolutely! All our invitations are fully responsive and look beautiful on desktop, tablet, and mobile devices. Your guests will have a great experience viewing your invitation on any device.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq5">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                <i class="fas fa-edit me-2 text-primary"></i>
+                                Can I edit my invitation after creating it?
+                            </button>
+                        </h2>
+                        <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! You can edit your invitation anytime from your dashboard. Simply go to "My Invitations" and click "Edit" on the invitation you want to modify. You can update details, change photos, or modify any information.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq6">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                                <i class="fas fa-heart me-2 text-primary"></i>
+                                How does the RSVP system work?
+                            </button>
+                        </h2>
+                        <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="faq6" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Our RSVP system allows guests to respond directly from your invitation link. They can indicate if they're attending, add plus-ones, dietary requirements, and leave messages. You can view all responses in your dashboard and export the data if needed.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
-{% endblock %}
 
-{% block extra_scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-<script>
-// Enhanced Lottie Animation Controller
-class LottieAnimationController {
-    constructor() {
-        this.isPlaying = true;
-        this.speed = 1;
-        this.lottieInstance = null;
-        this.init();
-    }
-
-    init() {
-        // Initialize Lottie animation
-        this.initLottieAnimation();
-        
-        // Add interactive controls
-        this.addControls();
-        
-        // Add enhanced effects
-        this.enhanceEffects();
-    }
-
-    initLottieAnimation() {
-        // Create Lottie container
-        const lottieContainer = document.createElement('div');
-        lottieContainer.id = 'lottie-container';
-        lottieContainer.style.cssText = `
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-        `;
-
-        // Add Lottie container to image container
-        const imageContainer = document.querySelector('.lottie-image-container');
-        if (imageContainer) {
-            imageContainer.appendChild(lottieContainer);
-            
-            // Initialize Lottie animation from external file
-            this.lottieInstance = lottie.loadAnimation({
-                container: lottieContainer,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                path: '/static/js/lottie-animation.json'
-            });
-        }
-    }
-
-    enhanceEffects() {
-        // Add enhanced hover effects to the image
-        const heroImage = document.querySelector('.hero-lottie-image');
-        if (heroImage) {
-            heroImage.addEventListener('mouseenter', () => {
-                if (this.isPlaying) {
-                    heroImage.style.transform = 'scale(1.08) rotateY(8deg)';
-                    heroImage.style.filter = 'brightness(1.1) drop-shadow(0 25px 50px rgba(0,0,0,0.25))';
-                }
-            });
-            
-            heroImage.addEventListener('mouseleave', () => {
-                heroImage.style.transform = 'scale(1) rotateY(0deg)';
-                heroImage.style.filter = 'brightness(1) drop-shadow(0 10px 20px rgba(0,0,0,0.1))';
-            });
-
-            // Add click effect
-            heroImage.addEventListener('click', () => {
-                heroImage.style.transform = 'scale(0.95) rotateY(-5deg)';
-                setTimeout(() => {
-                    heroImage.style.transform = 'scale(1) rotateY(0deg)';
-                }, 150);
-            });
-        }
-
-        // Add floating elements interaction
-        const floatingElements = document.querySelectorAll('.floating-element');
-        floatingElements.forEach((element, index) => {
-            element.addEventListener('mouseenter', () => {
-                element.style.transform = 'scale(1.3) rotate(15deg)';
-                element.style.filter = 'brightness(1.5) drop-shadow(0 8px 16px rgba(0,0,0,0.4))';
-            });
-            
-            element.addEventListener('mouseleave', () => {
-                element.style.transform = 'scale(1) rotate(0deg)';
-                element.style.filter = 'brightness(1) drop-shadow(0 4px 8px rgba(0,0,0,0.2))';
-            });
-        });
-    }
-
-    addControls() {
-        // Create control panel
-        const controlPanel = document.createElement('div');
-        controlPanel.className = 'animation-controls';
-        controlPanel.style.cssText = `
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px;
-            border-radius: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            backdrop-filter: blur(10px);
-        `;
-
-        // Play/Pause button
-        const playPauseBtn = document.createElement('button');
-        playPauseBtn.innerHTML = '⏸️';
-        playPauseBtn.title = 'Pause Animation';
-        playPauseBtn.style.cssText = `
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            background: rgba(99, 102, 241, 0.1);
-        `;
-        
-        playPauseBtn.addEventListener('click', () => this.toggleAnimation());
-        controlPanel.appendChild(playPauseBtn);
-
-        // Speed control
-        const speedBtn = document.createElement('button');
-        speedBtn.innerHTML = '⚡';
-        speedBtn.title = 'Change Speed';
-        speedBtn.style.cssText = `
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            background: rgba(245, 158, 11, 0.1);
-        `;
-        
-        speedBtn.addEventListener('click', () => this.changeSpeed());
-        controlPanel.appendChild(speedBtn);
-
-        // Reset button
-        const resetBtn = document.createElement('button');
-        resetBtn.innerHTML = '🔄';
-        resetBtn.title = 'Reset Animation';
-        resetBtn.style.cssText = `
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            background: rgba(16, 185, 129, 0.1);
-        `;
-        
-        resetBtn.addEventListener('click', () => this.resetAnimation());
-        controlPanel.appendChild(resetBtn);
-
-        // Add control panel to container
-        const container = document.querySelector('.lottie-hero-container');
-        if (container) {
-            container.appendChild(controlPanel);
-        }
-
-        // Store references
-        this.playPauseBtn = playPauseBtn;
-        this.speedBtn = speedBtn;
-    }
-
-    toggleAnimation() {
-        this.isPlaying = !this.isPlaying;
-        
-        if (this.isPlaying) {
-            this.playPauseBtn.innerHTML = '⏸️';
-            this.playPauseBtn.title = 'Pause Animation';
-            this.resumeAnimations();
-        } else {
-            this.playPauseBtn.innerHTML = '▶️';
-            this.playPauseBtn.title = 'Play Animation';
-            this.pauseAnimations();
-        }
-    }
-
-    changeSpeed() {
-        const speeds = [0.5, 1, 1.5, 2];
-        const currentIndex = speeds.indexOf(this.speed);
-        const nextIndex = (currentIndex + 1) % speeds.length;
-        this.speed = speeds[nextIndex];
-        
-        // Update speed indicators
-        const speedIndicators = ['🐌', '🐢', '⚡', '🚀'];
-        this.speedBtn.innerHTML = speedIndicators[nextIndex];
-        this.speedBtn.title = `Speed: ${this.speed}x`;
-        
-        // Apply speed to animations
-        this.updateAnimationSpeed();
-    }
-
-    resetAnimation() {
-        // Reset image to initial position
-        const heroImage = document.querySelector('.hero-lottie-image');
-        if (heroImage) {
-            heroImage.style.animation = 'none';
-            heroImage.offsetHeight; // Trigger reflow
-            heroImage.style.animation = null;
-        }
-        
-        // Reset floating elements
-        const floatingElements = document.querySelectorAll('.floating-element');
-        floatingElements.forEach(element => {
-            element.style.animation = 'none';
-            element.offsetHeight;
-            element.style.animation = null;
-        });
-    }
-
-    pauseAnimations() {
-        if (this.lottieInstance) {
-            this.lottieInstance.pause();
-        }
-        
-        const heroImage = document.querySelector('.hero-lottie-image');
-        if (heroImage) {
-            heroImage.style.animationPlayState = 'paused';
-        }
-        
-        const floatingElements = document.querySelectorAll('.floating-element');
-        floatingElements.forEach(element => {
-            element.style.animationPlayState = 'paused';
-        });
-    }
-
-    resumeAnimations() {
-        if (this.lottieInstance) {
-            this.lottieInstance.play();
-        }
-        
-        const heroImage = document.querySelector('.hero-lottie-image');
-        if (heroImage) {
-            heroImage.style.animationPlayState = 'running';
-        }
-        
-        const floatingElements = document.querySelectorAll('.floating-element');
-        floatingElements.forEach(element => {
-            element.style.animationPlayState = 'running';
-        });
-    }
-
-    updateAnimationSpeed() {
-        if (this.lottieInstance) {
-            this.lottieInstance.setSpeed(this.speed);
-        }
-        
-        const heroImage = document.querySelector('.hero-lottie-image');
-        if (heroImage) {
-            heroImage.style.animationDuration = `${6 / this.speed}s`;
-        }
-        
-        const floatingElements = document.querySelectorAll('.floating-element');
-        floatingElements.forEach(element => {
-            element.style.animationDuration = `${5 / this.speed}s`;
-        });
-    }
-}
-
-// Initialize enhanced animations when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Lottie animation controller
-    const lottieController = new LottieAnimationController();
-    
-    // Add some interactive effects
-    const heroImage = document.querySelector('.hero-lottie-image');
-    if (heroImage) {
-        heroImage.addEventListener('click', () => {
-            heroImage.style.transform = 'scale(1.05) rotateY(10deg)';
-            setTimeout(() => {
-                heroImage.style.transform = 'scale(1) rotateY(0deg)';
-            }, 300);
-        });
-    }
-});
-
-// Intersection Observer for animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-        }
-    });
-}, observerOptions);
-
-// Observe all elements that should animate
-document.querySelectorAll('.template-card, .process-card, .hero-content').forEach(el => {
-    observer.observe(el);
-});
-
-// Add smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-</script>
+<!-- Professional CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="cta-title">Ready to Create Your Perfect Invitation?</h2>
+        <p class="cta-subtitle">
+            Join thousands of users who trust EventCraft Pro for their special events. 
+            Start creating beautiful invitations today.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="/auth" class="btn btn-light btn-lg">
+                <i class="fas fa-rocket me-2"></i>
+                Get Started Free
+            </a>
+            <a href="/about" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-info-circle me-2"></i>
+                Learn More
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}

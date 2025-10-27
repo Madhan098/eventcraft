@@ -534,15 +534,15 @@
             <h2 class="section-title">Our Love Story</h2>
             <div class="couple-story">
                 <div class="bride-info">
-                    {% if invitation.bride_photo %}
-                    <img src="{{ url_for('uploaded_file', filename=invitation.bride_photo) }}" alt="Bride" class="couple-photo">
+                    {% if invitation.bride_image %}
+                    <img src="{{ url_for('uploaded_file', filename=invitation.bride_image) }}" alt="Bride" class="couple-photo">
                     {% else %}
                     <div class="couple-photo" style="background: linear-gradient(135deg, #d4af37, #b8860b); display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">
                         <i class="fas fa-heart"></i>
                     </div>
                     {% endif %}
                     <h3 class="couple-name">{{ invitation.bride_name or 'Bride' }}</h3>
-                    <p class="couple-description">{{ invitation.bride_description or 'Beautiful bride-to-be' }}</p>
+                    <p class="couple-description">Beautiful bride-to-be</p>
                 </div>
                 
                 <div class="story-content">
@@ -553,15 +553,15 @@
                 </div>
                 
                 <div class="groom-info">
-                    {% if invitation.groom_photo %}
-                    <img src="{{ url_for('uploaded_file', filename=invitation.groom_photo) }}" alt="Groom" class="couple-photo">
+                    {% if invitation.groom_image %}
+                    <img src="{{ url_for('uploaded_file', filename=invitation.groom_image) }}" alt="Groom" class="couple-photo">
                     {% else %}
                     <div class="couple-photo" style="background: linear-gradient(135deg, #b8860b, #d4af37); display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">
                         <i class="fas fa-heart"></i>
                     </div>
                     {% endif %}
                     <h3 class="couple-name">{{ invitation.groom_name or 'Groom' }}</h3>
-                    <p class="couple-description">{{ invitation.groom_description or 'Handsome groom-to-be' }}</p>
+                    <p class="couple-description">Handsome groom-to-be</p>
                 </div>
             </div>
         </div>
@@ -598,7 +598,7 @@
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <h3>Venue</h3>
-                    <div class="time">{{ invitation.venue_name or 'Venue TBD' }}</div>
+                    <div class="time">{{ invitation.venue_address or 'Venue TBD' }}</div>
                     <div class="location">
                         {% if invitation.venue_address %}
                         {{ invitation.venue_address }}
@@ -615,8 +615,8 @@
                     <h3>Gift Information</h3>
                     <div class="time">Your blessings are our wealth</div>
                     <div class="location">
-                        {% if invitation.gift_info %}
-                        {{ invitation.gift_info }}
+                        {% if invitation.description %}
+                        {{ invitation.description }}
                         {% else %}
                         Blessings welcome
                         {% endif %}
@@ -672,7 +672,8 @@
         <div class="container">
             <h2 class="section-title">Photo Gallery</h2>
             <div class="gallery-grid">
-                {% for image in invitation.gallery_images %}
+                {% set gallery_list = invitation.gallery_images|from_json %}
+                {% for image in gallery_list %}
                 <div class="gallery-item">
                     <img src="{{ url_for('uploaded_file', filename=image) }}" alt="Gallery Image">
                 </div>

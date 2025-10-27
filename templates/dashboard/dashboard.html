@@ -4,538 +4,497 @@
 
 {% block extra_head %}
 <style>
-    /* Professional Dashboard Styles */
-    .dashboard-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        position: relative;
-        overflow: hidden;
-        min-height: 60vh;
-        display: flex;
-        align-items: center;
-    }
+/* Professional Dashboard Styles */
+.dashboard-hero {
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--spacing-3xl) 0;
+    position: relative;
+    overflow: hidden;
+}
 
-    .dashboard-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-        opacity: 0.3;
-        pointer-events: none;
-    }
+.dashboard-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.3) 0%, transparent 50%);
+    pointer-events: none;
+}
 
-    .dashboard-hero .container {
-        position: relative;
-        z-index: 1;
-    }
+.dashboard-hero .container {
+    position: relative;
+    z-index: 2;
+}
 
-    .hero-content {
-        color: white;
-    }
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    color: white;
+}
 
+.hero-subtitle {
+    font-size: 1.125rem;
+    opacity: 0.9;
+    margin-bottom: var(--spacing-xl);
+}
+
+.dashboard-stats {
+    display: flex;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    min-width: 120px;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Professional Dashboard Content */
+.dashboard-content {
+    padding: var(--spacing-3xl) 0;
+    background: var(--bg-secondary);
+}
+
+.dashboard-section {
+    margin-bottom: var(--spacing-3xl);
+}
+
+.section-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.section-title {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.section-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+/* Professional Action Cards */
+.action-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.action-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.action-card:hover::before {
+    transform: scaleX(1);
+}
+
+.action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.action-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-md);
+    font-size: 1.5rem;
+    color: white;
+}
+
+.action-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}
+
+.action-description {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Professional Invitation Cards */
+.invitation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.invitation-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.invitation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.invitation-preview {
+    height: 200px;
+    background: var(--gradient-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.invitation-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.invitation-preview .preview-placeholder {
+    font-size: 3rem;
+    color: var(--text-light);
+}
+
+.invitation-content {
+    padding: var(--spacing-lg);
+}
+
+.invitation-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}
+
+.invitation-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.invitation-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.invitation-actions .btn {
+    flex: 1;
+    min-width: 80px;
+}
+
+/* Professional Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-3xl) var(--spacing-lg);
+    background: var(--bg-card);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-xl);
+}
+
+.empty-state-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--spacing-lg);
+    font-size: 2rem;
+    color: var(--text-light);
+}
+
+.empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}
+
+.empty-state-description {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
     .hero-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 3rem;
-        font-weight: 800;
-        color: white;
-        line-height: 1.2;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        margin-bottom: 1.5rem;
+        font-size: 2rem;
     }
-
-    .text-gradient {
-        background: linear-gradient(135deg, #ffffff 0%, #c7af6b 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: none;
+    
+    .dashboard-stats {
+        justify-content: center;
     }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .action-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .invitation-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
+@media (max-width: 576px) {
+    .dashboard-hero {
+        padding: var(--spacing-xl) 0;
+    }
+    
+    .hero-title {
+        font-size: 1.75rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    
     .hero-subtitle {
-        font-size: 1.25rem;
-        color: rgba(255, 255, 255, 0.95);
-        line-height: 1.6;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        margin-bottom: 2rem;
+        font-size: 1rem;
+        margin-bottom: var(--spacing-lg);
     }
-
-    .hero-actions .btn {
-        margin: 0.5rem;
-        padding: 1rem 2rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        border-radius: 1.25rem;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
+    
+    .dashboard-stats {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-lg);
     }
-
-    .hero-actions .btn-primary-custom {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        color: #667eea;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-
-    .hero-actions .btn-primary-custom:hover {
-        background: white;
-        color: #667eea;
-        transform: translateY(-3px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-    }
-
-    .hero-actions .btn-secondary-custom {
-        background: transparent;
-        color: white;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(10px);
-    }
-
-    .hero-actions .btn-secondary-custom:hover {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        border-color: rgba(255, 255, 255, 0.5);
-        transform: translateY(-3px);
-    }
-
-    .illustration-container {
-        width: 200px;
-        height: 200px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        animation: float 6s ease-in-out infinite;
-        backdrop-filter: blur(20px);
-        border: 2px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .hero-icon {
-        font-size: 4rem;
-        color: white;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-    }
-
-    /* Professional Stats Section */
-    .stats-section {
-        background: #f8f9fa;
-        padding: 4rem 0;
-    }
-
+    
     .stat-card {
-        background: white;
-        padding: 2.5rem 2rem;
-        border-radius: 1.5rem;
         text-align: center;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        height: 100%;
-        border: 1px solid #e5e7eb;
-        position: relative;
-        overflow: hidden;
+        padding: var(--spacing-md);
     }
-
-    .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .stat-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        border-color: #667eea;
-    }
-
-    .stat-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
-        font-size: 2rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-    }
-
+    
     .stat-number {
-        font-size: 2.5rem;
-        font-weight: 800;
-        line-height: 1;
-        margin-bottom: 0.5rem;
-        color: #1f2937;
+        font-size: 1.5rem;
     }
-
+    
     .stat-label {
-        color: #6b7280;
-        font-weight: 600;
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-size: 0.875rem;
+        font-size: 0.85rem;
     }
-
-    /* Professional Action Cards */
-    .actions-section {
-        background: white;
-        padding: 4rem 0;
+    
+    .action-cards {
+        gap: var(--spacing-md);
     }
-
+    
     .action-card {
-        background: white;
-        padding: 2.5rem 2rem;
-        border-radius: 1.5rem;
-        text-align: center;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        height: 100%;
-        border: 1px solid #e5e7eb;
-        position: relative;
-        overflow: hidden;
+        padding: var(--spacing-lg);
     }
-
-    .action-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .action-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        border-color: #667eea;
-    }
-
+    
     .action-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
         font-size: 2rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        margin-bottom: var(--spacing-md);
     }
-
+    
     .action-title {
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 1rem;
-        font-size: 1.25rem;
-    }
-
-    .action-description {
-        color: #6b7280;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-    }
-
-    .action-card .btn {
-        width: 100%;
-        padding: 0.75rem 1.5rem;
-        border-radius: 1rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .action-card .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-
-    /* Professional Analytics Section */
-    .analytics-section {
-        background: #f8f9fa;
-        padding: 4rem 0;
-    }
-
-    .section-title {
-        font-family: 'Playfair Display', serif;
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
-
-    .section-subtitle {
         font-size: 1.1rem;
-        color: #6b7280;
-        max-width: 600px;
-        margin: 0 auto 3rem;
-        text-align: center;
-        line-height: 1.6;
+        margin-bottom: var(--spacing-sm);
     }
-
-    .analytics-card {
-        background: white;
-        border-radius: 1.5rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        height: 100%;
-        border: 1px solid #e5e7eb;
-        overflow: hidden;
+    
+    .action-description {
+        font-size: 0.85rem;
+        margin-bottom: var(--spacing-md);
     }
-
-    .analytics-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        border-color: #667eea;
+    
+    .action-button {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
     }
+    
+    .invitation-card {
+        padding: var(--spacing-md);
+    }
+    
+    .invitation-preview {
+        height: 150px;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .invitation-title {
+        font-size: 1.1rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .invitation-meta {
+        font-size: 0.8rem;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .invitation-actions {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .invitation-actions .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+}
 
-    .analytics-title {
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 1.5rem;
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .stat-card {
+        padding: var(--spacing-sm);
+    }
+    
+    .stat-number {
         font-size: 1.25rem;
     }
-
-    .metric-item {
-        border-bottom: 1px solid #e5e7eb;
-        padding: 1rem 0;
+    
+    .stat-label {
+        font-size: 0.8rem;
     }
-
-    .metric-item:last-child {
-        border-bottom: none;
+    
+    .action-card {
+        padding: var(--spacing-md);
     }
-
-    .metric-item span {
-        color: #6b7280;
-        font-weight: 500;
+    
+    .action-icon {
+        font-size: 1.75rem;
     }
-
-    .metric-item strong {
-        color: #1f2937;
-        font-weight: 700;
+    
+    .action-title {
+        font-size: 1rem;
     }
-
-    /* Responsive Design */
-    @media (max-width: 991.98px) {
-        .hero-title {
-            font-size: 2.5rem;
-        }
-        
-        .illustration-container {
-            width: 150px;
-            height: 150px;
-        }
-        
-        .hero-icon {
-            font-size: 3rem;
-        }
+    
+    .action-description {
+        font-size: 0.8rem;
     }
-
-    @media (max-width: 767.98px) {
-        .hero-title {
-            font-size: 2rem;
-        }
-        
-        .section-title {
-            font-size: 2rem;
-        }
-        
-        .hero-actions {
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .hero-actions .btn {
-            width: 100%;
-            max-width: 300px;
-            margin: 0.5rem 0;
-        }
-        
-        .illustration-container {
-            width: 120px;
-            height: 120px;
-        }
-        
-        .hero-icon {
-            font-size: 2.5rem;
-        }
+    
+    .action-button {
+        padding: 0.6rem 1.25rem;
+        font-size: 0.85rem;
     }
+    
+    .invitation-card {
+        padding: var(--spacing-sm);
+    }
+    
+    .invitation-preview {
+        height: 120px;
+    }
+    
+    .invitation-title {
+        font-size: 1rem;
+    }
+    
+    .invitation-meta {
+        font-size: 0.75rem;
+    }
+    
+    .invitation-actions .btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Dashboard Hero Section -->
+<!-- Professional Dashboard Hero -->
 <section class="dashboard-hero">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <div class="hero-content">
-                    <div class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">
-                        <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                <h1 class="hero-title">Welcome back, {{ user.name or 'User' }}!</h1>
+                <p class="hero-subtitle">
+                    Manage your invitations, track RSVPs, and create beautiful events with ease.
+                </p>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <span class="stat-number">{{ invitations|length }}</span>
+                        <span class="stat-label">Invitations</span>
                     </div>
-                    
-                    <h1 class="hero-title">
-                        Welcome back, <span class="text-gradient">{{ session.user_name if session.user_name else 'User' }}</span>! 👋
-                    </h1>
-                    
-                    <p class="hero-subtitle">
-                        Ready to create something amazing? Let's craft your next unforgettable event invitation.
-                    </p>
-                    
-                    <div class="hero-actions d-flex gap-3 flex-wrap">
-                        <a href="{{ url_for('templates') }}" class="btn-primary-custom btn-lg">
-                            <i class="fas fa-palette me-2"></i>Create Invitation
-                        </a>
-                        <a href="{{ url_for('templates') }}" class="btn-secondary-custom btn-lg">
-                            <i class="fas fa-eye me-2"></i>Browse Templates
-                        </a>
+                    <div class="stat-card">
+                        <span class="stat-number">{{ total_guests }}</span>
+                        <span class="stat-label">Total Guests</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">{{ total_rsvps }}</span>
+                        <span class="stat-label">RSVPs</span>
                     </div>
                 </div>
             </div>
-            
             <div class="col-lg-4 text-center">
-                <div class="hero-illustration">
-                    <div class="illustration-container">
-                        <i class="fas fa-rocket hero-icon"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Statistics Section -->
-<section class="stats-section py-5">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="stat-card slide-up" style="animation-delay: 0.1s;">
-                    <div class="stat-icon bg-primary-subtle">
-                        <i class="fas fa-calendar-alt text-primary"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3 class="stat-number text-primary">{{ invitations|length }}</h3>
-                        <p class="stat-label">Total Invitations</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3">
-                <div class="stat-card slide-up" style="animation-delay: 0.2s;">
-                    <div class="stat-icon bg-success-subtle">
-                        <i class="fas fa-eye text-success"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3 class="stat-number text-success">{{ invitations|sum(attribute='view_count') if invitations and invitations[0].view_count is defined else 0 }}</h3>
-                        <p class="stat-label">Total Views</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3">
-                <div class="stat-card slide-up" style="animation-delay: 0.3s;">
-                    <div class="stat-icon bg-warning-subtle">
-                        <i class="fas fa-star text-warning"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3 class="stat-number text-warning">{{ invitations|selectattr('is_active')|list|length if invitations and invitations[0].is_active is defined else 0 }}</h3>
-                        <p class="stat-label">Active Events</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-3">
-                <div class="stat-card slide-up" style="animation-delay: 0.4s;">
-                    <div class="stat-icon bg-info-subtle">
-                        <i class="fas fa-share-alt text-info"></i>
-                    </div>
-                    <div class="stat-content">
-                        <h3 class="stat-number text-info">{{ invitations|length * 5 }}</h3>
-                        <p class="stat-label">Total Shares</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Quick Actions Section -->
-<section class="quick-actions py-5 bg-light">
-    <div class="container">
-        <div class="section-header text-center mb-5">
-            <h2 class="section-title slide-up">Quick Actions</h2>
-            <p class="section-subtitle slide-up" style="animation-delay: 0.1s;">Everything you need to manage your events</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="action-card slide-up" style="animation-delay: 0.1s;">
-                    <div class="action-icon bg-primary-subtle">
-                        <i class="fas fa-plus text-primary"></i>
-                    </div>
-                    <h4 class="action-title">Create New</h4>
-                    <p class="action-description">Start crafting your next invitation with our beautiful templates</p>
-                    <a href="{{ url_for('templates') }}" class="btn btn-primary w-100">
-                        <i class="fas fa-arrow-right me-2"></i>Get Started
-                    </a>
-                </div>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <div class="action-card slide-up" style="animation-delay: 0.2s;">
-                    <div class="action-icon bg-success-subtle">
-                        <i class="fas fa-palette text-success"></i>
-                    </div>
-                    <h4 class="action-title">Browse Templates</h4>
-                    <p class="action-description">Explore our collection of professionally designed templates</p>
-                    <a href="{{ url_for('templates') }}" class="btn btn-success w-100">
-                        <i class="fas fa-arrow-right me-2"></i>Explore
-                    </a>
-                </div>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <div class="action-card slide-up" style="animation-delay: 0.3s;">
-                    <div class="action-icon bg-warning-subtle">
-                        <i class="fas fa-cog text-warning"></i>
-                    </div>
-                    <h4 class="action-title">Manage Events</h4>
-                    <p class="action-description">Edit, update, and manage your existing invitations</p>
-                    <a href="#invitations" class="btn btn-warning w-100">
-                        <i class="fas fa-arrow-right me-2"></i>Manage
-                    </a>
-                </div>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <div class="action-card slide-up" style="animation-delay: 0.4s;">
-                    <div class="action-icon bg-info-subtle">
-                        <i class="fas fa-chart-line text-info"></i>
-                    </div>
-                    <h4 class="action-title">View Analytics</h4>
-                    <p class="action-description">Track performance and engagement of your invitations</p>
-                    <a href="#analytics" class="btn btn-info w-100">
-                        <i class="fas fa-arrow-right me-2"></i>View Stats
+                <div class="hero-actions">
+                    <a href="/create-invitation" class="btn btn-light btn-lg">
+                        <i class="fas fa-plus me-2"></i>
+                        Create New Invitation
                     </a>
                 </div>
             </div>
@@ -543,203 +502,104 @@
     </div>
 </section>
 
-<!-- Invitations Section -->
-<section id="invitations" class="invitations-section py-5">
+<!-- Professional Dashboard Content -->
+<section class="dashboard-content">
     <div class="container">
-        <div class="section-header text-center mb-5">
-            <h2 class="section-title slide-up">Your Invitations</h2>
-            <p class="section-subtitle slide-up" style="animation-delay: 0.1s;">Manage and track all your created invitations</p>
+        <!-- Quick Actions Section -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2 class="section-title">Quick Actions</h2>
+            </div>
+            <div class="action-cards">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <h3 class="action-title">Create Invitation</h3>
+                    <p class="action-description">Start a new invitation from scratch or choose from our templates.</p>
+                    <a href="/create-invitation" class="btn btn-primary">Get Started</a>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-th-large"></i>
+                    </div>
+                    <h3 class="action-title">Browse Templates</h3>
+                    <p class="action-description">Explore our collection of professionally designed templates.</p>
+                    <a href="/templates" class="btn btn-outline-primary">View Templates</a>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="action-title">View Analytics</h3>
+                    <p class="action-description">Track your invitation performance and guest engagement.</p>
+                    <a href="/analytics" class="btn btn-outline-primary">View Analytics</a>
+                </div>
+            </div>
         </div>
-        
-        {% if invitations %}
-            <div class="row g-4">
-                {% for invitation in invitations %}
-                <div class="col-lg-6 col-xl-4">
-                    <div class="invitation-card slide-up" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
-                        <div class="card-header d-flex justify-content-between align-items-start">
-                            <div class="invitation-status">
-                                {% if invitation.is_active %}
-                                    <span class="badge bg-success">Active</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">Inactive</span>
-                                {% endif %}
-                            </div>
-                            <div class="invitation-actions dropdown">
-                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ url_for('view_invitation_manage', share_url=invitation.share_url) }}">
-                                        <i class="fas fa-eye me-2"></i>View
-                                    </a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}">
-                                        <i class="fas fa-edit me-2"></i>Edit
-                                    </a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item text-danger" href="#" onclick="deleteInvitation({{ invitation.id }})">
-                                        <i class="fas fa-trash me-2"></i>Delete
-                                    </a></li>
-                                </ul>
-                            </div>
+
+        <!-- Recent Invitations Section -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2 class="section-title">Recent Invitations</h2>
+                <div class="section-actions">
+                    <a href="/create-invitation" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>
+                        Create New
+                    </a>
+                </div>
+            </div>
+            
+            {% if invitations %}
+            <div class="invitation-grid">
+                {% for invitation in invitations[:6] %}
+                <div class="invitation-card">
+                    <div class="invitation-preview">
+                        {% if invitation.main_image %}
+                        <img src="/static/uploads/{{ invitation.main_image }}" alt="{{ invitation.title }}">
+                        {% else %}
+                        <div class="preview-placeholder">
+                            <i class="fas fa-image"></i>
                         </div>
-                        
-                        <div class="card-body">
-                            <h5 class="invitation-title mb-2">{{ invitation.title or 'Untitled Invitation' }}</h5>
-                            <p class="invitation-description text-muted mb-3">
-                                {{ invitation.description or 'No description available' }}
-                            </p>
-                            
-                            <div class="invitation-meta mb-3">
-                                <div class="meta-item">
-                                    <i class="fas fa-calendar text-primary me-2"></i>
-                                    <span>{{ invitation.created_at.strftime('%B %d, %Y') }}</span>
-                                </div>
-                                <div class="meta-item">
-                                    <i class="fas fa-eye text-success me-2"></i>
-                                    <span>{{ invitation.view_count if invitation.view_count is defined else 0 }} views</span>
-                                </div>
-                            </div>
-                            
-                            <div class="invitation-template mb-3">
-                                <span class="badge bg-light text-dark">
-                                    <i class="fas fa-palette me-1"></i>{{ invitation.template_name or invitation.event_type|title if invitation.event_type else 'Unknown Template' }}
-                                </span>
-                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="invitation-content">
+                        <h3 class="invitation-title">{{ invitation.title }}</h3>
+                        <div class="invitation-meta">
+                            <span><i class="fas fa-calendar me-1"></i>{{ invitation.event_date.strftime('%b %d, %Y') if invitation.event_date else 'No date set' }}</span>
+                            <span><i class="fas fa-users me-1"></i>{{ invitation.guests|length }} guests</span>
                         </div>
-                        
-                        <div class="card-footer">
-                            <div class="d-flex gap-2">
-                                <a href="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" class="btn btn-primary btn-sm flex-fill" target="_blank">
-                                    <i class="fas fa-eye me-1"></i>View Final
-                                </a>
-                                <a href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}" class="btn btn-outline-primary btn-sm flex-fill">
-                                    <i class="fas fa-edit me-1"></i>Edit
-                                </a>
-                                <a href="{{ url_for('rsvp_manage', invitation_id=invitation.id) }}" class="btn btn-outline-secondary btn-sm flex-fill">
-                                    <i class="fas fa-users me-1"></i>RSVP
-                                </a>
-                                <a href="{{ url_for('invitation_analytics', invitation_id=invitation.id) }}" class="btn btn-outline-info btn-sm flex-fill">
-                                    <i class="fas fa-chart-line me-1"></i>Analytics
-                                </a>
-                            </div>
+                        <div class="invitation-actions">
+                            <a href="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" class="btn btn-outline-primary btn-sm" target="_blank">
+                                <i class="fas fa-eye me-1"></i>View
+                            </a>
+                            <a href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </a>
+                            <a href="{{ url_for('rsvp_manage', invitation_id=invitation.id) }}" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-list me-1"></i>RSVP
+                            </a>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-        {% else %}
-            <div class="empty-state text-center py-5 slide-up">
-                <div class="empty-icon mb-4">
-                    <i class="fas fa-calendar-plus fa-4x text-muted"></i>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-envelope"></i>
                 </div>
-                <h4 class="empty-title mb-3">No Invitations Yet</h4>
-                <p class="empty-description text-muted mb-4">
-                    You haven't created any invitations yet. Start by choosing a template and creating your first invitation!
+                <h3 class="empty-state-title">No invitations yet</h3>
+                <p class="empty-state-description">
+                    Create your first invitation to get started. Choose from our beautiful templates or start from scratch.
                 </p>
-                <a href="{{ url_for('templates') }}" class="btn-primary-custom btn-lg">
-                    <i class="fas fa-plus me-2"></i>Create Your First Invitation
+                <a href="/create-invitation" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>
+                    Create Your First Invitation
                 </a>
             </div>
-        {% endif %}
-    </div>
-</section>
-
-<!-- Analytics Section -->
-<section id="analytics" class="analytics-section py-5 bg-light">
-    <div class="container">
-        <div class="section-header text-center mb-5">
-            <h2 class="section-title slide-up">Analytics Overview</h2>
-            <p class="section-subtitle slide-up" style="animation-delay: 0.1s;">Track the performance of your invitations</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-6">
-                <div class="analytics-card slide-up" style="animation-delay: 0.1s;">
-                    <h4 class="analytics-title mb-3">
-                        <i class="fas fa-chart-line me-2 text-primary"></i>Performance Metrics
-                    </h4>
-                    <div class="metrics-list">
-                        <div class="metric-item d-flex justify-content-between align-items-center py-2">
-                            <span>Total Invitations Created</span>
-                            <strong class="text-primary">{{ invitations|length }}</strong>
-                        </div>
-                        <div class="metric-item d-flex justify-content-between align-items-center py-2">
-                            <span>Active Invitations</span>
-                            <strong class="text-success">{{ invitations|selectattr('is_active')|list|length }}</strong>
-                        </div>
-                        <div class="metric-item d-flex justify-content-between align-items-center py-2">
-                            <span>Total Views</span>
-                            <strong class="text-info">{{ invitations|sum(attribute='view_count') if invitations and invitations[0].view_count is defined else 0 }}</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-6">
-                <div class="analytics-card slide-up" style="animation-delay: 0.2s;">
-                    <h4 class="analytics-title mb-3">
-                        <i class="fas fa-clock me-2 text-warning"></i>Recent Activity
-                    </h4>
-                    <div class="activity-list">
-                        {% if invitations %}
-                            {% for invitation in invitations[:3] %}
-                            <div class="activity-item d-flex align-items-center py-2">
-                                <div class="activity-icon bg-primary-subtle rounded-circle d-flex align-items-center justify-content-center me-3">
-                                    <i class="fas fa-calendar text-primary"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <div class="activity-title">{{ invitation.title or 'Untitled Invitation' }}</div>
-                                    <div class="activity-time text-muted">{{ invitation.created_at.strftime('%B %d, %Y') }}</div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        {% else %}
-                            <div class="text-muted text-center py-3">
-                                <i class="fas fa-info-circle me-2"></i>No recent activity
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 </section>
-
-
-
-<script>
-    // Intersection Observer for animations
-    document.addEventListener('DOMContentLoaded', function() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
-        // Observe all slide-up elements
-        document.querySelectorAll('.slide-up').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.6s ease-out';
-            observer.observe(el);
-        });
-    });
-    
-    // Delete invitation function
-    function deleteInvitation(invitationId) {
-        if (confirm('Are you sure you want to delete this invitation? This action cannot be undone.')) {
-            // Add your delete logic here
-            console.log('Deleting invitation:', invitationId);
-            // You can make an AJAX call to delete the invitation
-        }
-    }
-</script>
 {% endblock %}

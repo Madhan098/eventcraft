@@ -1,11 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{% if invitation.customization_data %}{{ (invitation.customization_data|from_json).language }}{% else %}en{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ event_data.eventTitle }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:wght@400&family=Playfair+Display:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Dynamic Google Fonts based on customization -->
+    {% if invitation.customization_data %}
+        {% set customization = invitation.customization_data|from_json %}
+        {% if customization.font_style == 'elegant' %}
+            <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        {% elif customization.font_style == 'modern' %}
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        {% elif customization.font_style == 'script' %}
+            <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        {% elif customization.font_style == 'bold' %}
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        {% elif customization.font_style == 'cursive' %}
+            <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        {% elif customization.font_style == 'minimal' %}
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        {% else %}
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        {% endif %}
+    {% else %}
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:wght@400&family=Playfair+Display:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    {% endif %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Language Translation Support -->
+    {% macro translate_text(key) %}
+        {% if invitation.customization_data %}
+            {% set customization = invitation.customization_data|from_json %}
+            {% if customization.language == 'hindi' %}
+                {% if key == 'wedding_invitation' %}विवाह निमंत्रण
+                {% elif key == 'bride' %}दुल्हन
+                {% elif key == 'groom' %}दूल्हा
+                {% elif key == 'the_bride' %}दुल्हन
+                {% elif key == 'the_groom' %}दूल्हा
+                {% elif key == 'celebration_details' %}उत्सव विवरण
+                {% elif key == 'muhurtham_ceremony' %}मुहूर्त समारोह
+                {% elif key == 'reception' %}रिसेप्शन
+                {% elif key == 'love_story' %}प्रेम कहानी
+                {% elif key == 'gallery' %}गैलरी
+                {% elif key == 'rsvp' %}आरएसवीपी
+                {% elif key == 'wishes' %}शुभकामनाएं
+                {% elif key == 'daughter_of' %}की बेटी
+                {% elif key == 'son_of' %}का बेटा
+                {% elif key == 'join_us' %}हमारे साथ जुड़ें
+                {% elif key == 'for_queries' %}किसी भी प्रश्न के लिए या अपनी उपस्थिति की पुष्टि के लिए
+                {% elif key == 'contact_us' %}हमसे संपर्क करें
+                {% elif key == 'phone' %}फोन
+                {% elif key == 'email' %}ईमेल
+                {% elif key == 'venue' %}स्थल
+                {% elif key == 'time' %}समय
+                {% elif key == 'date' %}तारीख
+                {% elif key == 'host' %}मेजबान
+                {% else %}{{ key }}{% endif %}
+            {% elif customization.language == 'telugu' %}
+                {% if key == 'wedding_invitation' %}వెడ్డింగ్ ఆహ్వానం
+                {% elif key == 'bride' %}అమ్మాయి
+                {% elif key == 'groom' %}అబ్బాయి
+                {% elif key == 'the_bride' %}అమ్మాయి
+                {% elif key == 'the_groom' %}అబ్బాయి
+                {% elif key == 'celebration_details' %}ఆచరణ వివరాలు
+                {% elif key == 'muhurtham_ceremony' %}ముహూర్తం సమారంభం
+                {% elif key == 'reception' %}రిసెప్షన్
+                {% elif key == 'love_story' %}ప్రేమ కథ
+                {% elif key == 'gallery' %}గ్యాలరీ
+                {% elif key == 'rsvp' %}ఆర్ఎస్వీపీ
+                {% elif key == 'wishes' %}శుభాకాంక్షలు
+                {% elif key == 'daughter_of' %}కుమార్తె
+                {% elif key == 'son_of' %}కుమారుడు
+                {% elif key == 'join_us' %}మాతో చేరండి
+                {% elif key == 'for_queries' %}ఏదైనా ప్రశ్నలకు లేదా మీ హాజరును నిర్ధారించడానికి
+                {% elif key == 'contact_us' %}మమ్మల్ని సంప్రదించండి
+                {% elif key == 'phone' %}ఫోన్
+                {% elif key == 'email' %}ఇమెయిల్
+                {% elif key == 'venue' %}వేన్యూ
+                {% elif key == 'time' %}సమయం
+                {% elif key == 'date' %}తేదీ
+                {% elif key == 'host' %}హోస్ట్
+                {% else %}{{ key }}{% endif %}
+            {% elif customization.language == 'kannada' %}
+                {% if key == 'wedding_invitation' %}ಮದುವೆ ಆಹ್ವಾನ
+                {% elif key == 'bride' %}ಮದುವೆಯ ಹೆಣ್ಣು
+                {% elif key == 'groom' %}ಮದುವೆಯ ಗಂಡು
+                {% elif key == 'the_bride' %}ಮದುವೆಯ ಹೆಣ್ಣು
+                {% elif key == 'the_groom' %}ಮದುವೆಯ ಗಂಡು
+                {% elif key == 'celebration_details' %}ಆಚರಣೆ ವಿವರಗಳು
+                {% elif key == 'muhurtham_ceremony' %}ಮುಹೂರ್ತ ಸಮಾರಂಭ
+                {% elif key == 'reception' %}ರಿಸೆಪ್ಷನ್
+                {% elif key == 'love_story' %}ಪ್ರೀತಿಯ ಕಥೆ
+                {% elif key == 'gallery' %}ಗ್ಯಾಲರಿ
+                {% elif key == 'rsvp' %}ಆರ್ಎಸ್ವಿಪಿ
+                {% elif key == 'wishes' %}ಶುಭಾಶಯಗಳು
+                {% elif key == 'daughter_of' %}ಮಗಳು
+                {% elif key == 'son_of' %}ಮಗ
+                {% elif key == 'join_us' %}ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ
+                {% elif key == 'for_queries' %}ಯಾವುದೇ ಪ್ರಶ್ನೆಗಳಿಗಾಗಿ ಅಥವಾ ನಿಮ್ಮ ಉಪಸ್ಥಿತಿಯನ್ನು ದೃಢೀಕರಿಸಲು
+                {% elif key == 'contact_us' %}ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ
+                {% elif key == 'phone' %}ಫೋನ್
+                {% elif key == 'email' %}ಇಮೇಲ್
+                {% elif key == 'venue' %}ವೇನ್ಯೂ
+                {% elif key == 'time' %}ಸಮಯ
+                {% elif key == 'date' %}ದಿನಾಂಕ
+                {% elif key == 'host' %}ಹೋಸ್ಟ್
+                {% else %}{{ key }}{% endif %}
+            {% else %}
+                {% if key == 'wedding_invitation' %}Wedding Invitation
+                {% elif key == 'bride' %}Bride
+                {% elif key == 'groom' %}Groom
+                {% elif key == 'the_bride' %}The Bride
+                {% elif key == 'the_groom' %}The Groom
+                {% elif key == 'celebration_details' %}Celebration Details
+                {% elif key == 'muhurtham_ceremony' %}Muhurtham Ceremony
+                {% elif key == 'reception' %}Reception
+                {% elif key == 'love_story' %}Love Story
+                {% elif key == 'gallery' %}Gallery
+                {% elif key == 'rsvp' %}RSVP
+                {% elif key == 'wishes' %}Wishes
+                {% elif key == 'daughter_of' %}Daughter of
+                {% elif key == 'son_of' %}Son of
+                {% elif key == 'join_us' %}Join Us
+                {% elif key == 'for_queries' %}For any queries or to confirm your presence
+                {% elif key == 'contact_us' %}Contact Us
+                {% elif key == 'phone' %}Phone
+                {% elif key == 'email' %}Email
+                {% elif key == 'venue' %}Venue
+                {% elif key == 'time' %}Time
+                {% elif key == 'date' %}Date
+                {% elif key == 'host' %}Host
+                {% else %}{{ key }}{% endif %}
+            {% endif %}
+        {% else %}
+            {% if key == 'wedding_invitation' %}Wedding Invitation
+            {% elif key == 'bride' %}Bride
+            {% elif key == 'groom' %}Groom
+            {% elif key == 'the_bride' %}The Bride
+            {% elif key == 'the_groom' %}The Groom
+            {% elif key == 'celebration_details' %}Celebration Details
+            {% elif key == 'muhurtham_ceremony' %}Muhurtham Ceremony
+            {% elif key == 'reception' %}Reception
+            {% elif key == 'love_story' %}Love Story
+            {% elif key == 'gallery' %}Gallery
+            {% elif key == 'rsvp' %}RSVP
+            {% elif key == 'wishes' %}Wishes
+            {% elif key == 'daughter_of' %}Daughter of
+            {% elif key == 'son_of' %}Son of
+            {% elif key == 'join_us' %}Join Us
+            {% elif key == 'for_queries' %}For any queries or to confirm your presence
+            {% elif key == 'contact_us' %}Contact Us
+            {% elif key == 'phone' %}Phone
+            {% elif key == 'email' %}Email
+            {% elif key == 'venue' %}Venue
+            {% elif key == 'time' %}Time
+            {% elif key == 'date' %}Date
+            {% elif key == 'host' %}Host
+            {% else %}{{ key }}{% endif %}
+        {% endif %}
+    {% endmacro %}
+    
     <style>
         * {
             margin: 0;
@@ -14,7 +168,26 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            {% if invitation.customization_data %}
+                {% set customization = invitation.customization_data|from_json %}
+                {% if customization.font_style == 'elegant' %}
+                    font-family: 'Playfair Display', serif;
+                {% elif customization.font_style == 'modern' %}
+                    font-family: 'Roboto', sans-serif;
+                {% elif customization.font_style == 'script' %}
+                    font-family: 'Dancing Script', cursive;
+                {% elif customization.font_style == 'bold' %}
+                    font-family: 'Montserrat', sans-serif;
+                {% elif customization.font_style == 'cursive' %}
+                    font-family: 'Pacifico', cursive;
+                {% elif customization.font_style == 'minimal' %}
+                    font-family: 'Open Sans', sans-serif;
+                {% else %}
+                    font-family: 'Inter', sans-serif;
+                {% endif %}
+            {% else %}
+                font-family: 'Poppins', sans-serif;
+            {% endif %}
             line-height: 1.6;
             color: #333;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -427,17 +600,17 @@
         <!-- Hero Section -->
         <section class="hero-section">
             <div class="hero-content">
-                <h1 class="wedding-title">Wedding Invitation</h1>
+                <h1 class="wedding-title">{{ translate_text('wedding_invitation') }}</h1>
                 
                 {% if event_data.mainImage %}
                 <img src="{{ url_for('uploaded_file', filename=event_data.mainImage) }}" 
-                     alt="Wedding Photo" class="main-image">
+                     alt="{{ translate_text('wedding_invitation') }}" class="main-image">
                 {% endif %}
 
                 <div class="couple-names">
-                    {{ event_data.brideName or 'Bride' }}
+                    {{ event_data.brideName or translate_text('bride') }}
                     <span class="ampersand">&</span>
-                    {{ event_data.groomName or 'Groom' }}
+                    {{ event_data.groomName or translate_text('groom') }}
                 </div>
 
                 <div class="wedding-date">
@@ -464,9 +637,9 @@
                     <img src="{{ url_for('uploaded_file', filename=event_data.bridePhoto) }}" 
                          alt="{{ event_data.brideName }}" class="couple-photo">
                     {% endif %}
-                    <h3 class="couple-name">{{ event_data.brideName or 'Beautiful Bride' }}</h3>
-                    <p class="couple-title">The Bride</p>
-                    <p>{{ event_data.brideDescription or 'Daughter of Mr. & Mrs.' }}</p>
+                    <h3 class="couple-name">{{ event_data.brideName or translate_text('bride') }}</h3>
+                    <p class="couple-title">{{ translate_text('the_bride') }}</p>
+                    <p>{{ event_data.brideDescription or translate_text('daughter_of') + ' Mr. & Mrs.' }}</p>
                 </div>
 
                 <!-- Heart Divider -->
@@ -478,9 +651,9 @@
                     <img src="{{ url_for('uploaded_file', filename=event_data.groomPhoto) }}" 
                          alt="{{ event_data.groomName }}" class="couple-photo">
                     {% endif %}
-                    <h3 class="couple-name">{{ event_data.groomName or 'Handsome Groom' }}</h3>
-                    <p class="couple-title">The Groom</p>
-                    <p>{{ event_data.groomDescription or 'Son of Mr. & Mrs.' }}</p>
+                    <h3 class="couple-name">{{ event_data.groomName or translate_text('groom') }}</h3>
+                    <p class="couple-title">{{ translate_text('the_groom') }}</p>
+                    <p>{{ event_data.groomDescription or translate_text('son_of') + ' Mr. & Mrs.' }}</p>
                 </div>
             </div>
         </section>
@@ -488,7 +661,7 @@
         <!-- Event Details -->
         <section class="event-details">
             <div class="details-container">
-                <h2 class="section-title">Celebration Details</h2>
+                <h2 class="section-title">{{ translate_text('celebration_details') }}</h2>
                 
                 <div class="event-cards">
                     {% if event_data.timeData.muhurthamTime %}
@@ -496,7 +669,7 @@
                         <div class="event-icon">
                             <i class="fas fa-ring"></i>
                         </div>
-                        <h3 class="event-name">Muhurtham Ceremony</h3>
+                        <h3 class="event-name">{{ translate_text('muhurtham_ceremony') }}</h3>
                         <p class="event-time">
                             <i class="fas fa-clock"></i>
                             {{ event_data.timeData.muhurthamTime }}
@@ -515,7 +688,7 @@
                         <div class="event-icon">
                             <i class="fas fa-glass-cheers"></i>
                         </div>
-                        <h3 class="event-name">Reception</h3>
+                        <h3 class="event-name">{{ translate_text('reception') }}</h3>
                         <p class="event-time">
                             <i class="fas fa-clock"></i>
                             {{ event_data.timeData.receptionTime }}
@@ -546,14 +719,14 @@
         <section class="gallery-section">
             <div class="details-container">
                 <h2 class="section-title" style="color: #2c3e50; text-align: center;">
-                    Our Memories
+                    {{ translate_text('our_memories') }}
                 </h2>
                 
                 <div class="gallery-grid">
                     {% for image in event_data.galleryImages %}
                     <div class="gallery-item">
                         <img src="{{ url_for('uploaded_file', filename=image) }}" 
-                             alt="Wedding Gallery" loading="lazy">
+                             alt="{{ translate_text('wedding_gallery') }}" loading="lazy">
                     </div>
                     {% endfor %}
                 </div>
@@ -564,36 +737,36 @@
         <!-- RSVP Section -->
         <section class="rsvp-section">
             <div class="rsvp-container">
-                <h2 class="rsvp-title">Contact Us</h2>
+                <h2 class="rsvp-title">{{ translate_text('contact_us') }}</h2>
                 <p style="font-size: 1.2rem; margin-bottom: 2rem;">
-                    For any queries or to confirm your presence
+                    {{ translate_text('for_queries') }}
                 </p>
                 
                 <div class="contact-info">
                     {% if event_data.hostName %}
                     <div class="contact-item">
                         <i class="fas fa-user"></i>
-                        <span><strong>Host:</strong> {{ event_data.hostName }}</span>
+                        <span><strong>{{ translate_text('host') }}:</strong> {{ event_data.hostName }}</span>
                     </div>
                     {% endif %}
 
                     {% if event_data.contactPhone %}
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
-                        <span><strong>Phone:</strong> {{ event_data.contactPhone }}</span>
+                        <span><strong>{{ translate_text('phone') }}:</strong> {{ event_data.contactPhone }}</span>
                     </div>
                     {% endif %}
 
                     {% if event_data.contactEmail %}
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
-                        <span><strong>Email:</strong> {{ event_data.contactEmail }}</span>
+                        <span><strong>{{ translate_text('email') }}:</strong> {{ event_data.contactEmail }}</span>
                     </div>
                     {% endif %}
                 </div>
 
                 <div style="margin-top: 3rem; font-family: 'Great Vibes', cursive; font-size: 2rem; color: #8B4B8C;">
-                    Looking forward to celebrating with you!
+                    {{ translate_text('join_us') }}!
                 </div>
             </div>
         </section>
