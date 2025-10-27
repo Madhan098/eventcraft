@@ -1590,7 +1590,15 @@
                 {% if invitation.event_date %}
                 <div class="event-date">
                     <i class="fas fa-calendar-alt me-2"></i>
-                    {{ invitation.event_date.strftime('%B %d, %Y') }}
+                    {% if invitation.event_date %}
+                        {% if invitation.event_date is string %}
+                            {{ invitation.event_date }}
+                        {% else %}
+                            {{ invitation.event_date.strftime('%B %d, %Y') }}
+                        {% endif %}
+                    {% else %}
+                        Date TBD
+                    {% endif %}
                 </div>
                 {% endif %}
 
@@ -1714,7 +1722,11 @@
             {% if invitation.event_date %}
             <div class="event-date">
                 <i class="fas fa-calendar-alt me-2"></i>
-                {{ invitation.event_date.strftime('%B %d, %Y') }}
+                {% if invitation.event_date is string %}
+                    {{ invitation.event_date }}
+                {% else %}
+                    {{ invitation.event_date.strftime('%B %d, %Y') }}
+                {% endif %}
             </div>
             {% endif %}
 
@@ -1837,7 +1849,17 @@
                                                 <div class="wish-content flex-grow-1">
                                                     <h6 class="wish-name mb-1">{{ wish.name }}</h6>
                                                     <p class="wish-message mb-2">{{ wish.message }}</p>
-                                                    <small class="text-muted">{{ wish.created_at.strftime('%B %d, %Y at %I:%M %p') if wish.created_at else 'Recently' }}</small>
+                                                    <small class="text-muted">
+                                                        {% if wish.created_at %}
+                                                            {% if wish.created_at is string %}
+                                                                {{ wish.created_at }}
+                                                            {% else %}
+                                                                {{ wish.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            Recently
+                                                        {% endif %}
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
@@ -1880,7 +1902,17 @@
                 <div class="share-preview mb-4" style="text-align: center;">
                     <div class="invitation-preview" style="background: #f8f9fa; padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem;">
                         <h6 style="color: #2c3e50; margin-bottom: 0.5rem;">{{ invitation.title or 'Event Invitation' }}</h6>
-                        <p style="color: #6c757d; margin: 0; font-size: 0.9rem;">{{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else 'Date TBD' }}</p>
+                        <p style="color: #6c757d; margin: 0; font-size: 0.9rem;">
+                            {% if invitation.event_date %}
+                                {% if invitation.event_date is string %}
+                                    {{ invitation.event_date }}
+                                {% else %}
+                                    {{ invitation.event_date.strftime('%B %d, %Y') }}
+                                {% endif %}
+                            {% else %}
+                                Date TBD
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
 
