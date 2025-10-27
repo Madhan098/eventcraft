@@ -58,6 +58,38 @@ def is_invitation_expired(invitation):
         return False
     return datetime.utcnow() > invitation.expires_at
 
+def generate_google_calendar_url(invitation):
+    """Generate Google Calendar URL for adding event"""
+    try:
+        # Format event details
+        event_title = invitation.title or 'Event Invitation'
+        event_description = invitation.description or ''
+        
+        # Format event date
+        if invitation.event_date:
+            if isinstance(invitation.event_date, str):
+                event_date = invitation.event_date
+            else:
+                event_date = invitation.event_date.strftime('%Y%m%d')
+        else:
+            event_date = datetime.utcnow().strftime('%Y%m%d')
+        
+        # Format event location
+        event_location = invitation.venue_address or ''
+        
+        # Create Google Calendar URL
+        calendar_url = f"https://calendar.google.com/calendar/render?action=TEMPLATE"
+        calendar_url += f"&text={urlencode(event_title)}"
+        calendar_url += f"&dates={event_date}/{event_date}"
+        calendar_url += f"&details={urlencode(event_description)}"
+        calendar_url += f"&location={urlencode(event_location)}"
+        
+        return calendar_url
+        
+    except Exception as e:
+        app.logger.error(f"Error generating Google Calendar URL: {str(e)}")
+        return None
+
 def register_routes(app):
     # Custom Jinja2 filter for safe JSON parsing
     @app.template_filter('safe_from_json')
@@ -1787,10 +1819,9 @@ def register_routes(app):
             try:
                 data = request.get_json()
                 guest_name = data.get('name')
+                guest_email = data.get('email')
                 status = data.get('status')
-                plus_ones_attending = data.get('plus_ones_attending', 0)
                 message = data.get('message', '')
-                dietary_requirements = data.get('dietary_requirements', '')
                 
                 # Find or create guest
                 guest = Guest.query.filter_by(
@@ -1803,8 +1834,8 @@ def register_routes(app):
                     guest = Guest(
                         invitation_id=invitation.id,
                         name=guest_name,
-                        email=data.get('email', ''),
-                        phone=data.get('phone', '')
+                        email=guest_email or '',
+                        phone=''
                     )
                     db.session.add(guest)
                     db.session.flush()  # Get the guest ID
@@ -1815,9 +1846,7 @@ def register_routes(app):
                 if rsvp:
                     # Update existing RSVP
                     rsvp.status = status
-                    rsvp.plus_ones_attending = plus_ones_attending
                     rsvp.message = message
-                    rsvp.dietary_requirements = dietary_requirements
                     rsvp.response_date = datetime.utcnow()
                     rsvp.ip_address = request.remote_addr
                     rsvp.user_agent = request.headers.get('User-Agent')
@@ -1827,9 +1856,8 @@ def register_routes(app):
                         invitation_id=invitation.id,
                         guest_id=guest.id,
                         status=status,
-                        plus_ones_attending=plus_ones_attending,
                         message=message,
-                        dietary_requirements=dietary_requirements,
+                        response_date=datetime.utcnow(),
                         ip_address=request.remote_addr,
                         user_agent=request.headers.get('User-Agent')
                     )
@@ -1837,7 +1865,17 @@ def register_routes(app):
                 
                 db.session.commit()
                 
-                return jsonify({'success': True, 'message': 'RSVP submitted successfully'})
+                # Generate Google Calendar URL if attending
+                calendar_url = None
+                if status == 'attending' and invitation.event_date:
+                    calendar_url = generate_google_calendar_url(invitation)
+                
+                return jsonify({
+                    'success': True,
+                    'message': 'RSVP submitted successfully',
+                    'status': status,
+                    'calendar_url': calendar_url
+                })
                 
             except Exception as e:
                 db.session.rollback()
@@ -1845,7 +1883,7 @@ def register_routes(app):
                 return jsonify({'success': False, 'message': 'Failed to submit RSVP'}), 500
         
         # GET request - show RSVP form
-        return render_template('invitation/rsvp_simple.html', invitation=invitation)
+        return render_template('invitation/rsvp_form.html', invitation=invitation)
 
     # Analytics Dashboard Route
     @app.route('/invitations/<int:invitation_id>/analytics')

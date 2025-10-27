@@ -3,11 +3,11 @@
 {% block title %}RSVP - {{ invitation.title }}{% endblock %}
 
 {% block content %}
-<!-- RSVP Form Section -->
+<!-- Simplified RSVP Form Section -->
 <section class="rsvp-form-section py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 <div class="rsvp-form-card">
                     <div class="text-center mb-5">
                         <h1 class="display-5 fw-bold mb-3">RSVP Response</h1>
@@ -16,21 +16,13 @@
                     
                     <form id="rsvpForm" class="rsvp-form">
                         <div class="row g-4">
-                            <div class="col-md-6">
+                            <div class="col-12">
                                 <label for="guest-name" class="form-label">Your Name *</label>
                                 <input type="text" class="form-control" id="guest-name" required>
                             </div>
-                            <div class="col-md-6">
-                                <label for="guest-email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="guest-email">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="guest-phone" class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" id="guest-phone">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="plus-ones" class="form-label">Number of Plus Ones</label>
-                                <input type="number" class="form-control" id="plus-ones" min="0" value="0">
+                            <div class="col-12">
+                                <label for="guest-email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="guest-email" required>
                             </div>
                             
                             <div class="col-12">
@@ -48,28 +40,19 @@
                                             <i class="fas fa-times-circle me-2"></i>Sorry, can't make it
                                         </label>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="attendance" id="maybe" value="maybe" required>
-                                        <label class="form-check-label maybe-option" for="maybe">
-                                            <i class="fas fa-question-circle me-2"></i>Maybe
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                             
-                            <div class="col-12" id="plus-ones-attending-section" style="display: none;">
-                                <label for="plus-ones-attending" class="form-label">How many plus ones will be attending?</label>
-                                <input type="number" class="form-control" id="plus-ones-attending" min="0" value="0">
-                            </div>
-                            
-                            <div class="col-12">
-                                <label for="dietary-requirements" class="form-label">Dietary Requirements</label>
-                                <textarea class="form-control" id="dietary-requirements" rows="3" placeholder="Please let us know about any dietary restrictions or allergies..."></textarea>
+                            <div class="col-12" id="calendar-section" style="display: none;">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-calendar-plus me-2"></i>
+                                    <strong>Add to Calendar:</strong> If you're attending, we'll help you add this event to your Google Calendar.
+                                </div>
                             </div>
                             
                             <div class="col-12">
                                 <label for="rsvp-message" class="form-label">Message (Optional)</label>
-                                <textarea class="form-control" id="rsvp-message" rows="3" placeholder="Any additional message or well wishes..."></textarea>
+                                <textarea class="form-control" id="rsvp-message" rows="3" placeholder="Any special message or dietary requirements..."></textarea>
                             </div>
                             
                             <div class="col-12 text-center">
@@ -85,90 +68,114 @@
     </div>
 </section>
 
-<!-- Event Details Section -->
-<section class="event-details-section py-5 bg-light">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="event-details-card">
-                    <h3 class="mb-4">Event Details</h3>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="detail-item">
-                                <i class="fas fa-calendar-alt text-primary me-3"></i>
-                                <div>
-                                    <strong>Date</strong>
-                                    <p class="mb-0">{{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else 'TBD' }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="detail-item">
-                                <i class="fas fa-map-marker-alt text-primary me-3"></i>
-                                <div>
-                                    <strong>Venue</strong>
-                                    <p class="mb-0">{{ invitation.venue_address or 'TBD' }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% if invitation.contact_phone %}
-                        <div class="col-md-6">
-                            <div class="detail-item">
-                                <i class="fas fa-phone text-primary me-3"></i>
-                                <div>
-                                    <strong>Contact</strong>
-                                    <p class="mb-0">{{ invitation.contact_phone }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if invitation.contact_email %}
-                        <div class="col-md-6">
-                            <div class="detail-item">
-                                <i class="fas fa-envelope text-primary me-3"></i>
-                                <div>
-                                    <strong>Email</strong>
-                                    <p class="mb-0">{{ invitation.contact_email }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
+<style>
+.rsvp-form-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    border: 1px solid #e9ecef;
+}
 
-{% block extra_scripts %}
+.rsvp-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.form-check {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 1rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.form-check:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.form-check-input:checked + .form-check-label {
+    color: #198754;
+    font-weight: 600;
+}
+
+.form-check-input:checked ~ .form-check {
+    background: #d1e7dd;
+    border-color: #198754;
+}
+
+.attending-option {
+    color: #198754;
+}
+
+.not-attending-option {
+    color: #dc3545;
+}
+
+.form-check-input:checked + .attending-option {
+    color: #198754;
+}
+
+.form-check-input:checked + .not-attending-option {
+    color: #dc3545;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    border: 1px solid #bee5eb;
+    border-radius: 15px;
+    color: #0c5460;
+}
+
+@media (max-width: 768px) {
+    .rsvp-form-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .rsvp-options {
+        gap: 0.5rem;
+    }
+    
+    .form-check {
+        padding: 0.75rem;
+    }
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('rsvpForm');
+    const calendarSection = document.getElementById('calendar-section');
     const attendanceRadios = document.querySelectorAll('input[name="attendance"]');
-    const plusOnesAttendingSection = document.getElementById('plus-ones-attending-section');
-    const plusOnesInput = document.getElementById('plus-ones');
-    const plusOnesAttendingInput = document.getElementById('plus-ones-attending');
     
-    // Show/hide plus ones attending section based on attendance
+    // Show/hide calendar section based on attendance
     attendanceRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'attending') {
-                plusOnesAttendingSection.style.display = 'block';
-                plusOnesAttendingInput.max = plusOnesInput.value;
+                calendarSection.style.display = 'block';
             } else {
-                plusOnesAttendingSection.style.display = 'none';
-                plusOnesAttendingInput.value = 0;
+                calendarSection.style.display = 'none';
             }
         });
-    });
-    
-    // Update max value for plus ones attending when plus ones changes
-    plusOnesInput.addEventListener('input', function() {
-        plusOnesAttendingInput.max = this.value;
-        if (parseInt(plusOnesAttendingInput.value) > parseInt(this.value)) {
-            plusOnesAttendingInput.value = this.value;
-        }
     });
     
     // Form submission
@@ -178,10 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = {
             name: document.getElementById('guest-name').value,
             email: document.getElementById('guest-email').value,
-            phone: document.getElementById('guest-phone').value,
             status: document.querySelector('input[name="attendance"]:checked').value,
-            plus_ones_attending: parseInt(plusOnesAttendingInput.value) || 0,
-            dietary_requirements: document.getElementById('dietary-requirements').value,
             message: document.getElementById('rsvp-message').value
         };
         
@@ -203,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.success) {
                 // Show success message
-                showSuccessMessage();
+                showSuccessMessage(data);
             } else {
                 alert('Error submitting RSVP: ' + data.message);
                 submitBtn.innerHTML = originalText;
@@ -219,20 +223,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function showSuccessMessage() {
+function showSuccessMessage(data) {
     const form = document.getElementById('rsvpForm');
-    form.innerHTML = `
-        <div class="text-center py-5">
+    const formCard = form.closest('.rsvp-form-card');
+    
+    let successHtml = `
+        <div class="text-center">
             <div class="success-icon mb-4">
                 <i class="fas fa-check-circle fa-5x text-success"></i>
             </div>
-            <h2 class="text-success mb-3">RSVP Submitted Successfully!</h2>
-            <p class="lead text-muted mb-4">Thank you for your response. We look forward to celebrating with you!</p>
-            <a href="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" class="btn btn-primary">
-                <i class="fas fa-eye me-2"></i>View Invitation
-            </a>
+            <h2 class="text-success mb-3">Thank You!</h2>
+            <p class="lead mb-4">Your RSVP has been submitted successfully.</p>
+    `;
+    
+    // If attending, show Google Calendar option
+    if (data.status === 'attending' && data.calendar_url) {
+        successHtml += `
+            <div class="calendar-option mb-4">
+                <p class="mb-3">Add this event to your calendar:</p>
+                <a href="${data.calendar_url}" target="_blank" class="btn btn-outline-primary btn-lg">
+                    <i class="fab fa-google me-2"></i>Add to Google Calendar
+                </a>
+            </div>
+        `;
+    }
+    
+    successHtml += `
+            <div class="mt-4">
+                <a href="/view-invitation-final/{{ invitation.share_url }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Invitation
+                </a>
+            </div>
         </div>
     `;
+    
+    formCard.innerHTML = successHtml;
 }
 </script>
 {% endblock %}
