@@ -1719,6 +1719,7 @@
         }
 
         /* Responsive Design */
+        /* 🔥 FORCE MOBILE NAVIGATION VISIBILITY - LIVE SITE FIX */
         @media (max-width: 991.98px) {
             .mobile-nav-toggle {
                 display: flex !important;
@@ -1745,6 +1746,11 @@
                 -ms-user-select: none !important;
                 touch-action: manipulation !important;
                 -webkit-tap-highlight-color: transparent !important;
+                /* Force visibility for live site */
+                min-width: 48px !important;
+                min-height: 48px !important;
+                max-width: 48px !important;
+                max-height: 48px !important;
             }
             
             .mobile-nav-toggle:hover {
@@ -1775,7 +1781,13 @@
             
             .mobile-nav-drawer {
                 width: 75%;
+                z-index: 1050 !important;
             }
+            
+            .mobile-nav-overlay {
+                z-index: 1049 !important;
+            }
+        }
             
             .navbar-brand {
                 font-size: 1.3rem;
@@ -2960,6 +2972,8 @@
         // Enhanced Mobile Navigation Implementation
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Initializing enhanced mobile navigation...');
+            console.log('🌐 Environment:', window.location.hostname);
+            console.log('📅 Timestamp:', new Date().toISOString());
             
             // Get elements with more robust selectors
             const toggleBtn = document.getElementById('mobileNavToggle');
@@ -2977,6 +2991,7 @@
             // Check if elements exist
             if (!toggleBtn) {
                 console.error('❌ Mobile nav toggle button not found!');
+                console.error('🔍 Available elements:', document.querySelectorAll('[id*="mobile"]'));
                 return;
             }
             if (!drawer) {
@@ -2989,6 +3004,16 @@
             }
             
             console.log('✅ All mobile nav elements found');
+            
+            // Check if button is visible and clickable
+            const toggleStyles = window.getComputedStyle(toggleBtn);
+            console.log('🎯 Toggle button styles:', {
+                display: toggleStyles.display,
+                visibility: toggleStyles.visibility,
+                opacity: toggleStyles.opacity,
+                pointerEvents: toggleStyles.pointerEvents,
+                zIndex: toggleStyles.zIndex
+            });
             
             // Simplified and reliable toggle function
             function toggleMobileNav() {
@@ -3024,6 +3049,14 @@
             if (toggleBtn) {
                 console.log('🎯 Setting up toggle button event listener');
                 
+                // Force button to be visible and clickable
+                toggleBtn.style.display = 'flex';
+                toggleBtn.style.visibility = 'visible';
+                toggleBtn.style.opacity = '1';
+                toggleBtn.style.pointerEvents = 'auto';
+                toggleBtn.style.zIndex = '1001';
+                toggleBtn.style.position = 'relative';
+                
                 // Remove any existing event listeners
                 const newToggleBtn = toggleBtn.cloneNode(true);
                 toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
@@ -3039,6 +3072,14 @@
                 // Add touch event listener for mobile devices
                 newToggleBtn.addEventListener('touchstart', function(e) {
                     console.log('👆 Toggle button touched!');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMobileNav();
+                });
+                
+                // Add mousedown event as additional fallback
+                newToggleBtn.addEventListener('mousedown', function(e) {
+                    console.log('🖱️ Toggle button mousedown!');
                     e.preventDefault();
                     e.stopPropagation();
                     toggleMobileNav();
@@ -3564,8 +3605,8 @@
             };
 
             // Add micro-interactions to buttons
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(button => {
+            const allButtons = document.querySelectorAll('.btn');
+            allButtons.forEach(button => {
                 button.classList.add('btn-micro-interaction');
                 
                 button.addEventListener('click', function(e) {
@@ -3598,16 +3639,16 @@
         // Smooth hover effects
         document.addEventListener('DOMContentLoaded', function() {
             // Add hover effects to links
-            const links = document.querySelectorAll('a');
-            links.forEach(link => {
+            const allLinks = document.querySelectorAll('a');
+            allLinks.forEach(link => {
                 link.addEventListener('mouseenter', function() {
                     this.style.transition = 'all 0.3s ease';
                 });
             });
 
             // Add loading states to forms
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
+            const allForms = document.querySelectorAll('form');
+            allForms.forEach(form => {
                 form.addEventListener('submit', function() {
                     const submitBtn = this.querySelector('button[type="submit"]');
                     if (submitBtn) {
