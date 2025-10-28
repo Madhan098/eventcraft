@@ -1614,21 +1614,21 @@
         /* Enhanced Mobile Navigation Styles */
         .mobile-nav-toggle {
             display: none;
-            background: var(--primary-teal);
-            border: none;
+            background: var(--gradient-primary);
+            border: 2px solid var(--primary);
             font-size: 1.2rem;
             color: white;
             cursor: pointer;
             padding: 0.75rem;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: all var(--transition-bounce);
             z-index: 1001;
             position: relative;
             width: 48px;
             height: 48px;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(0, 163, 136, 0.3);
+            box-shadow: var(--shadow-electric);
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -1638,23 +1638,26 @@
         }
 
         .mobile-nav-toggle:hover {
-            background: var(--secondary-coral);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+            background: var(--gradient-secondary);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 
+                0 12px 40px rgba(0, 240, 255, 0.6),
+                0 0 30px rgba(0, 240, 255, 0.5);
         }
 
         .mobile-nav-toggle:active {
-            transform: translateY(0) scale(0.95);
+            transform: translateY(-1px) scale(1.02);
         }
 
         .mobile-nav-toggle:focus {
-            outline: 2px solid var(--accent-yellow);
+            outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
 
         .mobile-nav-toggle i {
             pointer-events: none;
             font-size: 1.1rem;
+            color: white;
         }
 
         /* Mobile Navigation Drawer Enhanced */
