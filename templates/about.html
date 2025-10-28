@@ -213,6 +213,118 @@
         font-size: 0.8rem !important;
     }
 }
+
+/* 🔥 ELECTRIC FOUNDER HERO SECTION - STUNNING STYLING */
+.founder-hero-section {
+    background: rgba(26, 31, 58, 0.8);
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    border: 2px solid var(--border-color);
+    box-shadow: var(--shadow-neon);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.founder-hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-card);
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.founder-hero-section:hover {
+    border-color: var(--secondary);
+    box-shadow: 
+        0 0 30px rgba(0, 240, 255, 0.5),
+        0 8px 32px rgba(0, 240, 255, 0.3);
+    transform: translateY(-5px) scale(1.02);
+}
+
+.founder-image-hero img {
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.founder-image-hero img:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        0 0 30px rgba(255, 0, 128, 0.6),
+        0 0 60px rgba(255, 0, 128, 0.4);
+}
+
+.founder-image-hero img::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: var(--gradient-electric);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.founder-image-hero img:hover::before {
+    opacity: 1;
+}
+
+.founder-message-hero blockquote {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.founder-message-hero blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -1rem;
+    left: 0;
+    font-size: 4rem;
+    color: var(--primary);
+    font-family: serif;
+    opacity: 0.3;
+    line-height: 1;
+}
+
+.founder-message-hero .blockquote-footer {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.founder-message-hero .blockquote-footer::before {
+    content: '— ';
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Responsive adjustments for founder section */
+@media (max-width: 768px) {
+    .founder-hero-section {
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .founder-image-hero img {
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    .founder-message-hero blockquote::before {
+        font-size: 3rem;
+    }
+    
+    .founder-message-hero blockquote {
+        padding-left: 1.5rem;
+    }
+}
 </style>
 {% endblock %}
 
@@ -233,9 +345,24 @@
             </div>
             <div class="col-lg-6">
                 <div class="hero-visual text-center">
-                    <div class="about-illustration">
-                        <i class="fas fa-users fa-5x text-gradient-primary mb-4"></i>
-                        <h3 class="text-white">Join Event Creators Worldwide</h3>
+                    <div class="founder-hero-section">
+                        <div class="founder-image-hero mb-4">
+                            <img src="/images/about/developer.jpg" alt="J Madhan - Founder & CEO" class="rounded-circle shadow-lg animate-electric-glow" style="width: 200px; height: 200px; object-fit: cover; border: 3px solid var(--primary);">
+                        </div>
+                        <h3 class="electric-text mb-3 animate-electric-fade-in">A Message from Our Founder</h3>
+                        <div class="founder-message-hero animate-electric-slide-in animate-delay-2">
+                            <blockquote class="blockquote text-white">
+                                <p class="lead mb-3">
+                                    "I founded EventCraft Pro with a simple vision: to democratize beautiful event invitations. Every special moment deserves a stunning invitation, and technology should make that possible for everyone, not just professional designers."
+                                </p>
+                                <p class="mb-3">
+                                    "Our team is dedicated to creating tools that are both powerful and intuitive. We believe that when you remove the barriers to beautiful design, amazing things happen. That's why we've built EventCraft Pro - to empower every event creator to bring their vision to life."
+                                </p>
+                                <footer class="blockquote-footer text-white">
+                                    <strong>J Madhan</strong> <cite title="Source Title">Founder & CEO, EventCraft Pro</cite>
+                                </footer>
+                            </blockquote>
+                        </div>
                     </div>
                 </div>
             </div>

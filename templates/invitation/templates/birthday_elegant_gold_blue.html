@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event_data.eventTitle }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:wght@400&family=Playfair+Display:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            overflow-x: hidden;
+        }
+
+        .invitation-wrapper {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Elegant Background Pattern */
+        .elegant-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Floating Gold Elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .gold-star {
+            position: absolute;
+            color: rgba(255, 215, 0, 0.3);
+            font-size: 24px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .gold-star:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+        .gold-star:nth-child(2) { top: 25%; right: 15%; animation-delay: 2s; }
+        .gold-star:nth-child(3) { top: 65%; left: 8%; animation-delay: 4s; }
+        .gold-star:nth-child(4) { top: 75%; right: 12%; animation-delay: 1s; }
+        .gold-star:nth-child(5) { top: 45%; left: 85%; animation-delay: 3s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-25px) rotate(10deg); opacity: 0.6; }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.95) 0%, rgba(42, 82, 152, 0.95) 100%);
+            padding: 2rem;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 3;
+            position: relative;
+        }
+
+        .elegant-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem;
+            color: #FFD700;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            animation: fadeInUp 1.2s ease-out;
+            position: relative;
+        }
+
+        .elegant-title::before,
+        .elegant-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #FFD700, transparent);
+        }
+
+        .elegant-title::before { left: -120px; }
+        .elegant-title::after { right: -120px; }
+
+        .birthday-person {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: #FFFFFF;
+            margin: 2rem 0;
+            position: relative;
+            animation: fadeInUp 1.2s ease-out 0.3s both;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .age-badge {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: #FFD700;
+            margin: 1.5rem 0;
+            animation: fadeInUp 1.2s ease-out 0.6s both;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 0.5rem 2rem;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            display: inline-block;
+        }
+
+        .birthday-date {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: #E8F4FD;
+            margin: 2rem 0;
+            animation: fadeInUp 1.2s ease-out 0.9s both;
+        }
+
+        .main-image {
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 15px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            margin: 2rem auto;
+            animation: fadeInUp 1.2s ease-out 1.2s both;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Birthday Person Section */
+        .birthday-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+            position: relative;
+        }
+
+        .birthday-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 200px 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .birthday-info, .celebration-info {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(30, 60, 114, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .birthday-info::before, .celebration-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+        }
+
+        .birthday-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 10px solid #FFD700;
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.3);
+            margin-bottom: 1.5rem;
+        }
+
+        .birthday-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+
+        .birthday-title-small {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8rem;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .cake-divider {
+            font-size: 4rem;
+            color: #FFD700;
+            animation: bounce 2.5s ease-in-out infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(5deg); }
+        }
+
+        /* Event Details Section */
+        .event-details {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #1e3c72;
+            text-align: center;
+        }
+
+        .details-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            color: #1e3c72;
+        }
+
+        .event-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 2.5rem;
+            border: 2px solid rgba(30, 60, 114, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.1);
+        }
+
+        .event-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(30, 60, 114, 0.2);
+        }
+
+        .event-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: #FFD700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .event-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e3c72;
+        }
+
+        .event-time, .event-venue {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #2a5298;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(30, 60, 114, 0.1);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(30, 60, 114, 0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Location Section */
+        .location-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .location-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .venue-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .venue-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border-color: #FFD700;
+        }
+
+        .venue-icon {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .venue-icon i {
+            font-size: 3.5rem;
+            color: #FFD700;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .venue-details h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .venue-address {
+            font-size: 1.2rem;
+            color: #2a5298;
+            text-align: center;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .location-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1e3c72;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .location-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .location-btn i {
+            margin-right: 10px;
+        }
+
+        /* RSVP Section */
+        .rsvp-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            text-align: center;
+            color: #1e3c72;
+        }
+
+        .rsvp-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .rsvp-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            color: #1e3c72;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .contact-info {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(30, 60, 114, 0.1);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            color: #1e3c72;
+        }
+
+        .contact-item i {
+            margin-right: 1rem;
+            color: #FFD700;
+            width: 25px;
+            font-size: 1.3rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .elegant-title {
+                font-size: 3rem;
+            }
+
+            .elegant-title::before,
+            .elegant-title::after {
+                display: none;
+            }
+
+            .birthday-person {
+                font-size: 2.5rem;
+            }
+
+            .birthday-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cake-divider {
+                order: 2;
+                margin: 1rem 0;
+            }
+
+            .main-image {
+                width: 280px;
+                height: 280px;
+            }
+
+            .birthday-photo {
+                width: 180px;
+                height: 180px;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #FFA500 0%, #FFD700 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="invitation-wrapper">
+        <!-- Elegant Background Pattern -->
+        <div class="elegant-pattern"></div>
+
+        <!-- Floating Gold Elements -->
+        <div class="floating-elements">
+            <div class="gold-star">✨</div>
+            <div class="gold-star">⭐</div>
+            <div class="gold-star">🌟</div>
+            <div class="gold-star">💫</div>
+            <div class="gold-star">✨</div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="elegant-title">Happy Birthday</h1>
+                
+                {% if event_data.mainImage %}
+                <img src="{{ url_for('uploaded_file', filename=event_data.mainImage) }}" 
+                     alt="Birthday Photo" class="main-image">
+                {% endif %}
+
+                <div class="birthday-person">
+                    {{ event_data.birthdayPerson or 'Birthday Person' }}
+                </div>
+
+                {% if event_data.age %}
+                <div class="age-badge">
+                    {{ event_data.age }} Years Young!
+                </div>
+                {% endif %}
+
+                <div class="birthday-date">
+                    {% if event_data.eventDate %}
+                    <i class="fas fa-calendar-heart"></i>
+                    {{ event_data.eventDate }}
+                    {% endif %}
+                </div>
+
+                {% if event_data.description %}
+                <p style="font-size: 1.3rem; color: #E8F4FD; margin-top: 2rem; font-style: italic;">
+                    {{ event_data.description }}
+                </p>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Birthday Person Section -->
+        <section class="birthday-section">
+            <div class="birthday-container">
+                <!-- Birthday Person Info -->
+                <div class="birthday-info">
+                    {% if event_data.birthdayImage %}
+                    <img src="{{ url_for('uploaded_file', filename=event_data.birthdayImage) }}" 
+                         alt="{{ event_data.birthdayPerson }}" class="birthday-photo">
+                    {% endif %}
+                    <h3 class="birthday-name">{{ event_data.birthdayPerson or 'Birthday Star' }}</h3>
+                    <p class="birthday-title-small">The Birthday Person</p>
+                    <p>{{ event_data.birthdayDescription or 'Celebrating another year of life' }}</p>
+                </div>
+
+                <!-- Cake Divider -->
+                <div class="cake-divider">🎂</div>
+
+                <!-- Celebration Info -->
+                <div class="celebration-info">
+                    <div class="birthday-photo" style="background: linear-gradient(135deg, #FFD700, #FFA500); display: flex; align-items: center; justify-content: center; color: #1e3c72; font-size: 3.5rem;">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3 class="birthday-name">Celebration</h3>
+                    <p class="birthday-title-small">Join the Fun</p>
+                    <p>Let's make this birthday unforgettable!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Details -->
+        <section class="event-details">
+            <div class="details-container">
+                <h2 class="section-title">Celebration Details</h2>
+                
+                <div class="event-cards">
+                    {% if event_data.timeData.startTime %}
+                    <div class="event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
+                        <h3 class="event-name">Birthday Party</h3>
+                        <p class="event-time">
+                            <i class="fas fa-clock"></i>
+                            {{ event_data.timeData.startTime }}
+                        </p>
+                        {% if event_data.venueData.venue %}
+                        <p class="event-venue">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ event_data.venueData.venue }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    {% if event_data.timeData.dinnerTime %}
+                    <div class="event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3 class="event-name">Birthday Dinner</h3>
+                        <p class="event-time">
+                            <i class="fas fa-clock"></i>
+                            {{ event_data.timeData.dinnerTime }}
+                        </p>
+                        {% if event_data.venueData.venue %}
+                        <p class="event-venue">
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ event_data.venueData.venue }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if event_data.venueData.address %}
+                <div style="margin-top: 3rem; padding: 2.5rem; background: rgba(255,255,255,0.1); border-radius: 20px; border: 2px solid rgba(30, 60, 114, 0.2);">
+                    <h4 style="font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 1rem; color: #1e3c72;">
+                        <i class="fas fa-map-marker-alt"></i> Venue Address
+                    </h4>
+                    <p style="font-size: 1.2rem; color: #2a5298;">{{ event_data.venueData.address }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        {% if event_data.galleryImages and event_data.galleryImages|length > 0 %}
+        <section class="gallery-section">
+            <div class="details-container">
+                <h2 class="section-title" style="color: #1e3c72; text-align: center;">
+                    Our Memories
+                </h2>
+                
+                <div class="gallery-grid">
+                    {% for image in event_data.galleryImages %}
+                    <div class="gallery-item">
+                        <img src="{{ url_for('uploaded_file', filename=image) }}" 
+                             alt="Birthday Gallery" loading="lazy">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Location Section -->
+        {% if event_data.venueAddress %}
+        <section class="location-section">
+            <div class="location-container">
+                <h2 class="section-title" style="color: #FFD700; text-align: center; margin-bottom: 2rem;">
+                    <i class="fas fa-map-marker-alt" style="color: #FFD700; margin-right: 10px;"></i>
+                    Party Location
+                </h2>
+                
+                <div class="venue-card" onclick="openLocation('{{ event_data.venueAddress }}')" title="Click to view location on Google Maps">
+                    <div class="venue-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="venue-details">
+                        <h3>📍 Venue Address</h3>
+                        <p class="venue-address">{{ event_data.venueAddress }}</p>
+                        <button class="location-btn" onclick="event.stopPropagation(); openLocation('{{ event_data.venueAddress }}')">
+                            <i class="fas fa-directions"></i>
+                            Get Directions
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- RSVP Section -->
+        <section class="rsvp-section">
+            <div class="rsvp-container">
+                <h2 class="rsvp-title">Contact Us</h2>
+                <p style="font-size: 1.3rem; margin-bottom: 2rem; color: #1e3c72;">
+                    For any queries or to confirm your presence
+                </p>
+                
+                <div class="contact-info">
+                    {% if event_data.hostName %}
+                    <div class="contact-item">
+                        <i class="fas fa-user"></i>
+                        <span><strong>Host:</strong> {{ event_data.hostName }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if event_data.contactPhone %}
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span><strong>Phone:</strong> {{ event_data.contactPhone }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if event_data.contactEmail %}
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span><strong>Email:</strong> {{ event_data.contactEmail }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div style="margin-top: 3rem; font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: #1e3c72;">
+                    Looking forward to celebrating with you!
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add entrance animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(40px)';
+            section.style.transition = 'opacity 1s ease, transform 1s ease';
+            observer.observe(section);
+        });
+
+        // Gallery lightbox effect
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const img = this.querySelector('img');
+                const lightbox = document.createElement('div');
+                lightbox.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                    cursor: pointer;
+                `;
+                
+                const lightboxImg = document.createElement('img');
+                lightboxImg.src = img.src;
+                lightboxImg.style.cssText = `
+                    max-width: 90%;
+                    max-height: 90%;
+                    border-radius: 15px;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+                `;
+                
+                lightbox.appendChild(lightboxImg);
+                document.body.appendChild(lightbox);
+                
+                lightbox.addEventListener('click', () => {
+                    document.body.removeChild(lightbox);
+                });
+            });
+        });
+
+        // Location functionality
+        function openLocation(address) {
+            if (address && address.trim()) {
+                const encodedAddress = encodeURIComponent(address.trim());
+                const googleMapsUrl = `https://maps.google.com/?q=${encodedAddress}`;
+                window.open(googleMapsUrl, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>

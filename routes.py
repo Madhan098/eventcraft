@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, session, redirect, url_for, flash, send_from_directory
+from flask import render_template, request, jsonify, session, redirect, url_for, flash, send_from_directory, current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from extensions import db
@@ -10,7 +10,7 @@ import random
 import string
 import os
 import requests
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 import threading
 import time
 
@@ -41,6 +41,13 @@ def remove_oauth_state(state):
 # Helper function to check authentication (moved outside register_routes)
 def is_authenticated():
     return 'user_id' in session
+
+def is_admin():
+    """Check if current user is admin"""
+    if not is_authenticated():
+        return False
+    user = User.query.get(session['user_id'])
+    return user and user.is_admin
 
 def generate_unique_share_url():
     """Generate a unique share URL for invitations"""
@@ -79,15 +86,15 @@ def generate_google_calendar_url(invitation):
         
         # Create Google Calendar URL
         calendar_url = f"https://calendar.google.com/calendar/render?action=TEMPLATE"
-        calendar_url += f"&text={urlencode(event_title)}"
+        calendar_url += f"&text={quote(event_title)}"
         calendar_url += f"&dates={event_date}/{event_date}"
-        calendar_url += f"&details={urlencode(event_description)}"
-        calendar_url += f"&location={urlencode(event_location)}"
+        calendar_url += f"&details={quote(event_description)}"
+        calendar_url += f"&location={quote(event_location)}"
         
         return calendar_url
         
     except Exception as e:
-        app.logger.error(f"Error generating Google Calendar URL: {str(e)}")
+        current_app.logger.error(f"Error generating Google Calendar URL: {str(e)}")
         return None
 
 def register_routes(app):
@@ -522,6 +529,10 @@ def register_routes(app):
             flash('Please login to continue', 'error')
             return redirect(url_for('auth'))
         
+        # Check if user is admin and redirect to admin dashboard
+        if is_admin():
+            return redirect(url_for('admin_dashboard'))
+        
         user_id = session['user_id']
         user_name = session.get('user_name', 'User')
         user_email = session.get('user_email', '')
@@ -557,6 +568,109 @@ def register_routes(app):
         session.clear()
         flash('Logged out successfully', 'success')
         return redirect(url_for('index'))
+
+    # Admin Routes
+    @app.route('/admin')
+    def admin_dashboard():
+        """Admin dashboard for user management"""
+        if not is_admin():
+            flash('Access denied. Admin privileges required.', 'error')
+            return redirect(url_for('dashboard'))
+        
+        # Get all users
+        users = User.query.order_by(User.created_at.desc()).all()
+        
+        # Get all invitations
+        invitations = Invitation.query.order_by(Invitation.created_at.desc()).all()
+        
+        # Calculate statistics
+        total_users = len(users)
+        verified_users = len([u for u in users if u.is_verified])
+        admin_users = len([u for u in users if u.is_admin])
+        total_invitations = len(invitations)
+        total_views = sum(invitation.view_count for invitation in invitations)
+        
+        # Get recent activity
+        recent_users = users[:5]  # Last 5 registered users
+        recent_invitations = invitations[:5]  # Last 5 created invitations
+        
+        stats = {
+            'total_users': total_users,
+            'verified_users': verified_users,
+            'admin_users': admin_users,
+            'total_invitations': total_invitations,
+            'total_views': total_views
+        }
+        
+        return render_template('admin/dashboard.html', 
+                             users=users,
+                             invitations=invitations,
+                             stats=stats,
+                             recent_users=recent_users,
+                             recent_invitations=recent_invitations)
+
+    @app.route('/admin/users')
+    def admin_users():
+        """Admin user management page"""
+        if not is_admin():
+            flash('Access denied. Admin privileges required.', 'error')
+            return redirect(url_for('dashboard'))
+        
+        users = User.query.order_by(User.created_at.desc()).all()
+        return render_template('admin/users.html', users=users)
+
+    @app.route('/admin/invitations')
+    def admin_invitations():
+        """Admin invitation management page"""
+        if not is_admin():
+            flash('Access denied. Admin privileges required.', 'error')
+            return redirect(url_for('dashboard'))
+        
+        invitations = Invitation.query.order_by(Invitation.created_at.desc()).all()
+        return render_template('admin/invitations.html', invitations=invitations)
+
+    @app.route('/admin/user/<int:user_id>/toggle-status', methods=['POST'])
+    def toggle_user_status(user_id):
+        """Toggle user verification status"""
+        if not is_admin():
+            return jsonify({'success': False, 'message': 'Access denied'}), 403
+        
+        try:
+            user = User.query.get_or_404(user_id)
+            user.is_verified = not user.is_verified
+            db.session.commit()
+            
+            status = 'verified' if user.is_verified else 'unverified'
+            return jsonify({
+                'success': True, 
+                'message': f'User {status} successfully',
+                'is_verified': user.is_verified
+            })
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Failed to update user status'}), 500
+
+    @app.route('/admin/user/<int:user_id>/delete', methods=['DELETE'])
+    def delete_user(user_id):
+        """Delete a user (admin only)"""
+        if not is_admin():
+            return jsonify({'success': False, 'message': 'Access denied'}), 403
+        
+        try:
+            user = User.query.get_or_404(user_id)
+            
+            # Don't allow deleting admin users
+            if user.is_admin:
+                return jsonify({'success': False, 'message': 'Cannot delete admin users'}), 400
+            
+            # Delete user (cascade will handle invitations)
+            db.session.delete(user)
+            db.session.commit()
+            
+            return jsonify({'success': True, 'message': 'User deleted successfully'})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Failed to delete user'}), 500
 
     @app.route('/templates')
     def templates():
@@ -1938,12 +2052,51 @@ def register_routes(app):
                              invitation=invitation, 
                              google_calendar_url=google_calendar_url)
 
+    @app.route('/analytics')
+    def analytics():
+        """General analytics dashboard"""
+        if not is_authenticated():
+            flash('Please login to view analytics', 'error')
+            return redirect(url_for('auth'))
+        
+        user_id = session['user_id']
+        
+        # Get user's invitations
+        invitations = Invitation.query.filter_by(user_id=user_id).all()
+        
+        if not invitations:
+            flash('No invitations found. Create your first invitation to see analytics.', 'info')
+            return redirect(url_for('dashboard'))
+        
+        # Calculate overall analytics
+        total_views = sum(invitation.view_count for invitation in invitations)
+        total_guests = sum(len(invitation.guests) for invitation in invitations)
+        total_shares = sum(InvitationShare.query.filter_by(invitation_id=invitation.id).count() for invitation in invitations)
+        
+        # Get RSVP statistics
+        total_rsvps = sum(RSVP.query.filter_by(invitation_id=invitation.id).count() for invitation in invitations)
+        rsvp_rate = round((total_rsvps / total_guests * 100) if total_guests > 0 else 0, 1)
+        
+        # Prepare analytics data
+        analytics = {
+            'total_invitations': len(invitations),
+            'total_views': total_views,
+            'total_guests': total_guests,
+            'total_rsvps': total_rsvps,
+            'total_shares': total_shares,
+            'rsvp_rate': rsvp_rate
+        }
+        
+        return render_template('analytics/general.html', 
+                             analytics=analytics, 
+                             invitations=invitations)
+
     # Analytics Dashboard Route
     @app.route('/invitations/<int:invitation_id>/analytics')
     def invitation_analytics(invitation_id):
         """Analytics dashboard for invitation performance"""
         if not is_authenticated():
-            return redirect(url_for('login'))
+            return redirect(url_for('auth'))
         
         invitation = Invitation.query.get_or_404(invitation_id)
         

@@ -162,48 +162,48 @@
         }
     }
 </style>
-<section class="py-5" style="background: #f8f9fa; min-height: 100vh; display: flex; align-items: center;">
+<section class="py-5" style="background: var(--gradient-bg); min-height: 100vh; display: flex; align-items: center;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
                 <!-- Header Section -->
                 <div class="text-center mb-5">
-                    <div class="logo-container mb-4" style="width: 100px; height: 100px; background: var(--primary-teal); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 163, 136, 0.3);">
-                        <i class="fas fa-calendar-alt fa-3x" style="color: #ffffff;"></i>
+                    <div class="logo-container mb-4 animate-electric-glow" style="width: 100px; height: 100px; background: var(--gradient-primary); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(255, 0, 128, 0.4); border: 2px solid var(--primary);">
+                        <i class="fas fa-sparkles fa-3x" style="color: #ffffff;"></i>
                     </div>
-                    <h1 class="fw-bold mb-2" style="font-size: 2.5rem; color: var(--text-primary);">
-                        EventCraft <span style="color: var(--secondary-coral);">Pro</span>
+                    <h1 class="fw-bold mb-2 electric-text animate-electric-fade-in" style="font-size: 2.5rem; color: var(--text-primary);">
+                        EventCraft <span style="color: var(--primary);">Pro</span>
                     </h1>
-                    <p class="mb-0" style="font-size: 1.1rem; color: var(--text-secondary);">
+                    <p class="mb-0 animate-electric-slide-in animate-delay-2" style="font-size: 1.1rem; color: var(--text-secondary);">
                         Create beautiful digital invitations in minutes
                     </p>
                 </div>
 
                 <!-- Main Card -->
-                <div class="card shadow-lg border-0" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 25px; overflow: hidden;">
+                <div class="card shadow-lg border-0 animate-electric-fade-in" style="background: var(--bg-card); backdrop-filter: blur(20px); border-radius: 25px; overflow: hidden; border: 2px solid var(--border-color); box-shadow: var(--shadow-neon);">
                     <div class="card-body p-0">
                         <!-- Navigation Tabs -->
-                        <div class="nav-tabs-container" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 0; border-bottom: 1px solid rgba(0,0,0,0.1);">
+                        <div class="nav-tabs-container" style="background: var(--gradient-bg); padding: 0; border-bottom: 2px solid var(--primary);">
                             <ul class="nav nav-pills nav-fill" id="authTabs" style="margin: 0; border-radius: 0;">
                                 <li class="nav-item" style="flex: 1;">
-                                    <button class="nav-link active" id="login-tab" data-bs-toggle="pill" data-bs-target="#login" type="button" 
-                                            style="border-radius: 0; border: none; background: transparent; color: #6c757d; padding: 20px; font-weight: 600; transition: all 0.3s ease; position: relative;">
+                                    <button class="nav-link active animate-electric-scale" id="login-tab" data-bs-toggle="pill" data-bs-target="#login" type="button" 
+                                            style="border-radius: 0; border: none; background: transparent; color: var(--text-primary); padding: 20px; font-weight: 700; transition: all var(--transition-bounce); position: relative;">
                                         <i class="fas fa-sign-in-alt me-2"></i>Login
-                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transform: scaleX(1); transition: transform 0.3s ease;"></div>
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gradient-primary); transform: scaleX(1); transition: transform var(--transition-normal);"></div>
                                     </button>
                                 </li>
                                 <li class="nav-item" style="flex: 1;">
-                                    <button class="nav-link" id="register-tab" data-bs-toggle="pill" data-bs-target="#register" type="button"
-                                            style="border-radius: 0; border: none; background: transparent; color: #6c757d; padding: 20px; font-weight: 600; transition: all 0.3s ease; position: relative;">
+                                    <button class="nav-link animate-electric-scale animate-delay-1" id="register-tab" data-bs-toggle="pill" data-bs-target="#register" type="button"
+                                            style="border-radius: 0; border: none; background: transparent; color: var(--text-primary); padding: 20px; font-weight: 700; transition: all var(--transition-bounce); position: relative;">
                                         <i class="fas fa-user-plus me-2"></i>Register
-                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); transform: scaleX(0); transition: transform 0.3s ease;"></div>
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gradient-secondary); transform: scaleX(0); transition: transform var(--transition-normal);"></div>
                                     </button>
                                 </li>
                                 <li class="nav-item" style="flex: 1;">
-                                    <button class="nav-link" id="forgot-tab" data-bs-toggle="pill" data-bs-target="#forgot" type="button"
-                                            style="border-radius: 0; border: none; background: transparent; color: #6c757d; padding: 20px; font-weight: 600; transition: all 0.3s ease; position: relative;">
+                                    <button class="nav-link animate-electric-scale animate-delay-2" id="forgot-tab" data-bs-toggle="pill" data-bs-target="#forgot" type="button"
+                                            style="border-radius: 0; border: none; background: transparent; color: var(--text-primary); padding: 20px; font-weight: 700; transition: all var(--transition-bounce); position: relative;">
                                         <i class="fas fa-key me-2"></i>Forgot Password
-                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); transform: scaleX(0); transition: transform 0.3s ease;"></div>
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gradient-accent); transform: scaleX(0); transition: transform var(--transition-normal);"></div>
                                     </button>
                                 </li>
                             </ul>
@@ -213,17 +213,17 @@
                             <!-- Login Form -->
                             <div class="tab-pane fade show active" id="login">
                                 <div class="text-center mb-4">
-                                    <div class="login-icon mb-3" style="width: 70px; height: 70px; background: var(--primary-teal); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(0, 163, 136, 0.3);">
+                                    <div class="login-icon mb-3 animate-electric-glow" style="width: 70px; height: 70px; background: var(--gradient-primary); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(255, 0, 128, 0.4); border: 2px solid var(--primary);">
                                         <i class="fas fa-user-circle fa-2x" style="color: #ffffff;"></i>
                                     </div>
-                                    <h3 class="fw-bold" style="color: #2c3e50; margin-bottom: 10px;">Welcome Back!</h3>
-                                    <p class="text-muted mb-0" style="font-size: 0.95rem;">Sign in to continue to your account</p>
+                                    <h3 class="fw-bold electric-text animate-electric-fade-in" style="color: var(--text-primary); margin-bottom: 10px;">Welcome Back!</h3>
+                                    <p class="text-muted mb-0 animate-electric-slide-in animate-delay-2" style="font-size: 0.95rem; color: var(--text-secondary);">Sign in to continue to your account</p>
                                 </div>
 
                                 <form method="POST" action="{{ url_for('login') }}">
                                     <div class="mb-4">
-                                        <label for="login-email" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-envelope me-2" style="color: var(--primary-teal);"></i>Email Address
+                                        <label for="login-email" class="form-label fw-semibold" style="color: var(--text-primary);">
+                                            <i class="fas fa-envelope me-2" style="color: var(--primary);"></i>Email Address
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -235,8 +235,8 @@
                                     </div>
                                     
                                     <div class="mb-4">
-                                        <label for="login-password" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-lock me-2" style="color: var(--primary-teal);"></i>Password
+                                        <label for="login-password" class="form-label fw-semibold" style="color: var(--text-primary);">
+                                            <i class="fas fa-lock me-2" style="color: var(--primary);"></i>Password
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -334,8 +334,8 @@
                                     </div>
                                     
                                     <div class="mb-4">
-                                        <label for="register-password" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-lock me-2" style="color: var(--primary-teal);"></i>Password
+                                        <label for="register-password" class="form-label fw-semibold" style="color: var(--text-primary);">
+                                            <i class="fas fa-lock me-2" style="color: var(--primary);"></i>Password
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -351,8 +351,8 @@
                                     </div>
                                     
                                     <div class="mb-4">
-                                        <label for="register-confirm-password" class="form-label fw-semibold" style="color: #2c3e50;">
-                                            <i class="fas fa-check-double me-2" style="color: var(--primary-teal);"></i>Confirm Password
+                                        <label for="register-confirm-password" class="form-label fw-semibold" style="color: var(--text-primary);">
+                                            <i class="fas fa-check-double me-2" style="color: var(--primary);"></i>Confirm Password
                                         </label>
                                         <div class="input-group input-group-lg">
                                             <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -486,8 +486,8 @@
                                         <input type="hidden" id="final-otp" name="otp">
                                         
                                         <div class="mb-4">
-                                            <label for="new-password" class="form-label fw-semibold" style="color: #2c3e50;">
-                                                <i class="fas fa-lock me-2" style="color: #667eea;"></i>New Password
+                                            <label for="new-password" class="form-label fw-semibold" style="color: var(--text-primary);">
+                                                <i class="fas fa-lock me-2" style="color: var(--primary);"></i>New Password
                                             </label>
                                             <div class="input-group input-group-lg">
                                                 <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">
@@ -503,8 +503,8 @@
                                         </div>
                                         
                                         <div class="mb-4">
-                                            <label for="confirm-new-password" class="form-label fw-semibold" style="color: #2c3e50;">
-                                                <i class="fas fa-check-double me-2" style="color: #667eea;"></i>Confirm Password
+                                            <label for="confirm-new-password" class="form-label fw-semibold" style="color: var(--text-primary);">
+                                                <i class="fas fa-check-double me-2" style="color: var(--primary);"></i>Confirm Password
                                             </label>
                                             <div class="input-group input-group-lg">
                                                 <span class="input-group-text" style="background: #f8f9fa; border: 2px solid #e9ecef; border-right: none; border-radius: 12px 0 0 12px;">

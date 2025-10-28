@@ -12,6 +12,7 @@ class User(db.Model):
     mobile = db.Column(db.String(15), nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     is_verified = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False)
     google_id = db.Column(db.String(100), unique=True, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -306,64 +307,72 @@ def init_sample_data():
             'emoji_theme': 'Crescent Mosque Heart',
             'preview_image': 'https://via.placeholder.com/300x400/228B22/FFFFFF?text=Muslim+Wedding'
         },
-        # Hindu Birthday Templates
+        # Birthday Templates
         {
-            'name': 'Traditional Hindu Birthday',
-            'description': 'Traditional Hindu birthday celebration',
-            'event_type': 'birthday',
-            'religious_type': 'hindu',
-            'style': 'traditional',
-            'color_scheme': 'orange',
-            'font_family': 'Noto Sans Devanagari, sans-serif',
-            'emoji_theme': 'Cake Lamp Flowers',
-            'preview_image': 'https://via.placeholder.com/300x400/FF8C00/FFFFFF?text=Hindu+Birthday'
-        },
-        # Muslim Birthday Templates
-        {
-            'name': 'Islamic Birthday',
-            'description': 'Islamic birthday celebration invitation',
-            'event_type': 'birthday',
-            'religious_type': 'muslim',
-            'style': 'traditional',
-            'color_scheme': 'green',
-            'font_family': 'Amiri, serif',
-            'emoji_theme': 'Cake Crescent Moon',
-            'preview_image': 'https://via.placeholder.com/300x400/32CD32/FFFFFF?text=Islamic+Birthday'
-        },
-        # Christian Birthday Templates
-        {
-            'name': 'Christian Birthday',
-            'description': 'Christian birthday celebration invitation',
-            'event_type': 'birthday',
-            'religious_type': 'christian',
-            'style': 'classic',
-            'color_scheme': 'blue',
-            'font_family': 'Georgia, serif',
-            'emoji_theme': 'Cake Cross Party',
-            'preview_image': 'https://via.placeholder.com/300x400/1E90FF/FFFFFF?text=Christian+Birthday'
-        },
-        # General Birthday Templates
-        {
-            'name': 'Fun & Colorful',
-            'description': 'Vibrant and playful birthday invitation',
+            'name': 'Birthday Fun Colorful',
+            'description': 'Vibrant and playful birthday invitation with elegant navy blue design',
             'event_type': 'birthday',
             'religious_type': 'general',
             'style': 'fun',
-            'color_scheme': 'rainbow',
-            'font_family': 'Comic Sans MS, cursive',
+            'color_scheme': 'navy_gold',
+            'font_family': 'Brush Script MT, Georgia',
             'emoji_theme': 'Cake Party Balloons',
-            'preview_image': 'https://via.placeholder.com/300x400/FF69B4/FFFFFF?text=Fun+Birthday'
+            'preview_image': '/images/birthday.jpg'
         },
         {
-            'name': 'Fun & Colorful Birthday',
-            'description': 'Vibrant and playful birthday invitation with floating balloons',
+            'name': 'Birthday Elegant Gold Blue',
+            'description': 'Elegant birthday invitation with gold and blue theme',
             'event_type': 'birthday',
             'religious_type': 'general',
-            'style': 'fun',
-            'color_scheme': 'pink',
-            'font_family': 'Fredoka One, cursive',
+            'style': 'elegant',
+            'color_scheme': 'gold_blue',
+            'font_family': 'Brush Script MT, Georgia',
             'emoji_theme': 'Cake Party Balloons',
-            'preview_image': 'https://via.placeholder.com/300x400/FF69B4/FFFFFF?text=Fun+Birthday'
+            'preview_image': '/images/birthday.jpg'
+        },
+        {
+            'name': 'Birthday Elegant Navy Gold',
+            'description': 'Sophisticated birthday invitation with navy and gold accents',
+            'event_type': 'birthday',
+            'religious_type': 'general',
+            'style': 'elegant',
+            'color_scheme': 'navy_gold',
+            'font_family': 'Brush Script MT, Georgia',
+            'emoji_theme': 'Cake Party Balloons',
+            'preview_image': '/images/birthday.jpg'
+        },
+        {
+            'name': 'Birthday Elegant Purple Gold',
+            'description': 'Royal birthday invitation with purple and gold design',
+            'event_type': 'birthday',
+            'religious_type': 'general',
+            'style': 'elegant',
+            'color_scheme': 'purple_gold',
+            'font_family': 'Brush Script MT, Georgia',
+            'emoji_theme': 'Cake Party Balloons',
+            'preview_image': '/images/birthday.jpg'
+        },
+        {
+            'name': 'Birthday Elegant Dark Gold',
+            'description': 'Dark and elegant birthday invitation with gold highlights',
+            'event_type': 'birthday',
+            'religious_type': 'general',
+            'style': 'elegant',
+            'color_scheme': 'dark_gold',
+            'font_family': 'Brush Script MT, Georgia',
+            'emoji_theme': 'Cake Party Balloons',
+            'preview_image': '/images/birthday.jpg'
+        },
+        {
+            'name': 'Birthday Final Elegant',
+            'description': 'Ultimate elegant birthday invitation design',
+            'event_type': 'birthday',
+            'religious_type': 'general',
+            'style': 'elegant',
+            'color_scheme': 'elegant',
+            'font_family': 'Brush Script MT, Georgia',
+            'emoji_theme': 'Cake Party Balloons',
+            'preview_image': '/images/birthday.jpg'
         },
         # Other Templates
         {
