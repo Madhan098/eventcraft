@@ -1724,17 +1724,49 @@
                 display: flex !important;
                 visibility: visible !important;
                 opacity: 1 !important;
-                position: relative;
-                z-index: 1001;
-                align-items: center;
-                justify-content: center;
-                width: 44px;
-                height: 44px;
-                border-radius: 8px;
-                background: var(--bg-primary);
-                border: 1px solid var(--border-color);
-                box-shadow: var(--shadow-sm);
-                cursor: pointer;
+                position: relative !important;
+                z-index: 1001 !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 48px !important;
+                height: 48px !important;
+                border-radius: 8px !important;
+                background: var(--gradient-primary) !important;
+                border: 2px solid var(--primary) !important;
+                box-shadow: var(--shadow-electric) !important;
+                cursor: pointer !important;
+                transition: all var(--transition-bounce) !important;
+                color: white !important;
+                font-size: 1.2rem !important;
+                pointer-events: auto !important;
+                user-select: none !important;
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                touch-action: manipulation !important;
+                -webkit-tap-highlight-color: transparent !important;
+            }
+            
+            .mobile-nav-toggle:hover {
+                transform: translateY(-2px) scale(1.05) !important;
+                box-shadow: 
+                    0 12px 40px rgba(0, 240, 255, 0.6),
+                    0 0 30px rgba(0, 240, 255, 0.5) !important;
+            }
+            
+            .mobile-nav-toggle:active {
+                transform: translateY(-1px) scale(1.02) !important;
+            }
+            
+            .mobile-nav-toggle:focus {
+                outline: 2px solid var(--accent) !important;
+                outline-offset: 2px !important;
+            }
+            
+            .mobile-nav-toggle i {
+                color: white !important;
+                font-size: 1.2rem !important;
+                pointer-events: none !important;
             }
             
             .navbar-collapse {
@@ -2927,7 +2959,7 @@
 
         // Enhanced Mobile Navigation Implementation
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Initializing enhanced mobile navigation...');
+            console.log('🚀 Initializing enhanced mobile navigation...');
             
             // Get elements with more robust selectors
             const toggleBtn = document.getElementById('mobileNavToggle');
@@ -2935,55 +2967,84 @@
             const overlay = document.getElementById('mobileNavOverlay');
             const closeBtn = document.getElementById('mobileNavClose');
             
-            console.log('Elements found:', {
+            console.log('📱 Elements found:', {
                 toggle: !!toggleBtn,
                 drawer: !!drawer,
                 overlay: !!overlay,
                 close: !!closeBtn
             });
             
+            // Check if elements exist
+            if (!toggleBtn) {
+                console.error('❌ Mobile nav toggle button not found!');
+                return;
+            }
+            if (!drawer) {
+                console.error('❌ Mobile nav drawer not found!');
+                return;
+            }
+            if (!overlay) {
+                console.error('❌ Mobile nav overlay not found!');
+                return;
+            }
+            
+            console.log('✅ All mobile nav elements found');
+            
             // Simplified and reliable toggle function
             function toggleMobileNav() {
                 try {
-                    if (!drawer || !overlay) {
-                        console.error('Mobile nav elements not found');
-                        return;
-                    }
+                    console.log('🔄 Toggling mobile navigation...');
                     
                     const isOpen = drawer.classList.contains('open');
+                    console.log('📊 Current state:', isOpen ? 'OPEN' : 'CLOSED');
                     
                     if (isOpen) {
                         // Close navigation
+                        console.log('🔒 Closing mobile navigation');
                         drawer.classList.remove('open');
                         overlay.classList.remove('show');
                         document.body.style.overflow = '';
                         document.body.classList.remove('nav-open');
                     } else {
                         // Open navigation
+                        console.log('🔓 Opening mobile navigation');
                         drawer.classList.add('open');
                         overlay.classList.add('show');
                         document.body.style.overflow = 'hidden';
                         document.body.classList.add('nav-open');
                     }
+                    
+                    console.log('✅ Mobile navigation toggled successfully');
                 } catch (error) {
-                    console.error('Error toggling mobile nav:', error);
+                    console.error('❌ Error toggling mobile nav:', error);
                 }
             }
             
-            // Simple and reliable event listeners
+            // Enhanced event listeners with better debugging
             if (toggleBtn) {
-                // Clear any existing listeners
+                console.log('🎯 Setting up toggle button event listener');
+                
+                // Remove any existing event listeners
                 const newToggleBtn = toggleBtn.cloneNode(true);
                 toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
                 
-                // Add single click event listener
+                // Add click event listener
                 newToggleBtn.addEventListener('click', function(e) {
+                    console.log('🖱️ Toggle button clicked!');
                     e.preventDefault();
                     e.stopPropagation();
                     toggleMobileNav();
                 });
                 
-                console.log('Mobile nav toggle button ready');
+                // Add touch event listener for mobile devices
+                newToggleBtn.addEventListener('touchstart', function(e) {
+                    console.log('👆 Toggle button touched!');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMobileNav();
+                });
+                
+                console.log('✅ Toggle button event listeners set up');
             }
             
             // Close button functionality
@@ -3072,24 +3133,48 @@
             
             // Test function to verify everything is working
             window.testMobileNav = function() {
-                console.log('Testing mobile navigation...');
+                console.log('🧪 Testing mobile navigation...');
                 console.log('Toggle button:', toggleBtn);
                 console.log('Drawer:', drawer);
                 console.log('Overlay:', overlay);
                 console.log('Close button:', closeBtn);
                 
                 if (toggleBtn) {
-                    console.log('Toggle button styles:', window.getComputedStyle(toggleBtn));
-                    console.log('Toggle button display:', window.getComputedStyle(toggleBtn).display);
-                    console.log('Toggle button visibility:', window.getComputedStyle(toggleBtn).visibility);
+                    const styles = window.getComputedStyle(toggleBtn);
+                    console.log('📊 Toggle button styles:');
+                    console.log('  - Display:', styles.display);
+                    console.log('  - Visibility:', styles.visibility);
+                    console.log('  - Opacity:', styles.opacity);
+                    console.log('  - Position:', styles.position);
+                    console.log('  - Z-index:', styles.zIndex);
                 }
+                
+                // Test the toggle function
+                console.log('🔄 Testing toggle function...');
+                toggleMobileNav();
                 
                 return {
                     toggleBtn: !!toggleBtn,
                     drawer: !!drawer,
                     overlay: !!overlay,
-                    closeBtn: !!closeBtn
+                    closeBtn: !!closeBtn,
+                    toggleFunction: typeof toggleMobileNav === 'function'
                 };
+            };
+            
+            // Quick test function for immediate verification
+            window.quickTest = function() {
+                console.log('⚡ Quick mobile nav test');
+                if (toggleBtn && drawer && overlay) {
+                    console.log('✅ All elements found - testing toggle');
+                    toggleMobileNav();
+                    setTimeout(() => {
+                        console.log('🔄 Testing close');
+                        toggleMobileNav();
+                    }, 1000);
+                } else {
+                    console.log('❌ Missing elements');
+                }
             };
             
             console.log('Enhanced mobile navigation initialized successfully');
