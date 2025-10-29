@@ -1038,7 +1038,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const wishesDisplay = document.getElementById('wishesDisplay');
-                    if (data.success && data.wishes.length > 0) {
+                    if (wishesDisplay && data.success && data.wishes.length > 0) {
                         wishesDisplay.innerHTML = data.wishes.map(wish => `
                             <div class="wish-item">
                                 <div class="wish-name">${escapeHtml(wish.name)}</div>
@@ -1046,13 +1046,16 @@
                                 <div class="wish-date">${wish.created_at}</div>
                             </div>
                         `).join('');
-                    } else {
+                    } else if (wishesDisplay) {
                         wishesDisplay.innerHTML = '<div class="no-wishes">No wishes yet. Be the first to send a birthday wish!</div>';
                     }
                 })
                 .catch(error => {
                     console.error('Error loading wishes:', error);
-                    document.getElementById('wishesDisplay').innerHTML = '<div class="no-wishes">Error loading wishes. Please try again later.</div>';
+                    const wishesDisplay = document.getElementById('wishesDisplay');
+                    if (wishesDisplay) {
+                        wishesDisplay.innerHTML = '<div class="no-wishes">Error loading wishes. Please try again later.</div>';
+                    }
                 });
         }
 
@@ -1063,18 +1066,20 @@
                 .then(data => {
                     if (data.success && data.already_wished) {
                         const form = document.getElementById('wishForm');
-                        form.innerHTML = `
-                            <div class="already-wished">
-                                <i class="fas fa-heart"></i>
-                                <h3>Thank you for your wish!</h3>
-                                <p>You have already sent a wish for this birthday celebration.</p>
-                                <div class="existing-wish">
-                                    <strong>Your wish:</strong><br>
-                                    "${escapeHtml(data.existing_wish.message)}"<br>
-                                    <small>Sent on ${data.existing_wish.created_at}</small>
+                        if (form) {
+                            form.innerHTML = `
+                                <div class="already-wished">
+                                    <i class="fas fa-heart"></i>
+                                    <h3>Thank you for your wish!</h3>
+                                    <p>You have already sent a wish for this birthday celebration.</p>
+                                    <div class="existing-wish">
+                                        <strong>Your wish:</strong><br>
+                                        "${escapeHtml(data.existing_wish.message)}"<br>
+                                        <small>Sent on ${data.existing_wish.created_at}</small>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
+                        }
                     }
                 })
                 .catch(error => {
@@ -1083,48 +1088,59 @@
         }
 
         // Handle wish form submission
-        document.getElementById('wishForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const submitBtn = this.querySelector('.wish-submit-btn');
-            const originalText = submitBtn.innerHTML;
-            
-            // Show loading state
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            submitBtn.disabled = true;
-            
-            fetch(`/add-wish/${shareUrl}`, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    this.innerHTML = `
-                        <div class="wish-success">
-                            <i class="fas fa-check-circle"></i>
-                            <h3>Wish Sent Successfully!</h3>
-                            <p>Thank you for your birthday wish. It will appear below shortly.</p>
-                        </div>
-                    `;
+        document.addEventListener('DOMContentLoaded', function() {
+            const wishForm = document.getElementById('wishForm');
+            if (wishForm) {
+                wishForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
                     
-                    // Reload wishes
-                    setTimeout(loadWishes, 1000);
-                } else {
-                    // Show error message
-                    alert(data.message || 'Failed to send wish. Please try again.');
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }
-            })
-            .catch(error => {
-                console.error('Error sending wish:', error);
-                alert('Failed to send wish. Please try again.');
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            });
+                    const formData = new FormData(this);
+                    const submitBtn = this.querySelector('.wish-submit-btn');
+                    const originalText = submitBtn ? submitBtn.innerHTML : '';
+                    
+                    // Show loading state
+                    if (submitBtn) {
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                        submitBtn.disabled = true;
+                    }
+                    
+                    fetch(`/add-wish/${shareUrl}`, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Show success message
+                            this.innerHTML = `
+                                <div class="wish-success">
+                                    <i class="fas fa-check-circle"></i>
+                                    <h3>Wish Sent Successfully!</h3>
+                                    <p>Thank you for your birthday wish. It will appear below shortly.</p>
+                                </div>
+                            `;
+                            
+                            // Reload wishes
+                            setTimeout(loadWishes, 1000);
+                        } else {
+                            // Show error message
+                            alert(data.message || 'Failed to send wish. Please try again.');
+                            if (submitBtn) {
+                                submitBtn.innerHTML = originalText;
+                                submitBtn.disabled = false;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error sending wish:', error);
+                        alert('Failed to send wish. Please try again.');
+                        if (submitBtn) {
+                            submitBtn.innerHTML = originalText;
+                            submitBtn.disabled = false;
+                        }
+                    });
+                });
+            }
         });
 
         // Utility function to escape HTML

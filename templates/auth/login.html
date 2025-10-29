@@ -180,7 +180,7 @@
                 </div>
 
                 <!-- Main Card -->
-                <div class="card shadow-lg border-0 animate-electric-fade-in" style="background: var(--bg-card); backdrop-filter: blur(20px); border-radius: 25px; overflow: hidden; border: 2px solid var(--border-color); box-shadow: var(--shadow-neon);">
+                <div class="card shadow-lg border-0 animate-electric-fade-in" style="background: var(--bg-card); backdrop-filter: blur(20px); border-radius: 25px; overflow: hidden; border: 2px solid var(--border-color); box-shadow: var(--shadow-md);">
                     <div class="card-body p-0">
                         <!-- Navigation Tabs -->
                         <div class="nav-tabs-container" style="background: var(--gradient-bg); padding: 0; border-bottom: 2px solid var(--primary);">
@@ -708,9 +708,9 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch('{{ url_for("forgot_password") }}', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: new URLSearchParams({
+                body: JSON.stringify({
                     'email': email
                 })
             })
@@ -749,9 +749,9 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch('{{ url_for("verify_reset_otp") }}', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: new URLSearchParams({
+                body: JSON.stringify({
                     'email': resetEmail.value,
                     'otp': otp
                 })
@@ -788,13 +788,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Submit password reset via AJAX
             fetch('{{ url_for("reset_password") }}', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: new URLSearchParams({
+                body: JSON.stringify({
                     'email': finalEmail.value,
                     'otp': finalOtp.value,
                     'password': newPassword,
@@ -838,9 +837,9 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch('{{ url_for("forgot_password") }}', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: new URLSearchParams({
+                body: JSON.stringify({
                     'email': email
                 })
             })

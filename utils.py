@@ -12,12 +12,14 @@ def send_otp_email(email, otp_code, purpose='verification'):
     """Send OTP via email using Gmail SMTP"""
     
     # Always display OTP in terminal for debugging
-    print(f"\n=== OTP GENERATED FOR {email.upper()} ===")
+    print(f"\n{'='*60}")
+    print(f"OTP GENERATED FOR {email.upper()}")
+    print(f"{'='*60}")
     print(f"Purpose: {purpose}")
     print(f"OTP Code: {otp_code}")
     print(f"Valid for 10 minutes")
     print(f"Use this OTP to complete your {purpose}")
-    print(f"{'='*50}\n")
+    print(f"{'='*60}\n")
     
     try:
         # Gmail SMTP configuration from environment variables
@@ -25,6 +27,11 @@ def send_otp_email(email, otp_code, purpose='verification'):
         smtp_port = 587
         smtp_username = os.environ.get('SMTP_USERNAME', 'jmadhanplacement@gmail.com')
         smtp_password = os.environ.get('SMTP_PASSWORD', 'nuzo pyuk focz kdxx')
+        
+        # Validate email format
+        if not email or '@' not in email:
+            print(f"ERROR: Invalid email address: {email}")
+            return False
         
         # Determine email content based on purpose
         if purpose == 'password_reset':
@@ -47,18 +54,36 @@ def send_otp_email(email, otp_code, purpose='verification'):
         
         # Email body with both HTML and plain text
         html_body = f'''
+        <!DOCTYPE html>
         <html>
+        <head>
+            <meta charset="UTF-8">
+            <style>
+                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .otp-box {{ background: linear-gradient(135deg, #E91E63 0%, #9C27B0 50%, #66BB6A 100%); 
+                            padding: 30px; text-align: center; border-radius: 12px; margin: 30px 0; }}
+                .otp-code {{ font-size: 42px; font-weight: bold; color: #FFFFFF; 
+                            letter-spacing: 8px; margin: 20px 0; font-family: 'Courier New', monospace; }}
+                .footer {{ color: #666; font-size: 12px; margin-top: 30px; padding-top: 20px; 
+                          border-top: 1px solid #eee; }}
+            </style>
+        </head>
         <body>
-            <h2 style="color: #1a237e;">{title}</h2>
-            <p>Hello,</p>
-            <p>{message}</p>
-            <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-radius: 5px; margin: 20px 0;">
-                <h1 style="color: #1a237e; font-size: 36px; margin: 0; letter-spacing: 5px;">{otp_code}</h1>
+            <div class="container">
+                <h2 style="color: #E91E63;">{title}</h2>
+                <p>Hello,</p>
+                <p>{message}</p>
+                <div class="otp-box">
+                    <div class="otp-code">{otp_code}</div>
+                </div>
+                <p><strong>This OTP will expire in 10 minutes.</strong></p>
+                <p>If you didn't request this {action}, please ignore this email.</p>
+                <div class="footer">
+                    <p>EventCraft Pro - Digital Event Invitations</p>
+                    <p>Create beautiful invitations in minutes</p>
+                </div>
             </div>
-            <p><strong>This OTP will expire in 10 minutes.</strong></p>
-            <p>If you didn't request this {action}, please ignore this email.</p>
-            <hr>
-            <p style="color: #666; font-size: 12px;">EventCraft Pro - Digital Event Invitations</p>
         </body>
         </html>
         '''
@@ -76,6 +101,7 @@ If you didn't request this {action}, please ignore this email.
 
 ---
 EventCraft Pro - Digital Event Invitations
+Create beautiful invitations in minutes
         '''
         
         # Attach both plain text and HTML versions
@@ -85,88 +111,116 @@ EventCraft Pro - Digital Event Invitations
         # Send email with detailed logging
         print(f"Attempting to send {purpose} email to: {email}")
         print(f"Using SMTP server: {smtp_server}:{smtp_port}")
+        print(f"From: {smtp_username}")
         
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.set_debuglevel(1)  # Enable debug output
+        server = smtplib.SMTP(smtp_server, smtp_port, timeout=10)
+        server.set_debuglevel(0)  # Set to 1 for verbose logging
+        server.ehlo()
         server.starttls()
-        print("STARTTLS enabled")
+        server.ehlo()
+        print("✓ STARTTLS enabled")
         
         server.login(smtp_username, smtp_password)
-        print("SMTP login successful")
+        print("✓ SMTP login successful")
         
         text = msg.as_string()
-        result = server.sendmail(smtp_username, email, text)
+        result = server.sendmail(smtp_username, [email], text)
         server.quit()
         
+        print(f"✓ Email sent successfully to {email}")
         print(f"SMTP sendmail result: {result}")
-        print(f"{purpose} OTP email sent successfully to {email}")
         
-        # Additional verification
+        # Empty dict means success
         if not result:
-            print("Email sent without errors")
+            print(f"✓ OTP email delivered successfully to {email}")
+            return True
         else:
-            print(f"Email sent with some delivery issues: {result}")
-            
-        return True
-        
-    except Exception as e:
-        print(f"Failed to send {purpose} email: {str(e)}")
-        print(f"Exception type: {type(e).__name__}")
-        
-        # Try with different approach - simple message
-        try:
-            print("Attempting simple email approach...")
-            
-            # Simple message without multipart
-            simple_msg = MIMEText(f"""
-EventCraft Pro - Email Verification
-
-Your OTP code is: {otp_code}
-
-This code will expire in 10 minutes.
-
-If you didn't request this, please ignore this email.
-            """)
-            
-            simple_msg['Subject'] = "EventCraft Pro - OTP Verification"
-            simple_msg['From'] = 'jmadhanplacement@gmail.com'
-            simple_msg['To'] = email
-            
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()
-            server.login('jmadhanplacement@gmail.com', 'nuzo pyuk focz kdxx')
-            server.send_message(simple_msg)
-            server.quit()
-            
-            print(f"Simple OTP email sent successfully to {email}")
+            print(f"⚠ Email sent with delivery issues: {result}")
+            # Still return True as email was accepted by server
             return True
             
-        except Exception as e2:
-            print(f"Simple email also failed: {str(e2)}")
-            
-        # Fallback to console output for debugging
-        print(f"=== OTP EMAIL (FALLBACK) ===")
-        print(f"To: {email}")
-        print(f"OTP Code: {otp_code}")
-        print(f"Purpose: {purpose}")
-        print(f"================")
+    except smtplib.SMTPAuthenticationError as e:
+        print(f"✗ SMTP Authentication Error: {str(e)}")
+        print("Please check your SMTP credentials (username and password)")
         
-        # Always show OTP in terminal for debugging
-        print(f"\n=== OTP FOR {email.upper()}: {otp_code} ===")
-        print(f"Purpose: {purpose}")
-        print(f"Valid for 10 minutes")
-        print(f"Use this OTP to complete your {purpose}\n")
+    except smtplib.SMTPRecipientsRefused as e:
+        print(f"✗ SMTP Recipients Refused: {str(e)}")
+        print(f"Email address {email} was refused by the server")
         
-        # Provide troubleshooting suggestions
-        print("TROUBLESHOOTING SUGGESTIONS:")
-        print("1. Check if Gmail account has 2-factor authentication enabled")
-        print("2. Verify the app password is correct and hasn't expired")
-        print("3. Check spam/junk folder for the email")
-        print("4. Try with a different email address")
-        print("5. Set environment variables: SMTP_USERNAME and SMTP_PASSWORD")
-        print("6. For Render deployment, add these as environment variables in Render dashboard")
+    except smtplib.SMTPSenderRefused as e:
+        print(f"✗ SMTP Sender Refused: {str(e)}")
+        print("Sender email address was refused by the server")
         
-        return False
+    except smtplib.SMTPDataError as e:
+        print(f"✗ SMTP Data Error: {str(e)}")
+        print("The server refused the message data")
+        
+    except smtplib.SMTPConnectError as e:
+        print(f"✗ SMTP Connection Error: {str(e)}")
+        print("Could not connect to SMTP server")
+        
+    except smtplib.SMTPException as e:
+        print(f"✗ SMTP Error: {str(e)}")
+        print(f"Exception type: {type(e).__name__}")
+        
+    except Exception as e:
+        print(f"✗ Unexpected Error: {str(e)}")
+        print(f"Exception type: {type(e).__name__}")
+    
+    # Try fallback approach with simple message
+    print("\nAttempting fallback email approach...")
+    try:
+        simple_msg = MIMEText(f"""
+EventCraft Pro - {title}
+
+Hello,
+
+{message} {otp_code}
+
+This OTP will expire in 10 minutes.
+
+If you didn't request this {action}, please ignore this email.
+
+---
+EventCraft Pro - Digital Event Invitations
+        """)
+        
+        simple_msg['Subject'] = subject
+        simple_msg['From'] = smtp_username
+        simple_msg['To'] = email
+        
+        server = smtplib.SMTP('smtp.gmail.com', 587, timeout=10)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.send_message(simple_msg)
+        server.quit()
+        
+        print(f"✓ Fallback email sent successfully to {email}")
+        return True
+        
+    except Exception as e2:
+        print(f"✗ Fallback email also failed: {str(e2)}")
+    
+    # Final fallback - always print OTP for manual verification
+    print(f"\n{'='*60}")
+    print(f"EMAIL SENDING FAILED - OTP FOR MANUAL USE")
+    print(f"{'='*60}")
+    print(f"Email: {email}")
+    print(f"OTP Code: {otp_code}")
+    print(f"Purpose: {purpose}")
+    print(f"Expires: 10 minutes from now")
+    print(f"{'='*60}\n")
+    
+    print("TROUBLESHOOTING SUGGESTIONS:")
+    print("1. Check if Gmail account has 2-factor authentication enabled")
+    print("2. Verify the app password is correct and hasn't expired")
+    print("3. Check spam/junk folder for the email")
+    print("4. Ensure SMTP_USERNAME and SMTP_PASSWORD environment variables are set")
+    print("5. For Render deployment, add these as environment variables in Render dashboard")
+    print("6. Check firewall/network restrictions")
+    print("7. Verify email address format is correct")
+    
+    return False
 
 def format_date(date_str):
     """Format date string for display"""

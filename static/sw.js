@@ -1,16 +1,16 @@
 // Service Worker for EventCraft Pro
-const CACHE_NAME = 'eventcraft-pro-v1';
+const CACHE_NAME = 'eventcraft-pro-v2';
 const urlsToCache = [
     '/',
-    '/static/style.css',
-    '/static/script.js',
-    '/images/hero-invitation.png',
-    '/images/wedding.jpg',
+    '/static/css/style.css',
+    '/static/js/app.js',
     '/images/birthday.jpg',
     '/images/anniversery.jpg',
     '/images/babyshower.jpg',
     '/images/graduation.jpg',
-    '/images/retirement.jpg'
+    '/images/retirement.jpg',
+    '/images/corporateevent.jpg',
+    '/images/templateselection/wed.jpg'
 ];
 
 // Install event
@@ -19,7 +19,15 @@ self.addEventListener('install', event => {
         caches.open(CACHE_NAME)
             .then(cache => {
                 console.log('Opened cache');
-                return cache.addAll(urlsToCache);
+                // Cache files individually to handle missing files gracefully
+                return Promise.allSettled(
+                    urlsToCache.map(url => 
+                        cache.add(url).catch(err => {
+                            console.warn(`Failed to cache ${url}:`, err);
+                            return null;
+                        })
+                    )
+                );
             })
     );
 });
@@ -33,7 +41,14 @@ self.addEventListener('fetch', event => {
                 if (response) {
                     return response;
                 }
-                return fetch(event.request);
+                return fetch(event.request).catch(err => {
+                    console.warn(`Failed to fetch ${event.request.url}:`, err);
+                    // Return a basic response for failed requests
+                    if (event.request.destination === 'image') {
+                        return new Response('', { status: 404 });
+                    }
+                    throw err;
+                });
             }
         )
     );

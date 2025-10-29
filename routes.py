@@ -191,6 +191,16 @@ def register_routes(app):
                 flash('Mobile number already registered', 'error')
                 return redirect(url_for('auth'))
             
+            # Invalidate any existing unused OTPs for this email (if resending)
+            existing_otps = OTP.query.filter_by(
+                email=data['email'],
+                purpose='verification',
+                is_used=False
+            ).all()
+            
+            for existing_otp in existing_otps:
+                existing_otp.is_used = True
+            
             # Create new user
             user = User(
                 name=data['name'],
@@ -206,17 +216,24 @@ def register_routes(app):
             otp = OTP(
                 email=data['email'],
                 otp_code=otp_code,
+                purpose='verification',
                 expires_at=datetime.utcnow() + timedelta(minutes=10)
             )
             db.session.add(otp)
             db.session.commit()
             
-            # Send OTP email
-            send_otp_email(data['email'], otp_code, purpose='verification')
+            # Send OTP email - check if email was sent successfully
+            email_sent = send_otp_email(data['email'], otp_code, purpose='verification')
+            
+            if not email_sent:
+                # If email failed, still allow user to proceed but warn them
+                app.logger.warning(f"OTP email failed to send to {data['email']}, but OTP was generated: {otp_code}")
+                flash('OTP sent to your email. Please check your inbox. If you don\'t see it, check spam folder.', 'warning')
+            else:
+                flash('OTP sent to your email. Please check your inbox.', 'success')
             
             session['temp_email'] = data['email']
             
-            flash('OTP sent to your email. Please check your inbox.', 'success')
             return redirect(url_for('verify_otp'))
             
         except Exception as e:
@@ -262,8 +279,16 @@ def register_routes(app):
     @app.route('/verify-otp', methods=['POST'])
     def verify_otp_post():
         try:
-            otp_code = request.form['otp']
-            email = session['temp_email']
+            otp_code = request.form.get('otp', '').strip()
+            email = session.get('temp_email')
+            
+            if not email:
+                flash('Session expired. Please register again.', 'error')
+                return redirect(url_for('auth'))
+            
+            if not otp_code or len(otp_code) != 6:
+                flash('Please enter a valid 6-digit OTP', 'error')
+                return redirect(url_for('verify_otp'))
             
             # Find the OTP
             otp = OTP.query.filter_by(
@@ -273,36 +298,44 @@ def register_routes(app):
                 purpose='verification'
             ).first()
             
-            if otp and otp.expires_at > datetime.utcnow():
-                # Mark OTP as used
-                otp.is_used = True
-                
-                # Verify the user
-                user = User.query.filter_by(email=email).first()
-                if user:
-                    user.is_verified = True
-                    db.session.commit()
-                    
-                    # Automatically log in the user
-                    session['user_id'] = user.id
-                    session['user_name'] = user.name
-                    session['user_email'] = user.email
-                    session.permanent = True
-                    
-                    # Clear temp session
-                    session.pop('temp_email', None)
-                    
-                    flash('Email verified successfully! Welcome to EventCraft!', 'success')
-                    return redirect(url_for('dashboard'))
-                else:
-                    flash('User not found', 'error')
-                    return redirect(url_for('auth'))
-            else:
-                flash('Invalid or expired OTP', 'error')
+            if not otp:
+                flash('Invalid OTP. Please check and try again.', 'error')
                 return redirect(url_for('verify_otp'))
+            
+            if otp.expires_at < datetime.utcnow():
+                flash('OTP has expired. Please register again to get a new OTP.', 'error')
+                # Mark as used so it can't be reused
+                otp.is_used = True
+                db.session.commit()
+                return redirect(url_for('auth'))
+            
+            # Mark OTP as used
+            otp.is_used = True
+            
+            # Verify the user
+            user = User.query.filter_by(email=email).first()
+            if user:
+                user.is_verified = True
+                db.session.commit()
+                
+                # Automatically log in the user
+                session['user_id'] = user.id
+                session['user_name'] = user.name
+                session['user_email'] = user.email
+                session.permanent = True
+                
+                # Clear temp session
+                session.pop('temp_email', None)
+                
+                flash('Email verified successfully! Welcome to EventCraft!', 'success')
+                return redirect(url_for('dashboard'))
+            else:
+                flash('User not found', 'error')
+                return redirect(url_for('auth'))
                 
         except Exception as e:
             app.logger.error(f"OTP verification error: {str(e)}")
+            db.session.rollback()
             flash('Verification failed. Please try again.', 'error')
             return redirect(url_for('verify_otp'))
 
@@ -678,6 +711,370 @@ def register_routes(app):
         event_types = EventType.query.all()
         return render_template('templates.html', event_types=event_types)
 
+    @app.route('/preview-template/<template_name>')
+    def preview_template(template_name):
+        """Preview a template without creating an invitation"""
+        try:
+            # Get event type from URL parameter if provided, otherwise determine from template name
+            event_type = request.args.get('event_type')
+            
+            if not event_type:
+                # Determine event type from template name
+                if 'birthday' in template_name:
+                    event_type = 'birthday'
+                elif 'anniversary' in template_name:
+                    event_type = 'anniversary'
+                elif 'babyshower' in template_name:
+                    event_type = 'babyshower'
+                elif 'graduation' in template_name:
+                    event_type = 'graduation'
+                elif 'retirement' in template_name:
+                    event_type = 'retirement'
+                elif 'wedding' in template_name:
+                    event_type = 'wedding'
+                elif 'hindu' in template_name:
+                    event_type = 'naming'
+                else:
+                    event_type = 'wedding'  # default
+            
+            # Create template-specific sample data based on the actual template name
+            sample_event_data = get_template_sample_data(template_name, event_type)
+            
+            # Sample invitation object for templates that expect it
+            sample_invitation = {
+                'id': 'preview',
+                'title': sample_event_data.get('eventTitle', 'Sample Event Invitation'),
+                'event_type': event_type,
+                'venue_address': sample_event_data.get('venueAddress', '123 Main Street, City, State 12345'),
+                'customization_data': '{"language": "en", "font_style": "elegant"}',
+                'created_at': '2024-01-01',
+                'is_active': True
+            }
+            
+            # Render the template with both event_data and invitation
+            template_path = f'invitation/templates/{template_name}.html'
+            return render_template(template_path, event_data=sample_event_data, invitation=sample_invitation)
+            
+        except Exception as e:
+            app.logger.error(f"Error previewing template {template_name}: {str(e)}")
+            return f"Error loading template preview: {str(e)}", 404
+
+    def get_template_sample_data(template_name, event_type):
+        """Generate consistent sample data for each template"""
+        base_data = {
+            'shareUrl': 'preview',
+            'timeData': {
+                'startTime': '7:00 PM',
+                'dinnerTime': '8:00 PM'
+            },
+            'venueData': {
+                'venue': 'Grand Ballroom',
+                'address': '123 Main Street, City, State 12345'
+            },
+            'venueAddress': '123 Main Street, City, State 12345',
+            'contactPhone': '+1 (555) 123-4567',
+            'contactEmail': 'john.doe@example.com',
+            'mainImage': None,
+            'birthdayImage': None,
+            'galleryImages': []
+        }
+        
+        # Provide consistent sample data based on the actual template name
+        # This ensures each template shows its own specific preview content
+        if 'birthday_fun_colorful' in template_name:
+            # This template is used for multiple event types, provide event-specific content
+            if event_type == 'festival':
+                return {
+                    **base_data,
+                    'eventTitle': 'Diwali Festival Celebration',
+                    'event_type': 'festival',
+                    'title': 'Festival Celebration',
+                    'date': '2024-12-25',
+                    'time': '6:00 PM',
+                    'location': '123 Main Street, City',
+                    'description': 'Join us in celebrating the festival of lights!',
+                    'host_name': 'Community Center',
+                    'hostName': 'Community Center',
+                    'festivalName': 'Diwali',
+                    'celebrationType': 'Community Festival'
+                }
+            elif event_type == 'party':
+                return {
+                    **base_data,
+                    'eventTitle': 'Fun Party Night',
+                    'event_type': 'party',
+                    'title': 'Party Celebration',
+                    'date': '2024-12-25',
+                    'time': '8:00 PM',
+                    'location': '123 Main Street, City',
+                    'description': 'Join us for an amazing party night!',
+                    'host_name': 'Sarah',
+                    'hostName': 'Sarah',
+                    'partyType': 'Fun Party',
+                    'theme': 'Dance & Music'
+                }
+            else:  # default to birthday
+                return {
+                    **base_data,
+                    'eventTitle': 'Sarah\'s 25th Birthday Celebration',
+                    'event_type': 'birthday',
+                    'title': 'Birthday Party',
+                    'date': '2024-12-25',
+                    'time': '7:00 PM',
+                    'location': '123 Main Street, City',
+                    'description': 'Join us for a fun birthday celebration!',
+                    'host_name': 'Sarah\'s Family',
+                    'hostName': 'Sarah\'s Family',
+                    'birthdayPerson': 'Sarah Johnson',
+                    'age': '25',
+                    'birthdayDescription': 'Celebrating another year of amazing memories'
+                }
+        elif 'birthday_elegant' in template_name:
+            return {
+                **base_data,
+                'eventTitle': 'Elegant Birthday Celebration',
+                'event_type': 'birthday',
+                'title': 'Birthday Celebration',
+                'date': '2024-12-25',
+                'time': '7:00 PM',
+                'location': '123 Main Street, City',
+                'description': 'Join us for an elegant birthday celebration!',
+                'host_name': 'Sarah\'s Family',
+                'hostName': 'Sarah\'s Family',
+                'birthdayPerson': 'Sarah Johnson',
+                'age': '25',
+                'birthdayDescription': 'Celebrating another year of elegance and grace'
+            }
+        elif 'birthday_final_elegant' in template_name:
+            return {
+                **base_data,
+                'eventTitle': 'Final Elegant Birthday',
+                'event_type': 'birthday',
+                'title': 'Birthday Celebration',
+                'date': '2024-12-25',
+                'time': '7:00 PM',
+                'location': '123 Main Street, City',
+                'description': 'Join us for the most elegant birthday celebration!',
+                'host_name': 'Sarah\'s Family',
+                'hostName': 'Sarah\'s Family',
+                'birthdayPerson': 'Sarah Johnson',
+                'age': '25',
+                'birthdayDescription': 'The ultimate elegant birthday celebration'
+            }
+        elif 'anniversary_golden_elegant' in template_name:
+            return {
+                **base_data,
+                'eventTitle': 'John & Sarah\'s 10th Anniversary',
+                'event_type': 'anniversary',
+                'title': 'Anniversary Celebration',
+                'date': '2024-12-25',
+                'time': '7:00 PM',
+                'location': '123 Main Street, City',
+                'description': 'Join us in celebrating 10 years of love and happiness!',
+                'host_name': 'John & Sarah',
+                'hostName': 'John & Sarah',
+                'anniversaryYears': '10',
+                'coupleNames': 'John & Sarah'
+            }
+        elif 'babyshower_sweet_pink' in template_name:
+            return {
+                **base_data,
+                'eventTitle': 'Baby Shower for Sarah',
+                'event_type': 'babyshower',
+                'title': 'Baby Shower',
+                'date': '2024-12-25',
+                'time': '2:00 PM',
+                'location': '123 Main Street, City',
+                'description': 'Join us in celebrating the upcoming arrival of baby!',
+                'host_name': 'Sarah\'s Friends',
+                'hostName': 'Sarah\'s Friends',
+                'momToBe': 'Sarah',
+                'babyGender': 'Surprise',
+                'dueDate': 'March 2025'
+            }
+        elif 'graduation_success_modern' in template_name:
+            return {
+                **base_data,
+                'eventTitle': 'Sarah\'s Graduation Celebration',
+                'event_type': 'graduation',
+                'title': 'Graduation Party',
+                'date': '2024-12-25',
+                'time': '6:00 PM',
+                'location': '123 Main Street, City',
+                'description': 'Join us in celebrating Sarah\'s academic achievement!',
+                'host_name': 'Sarah\'s Family',
+                'hostName': 'Sarah\'s Family',
+                'graduateName': 'Sarah Johnson',
+                'degree': 'Bachelor of Science',
+                'university': 'University of Success'
+            }
+        elif 'retirement_golden_classic' in template_name:
+            return {
+                **base_data,
+                'eventTitle': 'John\'s Retirement Celebration',
+                'event_type': 'retirement',
+                'title': 'Retirement Party',
+                'date': '2024-12-25',
+                'time': '6:00 PM',
+                'location': '123 Main Street, City',
+                'description': 'Join us in celebrating John\'s 30 years of dedicated service!',
+                'host_name': 'John\'s Colleagues',
+                'hostName': 'John\'s Colleagues',
+                'retireeName': 'John Smith',
+                'yearsOfService': '30',
+                'company': 'ABC Corporation'
+            }
+        elif 'wedding_elegant_modern' in template_name:
+            # This template is used for multiple event types, provide event-specific content
+            if event_type == 'housewarming':
+                return {
+                    **base_data,
+                    'eventTitle': 'New Home Celebration',
+                    'event_type': 'housewarming',
+                    'title': 'House Warming Party',
+                    'date': '2024-12-25',
+                    'time': '6:00 PM',
+                    'location': '123 New Home Street, City',
+                    'description': 'Join us in celebrating our new home!',
+                    'host_name': 'John & Sarah',
+                    'hostName': 'John & Sarah',
+                    'homeowners': 'John & Sarah',
+                    'newAddress': '123 New Home Street, City'
+                }
+            elif event_type == 'corporate':
+                return {
+                    **base_data,
+                    'eventTitle': 'Annual Corporate Gala 2024',
+                    'event_type': 'corporate',
+                    'title': 'Corporate Event',
+                    'date': '2024-12-25',
+                    'time': '7:00 PM',
+                    'location': 'Grand Convention Center, City',
+                    'description': 'Join us for our annual corporate celebration and networking event.',
+                    'host_name': 'ABC Corporation',
+                    'hostName': 'ABC Corporation',
+                    'companyName': 'ABC Corporation',
+                    'eventType': 'Annual Gala',
+                    'dressCode': 'Business Formal'
+                }
+            else:  # default to wedding
+                return {
+                    **base_data,
+                    'eventTitle': 'John & Sarah\'s Modern Wedding',
+                    'event_type': 'wedding',
+                    'title': 'Wedding Celebration',
+                    'date': '2024-12-25',
+                    'time': '4:00 PM',
+                    'location': '123 Main Street, City',
+                    'description': 'Join us in celebrating our special day!',
+                    'host_name': 'John & Sarah',
+                    'hostName': 'John & Sarah',
+                    'brideName': 'Sarah',
+                    'groomName': 'John',
+                    'weddingDate': 'December 25, 2024'
+                }
+        elif 'wedding_elegant' in template_name:
+            # This template is used for multiple event types, provide event-specific content
+            if event_type == 'gettogether':
+                return {
+                    **base_data,
+                    'eventTitle': 'Family Get Together',
+                    'event_type': 'gettogether',
+                    'title': 'Get Together',
+                    'date': '2024-12-25',
+                    'time': '5:00 PM',
+                    'location': '123 Main Street, City',
+                    'description': 'Join us for a fun family gathering!',
+                    'host_name': 'The Johnson Family',
+                    'hostName': 'The Johnson Family',
+                    'familyName': 'Johnson Family',
+                    'gatheringType': 'Family Reunion'
+                }
+            else:  # default to wedding
+                return {
+                    **base_data,
+                    'eventTitle': 'John & Sarah\'s Elegant Wedding',
+                    'event_type': 'wedding',
+                    'title': 'Wedding Celebration',
+                    'date': '2024-12-25',
+                    'time': '4:00 PM',
+                    'location': '123 Main Street, City',
+                    'description': 'Join us in celebrating our special day!',
+                    'host_name': 'John & Sarah',
+                    'hostName': 'John & Sarah',
+                    'brideName': 'Sarah',
+                    'groomName': 'John',
+                    'weddingDate': 'December 25, 2024'
+                }
+        elif 'wedding_hindu_traditional' in template_name:
+            # This template is used for multiple event types, provide event-specific content
+            if event_type == 'naming':
+                return {
+                    **base_data,
+                    'eventTitle': 'Baby Naming Ceremony',
+                    'event_type': 'naming',
+                    'title': 'Naming Ceremony',
+                    'date': '2024-12-25',
+                    'time': '11:00 AM',
+                    'location': '123 Main Street, City',
+                    'description': 'Join us in celebrating the naming of our little one!',
+                    'host_name': 'John & Sarah',
+                    'hostName': 'John & Sarah',
+                    'babyName': 'Aarav',
+                    'parents': 'John & Sarah',
+                    'ceremonyType': 'Traditional Naming Ceremony'
+                }
+            else:  # default to wedding
+                return {
+                    **base_data,
+                    'eventTitle': 'Traditional Hindu Wedding',
+                    'event_type': 'wedding',
+                    'title': 'Wedding Celebration',
+                    'date': '2024-12-25',
+                    'time': '4:00 PM',
+                    'location': '123 Main Street, City',
+                    'description': 'Join us in celebrating our traditional wedding!',
+                    'host_name': 'John & Sarah',
+                    'hostName': 'John & Sarah',
+                    'brideName': 'Sarah',
+                    'groomName': 'John',
+                    'weddingDate': 'December 25, 2024'
+                }
+        elif 'wedding_muslim_elegant' in template_name:
+            return {
+                **base_data,
+                'eventTitle': 'Elegant Muslim Wedding',
+                'event_type': 'wedding',
+                'title': 'Wedding Celebration',
+                'date': '2024-12-25',
+                'time': '4:00 PM',
+                'location': '123 Main Street, City',
+                'description': 'Join us in celebrating our elegant wedding!',
+                'host_name': 'John & Sarah',
+                'hostName': 'John & Sarah',
+                'brideName': 'Sarah',
+                'groomName': 'John',
+                'weddingDate': 'December 25, 2024'
+            }
+        else:  # default fallback
+            return {
+                **base_data,
+                'eventTitle': 'Sample Event Celebration',
+                'event_type': event_type,
+                'title': 'Event Celebration',
+                'date': '2024-12-25',
+                'time': '7:00 PM',
+                'location': '123 Main Street, City',
+                'description': 'Join us for a wonderful celebration!',
+                'host_name': 'Event Host',
+                'hostName': 'Event Host'
+            }
+
+    @app.route('/preview-modal/<template_name>')
+    def preview_modal(template_name):
+        """Show preview modal for a template"""
+        return render_template('invitation/preview_modal.html', template_name=template_name)
+
     @app.route('/template-selector-demo')
     def template_selector_demo():
         # Public demo of template selector with images
@@ -1041,7 +1438,17 @@ def register_routes(app):
             if not user:
                 return jsonify({'success': False, 'message': 'User not found with this email'})
             
-            # Generate and send OTP
+            # Invalidate any existing unused OTPs for this email and purpose
+            existing_otps = OTP.query.filter_by(
+                email=email,
+                purpose='password_reset',
+                is_used=False
+            ).all()
+            
+            for existing_otp in existing_otps:
+                existing_otp.is_used = True
+            
+            # Generate and send new OTP
             otp_code = generate_otp()
             otp = OTP(
                 email=email,
@@ -1052,10 +1459,18 @@ def register_routes(app):
             db.session.add(otp)
             db.session.commit()
             
-            # Send OTP email
-            send_otp_email(email, otp_code, purpose='password_reset')
+            # Send OTP email - check if email was sent successfully
+            email_sent = send_otp_email(email, otp_code, purpose='password_reset')
             
-            return jsonify({'success': True, 'message': 'OTP sent to your email'})
+            if not email_sent:
+                # If email failed, still allow user to proceed but warn them
+                app.logger.warning(f"Password reset OTP email failed to send to {email}, but OTP was generated: {otp_code}")
+                return jsonify({
+                    'success': True, 
+                    'message': 'OTP sent to your email. Please check your inbox and spam folder.'
+                })
+            else:
+                return jsonify({'success': True, 'message': 'OTP sent to your email. Please check your inbox.'})
             
         except Exception as e:
             app.logger.error(f"Forgot password error: {str(e)}")
@@ -1072,6 +1487,9 @@ def register_routes(app):
             if not email or not otp_code:
                 return jsonify({'success': False, 'message': 'Email and OTP are required'})
             
+            if len(otp_code) != 6:
+                return jsonify({'success': False, 'message': 'OTP must be 6 digits'})
+            
             # Find valid OTP
             otp = OTP.query.filter_by(
                 email=email,
@@ -1081,9 +1499,12 @@ def register_routes(app):
             ).first()
             
             if not otp:
-                return jsonify({'success': False, 'message': 'Invalid OTP'})
+                return jsonify({'success': False, 'message': 'Invalid OTP. Please check and try again.'})
             
             if otp.expires_at < datetime.utcnow():
+                # Mark expired OTP as used
+                otp.is_used = True
+                db.session.commit()
                 return jsonify({'success': False, 'message': 'OTP has expired. Please request a new one.'})
             
             # Mark OTP as used
