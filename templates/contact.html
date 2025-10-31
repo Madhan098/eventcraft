@@ -5,7 +5,7 @@
 {% block extra_head %}
 <style>
 .hero-section {
-    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-coral) 100%);
+    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
     color: white;
     padding: 4rem 0;
 }
@@ -31,19 +31,19 @@
 }
 
 .btn-primary-custom {
-    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-coral) 100%);
+    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
     border: none;
     padding: 1rem 2rem;
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 15px;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0, 163, 136, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-primary-custom:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 163, 136, 0.4);
+    box-shadow: var(--shadow-lg);
 }
 
 .contact-info-card {

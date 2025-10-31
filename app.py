@@ -96,6 +96,28 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+
+    # Performance: cache static assets aggressively
+    try:
+        from flask import request
+        request_path = request.path or ''
+        if request_path.startswith('/static/'):
+            # Cache static assets for 30 days
+            response.headers['Cache-Control'] = 'public, max-age=2592000, immutable'
+        else:
+            # Short cache for dynamic responses
+            response.headers.setdefault('Cache-Control', 'no-store')
+    except Exception:
+        pass
+
+    # Security headers
+    response.headers.setdefault('X-Content-Type-Options', 'nosniff')
+    response.headers.setdefault('Referrer-Policy', 'strict-origin-when-cross-origin')
+    response.headers.setdefault('X-Frame-Options', 'SAMEORIGIN')
+    # Allow modern cross-origin isolation without being overly strict for this app
+    response.headers.setdefault('Cross-Origin-Opener-Policy', 'same-origin-allow-popups')
+    response.headers.setdefault('Cross-Origin-Embedder-Policy', 'credentialless')
+
     return response
 
 # Add a simple test route

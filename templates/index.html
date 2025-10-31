@@ -3,672 +3,17 @@
 {% block title %}EventCraft Pro - Create Beautiful Digital Invitations{% endblock %}
 
 {% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Lottie Animation Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
-/* 🌸 Floral Theme - Google Arts & Culture Inspired */
+/* 🎨 Exact Momento Design - Matching Reference Images */
 
-/* 🌸 Hero Section - Floral Theme with Parallax */
-.hero-section {
-    background: var(--gradient-hero);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    padding: 8rem 0 4rem;
-}
-
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 254, 247, 0.75);
-    backdrop-filter: blur(1px);
-    -webkit-backdrop-filter: blur(1px);
-    z-index: 0;
-    pointer-events: none;
-}
-
-.hero-section .glass-particles-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-}
-
-.hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease-out forwards;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.hero-title .gradient-word {
-    display: inline-block;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    background-size: 200% 200%;
-    animation: gradientShift 3s ease infinite;
-    transition: transform 0.3s ease;
-}
-
-.hero-title .gradient-word:hover {
-    transform: scale(1.1) translateY(-2px);
-}
-
-.gradient-1 {
-    background: linear-gradient(135deg, #E91E63 0%, #F06292 50%, #FF4081 100%);
-}
-
-.gradient-2 {
-    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 50%, #CE93D8 100%);
-}
-
-.gradient-3 {
-    background: linear-gradient(135deg, #2196F3 0%, #64B5F6 50%, #90CAF9 100%);
-}
-
-.gradient-4 {
-    background: linear-gradient(135deg, #00BCD4 0%, #4DD0E1 50%, #80DEEA 100%);
-}
-
-.gradient-5 {
-    background: linear-gradient(135deg, #FF9800 0%, #FFB74D 50%, #FFCC80 100%);
-}
-
-@keyframes gradientShift {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-/* Mouse Wave Animation */
-@keyframes waveExpand {
-    0% {
-        width: 0;
-        height: 0;
-        opacity: 0.8;
-    }
-    100% {
-        width: 200px;
-        height: 200px;
-        opacity: 0;
-    }
-}
-
-/* Floating Particle Animation */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    25% {
-        transform: translateY(-20px) rotate(90deg);
-    }
-    50% {
-        transform: translateY(-10px) rotate(180deg);
-    }
-    75% {
-        transform: translateY(-30px) rotate(270deg);
-    }
-}
-
-/* Enhanced Card Hover Effects */
-.feature-card, .step-card, .case-card, .testimonial-card {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
-}
-
-.feature-card:hover, .step-card:hover, .case-card:hover, .testimonial-card:hover {
-    transform: translateY(-8px) perspective(1000px) rotateX(2deg) rotateY(-2deg);
-}
-
-/* Magnetic Effect for Cards */
-.feature-card, .step-card, .case-card {
-    cursor: pointer;
-}
-
-/* Gradient Text Enhanced Animation */
-.gradient-word {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-}
-
-.gradient-word:hover {
-    transform: scale(1.1) translateY(-2px);
-    filter: brightness(1.2);
-}
-
-/* Floating Particles Styles */
-.floating-particles {
-    pointer-events: none;
-    z-index: 1;
-}
-
-.floating-particle {
-    pointer-events: none;
-    will-change: transform;
-}
-
-/* Enhanced Glass Effect with Mouse Tracking */
-.glass-card, .glass-hero-content, .glass-testimonial {
-    position: relative;
-    overflow: hidden;
-}
-
-.glass-card::before, .glass-hero-content::before, .glass-testimonial::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(255, 255, 255, 0.1) 0%,
-        transparent 50%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.glass-card:hover::before, .glass-hero-content:hover::before, .glass-testimonial:hover::before {
-    opacity: 1;
-}
-
-/* Custom Cursor Effects - Optional */
-body.custom-cursor-enabled {
-    cursor: none;
-}
-
-.custom-cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: linear-gradient(45deg, #E91E63, #9C27B0);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: difference;
-}
-
-.custom-cursor-trail {
-    position: fixed;
-    width: 4px;
-    height: 4px;
-    background: rgba(233, 30, 99, 0.6);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    animation: cursorTrail 0.6s ease-out forwards;
-}
-
-@keyframes cursorTrail {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0.1);
-    }
-}
-
-/* Enhanced Button Hover Effects */
-.btn {
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.btn:hover::after {
-    width: 300px;
-    height: 300px;
-}
-
-/* Text Selection Effects */
-::selection {
-    background: linear-gradient(45deg, #E91E63, #9C27B0);
-    color: white;
-}
-
-::-moz-selection {
-    background: linear-gradient(45deg, #E91E63, #9C27B0);
-    color: white;
-}
-
-/* Scroll-triggered animations */
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.animate-on-scroll.animate {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Magnetic text effect */
-.magnetic-text {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-}
-
-.magnetic-text:hover {
-    transform: scale(1.05);
-    text-shadow: 0 0 20px rgba(233, 30, 99, 0.5);
-}
-
-/* Ripple effect animation */
-@keyframes ripple {
-    0% {
-        transform: scale(0);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0;
-    }
-}
-
-/* Sparkle effect */
-.sparkle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #FFD700;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: sparkle 1s ease-out forwards;
-}
-
-@keyframes sparkle {
-    0% {
-        opacity: 1;
-        transform: scale(0) rotate(0deg);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1) rotate(180deg);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0.5) rotate(360deg);
-    }
-}
-
-/* Enhanced button ripple effect */
-.btn {
-    position: relative;
-    overflow: hidden;
-}
-
-/* Smooth transitions for all interactive elements */
-* {
-    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
-}
-
-.hero-subtitle {
-    font-size: 1.35rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 2rem;
-    line-height: 1.8;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease-out 0.2s forwards;
-    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
-    max-width: 600px;
-}
-
-/* 🌸 Floral Feature Cards - 3D Tilt Effect with Glassmorphism */
-.feature-card {
-    background: var(--glass-bg-light);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border-radius: 16px;
-    padding: 2rem;
-    text-align: center;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-glass);
-    border: 1px solid var(--glass-border);
-    opacity: 0;
-    transform: translateY(30px);
-    position: relative;
-    overflow: hidden;
-}
-
-.feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--gradient-floral);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
-}
-
-.feature-card.animate {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.feature-card:hover {
-    transform: translateY(-8px) perspective(1000px) rotateX(2deg) rotateY(-2deg);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--glass-border-hover);
-}
-
-.feature-card:hover::before {
-    opacity: 0.05;
-}
-
-.feature-card > * {
-    position: relative;
-    z-index: 1;
-}
-
-.feature-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--gradient-floral);
-    backdrop-filter: blur(15px) saturate(180%);
-    -webkit-backdrop-filter: blur(15px) saturate(180%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-    color: white;
-    font-size: 2rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-.feature-icon::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(
-        45deg,
-        transparent 30%,
-        rgba(255, 255, 255, 0.3) 50%,
-        transparent 70%
-    );
-    transform: rotate(45deg);
-    animation: glassShimmer 3s ease-in-out infinite;
-    pointer-events: none;
-}
-
-.feature-card:hover .feature-icon {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
-}
-
-.feature-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-}
-
-.feature-description {
-    color: var(--text-secondary);
-    line-height: 1.7;
-    font-size: 1rem;
-}
-
-/* 🌸 Floral Step Cards with Glassmorphism */
-.step-card {
-    background: var(--glass-bg-light);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border-radius: 16px;
-    padding: 2.5rem;
-    text-align: center;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-glass);
-    border: 1px solid var(--glass-border);
-    opacity: 0;
-    transform: translateY(30px);
-    position: relative;
-    overflow: hidden;
-}
-
-.step-card.animate {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.step-card:hover {
-    transform: translateY(-8px) perspective(1000px) rotateX(2deg);
-    box-shadow: var(--shadow-floral);
-    border-color: rgba(233, 30, 99, 0.2);
-}
-
-.step-number {
-    width: 60px;
-    height: 60px;
-    background: var(--gradient-floral);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0 auto 1.5rem;
-    font-family: 'Inter', sans-serif;
-    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
-    transition: all 0.4s ease;
-}
-
-.step-card:hover .step-number {
-    transform: scale(1.1) rotate(360deg);
-    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
-}
-
-.step-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-}
-
-.step-description {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.7;
-}
-
-/* 🌸 Floral Case Cards with Glassmorphism */
-.case-card {
-    background: var(--glass-bg-light);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border-radius: 16px;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-glass);
-    border: 1px solid var(--glass-border);
-    opacity: 0;
-    transform: translateY(30px);
-    position: relative;
-}
-
-.case-card.animate {
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.case-card:hover {
-    transform: translateY(-8px) perspective(1000px) rotateX(2deg);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--glass-border-hover);
-}
-
-.case-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: brightness(0.95);
-}
-
-.case-card:hover .case-image {
-    transform: scale(1.08);
-    filter: brightness(1);
-}
-
-.case-content {
-    padding: 2rem;
-}
-
-.case-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-}
-
-/* 🌸 Floral Accordion with Glassmorphism */
-.accordion-item {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border-radius: 16px;
-    margin-bottom: 1rem;
-    box-shadow: var(--shadow-glass);
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.accordion-item:hover {
-    box-shadow: var(--shadow-md);
-    border-color: rgba(233, 30, 99, 0.2);
-}
-
-.accordion-button {
-    background: transparent;
-    border: none;
-    padding: 1.5rem;
-    width: 100%;
-    text-align: left;
-    font-weight: 400;
-    font-size: 1.125rem;
-    color: var(--text-primary);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-family: 'Roboto', sans-serif;
-}
-
-.accordion-button:hover {
-    background: var(--bg-secondary);
-}
-
-.accordion-button.active {
-    background: var(--bg-secondary);
-    font-weight: 500;
-}
-
-.accordion-button i {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.accordion-button.active i {
-    transform: rotate(180deg);
-}
-
-.accordion-content {
-    padding: 0 1.5rem 1.5rem;
-    color: var(--text-secondary);
-    display: none;
-    font-size: 1rem;
-    line-height: 1.7;
-}
-
-.accordion-content.active {
-    display: block;
-    animation: fadeInUp 0.3s ease-out;
-}
-
-/* 🌸 Floral Trust Badge */
-.trust-badge {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 0.75rem 1.5rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    box-shadow: var(--shadow-sm);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    border: 1px solid rgba(233, 30, 99, 0.1);
-}
-
-/* 🎨 Animations */
+/* Professional Scroll Animations - Keyframes */
 @keyframes fadeInUp {
     from {
-        opacity: 0;
-        transform: translateY(30px);
+    opacity: 0;
+        transform: translateY(40px);
     }
     to {
         opacity: 1;
@@ -676,1939 +21,1026 @@ body.custom-cursor-enabled {
     }
 }
 
-/* 🌸 Floral Section Titles */
-.section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.75rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-    text-align: center;
-    letter-spacing: -0.02em;
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
-.section-title.gradient-text {
-    background: var(--gradient-floral);
+@keyframes slideInLeft {
+    from {
+    opacity: 0;
+        transform: translateX(-30px);
+}
+    to {
+    opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(160, 120, 120, 0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(160, 120, 120, 0); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.animate-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced hover effects */
+.card:hover, .team-card:hover, .value-card:hover, .category-card:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+}
+
+.btn-primary:hover {
+    animation: pulse 2s infinite;
+}
+
+:root {
+    /* Exact Color Palette from Images */
+    --reddish-brown: #A07878;
+    --reddish-brown-dark: #8B5A5A;
+    --golden-yellow: #D4A85A;
+    --golden-yellow-bright: #FFD700;
+    --golden-yellow-light: #F4D03F;
+    
+    /* Background Colors */
+    --bg-cream: #FAFAFA;
+    --bg-pink-beige: #FFF5F0;
+    --bg-white: #FFFFFF;
+    --bg-gradient: linear-gradient(135deg, #FFF5F0 0%, #FAFAFA 100%);
+    
+    /* Text Colors */
+    --text-dark: #000000;
+    --text-gray: #666666;
+    --text-light-gray: #999999;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    
+    /* Transitions */
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background: var(--bg-white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hero Section - Pinkish-Beige Gradient Background */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 0;
+    background: var(--bg-gradient);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+
+/* Hero Content Left */
+.hero-content {
+    max-width: 580px;
+}
+
+.hero-title {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+}
+
+.hero-title .title-normal {
+    color: var(--text-dark);
+}
+
+.hero-title .title-spark {
+    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--reddish-brown) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-title .title-joy {
+    background: linear-gradient(135deg, var(--golden-yellow) 0%, var(--golden-yellow-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition);
+    font-family: inherit;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+    color: #FFFFFF;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: var(--bg-white);
+    color: var(--reddish-brown-dark);
+    border: 2px solid var(--reddish-brown-dark);
+}
+
+.btn-secondary:hover {
+    background: var(--reddish-brown-dark);
+    color: #FFFFFF;
+}
+
+/* Hero Cards Right - Stacked Effect */
+.hero-cards {
+    position: relative;
+    height: 600px;
+}
+
+.invitation-card-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Lottie Animation Container */
+.lottie-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+}
+
+.lottie-animation-back {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 400px;
+    height: 400px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+}
+
+.lottie-animation-front {
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 300px;
+    height: 300px;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0.5;
+}
+
+.invitation-card {
+    position: absolute;
+    width: 320px;
+    background: var(--bg-white);
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition);
+    cursor: pointer;
+    z-index: 2;
+}
+
+.invitation-card:hover {
+    transform: translateY(-8px) rotate(2deg);
+    box-shadow: var(--shadow-lg);
+    z-index: 3;
+}
+
+.invitation-card:nth-child(3) {
+    top: 0;
+    right: 0;
+    transform: rotate(-5deg);
+    z-index: 2;
+}
+
+.invitation-card:nth-child(4) {
+    top: 80px;
+    right: 40px;
+    background: #1a1a1a;
+    color: #FFFFFF;
+    transform: rotate(3deg);
+    z-index: 3;
+}
+
+.invitation-card:nth-child(5) {
+    top: 160px;
+    right: 80px;
+    transform: rotate(-2deg);
+    z-index: 2;
+}
+
+.card-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.card-content {
+    font-size: 14px;
+    color: var(--text-gray);
+    line-height: 1.5;
+}
+
+.invitation-card:nth-child(2) .card-content {
+    color: #CCCCCC;
+}
+
+/* Event Categories Section - Glassmorphism Cards */
+.event-categories {
+    padding: 100px 0;
+    background: var(--bg-white);
+}
+
+.section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 80px;
+}
+
+.section-title {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+}
+
+.section-title .title-normal {
+    color: var(--text-dark);
+}
+
+.section-title .title-magic {
+    background: linear-gradient(135deg, var(--golden-yellow) 0%, var(--golden-yellow-light) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .section-subtitle {
-    font-size: 1.125rem;
-    font-weight: 400;
-    color: var(--text-secondary);
-    text-align: center;
-    margin-bottom: 3rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: 18px;
+    color: var(--text-gray);
+    line-height: 1.6;
 }
 
-/* 🎨 Features Grid */
-.features-grid {
+.categories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
 }
 
-/* 🎨 Steps Grid */
-.steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
-
-/* 🎨 Cases Grid */
-.cases-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
-
-/* 🌟 Testimonial Carousel Styles */
-.testimonial-carousel-wrapper {
+.category-card {
     position: relative;
-    max-width: 900px;
-    margin: 3rem auto;
-    padding: 0 60px;
-}
-
-.testimonial-carousel {
-    display: flex;
+    height: 400px;
+    border-radius: 20px;
     overflow: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    gap: 2rem;
+    cursor: pointer;
+    transition: all var(--transition);
 }
 
-.testimonial-carousel .testimonial-card {
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    min-width: 0;
-    background: var(--glass-bg-light);
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 2.5rem;
-    box-shadow: var(--shadow-glass);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.5s ease;
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
 }
 
-.testimonial-carousel .testimonial-card::before {
+.category-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(233, 30, 99, 0.03) 0%,
-        rgba(156, 39, 176, 0.03) 50%,
-        rgba(102, 187, 106, 0.03) 100%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
-
-.testimonial-carousel .testimonial-card:hover::before {
-    opacity: 1;
-}
-
-.testimonial-carousel .testimonial-card:hover {
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow: var(--shadow-glass-hover);
-    transform: translateY(-5px);
-    border-color: var(--glass-border-hover);
-}
-
-.testimonial-carousel .testimonial-rating {
-    font-size: 1.5rem;
-    color: var(--gold);
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(212, 175, 55, 0.2);
-    position: relative;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     z-index: 1;
 }
 
-.testimonial-carousel .testimonial-text {
-    font-size: 1.125rem;
-    line-height: 1.8;
-    color: var(--text-secondary);
-    font-style: italic;
-    margin-bottom: 1.5rem;
-    position: relative;
-    z-index: 1;
-}
-
-.testimonial-carousel .testimonial-author {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 1rem;
-    position: relative;
-    z-index: 1;
-}
-
-.testimonial-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--glass-bg-light);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-primary);
-    font-size: 1.25rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10;
-    box-shadow: var(--shadow-glass);
-}
-
-.testimonial-nav:hover {
-    background: var(--glass-bg-medium);
-    border-color: var(--glass-border-hover);
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: var(--shadow-md);
-}
-
-.testimonial-nav.testimonial-prev {
-    left: 0;
-}
-
-.testimonial-nav.testimonial-next {
-    right: 0;
-}
-
-.testimonial-dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 2rem;
-}
-
-.testimonial-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: none;
-    background: var(--glass-bg-dark);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0;
-}
-
-.testimonial-dot:hover {
-    background: var(--glass-bg-medium);
-    transform: scale(1.2);
-}
-
-.testimonial-dot.active {
-    background: var(--gradient-primary);
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
-    transform: scale(1.3);
-}
-
-@media (max-width: 768px) {
-    .testimonial-carousel-wrapper {
-        padding: 0 50px;
-    }
-    
-    .testimonial-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-    
-    .testimonial-carousel {
-        gap: 1rem;
-    }
-}
-
-/* 🌟 Glassmorphism Event Tabs */
-.event-tabs-wrapper {
-    margin-top: 3rem;
-}
-
-.glass-tabs {
-    background: var(--glass-bg-medium);
-    backdrop-filter: var(--glass-blur-intense) saturate(180%);
-    -webkit-backdrop-filter: var(--glass-blur-intense) saturate(180%);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 0.75rem;
-    margin-bottom: 2rem;
-    box-shadow: var(--shadow-glass);
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.glass-tabs .nav-item {
-    margin: 0;
-}
-
-.glass-tabs .nav-link {
-    background: var(--glass-bg-dark);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 0.875rem 1.5rem;
-    color: var(--text-primary);
-    font-weight: 500;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    margin: 0.25rem;
-}
-
-.glass-tabs .nav-link::before {
+.category-card::after {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-    );
-    transition: left 0.5s ease;
-}
-
-.glass-tabs .nav-link:hover::before {
-    left: 100%;
-}
-
-.glass-tabs .nav-link:hover {
-    background: var(--glass-bg-light);
-    border-color: var(--glass-border-hover);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
-}
-
-.glass-tabs .nav-link.active {
-    background: var(--gradient-primary);
-    backdrop-filter: blur(15px) saturate(180%);
-    -webkit-backdrop-filter: blur(15px) saturate(180%);
-    border-color: var(--glass-border);
-    color: white;
-    box-shadow: var(--shadow-lg),
-                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-    transform: translateY(-2px);
-}
-
-.glass-tabs .nav-link.active::before {
-    display: none;
-}
-
-.glass-tabs .nav-link i {
-    transition: transform 0.3s ease;
-}
-
-.glass-tabs .nav-link:hover i,
-.glass-tabs .nav-link.active i {
-    transform: scale(1.2) rotate(5deg);
-}
-
-.glass-tab-content {
-    margin-top: 2rem;
-    min-height: 400px;
-}
-
-.glass-tab-content .tab-pane {
-    animation: fadeInUp 0.5s ease-out;
-}
-
-.glass-tab-content .cases-grid {
-    margin-top: 1rem;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Ripple Effect for Tabs */
-.ripple-effect {
-    position: absolute;
-    border-radius: 50%;
-    background: var(--glass-bg-light);
-    transform: scale(0);
-    animation: ripple 0.6s ease-out;
-    pointer-events: none;
-    width: 100px;
-    height: 100px;
-    margin-left: -50px;
-    margin-top: -50px;
-}
-
-@keyframes ripple {
-    to {
-        transform: scale(4);
-        opacity: 0;
-    }
-}
-
-/* 🎨 Step Title */
-.step-title {
-    font-family: 'Roboto Slab', serif;
-    font-size: 1.25rem;
-    font-weight: 400;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-}
-
-.step-description {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.7;
-}
-
-/* 🎨 Case Description */
-.case-description {
-    color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-}
-
-/* 🎨 Case Actions */
-.case-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.case-actions .btn {
-    flex: 1;
-    min-width: 140px;
-}
-
-@media (max-width: 480px) {
-    .case-actions {
-        flex-direction: column;
-    }
-    
-    .case-actions .btn {
-        width: 100%;
-    }
-}
-
-/* 🎨 Preview Modal */
-.glass-modal {
-    background: var(--glass-bg-light);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    box-shadow: var(--shadow-glass-intense);
-}
-
-.glass-modal .modal-header {
-    border-bottom: 1px solid var(--glass-border);
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px 20px 0 0;
-}
-
-.glass-modal .modal-footer {
-    border-top: 1px solid var(--glass-border);
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 0 0 20px 20px;
-}
-
-.template-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem 0;
-}
-
-.template-card {
-    background: var(--glass-bg-medium);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 1rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    overflow: hidden;
-}
-
-.template-card:hover {
-    background: var(--glass-bg-light);
-    box-shadow: var(--shadow-glass-hover);
-    transform: translateY(-5px);
-    border-color: var(--glass-border-hover);
-}
-
-.template-image {
-    width: 100%;
-    height: 200px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-}
-
-.template-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.template-card:hover .template-image img {
-    transform: scale(1.05);
-}
-
-.template-name {
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    font-size: 1.1rem;
-}
-
-.template-description {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin: 0;
-}
-
-@media (max-width: 768px) {
-    .template-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
-    }
-    
-    .template-image {
-        height: 150px;
-    }
-}
-
-/* 🎨 Parallax Effect */
-.parallax-element {
-    transition: transform 0.3s ease-out;
-}
-
-/* 🎨 Smooth Scroll */
-html {
-    scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
-    
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* 🎨 Section Backgrounds with Glassmorphism */
-.features-section {
-    padding: 6rem 0;
-    background: var(--bg-primary);
-}
-
-.features-section .container {
-    position: relative;
-}
-
-.social-proof {
-    padding: 6rem 0;
-    background: var(--bg-secondary);
-}
-
-.how-it-works {
-    padding: 6rem 0;
-    background: var(--bg-primary);
-}
-
-.use-cases {
-    padding: 6rem 0;
-    background: var(--bg-secondary);
-}
-
-.faq-section {
-    padding: 6rem 0;
-    background: var(--bg-primary);
-}
-
-.cta-section {
-    padding: 6rem 0;
-    background: var(--bg-secondary);
-    background-image: url('/static/images/holographic-invitation-bg.jpg');
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--bg-image);
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: relative;
-    text-align: center;
-}
-
-.cta-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 254, 247, 0.85);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    filter: blur(8px);
     z-index: 0;
 }
 
-.cta-section .container {
+.category-content {
     position: relative;
-    z-index: 1;
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(35px) saturate(200%);
-    -webkit-backdrop-filter: blur(35px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 32px;
-    padding: 3rem;
-    box-shadow: var(--shadow-glass-intense);
-    overflow: hidden;
-}
-
-.cta-section .container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(
-        circle,
-        rgba(233, 30, 99, 0.15) 0%,
-        rgba(156, 39, 176, 0.1) 30%,
-        transparent 70%
-    );
-    animation: glassRotate 20s linear infinite;
-    pointer-events: none;
-}
-
-.cta-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.75rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-.cta-subtitle {
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
-}
-
-.cta-buttons {
+    z-index: 2;
+    padding: 32px;
+    height: 100%;
     display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
+.category-icon {
+    font-size: 40px;
+    color: var(--reddish-brown-dark);
+    margin-bottom: 16px;
+}
+
+.category-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.category-description {
+    font-size: 16px;
+    color: var(--text-gray);
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.category-link {
+    color: var(--reddish-brown-dark);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all var(--transition);
+}
+
+.category-link:hover {
+    gap: 8px;
+    color: var(--reddish-brown-dark);
+}
+
+/* Background Images for Categories */
+.category-card[data-category="wedding"] {
+    --bg-image: url('/images/weddingelegant.jpg');
+}
+
+.category-card[data-category="birthday"] {
+    --bg-image: url('/images/birthday.jpg');
+}
+
+.category-card[data-category="corporate"] {
+    --bg-image: url('/images/corporateevent.jpg');
+}
+
+.category-card[data-category="babyshower"] {
+    --bg-image: url('/images/babyshower.jpg');
+}
+
+.category-card[data-category="anniversary"] {
+    --bg-image: url('/images/anniversery.jpg');
+}
+
+.category-card[data-category="custom"] {
+    --bg-image: url('/images/graduation.jpg');
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    padding: 100px 0;
+    background: var(--bg-cream);
+}
+
+.testimonials-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 80px;
+}
+
+.testimonials-title {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+}
+
+.testimonials-title .title-loved {
+    color: var(--text-dark);
+}
+
+.testimonials-title .title-happy {
+    background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--reddish-brown-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.testimonials-title .title-hosts {
+    background: linear-gradient(135deg, var(--golden-yellow) 0%, var(--golden-yellow-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.testimonials-subtitle {
+    font-size: 18px;
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.testimonial-card {
+    background: var(--bg-white);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.testimonial-stars {
+    font-size: 24px;
+    color: var(--golden-yellow-bright);
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+}
+
+.testimonial-text {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--reddish-brown);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.author-info {
+    display: flex;
         flex-direction: column;
-        gap: 0.3rem;
     }
     
-    .hero-title .gradient-word {
-        display: inline-block;
+.author-name {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 16px;
+}
+
+.author-role {
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .hero-cards {
+        height: 400px;
+    }
+    
+    .categories-grid,
+    .testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+        min-height: auto;
+    }
+    
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 0 20px;
+    }
+    
+    .hero-title {
+        font-size: 36px;
+        line-height: 1.2;
     }
     
     .hero-subtitle {
-        font-size: 1.1rem;
+        font-size: 16px;
     }
     
-    .section-title {
-        font-size: 2rem;
+    .section-title,
+    .testimonials-title {
+        font-size: 32px;
     }
     
-    .section-subtitle {
-        font-size: 1rem;
+    .section-header,
+    .testimonials-header {
+        padding: 0 20px;
+        margin-bottom: 40px;
     }
     
-    .features-grid,
-    .steps-grid,
-    .cases-grid {
+    .categories-grid,
+    .testimonials-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 24px;
+        padding: 0 20px;
     }
     
-    .feature-card,
-    .step-card,
-    .case-card {
-        margin-bottom: 1.5rem;
+    .hero-cards {
+        height: 400px;
     }
     
-    .hero-section {
-        padding: 4rem 0 2rem;
+    .invitation-card {
+        width: 280px;
     }
     
-    .features-section,
-    .social-proof,
-    .how-it-works,
-    .use-cases,
-    .faq-section,
-    .cta-section {
-        padding: 4rem 0;
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
     }
     
-    /* Mobile Tabs */
-    .glass-tabs {
-        padding: 0.5rem;
-        gap: 0.25rem;
-    }
-    
-    .glass-tabs .nav-link {
-        padding: 0.625rem 1rem;
-        font-size: 0.875rem;
-        margin: 0.125rem;
-    }
-    
-    .glass-tabs .nav-link i {
-        font-size: 0.875rem;
-    }
 }
 
 @media (max-width: 480px) {
+    .hero-section {
+        padding: 40px 0;
+    }
+    
     .hero-title {
-        font-size: 2rem;
-        flex-direction: column;
-        gap: 0.25rem;
+        font-size: 28px;
     }
     
-    .hero-title .gradient-word {
-        display: inline-block;
+    .hero-subtitle {
+        font-size: 14px;
     }
     
-    .section-title {
-        font-size: 1.75rem;
+    .section-title,
+    .testimonials-title {
+        font-size: 24px;
     }
     
-    .feature-card,
-    .step-card {
-        padding: 1.5rem;
+    .section-subtitle,
+    .testimonials-subtitle {
+        font-size: 14px;
     }
+    
+    .hero-cards {
+        height: 350px;
+    }
+    
+    .invitation-card {
+        width: 260px;
+        padding: 24px;
+    }
+    
+    .category-card,
+    .testimonial-card {
+        padding: 24px;
+    }
+    
 }
 </style>
-
-<!-- Enhanced Intersection Observer for Scroll Animations -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Intersection Observer for scroll animations with stagger effect
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                setTimeout(() => {
-                    entry.target.classList.add('animate');
-                    observer.unobserve(entry.target);
-                }, index * 100); // Staggered animation (100ms delay between items)
-            }
-        });
-    }, observerOptions);
-    
-    // Observe all elements with animate-on-scroll class
-    document.querySelectorAll('.animate-on-scroll, .feature-card, .step-card, .case-card').forEach(el => {
-        observer.observe(el);
-    });
-    
-    // Parallax effect on scroll - Multi-layer depth
-    let ticking = false;
-    window.addEventListener('scroll', function() {
-        if (!ticking) {
-            window.requestAnimationFrame(function() {
-                const scrolled = window.pageYOffset;
-                const parallaxElements = document.querySelectorAll('.parallax-element');
-                parallaxElements.forEach(element => {
-                    const speed = parseFloat(element.dataset.speed) || 0.5;
-                    const yPos = -(scrolled * speed);
-                    element.style.transform = `translateY(${yPos}px)`;
-                });
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
-});
-
-// Enhanced Mouse Movement Animations
-document.addEventListener('DOMContentLoaded', function() {
-    // Glass Card Mouse Tracking Effect with Enhanced Animations
-    const glassCards = document.querySelectorAll('.glass-card, .glass-hero-content, .glass-testimonial, .feature-card, .step-card, .case-card');
-    
-    glassCards.forEach(card => {
-        card.addEventListener('mousemove', function(e) {
-            const rect = card.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            
-            // Enhanced mouse tracking with multiple effects
-            card.style.setProperty('--mouse-x', x + '%');
-            card.style.setProperty('--mouse-y', y + '%');
-            
-            // Add tilt effect based on mouse position
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const deltaX = (e.clientX - centerX) / (rect.width / 2);
-            const deltaY = (e.clientY - centerY) / (rect.height / 2);
-            
-            const rotateX = deltaY * -10; // Tilt up/down
-            const rotateY = deltaX * 10;  // Tilt left/right
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-            
-            // Add glow effect
-            card.style.boxShadow = `
-                0 ${Math.abs(deltaY) * 20 + 10}px ${Math.abs(deltaX) * 20 + 20}px rgba(233, 30, 99, 0.3),
-                0 0 0 1px rgba(255, 255, 255, 0.1)
-            `;
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            card.style.setProperty('--mouse-x', '50%');
-            card.style.setProperty('--mouse-y', '50%');
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-            card.style.boxShadow = '';
-        });
-    });
-
-    // Floating particles that follow mouse
-    createFloatingParticles();
-    
-    // Add magnetic effect to section titles
-    const sectionTitles = document.querySelectorAll('.section-title, .hero-title');
-    sectionTitles.forEach(title => {
-        title.classList.add('magnetic-text');
-        
-        title.addEventListener('mousemove', function(e) {
-            const rect = title.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const deltaX = (e.clientX - centerX) / 50;
-            const deltaY = (e.clientY - centerY) / 50;
-            
-            title.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(1.02)`;
-            title.style.textShadow = `${deltaX * 2}px ${deltaY * 2}px 20px rgba(233, 30, 99, 0.3)`;
-        });
-        
-        title.addEventListener('mouseleave', function() {
-            title.style.transform = 'translate(0px, 0px) scale(1)';
-            title.style.textShadow = '';
-        });
-    });
-    
-    // Add ripple effect to buttons
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            const rect = button.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                left: ${x}px;
-                top: ${y}px;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: ripple 0.6s ease-out;
-                pointer-events: none;
-            `;
-            
-            button.appendChild(ripple);
-            
-            setTimeout(() => {
-                if (ripple.parentNode) {
-                    ripple.parentNode.removeChild(ripple);
-                }
-            }, 600);
-        });
-    });
-    
-    // Add sparkle effect to feature icons
-    const featureIcons = document.querySelectorAll('.feature-icon');
-    featureIcons.forEach(icon => {
-        icon.addEventListener('mouseenter', function() {
-            createSparkles(icon);
-        });
-    });
-    
-    // Add typing effect to hero title
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const words = heroTitle.querySelectorAll('.gradient-word');
-        words.forEach((word, index) => {
-            word.style.opacity = '0';
-            word.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                word.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-                word.style.opacity = '1';
-                word.style.transform = 'translateY(0)';
-            }, index * 200);
-        });
-    }
-    
-    // Hero section mouse parallax effect
-    const heroSection = document.querySelector('.hero-section');
-    if (heroSection) {
-        heroSection.addEventListener('mousemove', function(e) {
-            const rect = heroSection.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            
-            // Move background elements based on mouse position
-            const particles = heroSection.querySelectorAll('.glass-particle-enhanced');
-            particles.forEach((particle, index) => {
-                const speed = (index + 1) * 0.5;
-                const moveX = (x - 50) * speed;
-                const moveY = (y - 50) * speed;
-                
-                particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            });
-            
-            // Move hero content slightly
-            const heroContent = heroSection.querySelector('.hero-content');
-            if (heroContent) {
-                const moveX = (x - 50) * 0.1;
-                const moveY = (y - 50) * 0.1;
-                heroContent.style.transform = `translate(${moveX}px, ${moveY}px)`;
-            }
-        });
-        
-        heroSection.addEventListener('mouseleave', function() {
-            const particles = heroSection.querySelectorAll('.glass-particle-enhanced');
-            particles.forEach(particle => {
-                particle.style.transform = 'translate(0px, 0px)';
-            });
-            
-            const heroContent = heroSection.querySelector('.hero-content');
-            if (heroContent) {
-                heroContent.style.transform = 'translate(0px, 0px)';
-            }
-        });
-    }
-    
-    // Text gradient animation on mouse move
-    const gradientTexts = document.querySelectorAll('.gradient-word');
-    gradientTexts.forEach(text => {
-        text.addEventListener('mousemove', function(e) {
-            const rect = text.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            
-            // Animate gradient position
-            text.style.backgroundPosition = `${x}% 50%`;
-            text.style.transform = 'scale(1.1) translateY(-2px)';
-        });
-        
-        text.addEventListener('mouseleave', function() {
-            text.style.backgroundPosition = '0% 50%';
-            text.style.transform = 'scale(1) translateY(0px)';
-        });
-    });
-    
-    // Feature cards with magnetic effect
-    const featureCards = document.querySelectorAll('.feature-card');
-    featureCards.forEach(card => {
-        card.addEventListener('mousemove', function(e) {
-            const rect = card.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            const deltaX = e.clientX - centerX;
-            const deltaY = e.clientY - centerY;
-            
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-            const maxDistance = 100;
-            
-            if (distance < maxDistance) {
-                const force = (maxDistance - distance) / maxDistance;
-                const moveX = deltaX * force * 0.3;
-                const moveY = deltaY * force * 0.3;
-                
-                card.style.transform = `translate(${moveX}px, ${moveY}px) scale(${1 + force * 0.1})`;
-                
-                // Add magnetic glow
-                card.style.boxShadow = `
-                    0 0 ${20 + force * 30}px rgba(233, 30, 99, ${0.2 + force * 0.3}),
-                    0 0 0 1px rgba(255, 255, 255, 0.2)
-                `;
-            }
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            card.style.transform = 'translate(0px, 0px) scale(1)';
-            card.style.boxShadow = '';
-        });
-    });
-    
-    // Testimonial cards with wave effect
-    const testimonialCards = document.querySelectorAll('.testimonial-card');
-    testimonialCards.forEach(card => {
-        card.addEventListener('mousemove', function(e) {
-            const rect = card.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-            
-            // Create wave effect
-            const wave = document.createElement('div');
-            wave.className = 'mouse-wave';
-            wave.style.cssText = `
-                position: absolute;
-                left: ${x}%;
-                top: ${y}%;
-                width: 0;
-                height: 0;
-                background: radial-gradient(circle, rgba(233, 30, 99, 0.3) 0%, transparent 70%);
-                border-radius: 50%;
-                pointer-events: none;
-                animation: waveExpand 0.6s ease-out forwards;
-                z-index: 1;
-            `;
-            
-            card.appendChild(wave);
-            
-            setTimeout(() => {
-                if (wave.parentNode) {
-                    wave.parentNode.removeChild(wave);
-                }
-            }, 600);
-        });
-    });
-});
-
-// Create floating particles that follow mouse
-function createFloatingParticles() {
-    const particleContainer = document.createElement('div');
-    particleContainer.className = 'floating-particles';
-    particleContainer.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 1;
-    `;
-    
-    document.body.appendChild(particleContainer);
-    
-    // Create particles
-    for (let i = 0; i < 20; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'floating-particle';
-        particle.style.cssText = `
-            position: absolute;
-            width: ${Math.random() * 4 + 2}px;
-            height: ${Math.random() * 4 + 2}px;
-            background: linear-gradient(45deg, #E91E63, #9C27B0);
-            border-radius: 50%;
-            opacity: ${Math.random() * 0.5 + 0.3};
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation: float ${Math.random() * 3 + 2}s ease-in-out infinite;
-            animation-delay: ${Math.random() * 2}s;
-        `;
-        particleContainer.appendChild(particle);
-    }
-    
-    // Make particles follow mouse
-    document.addEventListener('mousemove', function(e) {
-        const particles = document.querySelectorAll('.floating-particle');
-        particles.forEach((particle, index) => {
-            const speed = (index + 1) * 0.02;
-            const x = e.clientX + (Math.random() - 0.5) * 100;
-            const y = e.clientY + (Math.random() - 0.5) * 100;
-            
-            particle.style.transition = `transform ${speed}s ease-out`;
-            particle.style.transform = `translate(${x - particle.offsetLeft}px, ${y - particle.offsetTop}px)`;
-        });
-    });
-}
-
-// Custom Cursor Implementation
-function createCustomCursor() {
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    document.body.appendChild(cursor);
-    
-    let mouseX = 0;
-    let mouseY = 0;
-    let cursorX = 0;
-    let cursorY = 0;
-    
-    document.addEventListener('mousemove', function(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        // Create cursor trail
-        const trail = document.createElement('div');
-        trail.className = 'custom-cursor-trail';
-        trail.style.left = e.clientX + 'px';
-        trail.style.top = e.clientY + 'px';
-        document.body.appendChild(trail);
-        
-        setTimeout(() => {
-            if (trail.parentNode) {
-                trail.parentNode.removeChild(trail);
-            }
-        }, 600);
-    });
-    
-    // Smooth cursor following
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.1;
-        cursorY += (mouseY - cursorY) * 0.1;
-        
-        cursor.style.left = cursorX + 'px';
-        cursor.style.top = cursorY + 'px';
-        
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-    
-    // Cursor interactions
-    const interactiveElements = document.querySelectorAll('a, button, .btn, .card, .feature-card, .step-card, .case-card');
-    
-    interactiveElements.forEach(element => {
-        element.addEventListener('mouseenter', function() {
-            cursor.style.transform = 'scale(1.5)';
-            cursor.style.background = 'linear-gradient(45deg, #FF6B6B, #4ECDC4)';
-        });
-        
-        element.addEventListener('mouseleave', function() {
-            cursor.style.transform = 'scale(1)';
-            cursor.style.background = 'linear-gradient(45deg, #E91E63, #9C27B0)';
-        });
-    });
-}
-
-// Initialize custom cursor (optional - uncomment to enable)
-// document.body.classList.add('custom-cursor-enabled');
-// createCustomCursor();
-
-// Create sparkle effect function
-function createSparkles(element) {
-    const rect = element.getBoundingClientRect();
-    const sparkleCount = 8;
-    
-    for (let i = 0; i < sparkleCount; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        
-        const angle = (i / sparkleCount) * Math.PI * 2;
-        const distance = 30 + Math.random() * 20;
-        const x = Math.cos(angle) * distance;
-        const y = Math.sin(angle) * distance;
-        
-        sparkle.style.left = (rect.width / 2 + x) + 'px';
-        sparkle.style.top = (rect.height / 2 + y) + 'px';
-        sparkle.style.animationDelay = (Math.random() * 0.5) + 's';
-        
-        element.appendChild(sparkle);
-        
-        setTimeout(() => {
-            if (sparkle.parentNode) {
-                sparkle.parentNode.removeChild(sparkle);
-            }
-        }, 1000);
-    }
-}
-    
-    // Enhanced Event Tabs Functionality
-    const eventTabs = document.querySelectorAll('#eventTypeTabs .nav-link');
-    const eventTabPanes = document.querySelectorAll('#eventTypeTabContent .tab-pane');
-    
-    eventTabs.forEach(tab => {
-        tab.addEventListener('shown.bs.tab', function(e) {
-            // Animate cards when tab is shown
-            const targetPane = document.querySelector(e.target.getAttribute('data-bs-target'));
-            const cards = targetPane.querySelectorAll('.case-card');
-            
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                    card.classList.add('animate');
-                }, index * 100);
-            });
-        });
-        
-        // Add ripple effect on click
-        tab.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple-effect');
-            tab.appendChild(ripple);
-            
-            const rect = tab.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        });
-    });
-    
-    // Initialize first tab cards
-    const firstPane = document.querySelector('#eventTypeTabContent .tab-pane.active');
-    if (firstPane) {
-        const firstCards = firstPane.querySelectorAll('.case-card');
-        firstCards.forEach((card, index) => {
-            setTimeout(() => {
-                card.classList.add('animate');
-            }, index * 100);
-        });
-    }
-</script>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section section-bg-animated">
-    <div class="glass-particles-container">
-        <div class="glass-particle-enhanced"></div>
-        <div class="glass-particle-enhanced"></div>
-        <div class="glass-particle-enhanced"></div>
-        <div class="glass-particle-enhanced"></div>
-        <div class="glass-particle-enhanced"></div>
-        <div class="glass-particle-enhanced"></div>
-        <div class="glass-particle-enhanced"></div>
-        <div class="glass-particle-enhanced"></div>
-        <div class="glass-particle-enhanced"></div>
-    </div>
-    <div class="container">
-        <div class="row align-items-center justify-content-center">
-            <div class="col-lg-8">
-                <div class="hero-content glass-hero-content glass-shimmer text-center">
-                    <h1 class="hero-title">
-                        <span class="gradient-word gradient-1">Create</span> 
-                        <span class="gradient-word gradient-2">Stunning</span> 
-                        <span class="gradient-word gradient-3">Digital</span> 
-                        <span class="gradient-word gradient-4">Invitations</span> 
-                        <span class="gradient-word gradient-5">Instantly</span>
-                    </h1>
-                    <p class="hero-subtitle">Transform your special moments into unforgettable experiences. Professional designs, zero complexity, unlimited creativity — all in your hands.</p>
-                    
-                    <div class="hero-cta" style="opacity: 0; animation: fadeInUp 0.8s ease-out 0.4s forwards;">
-                        <div class="d-flex gap-3 flex-wrap">
-                            <a href="{{ url_for('templates') }}" class="btn btn-primary btn-lg">
-                                <i class="fas fa-rocket me-2"></i>Create Your Invitation Now
-                            </a>
-                            <a href="#examples" class="btn btn-secondary btn-lg">
-                                <i class="fas fa-eye me-2"></i>See Examples
-                            </a>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Features Section -->
-<section class="features-section fade-in-section">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-title animate-on-scroll">Everything You Need for Perfect Invitations</h2>
-            <p class="section-subtitle animate-on-scroll">Professional tools that make creating stunning invitations effortless</p>
-        </div>
-        
-        <div class="features-grid">
-                    <div class="feature-card card animate-on-scroll">
-                        <div class="card-content">
-                            <div class="feature-icon floating-element">
-                                <i class="fas fa-palette"></i>
+    <!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-container">
+        <div class="hero-content">
+                        <h1 class="hero-title">
+                <span class="title-normal">Invitations That </span>
+                <span class="title-spark">Spark </span>
+                <span class="title-joy">Joy</span>
+                        </h1>
+            <p class="hero-subtitle">Design stunning, personalized invitations for every celebration. Weddings, birthdays, or any moment worth remembering — make it unforgettable.</p>
+            
+            <div class="hero-cta">
+                <a href="{{ url_for('templates') }}" class="btn btn-primary">
+                    Create Your Invite
+                </a>
+                <a href="#categories" class="btn btn-secondary">Explore Themes</a>
                             </div>
-                            <h3 class="feature-title">Beautiful Templates</h3>
-                            <p class="feature-description">Choose from hundreds of professionally-designed templates for every occasion.</p>
                         </div>
-                    </div>
-                    
-                    <div class="feature-card card animate-on-scroll">
-                        <div class="card-content">
-                            <div class="feature-icon floating-element">
-                                <i class="fas fa-mobile-alt"></i>
+                        
+        <div class="hero-cards">
+            <div class="invitation-card-stack">
+                <!-- Lottie Animation Background -->
+                <div id="lottie-animation-back" class="lottie-animation-back"></div>
+                
+                <!-- Lottie Animation Front -->
+                <div id="lottie-animation-front" class="lottie-animation-front"></div>
+                
+                <div class="invitation-card">
+                    <div class="card-icon">💍</div>
+                    <div class="card-title">Sarah & James</div>
+                    <div class="card-content">REQUEST THE HONOUR OF YOUR<br>2025<br>Napa Valley</div>
                             </div>
-                            <h3 class="feature-title">Mobile Perfect</h3>
-                            <p class="feature-description">Your invitations look stunning on every device - desktop, tablet, and mobile.</p>
+                <div class="invitation-card">
+                    <div class="card-icon">🏆</div>
+                    <div class="card-title">Annual Gala</div>
+                    <div class="card-content">You're invited to our celebration of excellence<br><br>December 20, 2025<br>Grand Ballroom</div>
                         </div>
+                <div class="invitation-card">
+                    <div class="card-icon">🎂</div>
+                    <div class="card-title">Sweet Six</div>
+                    <div class="card-content">Join us for an unforgettable<br>celebration<br><br>Emma's Birthday Bash<br>Saturday, 8 PM</div>
                     </div>
-                    
-                    <div class="feature-card card animate-on-scroll">
-                        <div class="card-content">
-                            <div class="feature-icon floating-element">
-                                <i class="fas fa-share-alt"></i>
-                            </div>
-                            <h3 class="feature-title">Easy Sharing</h3>
-                            <p class="feature-description">Share via link, email, or social media. Track RSVPs in real-time.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-card card animate-on-scroll">
-                        <div class="card-content">
-                            <div class="feature-icon floating-element">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h3 class="feature-title">Guest Management</h3>
-                            <p class="feature-description">Organize your guest list, send reminders, and track responses effortlessly.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-card card animate-on-scroll">
-                        <div class="card-content">
-                            <div class="feature-icon floating-element">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <h3 class="feature-title">Analytics & Insights</h3>
-                            <p class="feature-description">See who's viewed your invitation and track engagement with detailed analytics.</p>
-                        </div>
                     </div>
         </div>
     </div>
 </section>
 
-
-<!-- Social Proof -->
-<section class="social-proof">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-title">Loved by Event Creators Worldwide</h2>
-            <p class="section-subtitle lead">Join thousands of satisfied users creating beautiful invitations</p>
+<!-- Event Categories Section -->
+<section class="event-categories" id="categories">
+    <div class="section-header">
+        <h2 class="section-title">
+            <span class="title-normal">Every Occasion </span>
+            <span class="title-magic">Deserves Magic</span>
+        </h2>
+        <p class="section-subtitle">From intimate gatherings to grand celebrations, create invitations that capture the essence of your special moment</p>
         </div>
         
-        <div class="testimonial-carousel-wrapper">
-            <div class="testimonial-carousel" id="testimonialCarousel">
-                <div class="testimonial-card glass-testimonial glass-shimmer">
-                    <div class="testimonial-rating">★★★★★</div>
-                    <p class="testimonial-text">"EventCraft Pro saved me hours of work and hundreds of dollars on printing. My wedding invitations looked absolutely stunning!"</p>
-                    <div class="testimonial-author">Sarah Johnson, Wedding Planner</div>
+    <div class="categories-grid">
+        <div class="category-card" data-category="wedding">
+            <div class="category-content">
+                <div>
+                    <div class="category-icon">💖</div>
+                    <h3 class="category-title">Weddings</h3>
+                    <p class="category-description">Elegant invites for your forever moment</p>
+                </div>
+                <a href="{{ url_for('templates') }}" class="category-link">
+                    Explore Themes
+                </a>
+                </div>
                 </div>
                 
-                <div class="testimonial-card glass-testimonial glass-shimmer">
-                    <div class="testimonial-rating">★★★★★</div>
-                    <p class="testimonial-text">"The templates are gorgeous and so easy to customize! I created my daughter's birthday party invitation in just 10 minutes. Highly recommend!"</p>
-                    <div class="testimonial-author">Michael Chen, Parent</div>
+        <div class="category-card" data-category="birthday">
+            <div class="category-content">
+                <div>
+                    <div class="category-icon">🎂</div>
+                    <h3 class="category-title">Birthdays</h3>
+                    <p class="category-description">Celebrate another trip around the sun</p>
                 </div>
-                
-                <div class="testimonial-card glass-testimonial glass-shimmer">
-                    <div class="testimonial-rating">★★★★★</div>
-                    <p class="testimonial-text">"As an event coordinator, I use EventCraft Pro for all my clients. The professional designs impress everyone, and RSVP tracking is a game-changer!"</p>
-                    <div class="testimonial-author">Emily Rodriguez, Event Coordinator</div>
-                </div>
-                
-                <div class="testimonial-card glass-testimonial glass-shimmer">
-                    <div class="testimonial-rating">★★★★★</div>
-                    <p class="testimonial-text">"I love how mobile-friendly the invitations are! Our guests can easily view and RSVP from their phones. The analytics feature helps me track engagement too."</p>
-                    <div class="testimonial-author">David Thompson, Marketing Manager</div>
-                </div>
+                <a href="{{ url_for('templates') }}" class="category-link">
+                    Explore Themes
+                </a>
+            </div>
             </div>
             
-            <!-- Navigation Dots -->
-            <div class="testimonial-dots">
-                <button class="testimonial-dot active" data-slide="0" aria-label="Slide 1"></button>
-                <button class="testimonial-dot" data-slide="1" aria-label="Slide 2"></button>
-                <button class="testimonial-dot" data-slide="2" aria-label="Slide 3"></button>
-                <button class="testimonial-dot" data-slide="3" aria-label="Slide 4"></button>
-            </div>
-            
-            <!-- Navigation Arrows -->
-            <button class="testimonial-nav testimonial-prev" aria-label="Previous testimonial">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="testimonial-nav testimonial-next" aria-label="Next testimonial">
-                <i class="fas fa-chevron-right"></i>
-            </button>
+        <div class="category-card" data-category="corporate">
+            <div class="category-content">
+                <div>
+                    <div class="category-icon">💼</div>
+                    <h3 class="category-title">Corporate</h3>
+                    <p class="category-description">Professional events with sophistication</p>
         </div>
+                <a href="{{ url_for('templates') }}" class="category-link">
+                    Explore Themes
+                </a>
     </div>
-</section>
-
-<!-- How It Works -->
-<section class="how-it-works">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-title">Create Beautiful Invitations in 3 Simple Steps</h2>
-            <p class="section-subtitle lead">From idea to invitation in minutes, not hours</p>
         </div>
         
-        <div class="steps-grid">
-            <div class="step-card animate-on-scroll">
-                <div class="step-number">1</div>
-                <h3 class="step-title">Choose Your Template</h3>
-                <p class="step-description">Browse our collection of professionally-designed templates and pick the perfect one for your event.</p>
+        <div class="category-card" data-category="babyshower">
+            <div class="category-content">
+                <div>
+                    <div class="category-icon">👶</div>
+                    <h3 class="category-title">Baby Showers</h3>
+                    <p class="category-description">Welcome the newest bundle of joy</p>
             </div>
-            
-            <div class="step-card animate-on-scroll">
-                <div class="step-number">2</div>
-                <h3 class="step-title">Customize Your Design</h3>
-                <p class="step-description">Add your event details, upload photos, and customize colors and fonts to match your style.</p>
+                <a href="{{ url_for('templates') }}" class="category-link">
+                    Explore Themes
+                </a>
             </div>
-            
-            <div class="step-card animate-on-scroll">
-                <div class="step-number">3</div>
-                <h3 class="step-title">Share & Track</h3>
-                <p class="step-description">Send your invitation via link, email, or social media. Track RSVPs and engagement in real-time.</p>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- Use Cases -->
-<section class="use-cases">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-title">Perfect for Every Occasion</h2>
-            <p class="section-subtitle lead">From intimate gatherings to grand celebrations</p>
-        </div>
         
-        <!-- Event Type Tabs -->
-        <div class="event-tabs-wrapper">
-            <ul class="nav nav-pills glass-tabs" id="eventTypeTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="wedding-tab" data-bs-toggle="tab" data-bs-target="#wedding" type="button" role="tab" aria-controls="wedding" aria-selected="true">
-                        <i class="fas fa-heart me-2"></i>Weddings
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="birthday-tab" data-bs-toggle="tab" data-bs-target="#birthday" type="button" role="tab" aria-controls="birthday" aria-selected="false">
-                        <i class="fas fa-birthday-cake me-2"></i>Birthdays
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="corporate-tab" data-bs-toggle="tab" data-bs-target="#corporate" type="button" role="tab" aria-controls="corporate" aria-selected="false">
-                        <i class="fas fa-briefcase me-2"></i>Corporate
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="babyshower-tab" data-bs-toggle="tab" data-bs-target="#babyshower" type="button" role="tab" aria-controls="babyshower" aria-selected="false">
-                        <i class="fas fa-baby me-2"></i>Baby Showers
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="anniversary-tab" data-bs-toggle="tab" data-bs-target="#anniversary" type="button" role="tab" aria-controls="anniversary" aria-selected="false">
-                        <i class="fas fa-gem me-2"></i>Anniversaries
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="graduation-tab" data-bs-toggle="tab" data-bs-target="#graduation" type="button" role="tab" aria-controls="graduation" aria-selected="false">
-                        <i class="fas fa-graduation-cap me-2"></i>Graduations
-                    </button>
-                </li>
-            </ul>
-            
-            <div class="tab-content glass-tab-content" id="eventTypeTabContent">
-                <!-- Weddings Tab -->
-                <div class="tab-pane fade show active" id="wedding" role="tabpanel" aria-labelledby="wedding-tab">
-                    <div class="cases-grid">
-                        <div class="case-card animate-on-scroll glass-shimmer">
-                            <img src="/images/weddingelegant.jpg" alt="Wedding Invitations" class="case-image">
-                            <div class="case-content">
-                                <h3 class="case-title">Weddings & Engagements</h3>
-                                <p class="case-description">Create elegant wedding invitations that set the perfect tone for your special day.</p>
-                                <div class="case-actions">
-                                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates</a>
-                                    <button class="btn btn-outline-primary preview-btn" data-event-type="wedding">
-                                        <i class="fas fa-eye me-2"></i>Preview
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+        <div class="category-card" data-category="anniversary">
+            <div class="category-content">
+                <div>
+                    <div class="category-icon">🎁</div>
+                    <h3 class="category-title">Anniversaries</h3>
+                    <p class="category-description">Honor years of love and memories</p>
+        </div>
+                <a href="{{ url_for('templates') }}" class="category-link">
+                    Explore Themes
+                </a>
                     </div>
                 </div>
                 
-                <!-- Birthday Tab -->
-                <div class="tab-pane fade" id="birthday" role="tabpanel" aria-labelledby="birthday-tab">
-                    <div class="cases-grid">
-                        <div class="case-card animate-on-scroll glass-shimmer">
-                            <img src="/images/birthday.jpg" alt="Birthday Parties" class="case-image">
-                            <div class="case-content">
-                                <h3 class="case-title">Birthday Parties</h3>
-                                <p class="case-description">Make birthdays extra special with fun and colorful invitation designs.</p>
-                                <div class="case-actions">
-                                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates</a>
-                                    <button class="btn btn-outline-primary preview-btn" data-event-type="birthday">
-                                        <i class="fas fa-eye me-2"></i>Preview
-                                    </button>
+        <div class="category-card" data-category="custom">
+            <div class="category-content">
+                <div>
+                    <div class="category-icon">✨</div>
+                    <h3 class="category-title">Custom Events</h3>
+                    <p class="category-description">Any occasion worth celebrating</p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Corporate Tab -->
-                <div class="tab-pane fade" id="corporate" role="tabpanel" aria-labelledby="corporate-tab">
-                    <div class="cases-grid">
-                        <div class="case-card animate-on-scroll glass-shimmer">
-                            <img src="/images/corporateevent.jpg" alt="Corporate Events" class="case-image">
-                            <div class="case-content">
-                                <h3 class="case-title">Corporate Events</h3>
-                                <p class="case-description">Professional invitations for conferences, meetings, and company celebrations.</p>
-                                <div class="case-actions">
-                                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates</a>
-                                    <button class="btn btn-outline-primary preview-btn" data-event-type="corporate">
-                                        <i class="fas fa-eye me-2"></i>Preview
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Baby Shower Tab -->
-                <div class="tab-pane fade" id="babyshower" role="tabpanel" aria-labelledby="babyshower-tab">
-                    <div class="cases-grid">
-                        <div class="case-card animate-on-scroll glass-shimmer">
-                            <img src="/images/babyshower.jpg" alt="Baby Showers" class="case-image">
-                            <div class="case-content">
-                                <h3 class="case-title">Baby Showers</h3>
-                                <p class="case-description">Celebrate new beginnings with adorable baby shower invitations.</p>
-                                <div class="case-actions">
-                                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates</a>
-                                    <button class="btn btn-outline-primary preview-btn" data-event-type="babyshower">
-                                        <i class="fas fa-eye me-2"></i>Preview
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Anniversary Tab -->
-                <div class="tab-pane fade" id="anniversary" role="tabpanel" aria-labelledby="anniversary-tab">
-                    <div class="cases-grid">
-                        <div class="case-card animate-on-scroll glass-shimmer">
-                            <img src="/images/anniversery.jpg" alt="Anniversaries" class="case-image">
-                            <div class="case-content">
-                                <h3 class="case-title">Anniversaries</h3>
-                                <p class="case-description">Mark milestone moments with romantic anniversary celebration invitations.</p>
-                                <div class="case-actions">
-                                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates</a>
-                                    <button class="btn btn-outline-primary preview-btn" data-event-type="anniversary">
-                                        <i class="fas fa-eye me-2"></i>Preview
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Graduation Tab -->
-                <div class="tab-pane fade" id="graduation" role="tabpanel" aria-labelledby="graduation-tab">
-                    <div class="cases-grid">
-                        <div class="case-card animate-on-scroll glass-shimmer">
-                            <img src="/images/graduation.jpg" alt="Graduations" class="case-image">
-                            <div class="case-content">
-                                <h3 class="case-title">Graduations</h3>
-                                <p class="case-description">Celebrate academic achievements with graduation party invitations.</p>
-                                <div class="case-actions">
-                                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates</a>
-                                    <button class="btn btn-outline-primary preview-btn" data-event-type="graduation">
-                                        <i class="fas fa-eye me-2"></i>Preview
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <a href="{{ url_for('templates') }}" class="category-link">
+                    Explore Themes
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- FAQ Section -->
-<section class="faq-section">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <p class="section-subtitle lead">Everything you need to know about EventCraft Pro</p>
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="testimonials-header">
+        <h2 class="testimonials-title">
+            <span class="title-loved">Loved by </span>
+            <span class="title-happy">Happy </span>
+            <span class="title-hosts">Hosts</span>
+        </h2>
+        <p class="testimonials-subtitle">Join thousands who've created unforgettable invitations</p>
         </div>
         
-        <div class="faq-accordion">
-            <div class="accordion-item">
-                <button class="accordion-button">
-                    <span>Is EventCraft Pro really free?</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="accordion-content">
-                    <p>Yes! EventCraft Pro is completely free to use. You can create unlimited invitations without any hidden costs or subscription fees. A quick sign-up is required to get started.</p>
+    <div class="testimonials-grid">
+        <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"Made my wedding invites absolutely magical! Everyone was asking where I got them designed."</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">SC</div>
+                <div class="author-info">
+                    <div class="author-name">Sophia Chen</div>
+                    <div class="author-role">Bride</div>
+                </div>
                 </div>
             </div>
             
-            <div class="accordion-item">
-                <button class="accordion-button">
-                    <span>Do I need to create an account?</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="accordion-content">
-                    <p>Yes, creating an account is required to create and manage your invitations. It only takes a minute to sign up, and you'll be able to save, manage, and track all your invitations in one place.</p>
+        <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"The easiest invitation tool I've ever used. My clients love the professional results."</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">MW</div>
+                <div class="author-info">
+                    <div class="author-name">Marcus Williams</div>
+                    <div class="author-role">Event Planner</div>
+                </div>
                 </div>
             </div>
             
-            <div class="accordion-item">
-                <button class="accordion-button">
-                    <span>Can I customize everything?</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="accordion-content">
-                    <p>Absolutely! You can customize colors, fonts, text, images, and layout. Our drag-and-drop editor gives you complete creative control.</p>
-                </div>
-            </div>
-            
-            <div class="accordion-item">
-                <button class="accordion-button">
-                    <span>How do guests RSVP?</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="accordion-content">
-                    <p>Guests can RSVP directly through your invitation link. You'll receive real-time notifications and can track all responses in your dashboard.</p>
-                </div>
-            </div>
-            
-            <div class="accordion-item">
-                <button class="accordion-button">
-                    <span>Is it mobile-friendly?</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="accordion-content">
-                    <p>Yes! All invitations are fully responsive and look beautiful on desktop, tablet, and mobile devices.</p>
+        <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"Created the perfect baby shower invites in minutes. The themes are so beautiful and elegant!"</p>
+            <div class="testimonial-author">
+                <div class="author-avatar">PP</div>
+                <div class="author-info">
+                    <div class="author-name">Priya Patel</div>
+                    <div class="author-role">Mother-to-be</div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- CTA Section -->
-<section class="cta-section section-bg-animated">
-    <div class="container">
-        <h2 class="cta-title">Ready to Wow Your Guests?</h2>
-        <p class="cta-subtitle reveal-on-scroll reveal-delay-1">Create your stunning invitation in minutes - completely free</p>
-        
-        <div class="cta-buttons reveal-on-scroll reveal-delay-2">
-            <a href="{{ url_for('templates') }}" class="btn btn-secondary btn-xl btn-lucesposa">
-                <i class="fas fa-rocket me-2"></i>Start Creating Now
-            </a>
-            <a href="{{ url_for('about') }}" class="btn btn-secondary btn-xl btn-lucesposa">
-                <i class="fas fa-info-circle me-2"></i>Learn More
-            </a>
-        </div>
-        
-        <p class="mt-3 opacity-75 reveal-on-scroll reveal-delay-3">Quick sign-up required. Start creating now.</p>
     </div>
 </section>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-// Template Gallery Filtering - Removed (section deleted)
-
-// FAQ Accordion
+// Smooth scroll animations
 document.addEventListener('DOMContentLoaded', function() {
-    const accordionButtons = document.querySelectorAll('.accordion-button');
-    
-    accordionButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const content = this.nextElementSibling;
-            const isActive = this.classList.contains('active');
-            
-            // Close all accordions
-            accordionButtons.forEach(btn => {
-                btn.classList.remove('active');
-                btn.nextElementSibling.classList.remove('active');
+    // Initialize Lottie Animations
+    if (typeof lottie !== 'undefined') {
+        const backContainer = document.getElementById('lottie-animation-back');
+        const frontContainer = document.getElementById('lottie-animation-front');
+        
+        // Background Animation - Floating particles (reliable public animation)
+        try {
+            const backAnimation = lottie.loadAnimation({
+                container: backContainer,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: 'https://assets1.lottiefiles.com/packages/lf20_jcikwtux.json' // Floating particles
             });
             
-            // Open clicked accordion if it wasn't active
-            if (!isActive) {
-                this.classList.add('active');
-                content.classList.add('active');
+            if (backAnimation) {
+                backAnimation.setSpeed(0.7);
             }
-        });
-    });
-});
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+        } catch (error) {
+            console.log('Lottie back animation failed:', error);
+            if (backContainer) backContainer.style.display = 'none';
         }
-    });
-});
-
-// Testimonial Carousel Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const carousel = document.getElementById('testimonialCarousel');
-    const prevBtn = document.querySelector('.testimonial-prev');
-    const nextBtn = document.querySelector('.testimonial-next');
-    const dots = document.querySelectorAll('.testimonial-dot');
-    const cards = carousel.querySelectorAll('.testimonial-card');
-    
-    let currentIndex = 0;
-    const totalSlides = cards.length;
-    
-    // Update active dot
-    function updateDots() {
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentIndex);
-        });
-    }
-    
-    // Scroll to slide
-    function goToSlide(index) {
-        if (index < 0) {
-            currentIndex = totalSlides - 1;
-        } else if (index >= totalSlides) {
-            currentIndex = 0;
+        
+        // Front Animation - Sparkles/celebration (reliable public animation)
+        try {
+            const frontAnimation = lottie.loadAnimation({
+                container: frontContainer,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: 'https://assets5.lottiefiles.com/packages/lf20_ufdxj4lk.json' // Sparkles
+            });
+            
+            if (frontAnimation) {
+                frontAnimation.setSpeed(1.0);
+            }
+        } catch (error) {
+            console.log('Lottie front animation failed:', error);
+            if (frontContainer) frontContainer.style.display = 'none';
+        }
         } else {
-            currentIndex = index;
-        }
-        
-        const cardWidth = cards[0].offsetWidth;
-        const gap = parseInt(getComputedStyle(carousel).gap) || 32;
-        const scrollPosition = currentIndex * (cardWidth + gap);
-        carousel.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
-        });
-        
-        updateDots();
+        // Hide animation containers if Lottie library fails to load
+        const backContainer = document.getElementById('lottie-animation-back');
+        const frontContainer = document.getElementById('lottie-animation-front');
+        if (backContainer) backContainer.style.display = 'none';
+        if (frontContainer) frontContainer.style.display = 'none';
     }
     
-    // Previous button
-    prevBtn.addEventListener('click', () => {
-        goToSlide(currentIndex - 1);
-    });
+    // Enhanced Intersection Observer for fade-in animations with stagger
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -80px 0px'
+    };
     
-    // Next button
-    nextBtn.addEventListener('click', () => {
-        goToSlide(currentIndex + 1);
-    });
-    
-    // Dot navigation
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            goToSlide(index);
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                const delay = index * 100; // Stagger effect
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0) scale(1)';
+                    entry.target.classList.add('animate-visible');
+                }, delay);
+            }
         });
+    }, observerOptions);
+    
+    // Observe all cards with enhanced animations
+    document.querySelectorAll('.category-card, .testimonial-card, .section-header').forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px) scale(0.95)';
+        card.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        observer.observe(card);
     });
     
-    // Auto-scroll functionality
-    let autoScrollInterval = setInterval(() => {
-        goToSlide(currentIndex + 1);
-    }, 4000);
-    
-    // Pause auto-scroll on hover
-    carousel.addEventListener('mouseenter', () => {
-        clearInterval(autoScrollInterval);
+    // Animate all sections
+    document.querySelectorAll('section').forEach((section, index) => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(40px)';
+        section.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        observer.observe(section);
     });
     
-    // Resume auto-scroll on mouse leave
-    carousel.addEventListener('mouseleave', () => {
-        autoScrollInterval = setInterval(() => {
-            goToSlide(currentIndex + 1);
-        }, 4000);
-    });
-    
-    // Pause auto-scroll when user interacts with navigation
-    [prevBtn, nextBtn, ...dots].forEach(element => {
-        element.addEventListener('click', () => {
-            clearInterval(autoScrollInterval);
-            // Resume after 8 seconds
+    // Animate hero content with delay
+    document.querySelectorAll('.hero-title, .hero-subtitle').forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = `all 0.8s cubic-bezier(0.4, 0, 0.2, 1)`;
             setTimeout(() => {
-                autoScrollInterval = setInterval(() => {
-                    goToSlide(currentIndex + 1);
-                }, 4000);
-            }, 8000);
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, 300 + index * 200);
+    });
+    
+    // Card hover tilt effect
+    document.querySelectorAll('.invitation-card').forEach(card => {
+        card.addEventListener('mousemove', function(e) {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
         });
-    });
-    
-    // Handle scroll snap to update active dot
-    let scrollTimeout;
-    carousel.addEventListener('scroll', () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            const cardWidth = cards[0].offsetWidth;
-            const gap = parseInt(getComputedStyle(carousel).gap) || 32;
-            const newIndex = Math.round(carousel.scrollLeft / (cardWidth + gap));
-            if (newIndex !== currentIndex && newIndex < totalSlides) {
-                currentIndex = newIndex;
-                updateDots();
-            }
-        }, 150);
-    });
-    
-    // Touch/swipe support
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
-    carousel.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    });
-    
-    carousel.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    });
-    
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = touchStartX - touchEndX;
         
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                // Swipe left - go to next
-                goToSlide(currentIndex + 1);
-            } else {
-                // Swipe right - go to previous
-                goToSlide(currentIndex - 1);
-            }
-        }
-    }
-    
-    // Initialize
-    updateDots();
-});
-
-// Preview Modal Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
-    const templateGrid = document.getElementById('templateGrid');
-    const modalTitle = document.getElementById('previewModalLabel');
-    
-    // Template data for each event type
-    const templateData = {
-        wedding: [
-            { name: "Elegant Classic", image: "/images/weddingelegant.jpg", description: "Timeless elegance for your special day" },
-            { name: "Modern Minimalist", image: "/images/weddingelegant.jpg", description: "Clean and contemporary design" },
-            { name: "Rustic Romance", image: "/images/weddingelegant.jpg", description: "Charming countryside vibes" },
-            { name: "Garden Party", image: "/images/weddingelegant.jpg", description: "Fresh and floral celebration" }
-        ],
-        birthday: [
-            { name: "Fun & Colorful", image: "/images/birthday.jpg", description: "Bright and cheerful celebration" },
-            { name: "Elegant Adult", image: "/images/birthdayhindu.jpg", description: "Sophisticated birthday party" },
-            { name: "Kids Party", image: "/images/birthdayfun.jpg", description: "Perfect for children's parties" },
-            { name: "Traditional", image: "/images/birthdaytraditional.jpg", description: "Classic birthday celebration" }
-        ],
-        corporate: [
-            { name: "Professional Conference", image: "/images/corporateevent.jpg", description: "Business meeting invitation" },
-            { name: "Company Celebration", image: "/images/corporateevent.jpg", description: "Corporate party invitation" },
-            { name: "Team Building", image: "/images/corporateevent.jpg", description: "Team event invitation" },
-            { name: "Annual Meeting", image: "/images/corporateevent.jpg", description: "Formal corporate gathering" }
-        ],
-        babyshower: [
-            { name: "Sweet Baby Shower", image: "/images/babyshower.jpg", description: "Adorable baby celebration" },
-            { name: "Gender Reveal", image: "/images/genderreveal.jpg", description: "Exciting gender reveal party" },
-            { name: "Naming Ceremony", image: "/images/templateselection/naming cermony.jpg", description: "Traditional naming ceremony" },
-            { name: "Baby Welcome", image: "/images/babyshower.jpg", description: "Welcome the little one" }
-        ],
-        anniversary: [
-            { name: "Golden Anniversary", image: "/images/goldenaniversary.jpg", description: "50 years of love celebration" },
-            { name: "Silver Anniversary", image: "/images/anniversery.jpg", description: "25 years milestone" },
-            { name: "Romantic Dinner", image: "/images/anniversery.jpg", description: "Intimate anniversary dinner" },
-            { name: "Renewal Vows", image: "/images/anniversery.jpg", description: "Vow renewal ceremony" }
-        ],
-        graduation: [
-            { name: "Graduation Party", image: "/images/graduation.jpg", description: "Academic achievement celebration" },
-            { name: "High School Grad", image: "/images/graduation.jpg", description: "High school graduation party" },
-            { name: "College Graduation", image: "/images/graduation.jpg", description: "University graduation celebration" },
-            { name: "Achievement Ceremony", image: "/images/graduation.jpg", description: "Honor student achievements" }
-        ]
-    };
-    
-    // Event type titles
-    const eventTitles = {
-        wedding: "Wedding Invitations",
-        birthday: "Birthday Party Invitations", 
-        corporate: "Corporate Event Invitations",
-        babyshower: "Baby Shower Invitations",
-        anniversary: "Anniversary Invitations",
-        graduation: "Graduation Invitations"
-    };
-    
-    // Preview button click handlers
-    document.querySelectorAll('.preview-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const eventType = this.getAttribute('data-event-type');
-            const templates = templateData[eventType] || [];
-            const title = eventTitles[eventType] || "Template Preview";
-            
-            // Update modal title
-            modalTitle.textContent = title;
-            
-            // Clear and populate template grid
-            templateGrid.innerHTML = '';
-            
-            if (templates.length === 0) {
-                templateGrid.innerHTML = '<p class="text-center text-muted">No templates available for this event type.</p>';
-            } else {
-                templates.forEach(template => {
-                    const templateCard = document.createElement('div');
-                    templateCard.className = 'template-card';
-                    templateCard.innerHTML = `
-                        <div class="template-image">
-                            <img src="${template.image}" alt="${template.name}" loading="lazy">
-                        </div>
-                        <div class="template-info">
-                            <h6 class="template-name">${template.name}</h6>
-                            <p class="template-description">${template.description}</p>
-                        </div>
-                    `;
-                    templateGrid.appendChild(templateCard);
-                });
-            }
-            
-            // Show modal
-            previewModal.show();
+        card.addEventListener('mouseleave', function() {
+            card.style.transform = '';
         });
     });
 });
-
 </script>
-
-<!-- Preview Modal -->
-<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content glass-modal">
-            <div class="modal-header">
-                <h5 class="modal-title" id="previewModalLabel">Template Preview</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="template-grid" id="templateGrid">
-                    <!-- Templates will be loaded here dynamically -->
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <a href="{{ url_for('templates') }}" class="btn btn-primary">View All Templates</a>
-            </div>
-        </div>
-    </div>
-</div>
-
 {% endblock %}

@@ -1,1581 +1,636 @@
 {% extends "base.html" %}
 
-{% block title %}Templates - EventCraft Pro{% endblock %}
+{% block title %}Theme Gallery - EventCraft Pro{% endblock %}
 
 {% block extra_head %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Professional Templates Page Styles */
-.templates-hero {
-    background: var(--gradient-primary);
-    color: white;
-    padding: var(--spacing-3xl) 0;
+/* 🎨 Theme Gallery - Exact Design Match */
+:root {
+    --reddish-brown: #A07878;
+    --reddish-brown-dark: #8B5A5A;
+    --golden-yellow: #D4A85A;
+    --golden-yellow-bright: #FFD700;
+    
+    --bg-cream: #FAFAFA;
+    --bg-white: #FFFFFF;
+    
+    --text-dark: #000000;
+    --text-gray: #666666;
+    --text-light-gray: #999999;
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-cream);
+    color: var(--text-dark);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Theme Gallery Header */
+.theme-gallery-header {
+    padding: 80px 40px 60px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
+    background: var(--bg-cream);
 }
 
-.templates-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.3) 0%, transparent 50%);
-    pointer-events: none;
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.templates-hero .container {
-    position: relative;
-    z-index: 2;
-}
-
-.templates-title {
-    font-size: 3rem;
+.theme-gallery-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 56px;
     font-weight: 700;
-    margin-bottom: var(--spacing-md);
-    color: white;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
 }
 
-.templates-subtitle {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    margin-bottom: var(--spacing-xl);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+.title-icon {
+    font-size: 48px;
+    background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--golden-yellow) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-/* Professional Filters Section */
+.title-text {
+    display: flex;
+    gap: 8px;
+}
+
+.title-theme {
+    color: var(--text-dark);
+}
+
+.title-gallery {
+    background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--reddish-brown-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.theme-gallery-subtitle {
+    font-size: 18px;
+    color: var(--text-gray);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Filter Buttons */
 .filters-section {
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
-    padding: var(--spacing-xl) 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(10px);
+    padding: 0 40px 60px;
+    background: var(--bg-cream);
 }
 
 .filters-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
-    gap: var(--spacing-lg);
-    align-items: center;
+    justify-content: center;
+    gap: 12px;
     flex-wrap: wrap;
-    justify-content: center;
 }
 
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    min-width: 150px;
-}
-
-.filter-label {
-    font-size: 0.875rem;
+.filter-btn {
+    padding: 12px 24px;
+    border-radius: 24px;
+    border: 2px solid var(--reddish-brown);
+    background: var(--bg-white);
+    color: var(--text-dark);
+    font-size: 16px;
     font-weight: 500;
-    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+    white-space: nowrap;
 }
 
-.filter-select {
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    color: var(--text-primary);
-    transition: all 0.2s ease;
+.filter-btn:hover {
+    background: var(--reddish-brown);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
-.filter-select:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-50);
-    outline: none;
+.filter-btn.active {
+    background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--golden-yellow) 100%);
+    border-color: transparent;
+    color: #FFFFFF;
+    box-shadow: var(--shadow-sm);
 }
 
-.search-box {
-    position: relative;
-    min-width: 250px;
+.filter-btn.active:hover {
+    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
-.search-input {
-    width: 100%;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    color: var(--text-primary);
-    transition: all 0.2s ease;
+/* Theme Cards Grid */
+.themes-section {
+    padding: 0 40px 100px;
+    background: var(--bg-cream);
 }
 
-.search-input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-50);
-    outline: none;
-}
-
-.search-icon {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-light);
-    pointer-events: none;
-}
-
-/* Professional Templates Grid */
-.templates-section {
-    padding: var(--spacing-3xl) 0;
-    background: var(--bg-secondary);
-}
-
-.templates-grid {
+.themes-grid {
+    max-width: 1200px;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: var(--spacing-xl);
-    margin-top: var(--spacing-xl);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
 }
 
-.template-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    transition: all 0.3s ease;
+/* Glassmorphism Theme Card */
+.theme-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition);
     position: relative;
-    height: 100%;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
-.template-card:hover {
+.theme-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0, 163, 136, 0.15);
-    border-color: var(--primary-teal);
+    box-shadow: var(--shadow-lg);
+    background: rgba(255, 255, 255, 0.85);
 }
 
-.template-preview {
-    height: 250px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--bg-tertiary);
-}
-
-.template-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.template-card:hover .template-preview img {
-    transform: scale(1.05);
-}
-
-.template-content {
-    padding: var(--spacing-lg);
-}
-
-.template-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--spacing-md);
-}
-
-.template-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-}
-
-.template-badge {
-    background: var(--gradient-primary);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 500;
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--radius-sm);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.template-description {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    line-height: 1.5;
-    margin-bottom: var(--spacing-md);
-}
-
-.template-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-md);
-    font-size: 0.75rem;
-    color: var(--text-light);
-}
-
-.template-actions {
-    display: flex;
-    gap: var(--spacing-sm);
-}
-
-.template-actions .btn {
-    flex: 1;
-}
-
-/* Professional Empty State */
-.empty-state {
-    text-align: center;
-    padding: var(--spacing-3xl) var(--spacing-lg);
-    background: var(--bg-card);
-    border: 2px dashed var(--border-color);
-    border-radius: var(--radius-xl);
-    margin-top: var(--spacing-xl);
-}
-
-.empty-state-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--bg-tertiary);
-    border-radius: var(--radius-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto var(--spacing-lg);
-    font-size: 2rem;
-    color: var(--text-light);
-}
-
-.empty-state-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: var(--spacing-sm);
-    color: var(--text-primary);
-}
-
-.empty-state-description {
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-lg);
-}
-
-/* Professional Loading State */
-.loading-state {
-    text-align: center;
-    padding: var(--spacing-3xl) var(--spacing-lg);
-}
-
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid var(--border-color);
-    border-top: 4px solid var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto var(--spacing-lg);
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .templates-title {
-    font-size: 2rem;
-    }
-    
-    .filters-container {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .filter-group {
-        min-width: auto;
-    }
-    
-    .search-box {
-        min-width: auto;
-    }
-    
-    .templates-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-lg);
-    }
-    
-    .template-actions {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 576px) {
-    .templates-hero {
-        padding: var(--spacing-xl) 0;
-    }
-    
-    .templates-title {
-        font-size: 1.75rem;
-        margin-bottom: var(--spacing-sm);
-    }
-    
-    .templates-subtitle {
-        font-size: 1rem;
-        margin-bottom: var(--spacing-lg);
-    }
-    
-    .filters-section {
-        padding: var(--spacing-lg) 0;
-    }
-    
-    .filters-container {
-        gap: var(--spacing-md);
-    }
-    
-    .filter-group {
-        width: 100%;
-    }
-    
-    .filter-select {
-        width: 100%;
-        padding: 0.75rem;
-        font-size: 0.9rem;
-    }
-    
-    .search-box {
-        width: 100%;
-    }
-    
-    .search-box input {
-        padding: 0.75rem;
-        font-size: 0.9rem;
-    }
-    
-    .templates-grid {
-        gap: var(--spacing-md);
-    }
-    
-    .template-card {
-        margin-bottom: var(--spacing-md);
-    }
-    
-    .template-preview {
-        height: 200px;
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px;
-    }
-
-    .template-preview-overlay {
+/* Color Palette */
+.color-palette {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
+    top: 24px;
+    right: 24px;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .template-card:hover .template-preview-overlay {
-        opacity: 1;
-    }
-
-    .preview-btn {
-        background: rgba(255, 255, 255, 0.9) !important;
-        border: none !important;
-        color: var(--primary) !important;
-        font-weight: 600;
-        padding: 0.75rem 1.5rem;
-        border-radius: 25px;
-        transition: all 0.3s ease;
-    }
-
-    .preview-btn:hover {
-        background: white !important;
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Mobile Preview Modal Styles */
-    @media (max-width: 768px) {
-        .modal-xl {
-            max-width: 95vw !important;
-            margin: 10px auto !important;
-        }
-        
-        .modal-dialog-centered {
-            min-height: calc(100vh - 20px) !important;
-        }
-        
-        .modal-content {
-            height: calc(100vh - 20px) !important;
-            display: flex !important;
-            flex-direction: column !important;
-        }
-        
-        .modal-body {
-            flex: 1 !important;
-            overflow: hidden !important;
-        }
-        
-        .preview-container {
-            height: calc(100vh - 200px) !important;
-            min-height: 300px !important;
-        }
-        
-        .modal-footer {
-            flex-shrink: 0 !important;
-        }
-        
-        .preview-btn {
-            padding: 0.5rem 1rem !important;
-            font-size: 0.9rem !important;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .modal-xl {
-            max-width: 100vw !important;
-            margin: 0 !important;
-        }
-        
-        .modal-dialog-centered {
-            min-height: 100vh !important;
-        }
-        
-        .modal-content {
-            height: 100vh !important;
-            border-radius: 0 !important;
-        }
-        
-        .preview-container {
-            height: calc(100vh - 180px) !important;
-            min-height: 250px !important;
-        }
-        
-        .modal-header .modal-title {
-            font-size: 1.1rem !important;
-        }
-        
-        .modal-footer .btn {
-            padding: 0.5rem 1rem !important;
-            font-size: 0.9rem !important;
-        }
-    }
-    
-    .template-info {
-        padding: var(--spacing-md);
-    }
-    
-    .template-title {
-        font-size: 1.1rem;
-    }
-    
-    .template-description {
-        font-size: 0.85rem;
-    }
-    
-    .template-actions {
-        gap: var(--spacing-sm);
-    }
-    
-    .template-actions .btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.85rem;
-    }
-}
-
-/* Filters Sidebar */
-.filters-sidebar {
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 100px;
-}
-
-.filters-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.filters-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-}
-
-.clear-filters {
-    font-size: 0.875rem;
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.clear-filters:hover {
-    text-decoration: underline;
-}
-
-.filter-section {
-    margin-bottom: var(--spacing-lg);
-}
-
-.filter-section-title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: var(--spacing-md);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.filter-options {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-}
-
-.filter-checkbox {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    transition: color 0.2s ease;
-}
-
-.filter-checkbox:hover {
-    color: var(--text-primary);
-}
-
-.filter-checkbox input[type="checkbox"] {
-    display: none;
-}
-
-.checkmark {
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--border-color);
-    border-radius: 3px;
-    margin-right: var(--spacing-sm);
-    position: relative;
-    transition: all 0.2s ease;
-}
-
-.filter-checkbox input[type="checkbox"]:checked + .checkmark {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.filter-checkbox input[type="checkbox"]:checked + .checkmark::after {
-    content: '';
-    position: absolute;
-    left: 4px;
-    top: 1px;
-    width: 4px;
-    height: 8px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-/* Templates Main Content */
-.templates-main-content {
-    padding-left: var(--spacing-lg);
-}
-
-.templates-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-lg);
-    gap: var(--spacing-md);
-}
-
-.search-container {
-    position: relative;
-    flex: 1;
-    max-width: 400px;
-}
-
-.search-icon {
-    position: absolute;
-    left: var(--spacing-md);
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-}
-
-.search-input {
-    width: 100%;
-    padding: 0.75rem var(--spacing-md) 0.75rem 2.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    font-size: 0.875rem;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    transition: all 0.2s ease;
-}
-
-.search-input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-50);
-    outline: none;
-}
-
-.view-controls {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
-.sort-select {
-    padding: 0.75rem var(--spacing-md);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    font-size: 0.875rem;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    cursor: pointer;
-}
-
-.view-toggle {
-    display: flex;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-}
-
-.view-btn {
-    padding: 0.75rem;
-    border: none;
-    background: var(--bg-primary);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.view-btn.active {
-    background: var(--primary-color);
-    color: white;
-}
-
-.view-btn:hover:not(.active) {
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-}
-
-.templates-count {
-    margin-bottom: var(--spacing-lg);
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-}
-
-/* Template Card Updates */
-.template-icon {
-    position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    width: 32px;
-    height: 32px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 0.875rem;
+    gap: 8px;
     z-index: 2;
 }
 
-.template-tags {
-    display: flex;
-    gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-md);
-    flex-wrap: wrap;
+.color-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.template-tag {
-    background: var(--bg-secondary);
-    color: var(--text-secondary);
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.75rem;
+/* Card Content */
+.card-content {
+    position: relative;
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.card-description {
+    font-size: 16px;
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* Tags */
+.card-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.tag {
+    padding: 6px 12px;
+    background: #333333;
+    color: #FFFFFF;
+    border-radius: 12px;
+    font-size: 12px;
     font-weight: 500;
+    text-transform: lowercase;
+}
+
+/* Use Theme Button */
+.use-theme-btn {
+    width: 100%;
+    padding: 14px 24px;
+    background: #333333;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+    text-decoration: none;
+}
+
+.use-theme-btn:hover {
+    background: #000000;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.use-theme-btn i {
+    transition: transform var(--transition);
+}
+
+.use-theme-btn:hover i {
+    transform: translateX(4px);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .themes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .theme-gallery-header {
+        padding: 60px 24px 40px;
+    }
+    
+    .theme-gallery-title {
+        font-size: 36px;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .title-icon {
+        font-size: 36px;
+    }
+    
+    .theme-gallery-subtitle {
+        font-size: 16px;
+    }
+    
+    .filters-section {
+        padding: 0 24px 40px;
+    }
+    
+    .filters-container {
+        gap: 8px;
+    }
+    
+    .filter-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .themes-section {
+        padding: 0 24px 60px;
+    }
+    
+    .themes-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .theme-card {
+        padding: 24px;
+    }
 }
 
 @media (max-width: 480px) {
-    .templates-title {
-        font-size: 1.5rem;
+    .theme-gallery-title {
+        font-size: 28px;
     }
     
-    .templates-subtitle {
-        font-size: 0.9rem;
+    .title-icon {
+        font-size: 28px;
     }
     
-    .template-preview {
-        height: 180px;
+    .filter-btn {
+        padding: 8px 16px;
+        font-size: 13px;
     }
     
-    .template-info {
-        padding: var(--spacing-sm);
+    .card-title {
+        font-size: 20px;
     }
     
-    .template-title {
-        font-size: 1rem;
-    }
-    
-    .template-description {
-        font-size: 0.8rem;
-    }
-    
-    .template-actions .btn {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.8rem;
+    .card-description {
+        font-size: 14px;
     }
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Professional Templates Hero -->
-<section class="templates-hero">
-    <div class="container">
-        <h1 class="templates-title">Choose Your Perfect Template</h1>
-        <p class="templates-subtitle">
-            Select from our professionally designed templates and create stunning invitations in minutes.
-        </p>
+<!-- Theme Gallery Header -->
+<section class="theme-gallery-header">
+    <div class="header-content">
+        <h1 class="theme-gallery-title">
+            <span class="title-icon">✶</span>
+            <span class="title-text">
+                <span class="title-theme">Theme </span>
+                <span class="title-gallery">Gallery</span>
+            </span>
+        </h1>
+        <p class="theme-gallery-subtitle">Explore our curated collection of invitation designs. Each theme tells a unique story — find yours.</p>
             </div>
 </section>
 
-<!-- Main Content Layout -->
-<div class="container-fluid">
-    <div class="row">
-        <!-- Left Sidebar - Filters -->
-        <div class="col-lg-3 col-md-4">
-            <div class="filters-sidebar">
-                <div class="filters-header">
-                    <h5 class="filters-title">Filters</h5>
-                    <a href="#" class="clear-filters" onclick="clearAllFilters()">Clear Filters</a>
+<!-- Filter Buttons -->
+<section class="filters-section">
+    <div class="filters-container">
+        <button class="filter-btn active" data-filter="all">All Occasions</button>
+        <button class="filter-btn" data-filter="wedding">Wedding</button>
+        <button class="filter-btn" data-filter="birthday">Birthday</button>
+        <button class="filter-btn" data-filter="engagement">Engagement</button>
+        <button class="filter-btn" data-filter="anniversary">Anniversary</button>
+        <button class="filter-btn" data-filter="babyshower">Baby Shower</button>
+        <button class="filter-btn" data-filter="corporate">Corporate</button>
+        <button class="filter-btn" data-filter="custom">Custom</button>
                             </div>
-            
-                <div class="filter-section">
-                    <h6 class="filter-section-title">Event Type</h6>
-                    <div class="filter-options">
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="eventType" value="wedding">
-                            <span class="checkmark"></span>
-                            Wedding
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="eventType" value="birthday">
-                            <span class="checkmark"></span>
-                            Birthday Party
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="eventType" value="anniversary">
-                            <span class="checkmark"></span>
-                            Anniversary
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="eventType" value="babyshower">
-                            <span class="checkmark"></span>
-                            Baby Shower
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="eventType" value="graduation">
-                            <span class="checkmark"></span>
-                            Graduation Party
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="eventType" value="retirement">
-                            <span class="checkmark"></span>
-                            Retirement Party
-                        </label>
+</section>
+
+<!-- Theme Cards Grid -->
+<section class="themes-section">
+    <div class="themes-grid" id="themesGrid">
+        <!-- Modern Minimal -->
+        <div class="theme-card" data-category="wedding corporate engagement">
+            <div class="color-palette">
+                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
+                <div class="color-circle" style="background: #000000;"></div>
+                <div class="color-circle" style="background: var(--reddish-brown-dark);"></div>
                     </div>
+            <div class="card-content">
+                <h3 class="card-title">Modern Minimal</h3>
+                <p class="card-description">Clean lines and sophisticated simplicity</p>
+                <div class="card-tags">
+                    <span class="tag">wedding</span>
+                    <span class="tag">corporate</span>
+                    <span class="tag">engagement</span>
                         </div>
-            
-                <div class="filter-section">
-                    <h6 class="filter-section-title">Style</h6>
-                    <div class="filter-options">
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="style" value="traditional">
-                            <span class="checkmark"></span>
-                            Traditional
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="style" value="modern">
-                            <span class="checkmark"></span>
-                            Modern
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="style" value="elegant">
-                            <span class="checkmark"></span>
-                            Elegant
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="style" value="fun">
-                            <span class="checkmark"></span>
-                            Fun & Colorful
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="style" value="classic">
-                            <span class="checkmark"></span>
-                            Classic
-                        </label>
+                <a href="/create-invitation?template=modern_minimal" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                     </div>
                     </div>
             
-                <div class="filter-section">
-                    <h6 class="filter-section-title">Theme</h6>
-                    <div class="filter-options">
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="theme" value="christian">
-                            <span class="checkmark"></span>
-                            Christian
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="theme" value="secular">
-                            <span class="checkmark"></span>
-                            Secular
-                        </label>
-                        <label class="filter-checkbox">
-                            <input type="checkbox" name="theme" value="modern">
-                            <span class="checkmark"></span>
-                            Modern
-                        </label>
+        <!-- Floral Luxury -->
+        <div class="theme-card" data-category="wedding babyshower anniversary">
+            <div class="color-palette">
+                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
+                <div class="color-circle" style="background: #90EE90;"></div>
+                <div class="color-circle" style="background: var(--golden-yellow);"></div>
                     </div>
+            <div class="card-content">
+                <h3 class="card-title">Floral Luxury</h3>
+                <p class="card-description">Elegant botanical designs with golden accents</p>
+                <div class="card-tags">
+                    <span class="tag">wedding</span>
+                    <span class="tag">baby shower</span>
+                    <span class="tag">anniversary</span>
                 </div>
+                <a href="/create-invitation?template=floral_luxury" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
         </div>
         
-        <!-- Main Content Area -->
-        <div class="col-lg-9 col-md-8">
-            <div class="templates-main-content">
-                <!-- Top Controls -->
-                <div class="templates-controls">
-                    <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="searchInput" placeholder="Search templates..." class="search-input">
+        <!-- Royal Gold -->
+        <div class="theme-card" data-category="wedding anniversary corporate">
+            <div class="color-palette">
+                <div class="color-circle" style="background: #000000;"></div>
+                <div class="color-circle" style="background: var(--golden-yellow);"></div>
+                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
             </div>
-                    
-                    <div class="view-controls">
-                        <select class="sort-select" id="sortSelect">
-                            <option value="popular">Most Popular</option>
-                            <option value="newest">Newest</option>
-                            <option value="alphabetical">Alphabetical</option>
-                        </select>
-                        
-                        <div class="view-toggle">
-                            <button class="view-btn active" data-view="grid" title="Grid View">
-                                <i class="fas fa-th"></i>
-                            </button>
-                            <button class="view-btn" data-view="list" title="List View">
-                                <i class="fas fa-list"></i>
-                            </button>
+            <div class="card-content">
+                <h3 class="card-title">Royal Gold</h3>
+                <p class="card-description">Opulent and regal with metallic brilliance</p>
+                <div class="card-tags">
+                    <span class="tag">wedding</span>
+                    <span class="tag">anniversary</span>
+                    <span class="tag">corporate</span>
         </div>
+                <a href="/create-invitation?template=royal_gold" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
     </div>
                 </div>
                 
-                <div class="templates-count" style="display: none;">
-                    <span id="templatesCount">Showing 8 templates</span>
+        <!-- Watercolor Dreams -->
+        <div class="theme-card" data-category="birthday babyshower engagement">
+            <div class="color-palette">
+                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
+                <div class="color-circle" style="background: #DDA0DD;"></div>
+                <div class="color-circle" style="background: #90EE90;"></div>
                 </div>
-                
-                <!-- Templates Grid -->
-            <div class="templates-grid" id="templates-grid">
-                <!-- Wedding Templates -->
-                <div class="template-card" data-event-type="wedding" data-style="elegant" data-theme="secular">
-                    <div class="template-icon">
-                        <i class="fas fa-heart"></i>
+            <div class="card-content">
+                <h3 class="card-title">Watercolor Dreams</h3>
+                <p class="card-description">Soft, artistic washes of color</p>
+                <div class="card-tags">
+                    <span class="tag">birthday</span>
+                    <span class="tag">baby shower</span>
+                    <span class="tag">engagement</span>
                     </div>
-                    <div class="template-preview">
-                        <img src="/images/weddingelegant.jpg" alt="Wedding Elegant Template">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="wedding_elegant">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                    </div>
-                    <div class="template-content">
-                            <h3 class="template-title">Wedding Elegant</h3>
-                        <p class="template-description">Perfect for your special day</p>
-                        <div class="template-tags">
-                            <span class="template-tag">Wedding</span>
-                            <span class="template-tag">Elegant</span>
-                            </div>
-                        <a href="/create-invitation?template=wedding_elegant" class="btn btn-primary">Choose Template</a>
+                <a href="/create-invitation?template=watercolor_dreams" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                             </div>
                             </div>
                 
-                <!-- Birthday Templates -->
-                <div class="template-card" data-event-type="birthday" data-style="fun" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/birthday.jpg" alt="Birthday Fun Colorful Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="birthday_fun_colorful">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
+        <!-- Dark Chic -->
+        <div class="theme-card" data-category="corporate birthday anniversary">
+            <div class="color-palette">
+                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
+                <div class="color-circle" style="background: var(--reddish-brown-dark);"></div>
+                <div class="color-circle" style="background: var(--golden-yellow);"></div>
                         </div>
+            <div class="card-content">
+                <h3 class="card-title">Dark Chic</h3>
+                <p class="card-description">Bold and modern with dramatic contrast</p>
+                <div class="card-tags">
+                    <span class="tag">corporate</span>
+                    <span class="tag">birthday</span>
+                    <span class="tag">anniversary</span>
                     </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Birthday Fun Colorful</h3>
-                            <span class="template-badge">Fun</span>
-                        </div>
-                        <p class="template-description">Vibrant and playful birthday invitation with elegant navy blue design.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Birthday</span>
-                            <span><i class="fas fa-palette me-1"></i>Fun</span>
-                        </div>
-                        <div class="template-actions">
-                            <a href="/create-invitation?template=birthday_fun_colorful" class="btn btn-primary">Use Template</a>
-                        </div>
+                <a href="/create-invitation?template=dark_chic" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                     </div>
                 </div>
 
-                <div class="template-card" data-event-type="birthday" data-style="elegant" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/birthday.jpg" alt="Birthday Elegant Gold Blue Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="birthday_elegant_gold_blue">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
+        <!-- Festive Traditional -->
+        <div class="theme-card" data-category="birthday anniversary custom">
+            <div class="color-palette">
+                <div class="color-circle" style="background: var(--golden-yellow);"></div>
+                <div class="color-circle" style="background: var(--reddish-brown-dark);"></div>
+                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
                         </div>
+            <div class="card-content">
+                <h3 class="card-title">Festive Traditional</h3>
+                <p class="card-description">Classic celebration with timeless charm</p>
+                <div class="card-tags">
+                    <span class="tag">birthday</span>
+                    <span class="tag">anniversary</span>
+                    <span class="tag">custom</span>
                     </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Birthday Elegant Gold Blue</h3>
-                            <span class="template-badge">Elegant</span>
-                        </div>
-                        <p class="template-description">Elegant birthday invitation with gold and blue theme.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Birthday</span>
-                            <span><i class="fas fa-palette me-1"></i>Elegant</span>
-                        </div>
-                        <div class="template-actions">
-                            <a href="/create-invitation?template=birthday_elegant_gold_blue" class="btn btn-primary">Use Template</a>
-                        </div>
+                <a href="/create-invitation?template=festive_traditional" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                     </div>
                 </div>
 
-                <div class="template-card" data-event-type="birthday" data-style="elegant" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/birthday.jpg" alt="Birthday Elegant Navy Gold Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="birthday_elegant_navy_gold">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
+        <!-- Additional templates from your existing data -->
+        <div class="theme-card" data-category="wedding">
+            <div class="color-palette">
+                <div class="color-circle" style="background: #FFF5F0;"></div>
+                <div class="color-circle" style="background: var(--reddish-brown);"></div>
+                <div class="color-circle" style="background: var(--golden-yellow);"></div>
                         </div>
+            <div class="card-content">
+                <h3 class="card-title">Wedding Elegant</h3>
+                <p class="card-description">Perfect for your special day</p>
+                <div class="card-tags">
+                    <span class="tag">wedding</span>
+                    <span class="tag">elegant</span>
+                    <span class="tag">engagement</span>
                     </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Birthday Elegant Navy Gold</h3>
-                            <span class="template-badge">Elegant</span>
-                        </div>
-                        <p class="template-description">Sophisticated birthday invitation with navy and gold accents.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Birthday</span>
-                            <span><i class="fas fa-palette me-1"></i>Elegant</span>
-                        </div>
-                        <div class="template-actions">
-                            <a href="/create-invitation?template=birthday_elegant_navy_gold" class="btn btn-primary">Use Template</a>
-                        </div>
+                <a href="/create-invitation?template=wedding_elegant" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                     </div>
                 </div>
 
-                <div class="template-card" data-event-type="birthday" data-style="elegant" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/birthday.jpg" alt="Birthday Elegant Purple Gold Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="birthday_elegant_purple_gold">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
+        <div class="theme-card" data-category="birthday">
+            <div class="color-palette">
+                <div class="color-circle" style="background: #FF6B6B;"></div>
+                <div class="color-circle" style="background: #4ECDC4;"></div>
+                <div class="color-circle" style="background: #FFE66D;"></div>
                         </div>
+            <div class="card-content">
+                <h3 class="card-title">Birthday Fun</h3>
+                <p class="card-description">Vibrant and playful celebration</p>
+                <div class="card-tags">
+                    <span class="tag">birthday</span>
+                    <span class="tag">fun</span>
+                    <span class="tag">custom</span>
                     </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Birthday Elegant Purple Gold</h3>
-                            <span class="template-badge">Elegant</span>
-                        </div>
-                        <p class="template-description">Royal birthday invitation with purple and gold design.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Birthday</span>
-                            <span><i class="fas fa-palette me-1"></i>Elegant</span>
-                        </div>
-                        <div class="template-actions">
-                            <a href="/create-invitation?template=birthday_elegant_purple_gold" class="btn btn-primary">Use Template</a>
-                        </div>
+                <a href="/create-invitation?template=birthday_fun" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                     </div>
                 </div>
 
-                <div class="template-card" data-event-type="birthday" data-style="elegant" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/birthday.jpg" alt="Birthday Elegant Dark Gold Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="birthday_elegant_dark_gold">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
+        <div class="theme-card" data-category="corporate">
+            <div class="color-palette">
+                <div class="color-circle" style="background: #2C3E50;"></div>
+                <div class="color-circle" style="background: #3498DB;"></div>
+                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
                         </div>
+            <div class="card-content">
+                <h3 class="card-title">Corporate Professional</h3>
+                <p class="card-description">Professional events with sophistication</p>
+                <div class="card-tags">
+                    <span class="tag">corporate</span>
+                    <span class="tag">professional</span>
+                    <span class="tag">custom</span>
                     </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Birthday Elegant Dark Gold</h3>
-                            <span class="template-badge">Elegant</span>
+                <a href="/create-invitation?template=corporate_professional" class="use-theme-btn">
+                    Use This Theme
+                    <i class="fas fa-arrow-right"></i>
+                </a>
                         </div>
-                        <p class="template-description">Dark and elegant birthday invitation with gold highlights.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Birthday</span>
-                            <span><i class="fas fa-palette me-1"></i>Elegant</span>
-                        </div>
-                        <div class="template-actions">
-                            <a href="/create-invitation?template=birthday_elegant_dark_gold" class="btn btn-primary">Use Template</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="template-card" data-event-type="birthday" data-style="elegant" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/birthday.jpg" alt="Birthday Final Elegant Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="birthday_final_elegant">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                    </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Birthday Final Elegant</h3>
-                            <span class="template-badge">Elegant</span>
-                        </div>
-                        <p class="template-description">Ultimate elegant birthday invitation design.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Birthday</span>
-                            <span><i class="fas fa-palette me-1"></i>Elegant</span>
-                        </div>
-                        <div class="template-actions">
-                            <a href="/create-invitation?template=birthday_final_elegant" class="btn btn-primary">Use Template</a>
-                        </div>
-                    </div>
-                </div>
-            
-                
-                <!-- Anniversary Templates -->
-                <div class="template-card" data-event-type="anniversary" data-style="elegant" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/anniversery.jpg" alt="Anniversary Golden Elegant Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="anniversary_golden_elegant">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Anniversary Golden Elegant</h3>
-                            <span class="template-badge">Elegant</span>
-                                    </div>
-                        <p class="template-description">Elegant golden design for milestone celebrations.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Anniversary</span>
-                            <span><i class="fas fa-palette me-1"></i>Elegant</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=anniversary_golden_elegant" class="btn btn-primary">Use Template</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                <!-- Baby Shower Templates -->
-                <div class="template-card" data-event-type="babyshower" data-style="fun" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/babyshower.jpg" alt="Baby Shower Sweet Pink Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="babyshower_sweet_pink">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Baby Shower Sweet Pink</h3>
-                            <span class="template-badge">Sweet</span>
-                                    </div>
-                        <p class="template-description">Sweet pink design perfect for baby shower celebrations.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Baby Shower</span>
-                            <span><i class="fas fa-palette me-1"></i>Sweet</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=babyshower_sweet_pink" class="btn btn-primary">Use Template</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                <!-- Graduation Templates -->
-                <div class="template-card" data-event-type="graduation" data-style="modern" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/graduation.jpg" alt="Graduation Success Modern Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="graduation_success_modern">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Graduation Success Modern</h3>
-                            <span class="template-badge">Modern</span>
-                                    </div>
-                        <p class="template-description">Modern design celebrating academic achievements.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Graduation</span>
-                            <span><i class="fas fa-palette me-1"></i>Modern</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=graduation_success_modern" class="btn btn-primary">Use Template</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                <!-- Retirement Templates -->
-                <div class="template-card" data-event-type="retirement" data-style="classic" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/retirement.jpg" alt="Retirement Golden Classic Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="retirement_golden_classic">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Retirement Golden Classic</h3>
-                            <span class="template-badge">Classic</span>
-                                    </div>
-                        <p class="template-description">Classic golden design for retirement celebrations.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Retirement</span>
-                            <span><i class="fas fa-palette me-1"></i>Classic</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=retirement_golden_classic" class="btn btn-primary">Use Template</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                <!-- House Warming Templates -->
-                <div class="template-card" data-event-type="housewarming" data-style="modern" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/static/images/templateselection/housewarm.jpg" alt="House Warming Modern Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="wedding_elegant_modern">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">House Warming Modern</h3>
-                            <span class="template-badge">Modern</span>
-                                    </div>
-                        <p class="template-description">Modern design for house warming celebrations.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>House Warming</span>
-                            <span><i class="fas fa-palette me-1"></i>Modern</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=wedding_elegant_modern" class="btn btn-primary">Use Template</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                <!-- Naming Ceremony Templates -->
-                <div class="template-card" data-event-type="naming" data-style="traditional" data-theme="cultural">
-                    <div class="template-preview">
-                        <img src="/images/templateselection/naming cermony.jpg" alt="Naming Ceremony Traditional Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="wedding_hindu_traditional">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Naming Ceremony Traditional</h3>
-                            <span class="template-badge">Traditional</span>
-                                    </div>
-                        <p class="template-description">Traditional design for naming ceremony celebrations.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Naming Ceremony</span>
-                            <span><i class="fas fa-palette me-1"></i>Traditional</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=wedding_hindu_traditional" class="btn btn-primary">Use Template</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                <!-- Festival Templates -->
-                <div class="template-card" data-event-type="festival" data-style="colorful" data-theme="cultural">
-                    <div class="template-preview">
-                        <img src="/static/images/templateselection/festival.jpg" alt="Festival Celebration Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="birthday_fun_colorful">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Festival Celebration</h3>
-                            <span class="template-badge">Colorful</span>
-                                    </div>
-                        <p class="template-description">Colorful design for festival celebrations.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Festival</span>
-                            <span><i class="fas fa-palette me-1"></i>Colorful</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=birthday_fun_colorful" class="btn btn-primary">Use Template</a>
-                                    </div>
-                            </div>
-                        </div>
-                        
-                <!-- Get Together Templates -->
-                <div class="template-card" data-event-type="gettogether" data-style="casual" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/templateselection/traditionalgettogether.jpg" alt="Get Together Traditional Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="wedding_elegant">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Get Together Traditional</h3>
-                            <span class="template-badge">Traditional</span>
-                                    </div>
-                        <p class="template-description">Traditional design for get together events.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Get Together</span>
-                            <span><i class="fas fa-palette me-1"></i>Traditional</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=wedding_elegant" class="btn btn-primary">Use Template</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                <div class="template-card" data-event-type="party" data-style="fun" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/templateselection/partytemplates.jpg" alt="Party Fun Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="birthday_fun_colorful">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                                </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Party Fun</h3>
-                            <span class="template-badge">Fun</span>
-                                    </div>
-                        <p class="template-description">Fun and colorful design for party celebrations.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Party</span>
-                            <span><i class="fas fa-palette me-1"></i>Fun</span>
-                                    </div>
-                                    <div class="template-actions">
-                            <a href="/create-invitation?template=birthday_fun_colorful" class="btn btn-primary">Use Template</a>
-                                    </div>
-                                </div>
-                            </div>
-                
-                <!-- Corporate Templates -->
-                <div class="template-card" data-event-type="corporate" data-style="professional" data-theme="secular">
-                    <div class="template-preview">
-                        <img src="/images/corporateevent.jpg" alt="Corporate Event Professional Template" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="template-preview-overlay">
-                            <button class="btn btn-light preview-btn" data-template="wedding_elegant_modern">
-                                <i class="fas fa-eye me-1"></i>Preview
-                            </button>
-                        </div>
-                        </div>
-                    <div class="template-content">
-                        <div class="template-header">
-                            <h3 class="template-title">Corporate Event Professional</h3>
-                            <span class="template-badge">Professional</span>
-                    </div>
-                        <p class="template-description">Professional design for corporate events.</p>
-                        <div class="template-meta">
-                            <span><i class="fas fa-calendar me-1"></i>Corporate</span>
-                            <span><i class="fas fa-palette me-1"></i>Professional</span>
-                </div>
-                        <div class="template-actions">
-                            <a href="/create-invitation?template=wedding_elegant_modern" class="btn btn-primary">Use Template</a>
-            </div>
-        </div>
-    </div>
-                
-            </div>
         </div>
     </div>
 </section>
+{% endblock %}
 
+{% block extra_scripts %}
 <script>
 // Filter functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const filterCheckboxes = document.querySelectorAll('.filter-checkbox input[type="checkbox"]');
-    const searchInput = document.getElementById('searchInput');
-    const sortSelect = document.getElementById('sortSelect');
-    const viewButtons = document.querySelectorAll('.view-btn');
-    const templatesGrid = document.getElementById('templates-grid');
-    const templatesCount = document.getElementById('templatesCount');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const themeCards = document.querySelectorAll('.theme-card');
     
-    let allTemplates = Array.from(document.querySelectorAll('.template-card'));
-    let filteredTemplates = [...allTemplates];
-    
-    // Filter templates based on checkboxes
-    function filterTemplates() {
-        const selectedEventTypes = Array.from(document.querySelectorAll('input[name="eventType"]:checked')).map(cb => cb.value);
-        const selectedStyles = Array.from(document.querySelectorAll('input[name="style"]:checked')).map(cb => cb.value);
-        const selectedThemes = Array.from(document.querySelectorAll('input[name="theme"]:checked')).map(cb => cb.value);
-        
-        filteredTemplates = allTemplates.filter(template => {
-            const eventType = template.dataset.eventType;
-            const style = template.dataset.style;
-            const theme = template.dataset.theme;
-            
-            const matchesEventType = selectedEventTypes.length === 0 || selectedEventTypes.includes(eventType);
-            const matchesStyle = selectedStyles.length === 0 || selectedStyles.includes(style);
-            const matchesTheme = selectedThemes.length === 0 || selectedThemes.includes(theme);
-            
-            return matchesEventType && matchesStyle && matchesTheme;
-        });
-        
-        updateTemplatesDisplay();
-    }
-    
-    // Search functionality
-    function searchTemplates() {
-        const searchTerm = searchInput.value.toLowerCase();
-        
-        if (searchTerm === '') {
-            filteredTemplates = [...allTemplates];
-        } else {
-            filteredTemplates = allTemplates.filter(template => {
-                const title = template.querySelector('.template-title').textContent.toLowerCase();
-                const description = template.querySelector('.template-description').textContent.toLowerCase();
-                return title.includes(searchTerm) || description.includes(searchTerm);
-            });
-        }
-        
-        updateTemplatesDisplay();
-    }
-    
-    // Sort templates
-    function sortTemplates() {
-        const sortBy = sortSelect.value;
-        
-        filteredTemplates.sort((a, b) => {
-            switch(sortBy) {
-                case 'alphabetical':
-                    return a.querySelector('.template-title').textContent.localeCompare(b.querySelector('.template-title').textContent);
-                case 'newest':
-                    return b.dataset.templateId - a.dataset.templateId;
-                case 'popular':
-                default:
-                    return 0; // Keep original order for popular
-            }
-        });
-        
-        updateTemplatesDisplay();
-    }
-    
-    // Update templates display
-    function updateTemplatesDisplay() {
-        // Clear current templates
-        templatesGrid.innerHTML = '';
-        
-        // Add filtered templates
-        filteredTemplates.forEach(template => {
-            templatesGrid.appendChild(template);
-        });
-        
-        // Update count (hidden)
-        // templatesCount.textContent = `Showing ${filteredTemplates.length} templates`;
-    }
-    
-    // Event listeners
-    filterCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', filterTemplates);
-    });
-    
-    searchInput.addEventListener('input', searchTemplates);
-    sortSelect.addEventListener('change', sortTemplates);
-    
-    // View toggle functionality
-    viewButtons.forEach(button => {
+    filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            viewButtons.forEach(btn => btn.classList.remove('active'));
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
             this.classList.add('active');
             
-            const view = this.dataset.view;
-            if (view === 'list') {
-                templatesGrid.classList.add('list-view');
-            } else {
-                templatesGrid.classList.remove('list-view');
-            }
-        });
-    });
-});
-
-// Clear all filters
-function clearAllFilters() {
-    document.querySelectorAll('.filter-checkbox input[type="checkbox"]').forEach(checkbox => {
-        checkbox.checked = false;
-    });
-    document.getElementById('searchInput').value = '';
-    document.getElementById('sortSelect').value = 'popular';
-    
-    // Reset templates display
-    const templatesGrid = document.getElementById('templates-grid');
-    const templatesCount = document.getElementById('templatesCount');
-    const allTemplates = Array.from(document.querySelectorAll('.template-card'));
-    
-    templatesGrid.innerHTML = '';
-    allTemplates.forEach(template => {
-        templatesGrid.appendChild(template);
-    });
-    
-    // templatesCount.textContent = `Showing ${allTemplates.length} templates`;
-}
-
-// Preview functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Create preview modal
-    const previewModal = document.createElement('div');
-    previewModal.id = 'previewModal';
-    previewModal.className = 'modal fade';
-    previewModal.innerHTML = `
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Template Preview</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-0">
-                    <div class="preview-container" style="position: relative; width: 100%; height: 80vh; min-height: 400px;">
-                        <div id="previewLoading" class="d-flex justify-content-center align-items-center" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f8f9fa; z-index: 10;">
-                            <div class="text-center">
-                                <div class="spinner-border text-primary mb-3" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <p class="text-muted">Loading template preview...</p>
-                            </div>
-                        </div>
-                        <iframe id="previewFrame" src="" width="100%" height="100%" style="border: none; border-radius: 0; display: none;"></iframe>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a href="#" id="useTemplateBtn" class="btn btn-primary">Use This Template</a>
-                </div>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(previewModal);
-
-    // Add preview button event listeners
-    document.querySelectorAll('.preview-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+            const filter = this.dataset.filter;
             
-            const template = this.dataset.template;
-            const templateCard = this.closest('.template-card');
-            const eventType = templateCard.dataset.eventType;
-            const previewUrl = `/preview-template/${template}?event_type=${eventType}`;
-            
-            // Show loading indicator
-            const loadingDiv = document.getElementById('previewLoading');
-            const iframe = document.getElementById('previewFrame');
-            loadingDiv.style.display = 'flex';
-            iframe.style.display = 'none';
-            
-            // Set iframe source
-            iframe.src = previewUrl;
-            
-            // Set use template button href
-            document.getElementById('useTemplateBtn').href = `/create-invitation?template=${template}`;
-            
-            // Show modal
-            const modal = new bootstrap.Modal(previewModal, {
-                backdrop: 'static',
-                keyboard: true,
-                focus: true
+            // Filter cards
+            themeCards.forEach(card => {
+                const categories = card.dataset.category.split(' ');
+                
+                if (filter === 'all' || categories.includes(filter)) {
+                    card.style.display = 'block';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.4s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 10);
+        } else {
+                    card.style.transition = 'all 0.4s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(-20px)';
+                    
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 400);
+                }
             });
-            modal.show();
-            
-            // Handle iframe load
-            iframe.onload = function() {
-                // Hide loading indicator and show iframe
-                loadingDiv.style.display = 'none';
-                iframe.style.display = 'block';
-                iframe.style.visibility = 'visible';
-            };
-            
-            // Handle iframe load error
-            iframe.onerror = function() {
-                loadingDiv.innerHTML = `
-                    <div class="text-center">
-                        <i class="fas fa-exclamation-triangle text-warning mb-3" style="font-size: 2rem;"></i>
-                        <p class="text-muted">Failed to load preview. Please try again.</p>
-                        <button class="btn btn-primary btn-sm" onclick="location.reload()">Retry</button>
-                    </div>
-                `;
-            };
         });
     });
     
-    // Handle mobile touch events
-    if ('ontouchstart' in window) {
-        // Add touch-friendly styles for mobile
-        document.addEventListener('DOMContentLoaded', function() {
-            const style = document.createElement('style');
-            style.textContent = `
-                .preview-btn {
-                    touch-action: manipulation;
-                    -webkit-tap-highlight-color: transparent;
-                }
-                .modal-backdrop {
-                    background-color: rgba(0, 0, 0, 0.8) !important;
-                }
-            `;
-            document.head.appendChild(style);
-        });
-    }
+    // Initial animation
+    themeCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.4s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
 });
 </script>
 {% endblock %}

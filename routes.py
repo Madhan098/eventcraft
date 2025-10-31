@@ -708,8 +708,13 @@ def register_routes(app):
     @app.route('/templates')
     def templates():
         # Templates page is public - no login required
-        event_types = EventType.query.all()
-        return render_template('templates.html', event_types=event_types)
+        # Optimize: Only fetch active event types
+        event_types = EventType.query.filter_by(is_active=True).order_by(EventType.sort_order.asc()).all()
+        
+        # Fetch templates efficiently - limit to active templates only
+        templates = Template.query.filter_by(is_active=True).limit(50).all()
+        
+        return render_template('templates.html', event_types=event_types, templates=templates)
 
     @app.route('/preview-template/<template_name>')
     def preview_template(template_name):
@@ -1140,13 +1145,9 @@ def register_routes(app):
             flash('Please login to create an invitation', 'error')
             return redirect(url_for('auth'))
         
-        # Get template parameter if coming from templates page
+        # Get template and event_type parameters
         selected_template = request.args.get('template')
-        
-        # Redirect to templates page if no template selected
-        if not selected_template:
-            flash('Please select a template first to create your invitation', 'info')
-            return redirect(url_for('templates'))
+        event_type = request.args.get('event_type', 'birthday')  # Default to birthday
         
         # Get current user information
         try:
@@ -1162,10 +1163,21 @@ def register_routes(app):
             flash('Error retrieving user information', 'error')
             return redirect(url_for('auth'))
         
-        event_types = EventType.query.all()
+        # Fetch templates for the event type - Optimized query with limit
+        templates = Template.query.filter_by(event_type=event_type, is_active=True).limit(12).all()
+        
+        # If no templates found, get limited active templates
+        if not templates:
+            templates = Template.query.filter_by(is_active=True).limit(12).all()
+        
+        # Optimize: Only fetch active event types
+        event_types = EventType.query.filter_by(is_active=True).order_by(EventType.sort_order.asc()).limit(10).all()
+        
         return render_template('invitation/create.html', 
                              event_types=event_types, 
                              selected_template=selected_template,
+                             templates=templates,
+                             event_type=event_type,
                              current_user=current_user)
 
     @app.route('/create-invitation', methods=['POST'])

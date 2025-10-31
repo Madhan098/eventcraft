@@ -20,7 +20,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts - Floral Theme -->
+    <!-- Google Fonts - Floral Theme (preconnect for performance) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Floral Animations CSS -->
@@ -37,82 +39,92 @@
     
     <style>
         :root {
-            /* 🌸 Floral Theme - Google Arts & Culture Inspired */
+            /* 🎨 Momento Theme - Exact Homepage Design */
             
-            /* Primary Colors - Soft Rose Pink */
-            --primary: #E91E63;
-            --primary-hover: #C2185B;
-            --primary-dark: #AD1457;
-            --primary-light: #F48FB1;
-            --primary-teal: #80CBC4;
+            /* Exact Color Palette from Homepage */
+            --reddish-brown: #A07878;
+            --reddish-brown-dark: #8B5A5A;
+            --reddish-brown-light: #B89090;
+            --golden-yellow: #D4A85A;
+            --golden-yellow-bright: #FFD700;
+            --golden-yellow-light: #F4D03F;
             
-            /* Secondary Colors - Lavender Purple */
-            --secondary: #9C27B0;
-            --secondary-hover: #7B1FA2;
-            --secondary-dark: #6A1B9A;
-            --secondary-light: #BA68C8;
-            --secondary-coral: #FF7043;
+            /* Primary Colors - Reddish Brown */
+            --primary: #A07878;
+            --primary-hover: #8B5A5A;
+            --primary-dark: #8B5A5A;
+            --primary-light: #B89090;
+            --primary-teal: #A07878;
             
-            /* Accent Colors - Sage Green */
-            --accent: #66BB6A;
-            --accent-hover: #4CAF50;
-            --accent-dark: #388E3C;
-            --accent-light: #81C784;
-            --accent-yellow: #FFD54F;
+            /* Secondary Colors - Golden Yellow */
+            --secondary: #D4A85A;
+            --secondary-hover: #C4974A;
+            --secondary-dark: #B8873A;
+            --secondary-light: #E4B86A;
+            --secondary-coral: #D4A85A;
             
-            /* Premium Accents - Gold & Copper */
-            --gold: #D4AF37;
+            /* Accent Colors */
+            --accent: #A07878;
+            --accent-hover: #8B5A5A;
+            --accent-dark: #8B5A5A;
+            --accent-light: #B89090;
+            --accent-yellow: #D4A85A;
+            
+            /* Premium Accents - Gold */
+            --gold: #D4A85A;
             --gold-light: #F4D03F;
-            --copper: #B87333;
+            --copper: #A07878;
             
-            /* Background Colors - Cream & Warm Whites */
-            --bg-main: #FFFEF7;
+            /* Background Colors - Cream & Whites */
+            --bg-main: #FAFAFA;
             --bg-white: #FFFFFF;
-            --bg-primary: #FFFEF7;
-            --bg-secondary: #F8F6F0;
-            --bg-tertiary: #F5F3ED;
-            --bg-accent: rgba(233, 30, 99, 0.05);
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #FAFAFA;
+            --bg-tertiary: #F5F5F5;
+            --bg-accent: rgba(160, 120, 120, 0.05);
             --bg-card: #FFFFFF;
-            --bg-dark: #3E2723;
+            --bg-dark: #000000;
+            --bg-cream: #FAFAFA;
+            --bg-pink-beige: #FFF5F0;
             
-            /* Text Colors - Warm & Readable */
-            --text-primary: #3E2723;
-            --text-secondary: #6D4C41;
-            --text-light: #A1887F;
-            --text-dark: #3E2723;
-            --text-tertiary: #8D6E63;
-            --text-muted: #BCAAA4;
+            /* Text Colors */
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --text-dark: #000000;
+            --text-tertiary: #666666;
+            --text-muted: #CCCCCC;
             
-            /* Floral Gradients */
-            --gradient-primary: linear-gradient(135deg, #E91E63 0%, #F48FB1 100%);
-            --gradient-secondary: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%);
-            --gradient-accent: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
-            --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);
-            --gradient-floral: linear-gradient(135deg, #E91E63 0%, #9C27B0 50%, #66BB6A 100%);
-            --gradient-bg: linear-gradient(180deg, #FFFEF7 0%, #F8F6F0 100%);
-            --gradient-hero: linear-gradient(180deg, #FFFEF7 0%, #FCE4EC 50%, #F3E5F5 100%);
+            /* Gradients - Matching Homepage */
+            --gradient-primary: linear-gradient(135deg, #A07878 0%, #D4A85A 100%);
+            --gradient-secondary: linear-gradient(135deg, #D4A85A 0%, #F4D03F 100%);
+            --gradient-accent: linear-gradient(135deg, #A07878 0%, #8B5A5A 100%);
+            --gradient-gold: linear-gradient(135deg, #D4A85A 0%, #F4D03F 100%);
+            --gradient-floral: linear-gradient(135deg, #A07878 0%, #D4A85A 50%, #F4D03F 100%);
+            --gradient-bg: linear-gradient(135deg, #FFF5F0 0%, #FAFAFA 100%);
+            --gradient-hero: linear-gradient(135deg, #FFF5F0 0%, #FAFAFA 100%);
             --gradient-card: #FFFFFF;
             --gradient-success: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%);
-            --gradient-warning: linear-gradient(135deg, #FFD54F 0%, #FFC107 100%);
-            --gradient-danger: linear-gradient(135deg, #EF5350 0%, #E57373 100%);
+            --gradient-warning: linear-gradient(135deg, #D4A85A 0%, #F4D03F 100%);
+            --gradient-danger: linear-gradient(135deg, #A07878 0%, #8B5A5A 100%);
             
-            /* Floral Shadows - Soft & Elegant */
-            --shadow-xs: 0 1px 2px rgba(233, 30, 99, 0.08);
-            --shadow-sm: 0 2px 8px rgba(233, 30, 99, 0.1);
-            --shadow-md: 0 4px 16px rgba(233, 30, 99, 0.12);
-            --shadow-lg: 0 8px 32px rgba(233, 30, 99, 0.15);
-            --shadow-xl: 0 12px 48px rgba(233, 30, 99, 0.18);
-            --shadow-2xl: 0 16px 64px rgba(233, 30, 99, 0.2);
+            /* Shadows - Clean & Subtle */
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.15);
+            --shadow-2xl: 0 16px 64px rgba(0, 0, 0, 0.18);
             --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.1);
-            --shadow-glass-hover: 0 12px 48px rgba(233, 30, 99, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.3);
-            --shadow-glass-intense: 0 20px 60px rgba(233, 30, 99, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.4);
+            --shadow-glass-hover: 0 12px 48px rgba(160, 120, 120, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.3);
+            --shadow-glass-intense: 0 20px 60px rgba(160, 120, 120, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.4);
             
             /* Glassmorphism Colors */
-            --glass-bg-light: rgba(255, 255, 255, 0.7);
+            --glass-bg-light: rgba(255, 255, 255, 0.75);
             --glass-bg-medium: rgba(255, 255, 255, 0.6);
             --glass-bg-dark: rgba(255, 255, 255, 0.5);
             --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-border-hover: rgba(233, 30, 99, 0.3);
+            --glass-border-hover: rgba(160, 120, 120, 0.3);
             --glass-blur: blur(20px);
             --glass-blur-intense: blur(30px);
             
@@ -193,7 +205,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
-            background: var(--gradient-bg);
+            background: var(--bg-cream);
             overflow-x: hidden;
             font-size: 16px;
             font-weight: 400;
@@ -205,7 +217,7 @@
             scroll-behavior: smooth;
         }
         
-        /* Floral Background Pattern */
+        /* Clean Background - No Pattern */
         body::before {
             content: '';
             position: fixed;
@@ -213,28 +225,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(circle at 15% 40%, rgba(233, 30, 99, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 85% 70%, rgba(156, 39, 176, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 45% 15%, rgba(102, 187, 106, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 70% 50%, rgba(233, 30, 99, 0.05) 0%, transparent 50%);
-            background-size: 100% 100%;
+            background: var(--bg-cream);
             z-index: -1;
             pointer-events: none;
-            opacity: 0.6;
+            opacity: 1;
         }
         
-        /* Floral Decorative Elements */
+        /* Remove Decorative Elements */
         body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 300px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M100,20 Q80,40 60,40 Q40,40 30,60 Q20,80 40,90 Q60,100 80,90 Q100,80 120,90 Q140,100 160,90 Q180,80 170,60 Q160,40 140,40 Q120,40 100,20 Z' fill='%23E91E63' opacity='0.1'/%3E%3C/svg%3E");
-            background-size: contain;
-            background-repeat: no-repeat;
+            display: none;
             z-index: -1;
             pointer-events: none;
             opacity: 0.3;
@@ -253,35 +252,35 @@
         }
 
         h2, .h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Inter', sans-serif;
             font-size: 2.75rem;
-            font-weight: 500;
-            line-height: 1.3;
-            letter-spacing: -0.01em;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
             color: var(--text-primary);
             margin-bottom: var(--spacing-md);
         }
 
         h3, .h3 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Inter', sans-serif;
             font-size: 2rem;
-            font-weight: 500;
-            line-height: 1.4;
+            font-weight: 600;
+            line-height: 1.3;
             color: var(--text-primary);
             margin-bottom: var(--spacing-md);
         }
         
         h4, .h4 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Inter', sans-serif;
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: 600;
             line-height: 1.4;
             color: var(--text-primary);
             margin-bottom: var(--spacing-sm);
         }
         
         .floral-accent {
-            font-family: 'Dancing Script', cursive;
+            font-family: 'Inter', sans-serif;
             color: var(--primary);
             font-weight: 600;
         }
@@ -356,11 +355,11 @@
         }
 
         .btn-primary {
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
             color: white;
             border: none;
-            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition);
             position: relative;
             overflow: hidden;
         }
@@ -377,9 +376,9 @@
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #C2185B 0%, #E91E63 100%);
-            box-shadow: 0 8px 24px rgba(233, 30, 99, 0.4);
-            transform: translateY(-3px) scale(1.02);
+            background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
         }
         
         .btn-primary:hover::before {
@@ -387,14 +386,14 @@
         }
         
         .btn-primary:active {
-            transform: translateY(-1px) scale(1);
-            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+            transform: translateY(0);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-outline-primary {
             background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
+            color: var(--reddish-brown-dark);
+            border: 2px solid var(--reddish-brown-dark);
             box-shadow: var(--shadow-sm);
         }
 
@@ -467,9 +466,9 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, 
-                rgba(233, 30, 99, 0.1) 0%, 
-                rgba(156, 39, 176, 0.1) 50%,
-                rgba(102, 187, 106, 0.1) 100%);
+                rgba(160, 120, 120, 0.1) 0%, 
+                rgba(212, 168, 90, 0.1) 50%,
+                rgba(139, 90, 90, 0.1) 100%);
             opacity: 0;
             transition: opacity 0.4s ease;
             z-index: -1;
@@ -554,21 +553,21 @@
             -webkit-backdrop-filter: blur(10px);
             color: var(--text-primary);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.05);
+            box-shadow: 0 2px 8px rgba(160, 120, 120, 0.05);
         }
 
         .form-control:hover {
             background: rgba(255, 255, 255, 0.7);
-            border-color: rgba(233, 30, 99, 0.2);
-            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.1);
+            border-color: rgba(160, 120, 120, 0.2);
+            box-shadow: 0 4px 12px rgba(160, 120, 120, 0.1);
             transform: translateY(-1px);
         }
 
         .form-control:focus {
-            border-color: rgba(233, 30, 99, 0.4);
+            border-color: rgba(160, 120, 120, 0.4);
             background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 0 4px rgba(233, 30, 99, 0.1),
-                        0 4px 16px rgba(233, 30, 99, 0.15);
+            box-shadow: 0 0 0 4px rgba(160, 120, 120, 0.1),
+                        0 4px 16px rgba(160, 120, 120, 0.15);
             outline: none;
             transform: translateY(-2px);
         }
@@ -585,54 +584,30 @@
 
         /* 🌸 Enhanced Glassmorphism Navbar */
         .navbar {
-            background: rgba(255, 254, 247, 0.7);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.08), 
-                        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(224, 225, 233, 0.5);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
             position: relative;
             z-index: 1000;
         }
-        
+
         .navbar.scrolled {
-            background: rgba(255, 254, 247, 0.9);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
-            box-shadow: 0 4px 16px rgba(233, 30, 99, 0.12),
-                        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-            border-bottom-color: rgba(233, 30, 99, 0.15);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            box-shadow: var(--shadow-md);
+            border-bottom-color: rgba(160, 120, 120, 0.1);
         }
         
         .navbar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--gradient-floral);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
-        }
-        
-        .navbar.scrolled::before {
-            opacity: 1;
+            display: none;
         }
         
         .navbar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, 
-                rgba(233, 30, 99, 0.05) 0%, 
-                rgba(156, 39, 176, 0.05) 50%, 
-                rgba(102, 187, 106, 0.05) 100%);
+            display: none;
             opacity: 0;
             transition: opacity var(--transition-normal);
             z-index: -1;
@@ -658,7 +633,7 @@
 
         .navbar-brand:hover {
             transform: scale(1.05);
-            filter: drop-shadow(0 2px 8px rgba(233, 30, 99, 0.3));
+            filter: drop-shadow(0 2px 8px rgba(160, 120, 120, 0.3));
         }
 
         .navbar-nav .nav-link {
@@ -680,14 +655,14 @@
             left: 50%;
             width: 0;
             height: 2px;
-            background: var(--gradient-floral);
+            background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--golden-yellow) 100%);
             transform: translateX(-50%);
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.3s ease;
         }
 
         .navbar-nav .nav-link:hover {
-            color: var(--primary) !important;
-            background: rgba(233, 30, 99, 0.08);
+            color: var(--reddish-brown-dark) !important;
+            background: rgba(160, 120, 120, 0.08);
             transform: translateY(-2px);
         }
         
@@ -696,8 +671,8 @@
         }
         
         .navbar-nav .nav-link.active {
-            color: var(--primary) !important;
-            background: rgba(233, 30, 99, 0.12);
+            color: var(--reddish-brown-dark) !important;
+            background: rgba(160, 120, 120, 0.12);
             font-weight: 600;
         }
         
@@ -707,15 +682,15 @@
 
         /* Ensure Templates button is always visible */
         .navbar-nav .nav-link[href*="templates"] {
-            color: var(--primary) !important;
+            color: var(--reddish-brown-dark) !important;
             font-weight: 700;
-            background: rgba(233, 30, 99, 0.1);
-            border: 1px solid rgba(233, 30, 99, 0.3);
+            background: rgba(160, 120, 120, 0.1);
+            border: 1px solid rgba(160, 120, 120, 0.3);
         }
 
         .navbar-nav .nav-link[href*="templates"]:hover {
-            background: rgba(233, 30, 99, 0.2);
-            border-color: var(--primary);
+            background: rgba(160, 120, 120, 0.2);
+            border-color: var(--reddish-brown-dark);
             box-shadow: var(--shadow-md);
         }
 
@@ -1723,7 +1698,7 @@
             transition: all 0.3s ease;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid var(--reddish-brown-dark);
             visibility: hidden;
             opacity: 0;
             transform: translateX(100%);
@@ -1803,8 +1778,8 @@
 
         .mobile-nav-item:hover {
             background: #f8f9fa;
-            color: #667eea;
-            border-left-color: #667eea;
+            color: var(--reddish-brown-dark);
+            border-left-color: var(--reddish-brown-dark);
         }
 
         .mobile-nav-item:active {
@@ -1846,7 +1821,7 @@
         .mobile-nav-user {
             padding: 1rem 1.5rem;
             background: #f8f9fa;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid var(--reddish-brown-dark);
             margin: 0.5rem 0;
             border-radius: 8px;
         }
@@ -1861,7 +1836,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1884,10 +1859,24 @@
         }
 
         /* Enhanced Mobile Navigation Styles */
+        /* Hide hamburger menu on desktop - ALWAYS hidden on large screens */
+        @media (min-width: 992px) {
+            .mobile-nav-toggle,
+            .mobile-nav-controls {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                pointer-events: none !important;
+                width: 0 !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+        }
+        
         .mobile-nav-toggle {
             display: none;
-            background: var(--gradient-primary);
-            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+            border: 2px solid var(--reddish-brown-dark);
             font-size: 1.2rem;
             color: white;
             cursor: pointer;
@@ -1943,7 +1932,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
-            border-left: 3px solid #667eea;
+            border-left: 3px solid var(--reddish-brown-dark);
             visibility: hidden;
             opacity: 0;
             transform: translateX(100%);
@@ -1989,7 +1978,7 @@
         }
 
         /* Responsive Design */
-        /* 🔥 FORCE MOBILE NAVIGATION VISIBILITY - LIVE SITE FIX */
+        /* Show hamburger menu ONLY on mobile/tablet */
         @media (max-width: 991.98px) {
             .mobile-nav-toggle {
                 display: flex !important;
@@ -2002,8 +1991,8 @@
                 width: 48px !important;
                 height: 48px !important;
                 border-radius: 8px !important;
-                background: var(--gradient-primary) !important;
-                border: 2px solid var(--primary) !important;
+                background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%) !important;
+                border: 2px solid var(--reddish-brown-dark) !important;
                 box-shadow: var(--shadow-md) !important;
                 cursor: pointer !important;
                 transition: all var(--transition-bounce) !important;
@@ -2021,6 +2010,12 @@
                 min-height: 48px !important;
                 max-width: 48px !important;
                 max-height: 48px !important;
+            }
+            
+            .mobile-nav-controls {
+                display: flex !important;
+                align-items: center;
+                gap: 0.5rem;
             }
             
             .mobile-nav-toggle:hover {
@@ -2338,16 +2333,17 @@
         }
 
         .social-link {
-            color: #bdc3c7;
+            color: white;
             font-size: 1.2rem;
             transition: all 0.3s ease;
-            display: inline-block;
-            width: 40px;
-            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             text-align: center;
-            line-height: 40px;
             position: relative;
             overflow: hidden;
         }
@@ -2367,11 +2363,62 @@
             left: 100%;
         }
 
+        /* Facebook - Branded Blue */
+        .social-link.facebook,
+        .social-link[href*="facebook"] {
+            background: #1877F2 !important;
+        }
+
+        .social-link.facebook:hover,
+        .social-link[href*="facebook"]:hover {
+            background: #166FE5 !important;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(24, 119, 242, 0.4);
+        }
+
+        /* Twitter - Branded Blue */
+        .social-link.twitter,
+        .social-link[href*="twitter"] {
+            background: #1DA1F2 !important;
+        }
+
+        .social-link.twitter:hover,
+        .social-link[href*="twitter"]:hover {
+            background: #0d95e8 !important;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(29, 161, 242, 0.4);
+        }
+
+        /* Instagram - Branded Gradient */
+        .social-link.instagram,
+        .social-link[href*="instagram"] {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+        }
+
+        .social-link.instagram:hover,
+        .social-link[href*="instagram"]:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(188, 24, 136, 0.4);
+        }
+
+        /* LinkedIn - Branded Blue */
+        .social-link.linkedin,
+        .social-link[href*="linkedin"] {
+            background: #0A66C2 !important;
+        }
+
+        .social-link.linkedin:hover,
+        .social-link[href*="linkedin"]:hover {
+            background: #095195 !important;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(10, 102, 194, 0.4);
+        }
+
+        /* Default hover for any other social links */
         .social-link:hover {
             color: white;
-            background: var(--primary-teal);
-            transform: translateY(-2px) scale(1.1);
-            box-shadow: 0 4px 15px rgba(0, 163, 136, 0.3);
+            transform: translateY(-3px) scale(1.1);
         }
 
         .footer-link {
@@ -3353,8 +3400,8 @@
         .welcome-offer-modal {
             border-radius: 20px;
             border: none;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
             color: white;
         }
 
@@ -3376,7 +3423,7 @@
 
         .welcome-offer-modal .btn-primary {
             background: white;
-            color: #667eea;
+            color: var(--reddish-brown-dark);
             border: none;
             font-weight: 600;
             padding: 12px 24px;
@@ -3453,14 +3500,14 @@
     </style>
     
     <!-- QR Code Library -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body>
     <!-- Modern Navigation -->
     <!-- Skip to content link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar" role="navigation" aria-label="Main navigation">
+    <nav class="navbar navbar-expand-lg fixed-top glass" id="mainNavbar" role="navigation" aria-label="Main navigation">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('index') }}" aria-label="EventCraft Pro - Go to homepage">
                 <i class="fas fa-sparkles" aria-hidden="true"></i>
@@ -3695,7 +3742,7 @@
     </div>
 
     <!-- Modern Footer -->
-    <footer class="footer-modern">
+    <footer class="footer-modern glass">
         <div class="footer-header">
             <div class="container">
                 <div class="row justify-content-center text-center">
@@ -3722,10 +3769,10 @@
                         </h5>
                         <p class="text-light mb-3">Creating unforgettable digital experiences for your special moments. Professional, elegant, and modern invitation designs.</p>
                         <div class="d-flex gap-3">
-                            <a href="#" class="social-link"><i class="fab fa-facebook-f fa-lg"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-twitter fa-lg"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-instagram fa-lg"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                            <a href="#" class="social-link facebook"><i class="fab fa-facebook-f fa-lg"></i></a>
+                            <a href="#" class="social-link twitter"><i class="fab fa-twitter fa-lg"></i></a>
+                            <a href="#" class="social-link instagram"><i class="fab fa-instagram fa-lg"></i></a>
+                            <a href="#" class="social-link linkedin"><i class="fab fa-linkedin-in fa-lg"></i></a>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
@@ -3770,7 +3817,60 @@
     </footer>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Smooth scroll for internal anchors
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href && href.length > 1) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Auto-close mobile menu on nav-link click
+        var navbarCollapse = document.getElementById('navbarNav');
+        if (navbarCollapse) {
+            navbarCollapse.querySelectorAll('.nav-link, .dropdown-item').forEach(function(link){
+                link.addEventListener('click', function(){
+                    var bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                    if (bsCollapse && navbarCollapse.classList.contains('show')) {
+                        bsCollapse.hide();
+                    }
+                });
+            });
+        }
+
+        // Global copy to clipboard helper
+        window.copyToClipboard = async function(text) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.focus();
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                }
+                return true;
+            } catch (e) {
+                console.warn('Copy failed', e);
+                return false;
+            }
+        };
+    });
+    </script>
     
     <!-- Custom JS -->
     <script>
@@ -4134,40 +4234,73 @@
             if (toggleBtn) {
                 console.log('🎯 Setting up toggle button event listener');
                 
-                // Force button to be visible and clickable
-                toggleBtn.style.display = 'flex';
-                toggleBtn.style.visibility = 'visible';
-                toggleBtn.style.opacity = '1';
-                toggleBtn.style.pointerEvents = 'auto';
-                toggleBtn.style.zIndex = '1001';
-                toggleBtn.style.position = 'relative';
+                // Only force visibility on mobile devices (screen width <= 991px)
+                const isMobile = window.innerWidth <= 991.98;
+                if (isMobile) {
+                    // Force button to be visible and clickable only on mobile
+                    toggleBtn.style.display = 'flex';
+                    toggleBtn.style.visibility = 'visible';
+                    toggleBtn.style.opacity = '1';
+                    toggleBtn.style.pointerEvents = 'auto';
+                    toggleBtn.style.zIndex = '1001';
+                    toggleBtn.style.position = 'relative';
+                } else {
+                    // Explicitly hide on desktop
+                    toggleBtn.style.display = 'none';
+                    toggleBtn.style.visibility = 'hidden';
+                    toggleBtn.style.opacity = '0';
+                    toggleBtn.style.pointerEvents = 'none';
+                }
                 
                 // Remove any existing event listeners
                 const newToggleBtn = toggleBtn.cloneNode(true);
                 toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
                 
-                // Add click event listener
-                newToggleBtn.addEventListener('click', function(e) {
-                    console.log('🖱️ Toggle button clicked!');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleMobileNav();
-                });
+                // Only add event listeners on mobile devices
+                if (isMobile) {
+                    // Add click event listener
+                    newToggleBtn.addEventListener('click', function(e) {
+                        console.log('🖱️ Toggle button clicked!');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleMobileNav();
+                    });
+                    
+                    // Add touch event listener for mobile devices
+                    newToggleBtn.addEventListener('touchstart', function(e) {
+                        console.log('👆 Toggle button touched!');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleMobileNav();
+                    });
+                    
+                    // Add mousedown event as additional fallback
+                    newToggleBtn.addEventListener('mousedown', function(e) {
+                        console.log('🖱️ Toggle button mousedown!');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        toggleMobileNav();
+                    });
+                }
                 
-                // Add touch event listener for mobile devices
-                newToggleBtn.addEventListener('touchstart', function(e) {
-                    console.log('👆 Toggle button touched!');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleMobileNav();
-                });
-                
-                // Add mousedown event as additional fallback
-                newToggleBtn.addEventListener('mousedown', function(e) {
-                    console.log('🖱️ Toggle button mousedown!');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    toggleMobileNav();
+                // Handle window resize to show/hide button based on screen size
+                let resizeTimeout;
+                window.addEventListener('resize', function() {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(function() {
+                        const currentIsMobile = window.innerWidth <= 991.98;
+                        if (currentIsMobile && newToggleBtn) {
+                            newToggleBtn.style.display = 'flex';
+                            newToggleBtn.style.visibility = 'visible';
+                            newToggleBtn.style.opacity = '1';
+                            newToggleBtn.style.pointerEvents = 'auto';
+                        } else if (newToggleBtn) {
+                            newToggleBtn.style.display = 'none';
+                            newToggleBtn.style.visibility = 'hidden';
+                            newToggleBtn.style.opacity = '0';
+                            newToggleBtn.style.pointerEvents = 'none';
+                        }
+                    }, 250);
                 });
                 
                 console.log('✅ Toggle button event listeners set up');
@@ -4662,7 +4795,7 @@
                 confettiContainer.className = 'confetti';
                 document.body.appendChild(confettiContainer);
 
-                const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b'];
+                const colors = ['#8B5A5A', '#A07878', '#D4A85A', '#FFD700', '#43e97b'];
                 
                 for (let i = 0; i < 50; i++) {
                     const confettiPiece = document.createElement('div');
@@ -4766,8 +4899,607 @@
                 }, 5000);
             }
         }
+        
+        // 🌟 Global Page Loading Screen with Page-Specific Messages - Runs Immediately
+        (function() {
+            // Determine current page
+            const path = window.location.pathname;
+            let loadingMessage = 'Loading amazing content...';
+            let loadingIcon = '✨';
+            
+            if (path.includes('/templates') || path.includes('/template')) {
+                loadingMessage = 'Wonderful templates are loading for you, please wait...';
+                loadingIcon = '🎨';
+            } else if (path.includes('/create-invitation') || path.includes('/create')) {
+                loadingMessage = 'Preparing your invitation creator, please wait...';
+                loadingIcon = '📝';
+            } else if (path.includes('/dashboard')) {
+                loadingMessage = 'Fetching your dashboard, please wait...';
+                loadingIcon = '📊';
+            } else if (path.includes('/analytics')) {
+                loadingMessage = 'Gathering your analytics, please wait...';
+                loadingIcon = '📈';
+            } else if (path.includes('/about')) {
+                loadingMessage = 'Loading our story, please wait...';
+                loadingIcon = '👥';
+            } else if (path.includes('/contact')) {
+                loadingMessage = 'Preparing contact form, please wait...';
+                loadingIcon = '💌';
+            } else if (path.includes('/auth') || path.includes('/login') || path.includes('/register')) {
+                loadingMessage = 'Setting up your account, please wait...';
+                loadingIcon = '🔐';
+            } else if (path.includes('/invitation/view') || path.includes('/invitation/final')) {
+                loadingMessage = 'Loading your beautiful invitation, please wait...';
+                loadingIcon = '💌';
+            } else {
+                loadingMessage = 'Loading amazing content...';
+                loadingIcon = '✨';
+            }
+            
+            // Create loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'global-loading-overlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="loading-icon">${loadingIcon}</div>
+                    <div class="loading-spinner-animated"></div>
+                    <div class="loading-message">${loadingMessage}</div>
+                    <div class="loading-progress">
+                        <div class="loading-progress-bar"></div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(loadingOverlay);
+            
+            // Prevent navigation during loading
+            document.body.style.overflow = 'hidden';
+            
+            // Hide loading screen when page is fully loaded - Faster loading
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    loadingOverlay.style.opacity = '0';
+                    loadingOverlay.style.transition = 'opacity 0.3s ease-out';
+                    setTimeout(function() {
+                        loadingOverlay.remove();
+                        document.body.style.overflow = '';
+                    }, 300);
+                }, 100); // Reduced from 300ms to 100ms
+            });
+            
+            // Also hide when DOM is ready (faster for most pages)
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(function() {
+                        if (loadingOverlay && loadingOverlay.parentNode) {
+                            loadingOverlay.style.opacity = '0';
+                            loadingOverlay.style.transition = 'opacity 0.3s ease-out';
+                            setTimeout(function() {
+                                if (loadingOverlay && loadingOverlay.parentNode) {
+                                    loadingOverlay.remove();
+                                    document.body.style.overflow = '';
+                                }
+                            }, 300);
+                        }
+                    }, 150);
+                });
+            }
+            
+            // Show loading on page navigation - Prevent navigation during loading
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+                if (link && link.href && !link.href.includes('#')) {
+                    const href = link.getAttribute('href');
+                    if (href && !href.startsWith('javascript:') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('#')) {
+                        // Check if it's an internal link
+                        if (href.startsWith('/') || (href.includes(window.location.hostname) && !href.startsWith('http'))) {
+                            e.preventDefault();
+                            
+                            // Determine loading message for next page
+                            let nextMessage = 'Loading amazing content...';
+                            let nextIcon = '✨';
+                            
+                            if (href.includes('/templates') || href.includes('/template')) {
+                                nextMessage = 'Wonderful templates are loading for you, please wait...';
+                                nextIcon = '🎨';
+                            } else if (href.includes('/create-invitation') || href.includes('/create')) {
+                                nextMessage = 'Preparing your invitation creator, please wait...';
+                                nextIcon = '📝';
+                            } else if (href.includes('/dashboard')) {
+                                nextMessage = 'Fetching your dashboard, please wait...';
+                                nextIcon = '📊';
+                            } else if (href.includes('/analytics')) {
+                                nextMessage = 'Gathering your analytics, please wait...';
+                                nextIcon = '📈';
+                            } else if (href.includes('/about')) {
+                                nextMessage = 'Loading our story, please wait...';
+                                nextIcon = '👥';
+                            } else if (href.includes('/contact')) {
+                                nextMessage = 'Preparing contact form, please wait...';
+                                nextIcon = '💌';
+                            } else if (href.includes('/auth') || href.includes('/login') || href.includes('/register')) {
+                                nextMessage = 'Setting up your account, please wait...';
+                                nextIcon = '🔐';
+                            } else if (href.includes('/invitation/view') || href.includes('/invitation/final')) {
+                                nextMessage = 'Loading your beautiful invitation, please wait...';
+                                nextIcon = '💌';
+                            }
+                            
+                            const newLoadingOverlay = document.createElement('div');
+                            newLoadingOverlay.id = 'navigation-loading-overlay';
+                            newLoadingOverlay.innerHTML = `
+                                <div class="loading-content">
+                                    <div class="loading-icon">${nextIcon}</div>
+                                    <div class="loading-spinner-animated"></div>
+                                    <div class="loading-message">${nextMessage}</div>
+                                    <div class="loading-progress">
+                                        <div class="loading-progress-bar"></div>
+                                    </div>
+                                </div>
+                            `;
+                            document.body.appendChild(newLoadingOverlay);
+                            document.body.style.overflow = 'hidden';
+                            
+                            // Navigate after showing loading
+                            setTimeout(function() {
+                                window.location.href = href;
+                            }, 300);
+                        }
+                    }
+                }
+            });
+        })();
+
+        // 🎨 Professional Scroll Animations - Sitewide
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enhanced Intersection Observer with multiple animation types
+            const animationObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        const delay = index * 50; // Stagger animation
+                        
+                        setTimeout(() => {
+                            // Remove animation classes and apply visible
+                            element.classList.remove('animate-on-scroll');
+                            element.classList.add('animate-visible');
+                            
+                            // Apply CSS transforms for smooth animation
+                            if (element.style) {
+                                element.style.opacity = '1';
+                                element.style.transform = 'translateY(0) scale(1)';
+                                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                            }
+                        }, delay);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -80px 0px'
+            });
+            
+            // Animate all sections
+            document.querySelectorAll('section').forEach((section, index) => {
+                section.classList.add('animate-on-scroll');
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(40px)';
+                section.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                animationObserver.observe(section);
+            });
+            
+            // Animate all cards
+            document.querySelectorAll('.card, .team-card, .value-card, .category-card, .testimonial-card, .invitation-card, .service-card').forEach((card, index) => {
+                card.classList.add('animate-on-scroll');
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px) scale(0.95)';
+                card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                animationObserver.observe(card);
+            });
+            
+            // Animate headings (h2, h3, h4)
+            document.querySelectorAll('h2, h3, h4.section-title, h3.section-title').forEach((heading, index) => {
+                heading.classList.add('animate-on-scroll');
+                heading.style.opacity = '0';
+                heading.style.transform = 'translateY(20px)';
+                heading.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                animationObserver.observe(heading);
+            });
+            
+            // Animate buttons
+            document.querySelectorAll('.btn-primary, .btn-secondary, .btn-lg, .btn-primary-custom').forEach((btn, index) => {
+                btn.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                
+                // Add hover effects
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                    this.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                    this.style.boxShadow = '';
+                });
+            });
+            
+            // Animate images with fade-in and scale
+            document.querySelectorAll('img').forEach((img, index) => {
+                if (!img.closest('.invitation-card-stack')) { // Skip stacked cards images
+                    img.classList.add('animate-on-scroll');
+                    img.style.opacity = '0';
+                    img.style.transform = 'scale(0.9)';
+                    img.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                    animationObserver.observe(img);
+                }
+            });
+            
+            // Animate list items with stagger
+            document.querySelectorAll('ul li, ol li').forEach((li, index) => {
+                li.classList.add('animate-on-scroll');
+                li.style.opacity = '0';
+                li.style.transform = 'translateX(-20px)';
+                li.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                animationObserver.observe(li);
+            });
+            
+            // Smooth parallax effect for hero sections
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const heroSections = document.querySelectorAll('.hero-section');
+                
+                heroSections.forEach(hero => {
+                    const rate = scrolled * 0.3;
+                    hero.style.transform = `translateY(${rate}px)`;
+                });
+            });
+            
+            // Number counter animation for stats
+            const animateCounter = (element, target, duration = 2000) => {
+                let start = 0;
+                const increment = target / (duration / 16);
+                const timer = setInterval(() => {
+                    start += increment;
+                    if (start >= target) {
+                        element.textContent = target.toLocaleString() + '+';
+                        clearInterval(timer);
+                    } else {
+                        element.textContent = Math.floor(start).toLocaleString() + '+';
+                    }
+                }, 16);
+            };
+            
+            // Observe counter elements
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                        entry.target.classList.add('counted');
+                        const target = parseInt(entry.target.getAttribute('data-count')) || 50000;
+                        animateCounter(entry.target, target);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('[data-count]').forEach(counter => {
+                counterObserver.observe(counter);
+            });
+            
+            // Floating animation for icons
+            document.querySelectorAll('.fa-sparkles, .fa-heart, .fa-gift, .fa-rocket').forEach((icon, index) => {
+                icon.style.animation = `float ${3 + index * 0.5}s ease-in-out infinite`;
+                icon.style.animationDelay = `${index * 0.2}s`;
+            });
+            
+            // Add CSS keyframes dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0%, 100% { transform: translateY(0px); }
+                    50% { transform: translateY(-10px); }
+                }
+                
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(40px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                @keyframes fadeInScale {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.9);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+                
+                @keyframes slideInLeft {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                
+                @keyframes slideInRight {
+                    from {
+                        opacity: 0;
+                        transform: translateX(30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                
+                .animate-on-scroll {
+                    opacity: 0;
+                }
+                
+                .animate-visible {
+                    opacity: 1 !important;
+                }
+                
+                /* Enhanced hover effects */
+                .card:hover, .team-card:hover, .value-card:hover {
+                    transform: translateY(-8px) scale(1.02) !important;
+                }
+                
+                /* Pulse animation for CTAs */
+                @keyframes pulse {
+                    0%, 100% { box-shadow: 0 0 0 0 rgba(160, 120, 120, 0.4); }
+                    50% { box-shadow: 0 0 0 10px rgba(160, 120, 120, 0); }
+                }
+                
+                .btn-primary:hover {
+                    animation: pulse 2s infinite;
+                }
+                
+                /* 🌟 Global Loading Screen Styles */
+                #global-loading-overlay,
+                #navigation-loading-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 99999;
+                    opacity: 1;
+                    transition: opacity 0.5s ease-out;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .loading-content {
+                    text-align: center;
+                    color: white;
+                    max-width: 400px;
+                    padding: 40px;
+                }
+                
+                .loading-icon {
+                    font-size: 64px;
+                    margin-bottom: 24px;
+                    animation: bounce 1.5s ease-in-out infinite;
+                    display: inline-block;
+                }
+                
+                @keyframes bounce {
+                    0%, 100% { transform: translateY(0) scale(1); }
+                    50% { transform: translateY(-20px) scale(1.1); }
+                }
+                
+                .loading-spinner-animated {
+                    width: 60px;
+                    height: 60px;
+                    border: 4px solid rgba(255, 255, 255, 0.3);
+                    border-top: 4px solid white;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 24px;
+                }
+                
+                .loading-message {
+                    font-size: 20px;
+                    font-weight: 600;
+                    margin-bottom: 24px;
+                    line-height: 1.5;
+                    animation: fadeInUp 0.6s ease-out;
+                }
+                
+                .loading-progress {
+                    width: 100%;
+                    height: 6px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border-radius: 3px;
+                    overflow: hidden;
+                    margin-top: 20px;
+                }
+                
+                .loading-progress-bar {
+                    height: 100%;
+                    background: white;
+                    border-radius: 3px;
+                    animation: progressLoad 2s ease-in-out infinite;
+                    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+                }
+                
+                @keyframes progressLoad {
+                    0% { width: 0%; opacity: 0.8; }
+                    50% { width: 70%; opacity: 1; }
+                    100% { width: 100%; opacity: 0.8; }
+                }
+                
+                /* Enhanced Smooth Scrolling */
+                html {
+                    scroll-behavior: smooth;
+                    -webkit-overflow-scrolling: touch;
+                }
+                
+                /* Mobile Smooth Scrolling Fix */
+                @supports (-webkit-overflow-scrolling: touch) {
+                    * {
+                        -webkit-overflow-scrolling: touch;
+                    }
+                }
+                
+                /* Extraordinary Animations */
+                @keyframes slideInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(60px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                @keyframes slideInDown {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-60px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                @keyframes zoomIn {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.8);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+                
+                @keyframes rotateIn {
+                    from {
+                        opacity: 0;
+                        transform: rotate(-180deg) scale(0.8);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: rotate(0deg) scale(1);
+                    }
+                }
+                
+                @keyframes bounceIn {
+                    0% {
+                        opacity: 0;
+                        transform: scale(0.3) translateY(-100px);
+                    }
+                    50% {
+                        opacity: 1;
+                        transform: scale(1.05) translateY(10px);
+                    }
+                    70% {
+                        transform: scale(0.9) translateY(-5px);
+                    }
+                    100% {
+                        transform: scale(1) translateY(0);
+                    }
+                }
+                
+                /* Enhanced Responsive Animations */
+                @media (max-width: 768px) {
+                    .loading-content {
+                        padding: 30px 20px;
+                    }
+                    
+                    .loading-icon {
+                        font-size: 48px;
+                    }
+                    
+                    .loading-message {
+                        font-size: 16px;
+                    }
+                }
+                
+                /* Accessibility - Respect reduced motion */
+                @media (prefers-reduced-motion: reduce) {
+                    #global-loading-overlay,
+                    #navigation-loading-overlay {
+                        transition: none;
+                    }
+                    
+                    .loading-spinner-animated,
+                    .loading-icon,
+                    .loading-progress-bar {
+                        animation: none;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // Enhanced Smooth Scroll with Offset for Fixed Headers
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
+                    
+                    const target = document.querySelector(href);
+                    if (target) {
+                        e.preventDefault();
+                        const headerOffset = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Enhanced scroll animations with better mobile support
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const animationObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        const delay = Math.min(index * 100, 500);
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0) scale(1)';
+                            entry.target.classList.add('animate-visible');
+                        }, delay);
+                    }
+                });
+            }, observerOptions);
+            
+            // Apply animations to elements
+            document.querySelectorAll('section, .card, .team-card, .value-card').forEach((el) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px) scale(0.95)';
+                el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                animationObserver.observe(el);
+            });
+        });
     </script>
     
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
+

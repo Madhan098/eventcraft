@@ -3,2067 +3,1316 @@
 {% block title %}Create Invitation - EventCraft Pro{% endblock %}
 
 {% block extra_head %}
-<!-- Google Fonts for different font styles -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&family=Dancing+Script:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&family=Pacifico&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-{% endblock %}
-
-{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    /* Modern Form Styling */
-    .create-invitation-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    /* Progress Bar - Exact Match from Images */
+    .progress-bar-container {
+        max-width: 1000px;
+        margin: 0 auto 40px;
+        padding: 40px 20px 0;
     }
 
-    .form-header {
-        text-align: center;
-        margin-bottom: 3rem;
-        padding-bottom: 2rem;
-        border-bottom: 3px solid #e9ecef;
-    }
-
-    .form-header h1 {
-        color: #2c3e50;
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-    }
-
-    .form-header p {
-        color: #6c757d;
-        font-size: 1.1rem;
-        margin: 0;
-    }
-
-    .template-info {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-
-    .template-info h3 {
-        margin: 0 0 0.5rem 0;
-        font-size: 1.3rem;
-    }
-
-    .template-info p {
-        margin: 0;
-        opacity: 0.9;
-    }
-
-    /* Form Steps */
-    .form-steps {
+    .progress-bar {
         display: flex;
-        justify-content: center;
-        margin-bottom: 3rem;
-        gap: 1rem;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        width: 100%;
+        padding: 0 20px;
     }
 
-    .step-indicator {
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        position: relative;
+        z-index: 2;
+        margin-bottom: 0;
+    }
+
+    .progress-step::after {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: calc(50% + 20px);
+        width: calc(100% - 40px);
+        height: 3px;
+        background: #E5E5E5;
+        z-index: 1;
+    }
+
+    .progress-step:last-child::after {
+        display: none;
+    }
+
+    .progress-step.completed::after {
+        background: linear-gradient(90deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+    }
+
+    .progress-step.active::after {
+        background: linear-gradient(90deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+    }
+
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        padding: 0.75rem 1.5rem;
-        background: #f8f9fa;
-        border: 2px solid #e9ecef;
-        border-radius: 25px;
-        color: #6c757d;
+        justify-content: center;
         font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 2;
         transition: all 0.3s ease;
     }
 
-    .step-indicator.active {
-        background: #007bff;
-        border-color: #007bff;
-        color: white;
-        transform: scale(1.05);
-    }
-
-    .step-indicator.completed {
-        background: #28a745;
-        border-color: #28a745;
+    .progress-step.completed .step-circle {
+        background: var(--reddish-brown-dark);
         color: white;
     }
 
-    /* Form Sections */
-    .form-section {
-        background: #f8f9fa;
-        border-radius: 15px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        border: 1px solid #e9ecef;
+    .progress-step.active .step-circle {
+        background: var(--golden-yellow);
+        color: white;
     }
 
-    .section-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #dee2e6;
+    .progress-step.pending .step-circle {
+        background: #E5E5E5;
+        color: #999;
     }
 
-    .section-header i {
-        font-size: 1.5rem;
-        color: #007bff;
-        margin-right: 1rem;
-        width: 40px;
+    .step-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-dark);
         text-align: center;
     }
 
-    .section-header h3 {
-        margin: 0;
-        color: #2c3e50;
-        font-size: 1.4rem;
+    .progress-step.active .step-label {
+        color: var(--reddish-brown-dark);
         font-weight: 600;
     }
 
-    /* Form Grid Layout */
-    .form-grid {
+    /* Page Container */
+    .create-page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background: var(--bg-cream);
+        min-height: 100vh;
+    }
+
+    /* Page Title */
+    .page-title {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .page-title h1 {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        line-height: 1.2;
+    }
+
+    .page-title h1 .title-normal {
+        color: var(--reddish-brown-dark);
+    }
+
+    .page-title h1 .title-gradient {
+        background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .page-title p {
+        font-size: 18px;
+        color: var(--text-gray);
+    }
+
+    /* Theme Selection Page */
+    .theme-selection-page {
+        display: none;
+    }
+
+    .theme-selection-page.active {
+        display: block;
+    }
+
+    .theme-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .theme-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        border: 3px solid transparent;
+    }
+
+    .theme-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(160, 120, 120, 0.2);
+    }
+
+    .theme-card.selected {
+        border-color: var(--reddish-brown-dark);
+    }
+
+    .theme-card.selected::before {
+        content: '✓';
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 28px;
+        height: 28px;
+        background: var(--reddish-brown-dark);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+        z-index: 3;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .theme-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .theme-title {
+        padding: 20px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    /* Details Form with Live Preview */
+    .details-form-page {
+        display: none;
+    }
+
+    .details-form-page.active {
+        display: block;
+    }
+
+    .form-preview-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Form Section */
+    .form-section-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     }
 
     .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group.full-width {
-        grid-column: 1 / -1;
+        margin-bottom: 24px;
     }
 
     .form-label {
         display: block;
-        margin-bottom: 0.5rem;
-        color: #2c3e50;
+        font-size: 14px;
         font-weight: 600;
-        font-size: 0.95rem;
+        color: var(--text-dark);
+        margin-bottom: 8px;
     }
 
     .form-label.required::after {
-        content: " *";
-        color: #dc3545;
+        content: ' *';
+        color: var(--reddish-brown-dark);
     }
 
-    .form-input, .form-textarea, .form-select {
+    .form-input,
+    .form-textarea {
         width: 100%;
-        padding: 0.875rem 1rem;
-        border: 2px solid #e9ecef;
-        border-radius: 10px;
-        font-size: 1rem;
-        color: #2c3e50;
-        background: white;
+        padding: 14px 16px;
+        border: 2px solid #E5E5E5;
+        border-radius: 12px;
+        font-size: 15px;
         transition: all 0.3s ease;
-        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
     }
 
-    .form-input:focus, .form-textarea:focus, .form-select:focus {
+    .form-input:focus,
+    .form-textarea:focus {
         outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-        transform: translateY(-1px);
+        border-color: var(--reddish-brown-dark);
+        box-shadow: 0 0 0 4px rgba(160, 120, 120, 0.1);
     }
 
     .form-textarea {
         resize: vertical;
-        min-height: 100px;
+        min-height: 120px;
     }
 
-    .form-select {
-        cursor: pointer;
-    }
-
-    /* Style Selection */
-    .style-selection {
-        margin-bottom: 2rem;
-    }
-
-    .style-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-
-    .style-option {
-        background: white;
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        padding: 1.5rem 1rem;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    .input-with-icon {
         position: relative;
     }
 
-    .style-option:hover {
-        border-color: #007bff;
-        background: #f8f9ff;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
-    }
-
-    .style-option.selected {
-        border-color: #007bff;
-        background: #e3f2fd;
-        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
-    }
-
-    .style-option .emoji {
-        font-size: 2rem;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .style-option .label {
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 0.9rem;
-    }
-
-    /* File Upload */
-    .file-upload {
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .upload-area {
-        border: 2px dashed #dee2e6;
-        border-radius: 12px;
-        padding: 2rem;
-        text-align: center;
-        background: #f8f9fa;
-        transition: all 0.3s ease;
-    }
-
-    .upload-area:hover {
-        border-color: #007bff;
-        background: #e3f2fd;
-    }
-
-    .upload-area i {
-        font-size: 2rem;
-        color: #6c757d;
-        margin-bottom: 1rem;
-    }
-
-    .upload-area p {
-        margin: 0.5rem 0;
-        color: #2c3e50;
-        font-weight: 600;
-    }
-
-    .upload-area small {
-        color: #6c757d;
-        font-size: 0.875rem;
-    }
-
-    .image-preview {
-        margin-top: 1rem;
-        position: relative;
-        display: inline-block;
-    }
-
-    .image-preview img {
-        max-width: 150px;
-        max-height: 150px;
-        border-radius: 8px;
-        border: 2px solid #e9ecef;
-    }
-
-    .remove-btn {
+    .input-with-icon i {
         position: absolute;
-        top: -10px;
-        right: -10px;
-        background: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        font-size: 12px;
-        cursor: pointer;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-gray);
+        pointer-events: none;
+    }
+
+    /* Live Preview Section */
+    .live-preview-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        position: sticky;
+        top: 40px;
+        height: fit-content;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+    }
+
+    .preview-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 24px;
+        text-align: center;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #E5E5E5;
+    }
+
+    .preview-content {
+        text-align: center;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .invitation-preview {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #FFF5F0 0%, #FFFFFF 100%);
+        border-radius: 16px;
+        padding: 40px 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(160, 120, 120, 0.1);
+    }
+
+    .preview-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .preview-event-name {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--reddish-brown-dark);
+        margin-bottom: 20px;
+        font-family: 'Playfair Display', serif;
+        line-height: 1.2;
+    }
+
+    .preview-date-time {
+        font-size: 16px;
+        color: var(--text-gray);
+        margin-bottom: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
+        gap: 8px;
     }
 
-    .remove-btn:hover {
-        background: #c82333;
-        transform: scale(1.1);
+    .preview-venue {
+        font-size: 16px;
+        color: var(--text-gray);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .preview-hosted {
+        font-size: 14px;
+        color: var(--text-gray);
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(160, 120, 120, 0.2);
+    }
+
+    .preview-message {
+        font-size: 15px;
+        color: var(--text-dark);
+        line-height: 1.6;
+        margin-top: 20px;
+        font-style: italic;
+    }
+
+    .preview-placeholder {
+        font-size: 14px;
+        color: var(--text-gray);
+        line-height: 1.6;
+        padding: 40px 20px;
+    }
+
+    /* Event-Specific Fields */
+    .event-specific-fields {
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 2px solid #E5E5E5;
+    }
+
+    .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--reddish-brown-dark);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--golden-yellow);
+    }
+
+    /* Image Preview Styles */
+    .image-preview {
+        margin-top: 12px;
+        display: none;
+    }
+
+    .image-preview img {
+        width: 100%;
+        max-width: 200px;
+        height: auto;
+        border-radius: 12px;
+        border: 2px solid #E5E5E5;
+        margin-top: 8px;
+    }
+
+    .gallery-preview {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+    }
+
+    .gallery-preview img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid #E5E5E5;
+    }
+
+    select.form-input {
+        cursor: pointer;
     }
 
     /* Navigation Buttons */
     .form-navigation {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-top: 3rem;
-        padding-top: 2rem;
-        border-top: 2px solid #e9ecef;
+        max-width: 1200px;
+        margin: 40px auto 0;
+        padding: 0 20px;
     }
 
-    .btn {
-        padding: 0.875rem 2rem;
-        border: none;
-        border-radius: 10px;
-        font-size: 1rem;
+    .btn-back,
+    .btn-continue,
+    .btn-preview {
+        padding: 14px 32px;
+        border-radius: 12px;
         font-weight: 600;
-        cursor: pointer;
+        font-size: 16px;
         transition: all 0.3s ease;
-        text-decoration: none;
         display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
+            align-items: center;
+        gap: 8px;
+        border: 2px solid;
+        text-decoration: none;
+        cursor: pointer;
+        background: white;
     }
 
-    .btn-secondary {
-        background: #6c757d;
+    .btn-back {
+        color: var(--reddish-brown-dark);
+        border-color: var(--reddish-brown-dark);
+    }
+
+    .btn-back:hover {
+        background: #F8F8F8;
+        transform: translateY(-2px);
+    }
+
+    .btn-continue,
+    .btn-preview {
+        background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
         color: white;
+        border: none;
     }
 
-    .btn-secondary:hover {
-        background: #5a6268;
-        transform: translateY(-1px);
+    .btn-continue:hover,
+    .btn-preview:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(160, 120, 120, 0.3);
     }
 
-    .btn-primary {
-        background: #007bff;
-        color: white;
+    .btn-continue:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
     }
 
-    .btn-primary:hover {
-        background: #0056b3;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-    }
-
-    .btn-success {
-        background: #28a745;
-        color: white;
-    }
-
-    .btn-success:hover {
-        background: #218838;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .create-invitation-container {
-            padding: 1rem;
-            margin: 1rem;
-        }
-
-        .form-grid {
+    /* Responsive */
+    @media (max-width: 968px) {
+        .form-preview-container {
             grid-template-columns: 1fr;
         }
 
-        .form-steps {
-            flex-direction: column;
-            align-items: center;
+        .live-preview-card {
+            position: static;
+            margin-top: 40px;
         }
 
-        .form-navigation {
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .btn {
-            width: 100%;
-            justify-content: center;
+        .theme-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
-    /* Event-specific fields */
-    .event-specific-fields {
-        background: white;
-        border-radius: 10px;
-        padding: 1.5rem;
-        margin-top: 1rem;
-        border: 1px solid #dee2e6;
-    }
+    @media (max-width: 640px) {
+        .theme-grid {
+            grid-template-columns: 1fr;
+        }
 
-    .event-specific-fields h4 {
-        color: #2c3e50;
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-    }
+        .progress-bar {
+            flex-direction: row;
+            flex-wrap: nowrap;
+            padding: 0 10px;
+        }
 
-    /* Hidden sections */
-    .hidden {
-        display: none !important;
-    }
+        .progress-step {
+            margin-bottom: 0;
+        }
 
-    /* Form Steps */
-    .form-step {
-        display: none;
-    }
+        .progress-step::after {
+            left: calc(50% + 15px);
+            width: calc(100% - 30px);
+        }
 
-    .form-step.active {
-        display: block;
-    }
-
-    /* Image Preview */
-    .image-preview {
-        margin-top: 10px;
-        text-align: center;
-    }
-
-    .image-preview img {
-        max-width: 150px;
-        max-height: 150px;
-        border-radius: 8px;
-        border: 2px solid #e9ecef;
-    }
-
-    .remove-btn {
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background: #dc3545;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        font-size: 12px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .gallery-preview {
-        margin-top: 10px;
-    }
-
-    .gallery-preview img {
-        max-width: 100px;
-        max-height: 100px;
-        border-radius: 8px;
-        border: 2px solid #e9ecef;
+        .page-title h1 {
+            font-size: 36px;
+        }
     }
 </style>
+{% endblock %}
 
-<div class="create-invitation-container">
-    <!-- Form Header -->
-    <div class="form-header">
-        <h1>Create Your Invitation</h1>
-        <p>Design a beautiful digital invitation for your special event</p>
+{% block content %}
+<div class="create-page-container">
+    <!-- Progress Bar - Exact Match from Images -->
+    <div class="progress-bar-container">
+        <div class="progress-bar">
+            <div class="progress-step completed" data-step="1">
+                <div class="step-circle">✓</div>
+                <div class="step-label">Occasion</div>
     </div>
-
-    <!-- Template Information -->
-    {% if selected_template %}
-    <div class="template-info">
-        <h3>Selected Template: {{ selected_template|replace('_', ' ')|title }}</h3>
-        <p>You're creating a {{ selected_template|replace('_', ' ')|title }} invitation</p>
+            <div class="progress-step {% if selected_template %}completed{% else %}active{% endif %}" data-step="2">
+                <div class="step-circle">{% if selected_template %}✓{% else %}2{% endif %}</div>
+                <div class="step-label">Theme</div>
     </div>
-    {% else %}
-    <div class="template-info alert alert-warning">
-        <h3><i class="fas fa-exclamation-triangle me-2"></i>No Template Selected</h3>
-        <p>Please <a href="{{ url_for('templates') }}" class="alert-link">select a template first</a> to see default values and create your invitation.</p>
-        <a href="{{ url_for('templates') }}" class="btn btn-primary">
-            <i class="fas fa-palette me-2"></i>Browse Templates
-        </a>
+            <div class="progress-step {% if selected_template %}active{% else %}pending{% endif %}" data-step="3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Details</div>
     </div>
-    {% endif %}
-
-    <!-- Font & Language Selection (Top Priority) -->
-    <div class="form-section" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 2px solid #dee2e6;">
-        <div class="section-header text-center mb-4">
-            <i class="fas fa-magic" style="font-size: 2rem; color: #667eea; margin-bottom: 1rem;"></i>
-            <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Customize Your Invitation</h3>
-            <p style="color: #6c757d; margin: 0;">Choose your preferred font style and language</p>
+            <div class="progress-step pending" data-step="4">
+                <div class="step-circle">4</div>
+                <div class="step-label">Preview</div>
         </div>
-
-        <div class="form-grid">
-            <div class="form-group">
-                <label class="form-label" style="font-weight: 600; color: #2c3e50;">Font Style</label>
-                <select class="form-input" id="fontStyle" name="fontStyle" onchange="changeFontStyle(this.value)" style="font-size: 1.1rem; padding: 0.75rem;">
-                    <option value="default">Default (Inter)</option>
-                    <option value="elegant">Elegant (Playfair Display)</option>
-                    <option value="modern">Modern (Roboto)</option>
-                    <option value="classic">Classic (Times New Roman)</option>
-                    <option value="script">Script (Dancing Script)</option>
-                    <option value="bold">Bold (Montserrat)</option>
-                    <option value="cursive">Cursive (Pacifico)</option>
-                    <option value="minimal">Minimal (Open Sans)</option>
-                </select>
-                <small class="form-text" style="color: #6c757d;">Choose a font style for your entire invitation</small>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" style="font-weight: 600; color: #2c3e50;">Language</label>
-                <select class="form-input" id="language" name="language" onchange="changeLanguage(this.value)" style="font-size: 1.1rem; padding: 0.75rem;">
-                    <option value="english">English</option>
-                    <option value="hindi">हिन्दी (Hindi)</option>
-                    <option value="telugu">తెలుగు (Telugu)</option>
-                    <option value="kannada">ಕನ್ನಡ (Kannada)</option>
-                </select>
-                <small class="form-text" style="color: #6c757d;">Select the language for your invitation text</small>
             </div>
         </div>
         
-        <!-- Live Preview Indicator -->
-        <div id="livePreviewIndicator" style="text-align: center; margin-top: 1rem; padding: 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 10px; display: none;">
-            <i class="fas fa-eye" style="color: #667eea; margin-right: 0.5rem;"></i>
-            <span style="color: #667eea; font-weight: 600;">Live Preview Active</span>
-            <p style="color: #6c757d; margin: 0.5rem 0 0 0; font-size: 0.9rem;">Your changes are applied in real-time to the form below</p>
-        </div>
+    <!-- Theme Selection Page -->
+    {% if not selected_template %}
+    <div class="theme-selection-page active" id="themeSelectionPage">
+        <div class="page-title">
+            <h1>
+                <span class="title-normal">Pick Your </span>
+                <span class="title-gradient">Perfect Theme</span>
+            </h1>
+            <p>Select a design that speaks to your style</p>
     </div>
 
-    <!-- Step Indicators -->
-    <div class="form-steps">
-        <div class="step-indicator active" id="step1-indicator">
-            <i class="fas fa-info-circle"></i>
-            <span>Event Details</span>
+        <div class="theme-grid">
+            {% if templates %}
+                {% for template in templates[:6] %}
+                {% set template_name_slug = template.name|replace(' ', '_')|lower %}
+                {% set template_img = template.preview_image if template.preview_image else '/static/images/templateselection/naming cermony.jpg' %}
+                {% if template_img and not template_img.startswith('http') and not template_img.startswith('/') %}
+                    {% set template_img = '/static/images/' + template_img %}
+                {% elif template_img and template_img.startswith('/images/') %}
+                    {% set template_img = template_img.replace('/images/', '/static/images/') %}
+                {% endif %}
+                {% set template_color = template.color_scheme if template.color_scheme else 'A07878' %}
+                {% set template_name_encoded = template.name|replace(' ', '+') %}
+                <div class="theme-card" data-theme="{{ template_name_slug }}" onclick="selectTheme('{{ template_name_slug }}', '{{ template.id }}', this)">
+                    <img src="{{ template_img }}" 
+                         alt="{{ template.name }}" 
+                         class="theme-image" 
+                         loading="lazy"
+                         decoding="async"
+                         onerror="this.src='https://via.placeholder.com/300x200/{{ template_color }}/FFFFFF?text={{ template_name_encoded }}'">
+                    <div class="theme-title">{{ template.name }}</div>
         </div>
-        <div class="step-indicator" id="step2-indicator">
-            <i class="fas fa-images"></i>
-            <span>Photos & Create</span>
+                {% endfor %}
+            {% else %}
+                <!-- Default Theme Options if no templates in database -->
+                <div class="theme-card" data-theme="modern_minimal" onclick="selectTheme('modern_minimal', '', this)">
+                    <img src="/static/images/templateselection/naming cermony.jpg" alt="Modern Minimal" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Modern+Minimal'">
+                    <div class="theme-title">Modern Minimal</div>
         </div>
 
+                <div class="theme-card" data-theme="floral_luxury" onclick="selectTheme('floral_luxury', '', this)">
+                    <img src="/static/images/templateselection/partytemplates.jpg" alt="Floral Luxury" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Floral+Luxury'">
+                    <div class="theme-title">Floral Luxury</div>
     </div>
 
-    <form id="invitationForm" method="POST" action="{{ url_for('create_invitation') }}" enctype="multipart/form-data">
-        <!-- Hidden field for selected template -->
-        <input type="hidden" name="selectedTemplate" value="{{ selected_template }}">
-        
-        <!-- Step 1: Event Details -->
-        <div class="form-step active" id="step1">
-            <!-- Basic Event Information -->
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-info-circle"></i>
-                    <h3>Basic Event Information</h3>
+                <div class="theme-card" data-theme="royal_gold" onclick="selectTheme('royal_gold', '', this)">
+                    <img src="/static/images/templateselection/traditionalgettogether.jpg" alt="Royal Gold" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Royal+Gold'">
+                    <div class="theme-title">Royal Gold</div>
                 </div>
 
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label required">Event Title</label>
-                        <input type="text" class="form-input" id="eventTitle" name="eventTitle" 
-                               placeholder="e.g., Sarah & John's Wedding" required
-                               value="{% if current_user and selected_template %}{% if 'wedding' in selected_template %}{{ current_user.name }}'s Wedding{% elif 'birthday' in selected_template %}{{ current_user.name }}'s Birthday{% elif 'anniversary' in selected_template %}{{ current_user.name }}'s Anniversary{% elif 'graduation' in selected_template %}{{ current_user.name }}'s Graduation{% elif 'babyshower' in selected_template %}{{ current_user.name }}'s Babyshower{% elif 'retirement' in selected_template %}{{ current_user.name }}'s Retirement{% else %}{{ current_user.name }}'s {{ selected_template|replace('_', ' ')|title }}{% endif %}{% endif %}">
+                <div class="theme-card" data-theme="watercolor_dreams" onclick="selectTheme('watercolor_dreams', '', this)">
+                    <img src="/static/images/templateselection/naming cermony.jpg" alt="Watercolor Dreams" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Watercolor+Dreams'">
+                    <div class="theme-title">Watercolor Dreams</div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label required">Event Date</label>
-                        <input type="date" class="form-input" id="eventDate" name="eventDate" required>
-                    </div>
+                <div class="theme-card" data-theme="dark_chic" onclick="selectTheme('dark_chic', '', this)">
+                    <img src="/static/images/templateselection/partytemplates.jpg" alt="Dark Chic" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Dark+Chic'">
+                    <div class="theme-title">Dark Chic</div>
                 </div>
 
-                <div class="form-group full-width">
-                    <label class="form-label">Event Description</label>
-                    <textarea class="form-textarea" id="eventDescription" name="eventDescription" rows="4" 
-                              placeholder="Describe your event, add special instructions, or include a personal message...">{% if current_user and selected_template %}{% if 'wedding' in selected_template %}With immense joy and love, we invite you to celebrate our special day as we begin our journey of forever together. Your presence will make our celebration complete.{% elif 'birthday' in selected_template %}Join us for a day filled with laughter, joy, and wonderful memories as we celebrate another year of life's beautiful journey.{% elif 'anniversary' in selected_template %}Celebrate with us the beautiful years of love, commitment, and countless memories we've shared together.{% elif 'graduation' in selected_template %}Join us in celebrating this significant milestone and the beginning of a new chapter in life's journey.{% elif 'babyshower' in selected_template %}Share in our excitement as we prepare to welcome a precious new life into our family.{% elif 'retirement' in selected_template %}Celebrate with us as we mark the end of one chapter and the beginning of new adventures in life.{% else %}We cordially invite you to join us for this special celebration. Your presence will make this day even more memorable.{% endif %}{% endif %}</textarea>
-                    <small class="form-text">A loving message has been pre-filled for you. Feel free to customize it!</small>
-                </div>
-
-                <!-- Love Story Section for Weddings -->
-                {% if selected_template and 'wedding' in selected_template %}
-                <div class="form-group full-width">
-                    <label class="form-label">Love Story</label>
-                    <textarea class="form-textarea" id="loveStory" name="loveStory" rows="4" 
-                              placeholder="Share your beautiful love story...">Our love story began with a simple hello and grew into something beautiful. Every moment together has been a blessing, and now we're ready to take the next step in our journey of love and commitment. From our first meeting to this special day, every step has been guided by love, trust, and endless support for each other.</textarea>
-                    <small class="form-text">Your beautiful love story will be featured in the invitation!</small>
+                <div class="theme-card" data-theme="festive_traditional" onclick="selectTheme('festive_traditional', '', this)">
+                    <img src="/static/images/templateselection/traditionalgettogether.jpg" alt="Festive Traditional" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Festive+Traditional'">
+                    <div class="theme-title">Festive Traditional</div>
                 </div>
                 {% endif %}
-
-                <!-- Event Story Section for Other Events -->
-                {% if selected_template and 'wedding' not in selected_template %}
-                <div class="form-group full-width">
-                    <label class="form-label">Event Story</label>
-                    <textarea class="form-textarea" id="eventStory" name="eventStory" rows="4" 
-                              placeholder="Share your event story...">{% if 'birthday' in selected_template %}Another year of life's beautiful journey, filled with growth, learning, and wonderful experiences. Each birthday marks a new chapter of memories, achievements, and dreams coming true.{% elif 'anniversary' in selected_template %}Years of love, laughter, and countless memories that have made our bond stronger with each passing day. Every anniversary is a celebration of the beautiful journey we've shared together.{% elif 'graduation' in selected_template %}A journey of dedication, hard work, and determination that has led to this moment of achievement. This graduation represents not just an end, but the beginning of new possibilities and dreams.{% elif 'babyshower' in selected_template %}The anticipation of welcoming a precious new life, filled with hope, joy, and endless possibilities. This special time is about celebrating the miracle of new beginnings and the love that surrounds us.{% elif 'retirement' in selected_template %}A career filled with dedication, achievements, and memories that will last a lifetime. This retirement marks the beginning of new adventures and the time to enjoy the fruits of years of hard work.{% else %}A celebration of life's beautiful moments, filled with love, joy, and wonderful memories that we'll cherish forever.{% endif %}</textarea>
-                    <small class="form-text">Your event story will add a personal touch to the invitation!</small>
                 </div>
-                {% endif %}
 
-                <div class="form-group">
-                    <label class="form-label">Main Event Image</label>
-                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                    <div id="mainImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Main Image Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
-                            <i class="fas fa-times"></i>
+        <div class="form-navigation">
+            <a href="{{ url_for('templates') }}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <button class="btn-continue" id="continueToDetails" disabled onclick="continueToDetails()">
+                Continue <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
-                    <small class="form-text">Upload a main image for your invitation background</small>
                 </div>
-            </div>
+    {% endif %}
 
-            <!-- Style Selection -->
-            <div class="form-section" id="eventStyleSection">
-                <div class="section-header">
-                    <i class="fas fa-palette"></i>
-                    <h3>Event Style (Optional)</h3>
-                </div>
-
-                <p style="color: #6c757d; margin-bottom: 1rem;">
-                    Choose a style that matches your event theme, or leave unselected for a neutral design
-                </p>
-
-                <div class="style-grid">
-                    <div class="style-option" onclick="selectStyle('hindu', this)">
-                        <span class="emoji">🕉️</span>
-                        <span class="label">Hindu</span>
-                        <input type="radio" name="eventStyle" value="hindu" style="display: none;">
-                    </div>
-
-                    <div class="style-option" onclick="selectStyle('muslim', this)">
-                        <span class="emoji">☪️</span>
-                        <span class="label">Muslim</span>
-                        <input type="radio" name="eventStyle" value="muslim" style="display: none;">
-                    </div>
-
-                    <div class="style-option" onclick="selectStyle('christian', this)">
-                        <span class="emoji">✝️</span>
-                        <span class="label">Christian</span>
-                        <input type="radio" name="eventStyle" value="christian" style="display: none;">
-                    </div>
-
-                    <div class="style-option" onclick="selectStyle('general', this)">
-                        <span class="emoji">🌍</span>
-                        <span class="label">General</span>
-                        <input type="radio" name="eventStyle" value="general" style="display: none;">
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Event-Specific Information -->
-            <div class="form-section" id="eventSpecificSection">
-                <div class="section-header">
-                    <i class="fas fa-star"></i>
-                    <h3>Event-Specific Details</h3>
+    <!-- Details Form Page -->
+    <div class="details-form-page {% if selected_template %}active{% endif %}" id="detailsFormPage">
+        <div class="page-title">
+            <h1>
+                <span class="title-normal">Add Your </span>
+                <span class="title-gradient">Special Details</span>
+            </h1>
+            <p>Watch your invitation come to life</p>
                 </div>
 
-                <!-- Wedding Fields -->
-                <div id="weddingFields" class="event-specific-fields" style="display: none;">
-                    <div class="form-grid">
+        <div class="form-preview-container">
+            <!-- Form Section -->
+            <div class="form-section-card">
+                <form id="invitationForm" method="POST" action="{{ url_for('create_invitation') }}" enctype="multipart/form-data">
+                    <input type="hidden" name="selectedTemplate" value="{{ selected_template }}" id="selectedTemplate">
+                    
                         <div class="form-group">
-                            <label class="form-label">Bride's Name</label>
-                            <input type="text" class="form-input" id="brideName" name="brideName" placeholder="Bride's full name">
+                        <label class="form-label required">Event Name</label>
+                        <input type="text" class="form-input" id="eventName" name="eventTitle" 
+                               placeholder="e.g., Sarah & James or Emma's Sweet 16"
+                               value="{% if current_user and selected_template %}{{ current_user.name }}'s Birthday{% endif %}">
+                </div>
+
+                        <div class="form-group">
+                        <label class="form-label required">Event Date</label>
+                        <div class="input-with-icon">
+                            <input type="date" class="form-input" id="eventDate" name="eventDate">
+                            <i class="fas fa-calendar"></i>
+                    </div>
+                </div>
+
+                        <div class="form-group">
+                        <label class="form-label">Event Time</label>
+                        <div class="input-with-icon">
+                            <input type="time" class="form-input" id="eventTime" name="eventTime">
+                            <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+
+                        <div class="form-group">
+                        <label class="form-label">Venue Name</label>
+                        <input type="text" class="form-input" id="venueName" name="venueName" 
+                               placeholder="e.g., Garden Estate">
+                </div>
+
+                        <div class="form-group">
+                        <label class="form-label">Venue Address</label>
+                        <input type="text" class="form-input" id="venueAddress" name="venueAddress" 
+                               placeholder="e.g., 123 Main St, City, State">
+                </div>
+
+                        <div class="form-group">
+                        <label class="form-label">Hosted By</label>
+                        <input type="text" class="form-input" id="hostedBy" name="hostName" 
+                               placeholder="e.g., The Smith Family"
+                               value="{{ current_user.name if current_user else '' }}">
+        </div>
+
+                    <div class="form-group">
+                        <label class="form-label">RSVP Contact</label>
+                        <input type="text" class="form-input" id="rsvpContact" name="contactEmail" 
+                               placeholder="e.g., email@example.com or (555) 123-4567"
+                               value="{{ current_user.email if current_user else '' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Personal Message</label>
+                        <textarea class="form-textarea" id="personalMessage" name="eventDescription" 
+                                  rows="4" placeholder="Add a heartfelt message to your guests..."></textarea>
+                    </div>
+
+                    <!-- Language & Font Style -->
+                    <div class="form-group">
+                        <label class="form-label">Language</label>
+                        <select class="form-input" id="language" name="language">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi (हिन्दी)</option>
+                            <option value="ar">Arabic (العربية)</option>
+                            <option value="ur">Urdu (اردو)</option>
+                            <option value="te">Telugu (తెలుగు)</option>
+                            <option value="ta">Tamil (தமிழ்)</option>
+                            <option value="kn">Kannada (ಕನ್ನಡ)</option>
+                            <option value="ml">Malayalam (മലയാളം)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Font Style</label>
+                        <select class="form-input" id="fontStyle" name="fontStyle">
+                            <option value="Inter, sans-serif">Inter (Modern)</option>
+                            <option value="Playfair Display, serif">Playfair Display (Elegant)</option>
+                            <option value="Georgia, serif">Georgia (Classic)</option>
+                            <option value="Brush Script MT, cursive">Brush Script (Fun)</option>
+                            <option value="Montserrat, sans-serif">Montserrat (Clean)</option>
+                            <option value="Amiri, serif">Amiri (Traditional)</option>
+                            <option value="Lora, serif">Lora (Sophisticated)</option>
+                            <option value="Times New Roman, serif">Times New Roman (Formal)</option>
+                        </select>
+                    </div>
+
+                    <!-- Main Image Upload -->
+                    <div class="form-group">
+                        <label class="form-label">Main Image</label>
+                        <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
+                        <div id="mainImagePreview" class="image-preview"></div>
+                    </div>
+
+                    <!-- Event-Specific Fields (Conditional) -->
+                    <div id="weddingFields" class="event-specific-fields" style="display: none;">
+                        <h4 class="section-title">Wedding Details</h4>
+                        <div class="form-group">
+                            <label class="form-label">Bride Name</label>
+                            <input type="text" class="form-input" id="brideName" name="brideName" placeholder="e.g., Sarah">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Groom's Name</label>
-                            <input type="text" class="form-input" id="groomName" name="groomName" placeholder="Groom's full name">
+                            <label class="form-label">Groom Name</label>
+                            <input type="text" class="form-input" id="groomName" name="groomName" placeholder="e.g., James">
                         </div>
-                    </div>
-                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Bride Image</label>
+                            <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*" onchange="previewImage(this, 'brideImagePreview')">
+                            <div id="brideImagePreview" class="image-preview"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Groom Image</label>
+                            <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*" onchange="previewImage(this, 'groomImagePreview')">
+                            <div id="groomImagePreview" class="image-preview"></div>
+                        </div>
                         <div class="form-group">
                             <label class="form-label">Muhurtham Time</label>
-                            <input type="time" class="form-input" id="muhurthamTime" name="muhurthamTime">
+                            <input type="text" class="form-input" id="muhurthamTime" name="muhurthamTime" placeholder="e.g., 10:30 AM">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Reception Time</label>
-                            <input type="time" class="form-input" id="receptionTime" name="receptionTime">
+                            <input type="text" class="form-input" id="receptionTime" name="receptionTime" placeholder="e.g., 7:00 PM">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Love Story (Optional)</label>
+                            <textarea class="form-textarea" id="loveStory" name="loveStory" rows="3" placeholder="Share your beautiful love story..."></textarea>
                         </div>
                     </div>
-                </div>
 
-                <!-- Birthday Fields -->
-                <div id="birthdayFields" class="event-specific-fields" style="display: none;">
-                    <div class="form-grid">
+                    <div id="birthdayFields" class="event-specific-fields" style="display: none;">
+                        <h4 class="section-title">Birthday Details</h4>
                         <div class="form-group">
-                            <label class="form-label">Birthday Person's Name</label>
-                            <input type="text" class="form-input" id="birthdayPerson" name="birthdayPerson" placeholder="Name of the birthday person">
+                            <label class="form-label">Birthday Person Name</label>
+                            <input type="text" class="form-input" id="birthdayPerson" name="birthdayPerson" placeholder="e.g., Emma">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Age</label>
-                            <input type="number" class="form-input" id="age" name="age" placeholder="Age" min="1" max="120">
+                            <input type="text" class="form-input" id="age" name="age" placeholder="e.g., 16">
                         </div>
-                    </div>
-                    <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">Start Time</label>
-                            <input type="time" class="form-input" id="startTime" name="startTime">
+                            <label class="form-label">Birthday Person Image</label>
+                            <input type="file" class="form-input" id="birthdayImage" name="birthdayImage" accept="image/*" onchange="previewImage(this, 'birthdayImagePreview')">
+                            <div id="birthdayImagePreview" class="image-preview"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Party Start Time</label>
+                            <input type="text" class="form-input" id="startTime" name="startTime" placeholder="e.g., 5:00 PM">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Dinner Time</label>
-                            <input type="time" class="form-input" id="dinnerTime" name="dinnerTime">
+                            <input type="text" class="form-input" id="dinnerTime" name="dinnerTime" placeholder="e.g., 8:00 PM">
                         </div>
                     </div>
-                </div>
 
-                <!-- Baby Shower Fields -->
-                <div id="babyshowerFields" class="event-specific-fields" style="display: none;">
-                    <div class="form-grid">
+                    <div id="anniversaryFields" class="event-specific-fields" style="display: none;">
+                        <h4 class="section-title">Anniversary Details</h4>
                         <div class="form-group">
-                            <label class="form-label">Mother's Name</label>
-                            <input type="text" class="form-input" id="motherName" name="motherName" placeholder="Expecting mother's name">
+                            <label class="form-label">Couple Names</label>
+                            <input type="text" class="form-input" id="coupleNames" name="coupleNames" placeholder="e.g., Sarah & James">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Father's Name</label>
-                            <input type="text" class="form-input" id="fatherName" name="fatherName" placeholder="Expecting father's name">
-                        </div>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Start Time</label>
-                            <input type="time" class="form-input" id="babyshowerStartTime" name="babyshowerStartTime">
+                            <label class="form-label">Marriage Years</label>
+                            <input type="text" class="form-input" id="marriageYears" name="marriageYears" placeholder="e.g., 25">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">End Time</label>
-                            <input type="time" class="form-input" id="babyshowerEndTime" name="babyshowerEndTime">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Graduation Fields -->
-                <div id="graduationFields" class="event-specific-fields" style="display: none;">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Graduate's Name</label>
-                            <input type="text" class="form-input" id="graduateName" name="graduateName" placeholder="Graduate's full name">
+                            <label class="form-label">Couple Image</label>
+                            <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
+                            <div id="coupleImagePreview" class="image-preview"></div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Degree</label>
-                            <input type="text" class="form-input" id="degree" name="degree" placeholder="e.g., Bachelor's Degree">
-                        </div>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">School/University</label>
-                            <input type="text" class="form-input" id="school" name="school" placeholder="School or university name">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Field of Study</label>
-                            <input type="text" class="form-input" id="major" name="major" placeholder="e.g., Computer Science">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Anniversary Fields -->
-                <div id="anniversaryFields" class="event-specific-fields" style="display: none;">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Couple's Names</label>
-                            <input type="text" class="form-input" id="coupleNames" name="coupleNames" placeholder="e.g., Sarah & John">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Years of Marriage</label>
-                            <input type="number" class="form-input" id="marriageYears" name="marriageYears" placeholder="e.g., 25" min="1" max="100">
-                        </div>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Dinner Time</label>
-                            <input type="time" class="form-input" id="anniversaryDinnerTime" name="anniversaryDinnerTime">
+                            <label class="form-label">Anniversary Dinner Time</label>
+                            <input type="text" class="form-input" id="anniversaryDinnerTime" name="anniversaryDinnerTime" placeholder="e.g., 7:00 PM">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Party Time</label>
-                            <input type="time" class="form-input" id="partyTime" name="partyTime">
+                            <input type="text" class="form-input" id="partyTime" name="partyTime" placeholder="e.g., 9:00 PM">
                         </div>
                     </div>
-                </div>
 
-                <!-- Retirement Fields -->
-                <div id="retirementFields" class="event-specific-fields" style="display: none;">
-                    <div class="form-grid">
+                    <div id="babyshowerFields" class="event-specific-fields" style="display: none;">
+                        <h4 class="section-title">Baby Shower Details</h4>
                         <div class="form-group">
-                            <label class="form-label">Retiring Person's Name</label>
-                            <input type="text" class="form-input" id="honoreeName" name="honoreeName" placeholder="Full name of the retiring person">
+                            <label class="form-label">Mother Name</label>
+                            <input type="text" class="form-input" id="motherName" name="motherName" placeholder="e.g., Sarah">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Position/Title</label>
+                            <label class="form-label">Father Name</label>
+                            <input type="text" class="form-input" id="fatherName" name="fatherName" placeholder="e.g., James">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Baby Shower Start Time</label>
+                            <input type="text" class="form-input" id="babyshowerStartTime" name="babyshowerStartTime" placeholder="e.g., 2:00 PM">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Baby Shower End Time</label>
+                            <input type="text" class="form-input" id="babyshowerEndTime" name="babyshowerEndTime" placeholder="e.g., 6:00 PM">
+                        </div>
+                    </div>
+
+                    <div id="graduationFields" class="event-specific-fields" style="display: none;">
+                        <h4 class="section-title">Graduation Details</h4>
+                        <div class="form-group">
+                            <label class="form-label">Graduate Name</label>
+                            <input type="text" class="form-input" id="graduateName" name="graduateName" placeholder="e.g., Alex">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Degree</label>
+                            <input type="text" class="form-input" id="degree" name="degree" placeholder="e.g., Bachelor of Science">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">School/University</label>
+                            <input type="text" class="form-input" id="school" name="school" placeholder="e.g., University Name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Major/Field</label>
+                            <input type="text" class="form-input" id="major" name="major" placeholder="e.g., Computer Science">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Graduate Image</label>
+                            <input type="file" class="form-input" id="graduateImage" name="graduateImage" accept="image/*" onchange="previewImage(this, 'graduateImagePreview')">
+                            <div id="graduateImagePreview" class="image-preview"></div>
+                        </div>
+                    </div>
+
+                    <div id="retirementFields" class="event-specific-fields" style="display: none;">
+                        <h4 class="section-title">Retirement Details</h4>
+                        <div class="form-group">
+                            <label class="form-label">Honoree Name</label>
+                            <input type="text" class="form-input" id="honoreeName" name="honoreeName" placeholder="e.g., John Smith">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Position</label>
                             <input type="text" class="form-input" id="position" name="position" placeholder="e.g., Senior Manager">
                         </div>
-                    </div>
-                    <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">Company/Organization</label>
-                            <input type="text" class="form-input" id="company" name="company" placeholder="Company or organization name">
+                            <label class="form-label">Company</label>
+                            <input type="text" class="form-input" id="company" name="company" placeholder="e.g., ABC Corporation">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Career Start Year</label>
-                            <input type="number" class="form-input" id="startYear" name="startYear" placeholder="e.g., 1985" min="1900" max="2024">
+                            <label class="form-label">Start Year</label>
+                            <input type="text" class="form-input" id="startYear" name="startYear" placeholder="e.g., 1995">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Honoree Image</label>
+                            <input type="file" class="form-input" id="honoreeImage" name="honoreeImage" accept="image/*" onchange="previewImage(this, 'honoreeImagePreview')">
+                            <div id="honoreeImagePreview" class="image-preview"></div>
+                        </div>
+                    </div>
+
+                    <!-- Gallery Images -->
+                    <div class="form-group">
+                        <label class="form-label">Gallery Images (Multiple)</label>
+                        <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryPreview')">
+                        <div id="galleryPreview" class="gallery-preview"></div>
+                    </div>
+                </form>
+                    </div>
+
+            <!-- Live Preview Section -->
+            <div class="live-preview-card">
+                <div class="preview-title">Live Preview</div>
+                <div class="preview-content">
+                    <div class="invitation-preview" id="invitationPreviewCard">
+                        <div class="preview-icon" id="previewIcon">🎂</div>
+                        <div class="preview-event-name" id="previewEventName">
+                            Your Event Name
+                        </div>
+                        <div class="preview-date-time" id="previewDate" style="display: none;">
+                            <i class="fas fa-calendar"></i>
+                            <span id="previewDateText"></span>
+                        </div>
+                        <div class="preview-date-time" id="previewTime" style="display: none;">
+                            <i class="fas fa-clock"></i>
+                            <span id="previewTimeText"></span>
+                        </div>
+                        <div class="preview-venue" id="previewVenue" style="display: none;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="previewVenueText"></span>
+                        </div>
+                        <div class="preview-hosted" id="previewHosted" style="display: none;">
+                            <i class="fas fa-user"></i> Hosted by <span id="previewHostedText"></span>
+                        </div>
+                        <div class="preview-message" id="previewMessage" style="display: none;">
+                            <span id="previewMessageText"></span>
+                        </div>
+                        <div class="preview-placeholder" id="previewPlaceholder">
+                            Start filling the form to see your invitation preview
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Step 2: Photos & Additional Info -->
-        <div class="form-step" id="step2">
-            <!-- Event-specific photo sections based on template -->
-            <div id="eventPhotosSection">
-                <!-- This will be populated by JavaScript based on the selected template -->
-            </div>
-
-            <!-- Contact Information -->
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-address-book"></i>
-                    <h3>Contact Information</h3>
-                </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label required">Host Name</label>
-                        <input type="text" class="form-input" id="hostName" name="hostName" 
-                               value="{{ current_user.name if current_user else '' }}" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Contact Phone</label>
-                        <input type="tel" class="form-input" id="contactPhone" name="contactPhone" 
-                               placeholder="Phone number for inquiries">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Contact Email</label>
-                        <input type="email" class="form-input" id="contactEmail" name="contactEmail" 
-                               value="{{ current_user.email if current_user else '' }}" placeholder="Email for inquiries">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Venue Address</label>
-                        <textarea class="form-textarea" id="venueAddress" name="venueAddress" rows="3" 
-                                  placeholder="Enter the venue address..."></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-        <!-- Navigation Buttons -->
         <div class="form-navigation">
-            <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">
-                <i class="fas fa-arrow-left"></i>
-                Previous
+            <button class="btn-back" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back
             </button>
-
-            <div style="margin-left: auto;">
-                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextStep()">
-                    Next
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-
-                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
-                    <i class="fas fa-check"></i>
-                    Create Invitation
+            <button class="btn-preview" onclick="submitForm()">
+                Preview <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
-    </form>
 </div>
 
 <script>
-        let currentStep = 1;
-        const totalSteps = 2;
+    let selectedThemeValue = '{{ selected_template or "" }}';
 
-        // Style selection
-        function selectStyle(style, element) {
-            // Remove selection from all options
-            document.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('selected'));
-            // Select clicked option
-            element.classList.add('selected');
-            // Set radio button value
-            element.querySelector('input[type="radio"]').checked = true;
-        }
+    // Optimized: Live Preview Updates - Debounced for better performance
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
 
-        // Step navigation
-        function nextStep() {
-            console.log('nextStep called, currentStep:', currentStep, 'totalSteps:', totalSteps);
-            if (currentStep < totalSteps) {
-                // Hide current step
-                const currentStepElement = document.getElementById(`step${currentStep}`);
-                const nextStepElement = document.getElementById(`step${currentStep + 1}`);
+    // Live Preview Updates - Optimized with debouncing
+        document.addEventListener('DOMContentLoaded', function() {
+        const eventNameInput = document.getElementById('eventName');
+        const previewEventName = document.getElementById('previewEventName');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const previewIcon = document.getElementById('previewIcon');
+
+        // Get all form inputs for preview
+        const eventDateInput = document.getElementById('eventDate');
+        const eventTimeInput = document.getElementById('eventTime');
+        const venueNameInput = document.getElementById('venueName');
+        const venueAddressInput = document.getElementById('venueAddress');
+        const hostedByInput = document.getElementById('hostedBy');
+        const personalMessageInput = document.getElementById('personalMessage');
+        
+        const previewDate = document.getElementById('previewDate');
+        const previewDateText = document.getElementById('previewDateText');
+        const previewTime = document.getElementById('previewTime');
+        const previewTimeText = document.getElementById('previewTimeText');
+        const previewVenue = document.getElementById('previewVenue');
+        const previewVenueText = document.getElementById('previewVenueText');
+        const previewHosted = document.getElementById('previewHosted');
+        const previewHostedText = document.getElementById('previewHostedText');
+        const previewMessage = document.getElementById('previewMessage');
+        const previewMessageText = document.getElementById('previewMessageText');
+
+        // Optimized update preview with debouncing (300ms delay)
+        const debouncedUpdatePreview = debounce(function() {
+            const eventName = eventNameInput ? eventNameInput.value.trim() : '';
+            const eventDate = eventDateInput ? eventDateInput.value : '';
+            const eventTime = eventTimeInput ? eventTimeInput.value : '';
+            const venueName = venueNameInput ? venueNameInput.value.trim() : '';
+            const venueAddress = venueAddressInput ? venueAddressInput.value.trim() : '';
+            const hostedBy = hostedByInput ? hostedByInput.value.trim() : '';
+            const personalMessage = personalMessageInput ? personalMessageInput.value.trim() : '';
+            
+            let hasContent = false;
+            
+            if (eventName) {
+                previewEventName.textContent = eventName;
+                previewPlaceholder.style.display = 'none';
+                hasContent = true;
                 
-                console.log('Current step element:', currentStepElement);
-                console.log('Next step element:', nextStepElement);
-                
-                if (currentStepElement) currentStepElement.classList.remove('active');
-                if (nextStepElement) nextStepElement.classList.add('active');
-
-                // Update step indicators
-                const currentIndicator = document.getElementById(`step${currentStep}-indicator`);
-                const nextIndicator = document.getElementById(`step${currentStep + 1}-indicator`);
-                
-                if (currentIndicator) currentIndicator.classList.remove('active');
-                if (nextIndicator) nextIndicator.classList.add('active');
-
-                currentStep++;
-                console.log('Step changed to:', currentStep);
-                updateNavigation();
-            }
-        }
-
-        function previousStep() {
-            if (currentStep > 1) {
-                document.getElementById(`step${currentStep}`).classList.remove('active');
-                document.getElementById(`step${currentStep - 1}`).classList.add('active');
-
-                document.getElementById(`step${currentStep}-indicator`).classList.remove('active');
-                document.getElementById(`step${currentStep - 1}`).classList.remove('completed');
-                document.getElementById(`step${currentStep - 1}-indicator`).classList.add('active');
-
-                currentStep--;
-                updateNavigation();
-            }
-        }
-
-        function updateNavigation() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-
-            // Show/hide previous button
-            prevBtn.style.display = currentStep > 1 ? 'inline-flex' : 'none';
-
-            // Show/hide next/submit buttons
-            if (currentStep === totalSteps) {
-                nextBtn.style.display = 'none';
-                submitBtn.style.display = 'inline-flex';
+                // Update icon based on event type
+                const eventType = eventName.toLowerCase();
+                if (eventType.includes('wedding') || eventType.includes('marriage')) {
+                    previewIcon.textContent = '💍';
+                } else if (eventType.includes('birthday') || eventType.includes('bday')) {
+                    previewIcon.textContent = '🎂';
+                } else if (eventType.includes('anniversary')) {
+                    previewIcon.textContent = '💑';
+                } else if (eventType.includes('graduation')) {
+                    previewIcon.textContent = '🎓';
+                } else if (eventType.includes('baby')) {
+                    previewIcon.textContent = '👶';
+                } else if (eventType.includes('retirement')) {
+                    previewIcon.textContent = '🎉';
+                } else {
+                    previewIcon.textContent = '🎊';
+                }
             } else {
-                nextBtn.style.display = 'inline-flex';
-                submitBtn.style.display = 'none';
+                previewEventName.textContent = 'Your Event Name';
+                previewIcon.textContent = '🎂';
             }
+            
+            // Update date
+            if (eventDate) {
+                const date = new Date(eventDate);
+                const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                previewDateText.textContent = formattedDate;
+                previewDate.style.display = 'flex';
+                hasContent = true;
+            } else {
+                previewDate.style.display = 'none';
+            }
+            
+            // Update time
+            if (eventTime) {
+                const time = eventTime.split(':');
+                const hours = parseInt(time[0]);
+                const minutes = time[1];
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                const displayHours = hours % 12 || 12;
+                previewTimeText.textContent = `${displayHours}:${minutes} ${ampm}`;
+                previewTime.style.display = 'flex';
+                hasContent = true;
+            } else {
+                previewTime.style.display = 'none';
+            }
+            
+            // Update venue
+            const venueFull = [venueName, venueAddress].filter(v => v).join(', ');
+            if (venueFull) {
+                previewVenueText.textContent = venueFull;
+                previewVenue.style.display = 'flex';
+                hasContent = true;
+            } else {
+                previewVenue.style.display = 'none';
+            }
+            
+            // Update hosted by
+            if (hostedBy) {
+                previewHostedText.textContent = hostedBy;
+                previewHosted.style.display = 'block';
+                hasContent = true;
+            } else {
+                previewHosted.style.display = 'none';
+            }
+            
+            // Update message
+            if (personalMessage) {
+                previewMessageText.textContent = personalMessage;
+                previewMessage.style.display = 'block';
+                hasContent = true;
+            } else {
+                previewMessage.style.display = 'none';
+            }
+            
+            // Show/hide placeholder
+            if (!hasContent) {
+                previewPlaceholder.style.display = 'block';
+            } else {
+                previewPlaceholder.style.display = 'none';
+            }
+        }, 300);
 
-            // Mark completed steps
-            for (let i = 1; i < currentStep; i++) {
-                document.getElementById(`step${i}-indicator`).classList.add('completed');
+        // Update preview as user types - Event Name (optimized with debouncing)
+        if (eventNameInput) {
+            eventNameInput.addEventListener('input', debouncedUpdatePreview);
+            eventNameInput.addEventListener('change', debouncedUpdatePreview);
+            
+            // Initialize preview with current value immediately
+            debouncedUpdatePreview();
+        }
+
+        // Update preview for all form fields
+        const allInputs = document.querySelectorAll('#invitationForm input, #invitationForm textarea, #invitationForm select');
+        allInputs.forEach(input => {
+            input.addEventListener('input', debouncedUpdatePreview);
+            input.addEventListener('change', debouncedUpdatePreview);
+        });
+
+        // Show/hide event-specific fields based on event type
+        function showEventSpecificFields(eventType) {
+            // Hide all event-specific fields first
+            document.querySelectorAll('.event-specific-fields').forEach(field => {
+                field.style.display = 'none';
+            });
+
+            // Show relevant fields based on event type
+            const eventTypeMap = {
+                'wedding': 'weddingFields',
+                'birthday': 'birthdayFields',
+                'anniversary': 'anniversaryFields',
+                'babyshower': 'babyshowerFields',
+                'graduation': 'graduationFields',
+                'retirement': 'retirementFields'
+            };
+
+            const fieldId = eventTypeMap[eventType];
+            if (fieldId) {
+                const fieldElement = document.getElementById(fieldId);
+                if (fieldElement) {
+                    fieldElement.style.display = 'block';
+                }
             }
         }
+
+        // Initialize event-specific fields based on current event type
+        const currentEventType = '{{ event_type or "" }}';
+        if (currentEventType) {
+            showEventSpecificFields(currentEventType);
+        }
+
+        // Update default text based on event type
+        function setDefaultTexts(eventType) {
+            const eventNameInput = document.getElementById('eventName');
+            const personalMessageInput = document.getElementById('personalMessage');
+            
+            if (!eventNameInput || !personalMessageInput) return;
+
+            const defaultTexts = {
+                'wedding': {
+                    eventName: eventNameInput.value || 'We request the pleasure of your company at our wedding',
+                    message: personalMessageInput.value || 'Join us as we celebrate the beginning of our new journey together. Your presence would make our special day even more meaningful.'
+                },
+                'birthday': {
+                    eventName: eventNameInput.value || 'You\'re invited to celebrate!',
+                    message: personalMessageInput.value || 'Join us for a celebration filled with joy, laughter, and wonderful memories. Your presence will make this birthday truly special!'
+                },
+                'anniversary': {
+                    eventName: eventNameInput.value || 'Join us in celebrating our anniversary',
+                    message: personalMessageInput.value || 'We\'re celebrating another year of love, laughter, and cherished memories. Your presence would make our celebration complete.'
+                },
+                'babyshower': {
+                    eventName: eventNameInput.value || 'Showering our little one with love',
+                    message: personalMessageInput.value || 'Join us as we celebrate the upcoming arrival of our little bundle of joy. Your love and blessings are warmly welcome!'
+                },
+                'graduation': {
+                    eventName: eventNameInput.value || 'Celebrating a milestone achievement',
+                    message: personalMessageInput.value || 'Join us in celebrating this incredible milestone. Your presence would mean the world to us on this special day!'
+                },
+                'retirement': {
+                    eventName: eventNameInput.value || 'Celebrating a remarkable career',
+                    message: personalMessageInput.value || 'Join us in honoring years of dedication and celebrating the beginning of a new chapter. Your presence would be greatly appreciated!'
+                }
+            };
+
+            const defaults = defaultTexts[eventType];
+            if (defaults && !eventNameInput.value) {
+                eventNameInput.value = defaults.eventName;
+            }
+            if (defaults && !personalMessageInput.value) {
+                personalMessageInput.value = defaults.message;
+                debouncedUpdatePreview();
+            }
+        }
+
+        // Set default texts on page load
+        if (currentEventType) {
+            setDefaultTexts(currentEventType);
+        }
+            
+        // Theme Selection
+        window.selectTheme = function(themeId, templateId, element) {
+            // Remove previous selection
+            document.querySelectorAll('.theme-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Mark selected
+            element.classList.add('selected');
+            selectedThemeValue = themeId;
+            
+            // Update hidden input with template ID or name
+            const templateInput = document.getElementById('selectedTemplate');
+            if (templateInput) {
+                templateInput.value = templateId || themeId;
+            }
+            
+            // Enable continue button
+            const continueBtn = document.getElementById('continueToDetails');
+            if (continueBtn) {
+                continueBtn.disabled = false;
+                continueBtn.style.opacity = '1';
+                continueBtn.style.cursor = 'pointer';
+            }
+        };
+
+        // Continue to Details
+        window.continueToDetails = function() {
+            if (!selectedThemeValue) {
+                alert('Please select a theme first');
+                return;
+            }
+
+            document.getElementById('themeSelectionPage').classList.remove('active');
+            document.getElementById('detailsFormPage').classList.add('active');
+            
+            // Update progress bar
+            updateProgressBar(3);
+        };
+
+        // Update Progress Bar
+        function updateProgressBar(step) {
+            document.querySelectorAll('.progress-step').forEach((stepEl, index) => {
+                const stepNum = index + 1;
+                if (stepNum < step) {
+                    stepEl.classList.remove('active', 'pending');
+                    stepEl.classList.add('completed');
+                    const circle = stepEl.querySelector('.step-circle');
+                    if (circle) {
+                        circle.textContent = '✓';
+                    }
+                } else if (stepNum === step) {
+                    stepEl.classList.remove('completed', 'pending');
+                    stepEl.classList.add('active');
+                    const circle = stepEl.querySelector('.step-circle');
+                    if (circle && !circle.textContent.includes('✓')) {
+                        circle.textContent = stepNum;
+                    }
+                } else {
+                    stepEl.classList.remove('active', 'completed');
+                    stepEl.classList.add('pending');
+                    const circle = stepEl.querySelector('.step-circle');
+                    if (circle && !circle.textContent.includes('✓')) {
+                        circle.textContent = stepNum;
+                    }
+                }
+            });
+        }
+
+        // Form submission
+        window.submitForm = function() {
+            document.getElementById('invitationForm').submit();
+        };
+
+        window.goBack = function() {
+            const themePage = document.getElementById('themeSelectionPage');
+            if (themePage && !themePage.classList.contains('hidden')) {
+                themePage.classList.add('active');
+                document.getElementById('detailsFormPage').classList.remove('active');
+                updateProgressBar(2);
+            } else {
+                window.history.back();
+            }
+        };
+        });
 
         // Image preview functions
         function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const preview = document.getElementById(previewId);
-                    if (preview) {
-                        preview.querySelector('img').src = e.target.result;
-                        preview.style.display = 'inline-block';
-                    }
+                    preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+                    preview.style.display = 'block';
                 };
                 reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function removeImage(previewId, inputId) {
-            const preview = document.getElementById(previewId);
-            const input = document.getElementById(inputId);
-            if (preview) {
+            } else {
+                preview.innerHTML = '';
                 preview.style.display = 'none';
-                preview.querySelector('img').src = '';
             }
-        }
-
-        // Initialize language and font on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set initial language to English if not already set
-            const languageSelect = document.getElementById('language');
-            if (languageSelect && !languageSelect.getAttribute('data-language')) {
-                changeLanguage('english');
-            }
-            
-            // Set initial font to default if not already set
-            const fontSelect = document.getElementById('fontStyle');
-            if (fontSelect && !fontSelect.getAttribute('data-font-family')) {
-                changeFontStyle('default');
-            }
-        });
-
-        // Font style change function
-        function changeFontStyle(fontValue) {
-            console.log('Changing font style to:', fontValue);
-            
-            // Define font mappings
-            const fontMappings = {
-                'default': 'Inter, sans-serif',
-                'elegant': 'Playfair Display, serif',
-                'modern': 'Roboto, sans-serif',
-                'classic': 'Times New Roman, serif',
-                'script': 'Dancing Script, cursive',
-                'bold': 'Montserrat, sans-serif',
-                'cursive': 'Pacifico, cursive',
-                'minimal': 'Open Sans, sans-serif'
-            };
-            
-            const selectedFont = fontMappings[fontValue] || 'Inter, sans-serif';
-            
-            // Apply font to all form elements
-            const allTextElements = document.querySelectorAll(`
-                input[type="text"], 
-                textarea, 
-                .form-input, 
-                .form-textarea,
-                .form-label,
-                .section-header h3,
-                .step-indicator span,
-                .form-header h1,
-                .form-header p,
-                .template-info h3,
-                .template-info p,
-                .form-text,
-                select,
-                button
-            `);
-            
-            allTextElements.forEach(element => {
-                element.style.fontFamily = selectedFont;
-            });
-            
-            // Apply font to the entire form container
-            const formContainer = document.querySelector('.create-invitation-container');
-            if (formContainer) {
-                formContainer.style.fontFamily = selectedFont;
-            }
-            
-            // Store the font choice for later use
-            document.getElementById('fontStyle').setAttribute('data-font-family', selectedFont);
-            
-            console.log('Font applied to entire form:', selectedFont);
-            
-            // Show live preview indicator
-            showLivePreviewIndicator();
-        }
-
-        // Language change function
-        function changeLanguage(languageValue) {
-            console.log('Changing language to:', languageValue);
-            
-            // Define comprehensive language translations
-            const translations = {
-                'english': {
-                    'eventTitle': 'Event Title',
-                    'eventDate': 'Event Date',
-                    'eventDescription': 'Event Description',
-                    'loveStory': 'Love Story',
-                    'eventStory': 'Event Story',
-                    'hostName': 'Host Name',
-                    'contactPhone': 'Contact Phone',
-                    'contactEmail': 'Contact Email',
-                    'venueAddress': 'Venue Address',
-                    'brideName': 'Bride\'s Name',
-                    'groomName': 'Groom\'s Name',
-                    'birthdayPerson': 'Birthday Person\'s Name',
-                    'age': 'Age',
-                    'startTime': 'Start Time',
-                    'dinnerTime': 'Dinner Time',
-                    'muhurthamTime': 'Muhurtham Time',
-                    'receptionTime': 'Reception Time',
-                    'motherName': 'Mother\'s Name',
-                    'fatherName': 'Father\'s Name',
-                    'graduateName': 'Graduate\'s Name',
-                    'degree': 'Degree',
-                    'school': 'School',
-                    'major': 'Major',
-                    'coupleNames': 'Couple Names',
-                    'marriageYears': 'Marriage Years',
-                    'honoreeName': 'Honoree Name',
-                    'position': 'Position',
-                    'company': 'Company',
-                    'startYear': 'Start Year',
-                    'placeholder': {
-                        'eventTitle': 'e.g., Sarah & John\'s Wedding',
-                        'eventDescription': 'Describe your event, add special instructions, or include a personal message...',
-                        'loveStory': 'Share your beautiful love story...',
-                        'eventStory': 'Share your event story...',
-                        'contactPhone': 'Phone number for inquiries',
-                        'contactEmail': 'Email for inquiries',
-                        'venueAddress': 'Enter the venue address...',
-                        'brideName': 'Bride\'s full name',
-                        'groomName': 'Groom\'s full name',
-                        'birthdayPerson': 'Name of the birthday person',
-                        'age': 'Age',
-                        'motherName': 'Mother\'s full name',
-                        'fatherName': 'Father\'s full name',
-                        'graduateName': 'Graduate\'s full name',
-                        'degree': 'e.g., Bachelor of Science',
-                        'school': 'University/School name',
-                        'major': 'Field of study',
-                        'coupleNames': 'Couple\'s names',
-                        'marriageYears': 'Years of marriage',
-                        'honoreeName': 'Honoree\'s full name',
-                        'position': 'Job position',
-                        'company': 'Company name',
-                        'startYear': 'Start year'
-                    },
-                    'defaultText': {
-                        'weddingDescription': 'With immense joy and love, we invite you to celebrate our special day as we begin our journey of forever together. Your presence will make our celebration complete.',
-                        'birthdayDescription': 'Join us for a day filled with laughter, joy, and wonderful memories as we celebrate another year of life\'s beautiful journey.',
-                        'anniversaryDescription': 'Celebrate with us the beautiful years of love, commitment, and countless memories we\'ve shared together.',
-                        'graduationDescription': 'Join us in celebrating this significant milestone and the beginning of a new chapter in life\'s journey.',
-                        'babyshowerDescription': 'Share in our excitement as we prepare to welcome a precious new life into our family.',
-                        'retirementDescription': 'Celebrate with us as we mark the end of one chapter and the beginning of new adventures in life.',
-                        'loveStoryText': 'Our love story began with a simple hello and grew into something beautiful. Every moment together has been a blessing, and now we\'re ready to take the next step in our journey of love and commitment.',
-                        'eventStoryText': 'A celebration of life\'s beautiful moments, filled with love, joy, and wonderful memories that we\'ll cherish forever.'
-                    }
-                },
-                'hindi': {
-                    'eventTitle': 'कार्यक्रम का शीर्षक',
-                    'eventDate': 'कार्यक्रम की तारीख',
-                    'eventDescription': 'कार्यक्रम का विवरण',
-                    'loveStory': 'प्रेम कहानी',
-                    'eventStory': 'कार्यक्रम की कहानी',
-                    'hostName': 'मेजबान का नाम',
-                    'contactPhone': 'संपर्क फोन',
-                    'contactEmail': 'संपर्क ईमेल',
-                    'venueAddress': 'स्थल का पता',
-                    'brideName': 'दुल्हन का नाम',
-                    'groomName': 'दूल्हे का नाम',
-                    'birthdayPerson': 'जन्मदिन व्यक्ति का नाम',
-                    'age': 'आयु',
-                    'startTime': 'शुरुआत का समय',
-                    'dinnerTime': 'डिनर का समय',
-                    'muhurthamTime': 'मुहूर्त का समय',
-                    'receptionTime': 'रिसेप्शन का समय',
-                    'motherName': 'माता का नाम',
-                    'fatherName': 'पिता का नाम',
-                    'graduateName': 'स्नातक का नाम',
-                    'degree': 'डिग्री',
-                    'school': 'स्कूल',
-                    'major': 'विषय',
-                    'coupleNames': 'दंपति के नाम',
-                    'marriageYears': 'विवाह के वर्ष',
-                    'honoreeName': 'सम्मानित व्यक्ति का नाम',
-                    'position': 'पद',
-                    'company': 'कंपनी',
-                    'startYear': 'शुरुआत का वर्ष',
-                    'placeholder': {
-                        'eventTitle': 'जैसे, सारा और जॉन की शादी',
-                        'eventDescription': 'अपने कार्यक्रम का वर्णन करें, विशेष निर्देश जोड़ें, या व्यक्तिगत संदेश शामिल करें...',
-                        'loveStory': 'अपनी सुंदर प्रेम कहानी साझा करें...',
-                        'eventStory': 'अपनी कार्यक्रम की कहानी साझा करें...',
-                        'contactPhone': 'जांच के लिए फोन नंबर',
-                        'contactEmail': 'जांच के लिए ईमेल',
-                        'venueAddress': 'स्थल का पता दर्ज करें...',
-                        'brideName': 'दुल्हन का पूरा नाम',
-                        'groomName': 'दूल्हे का पूरा नाम',
-                        'birthdayPerson': 'जन्मदिन व्यक्ति का नाम',
-                        'age': 'आयु',
-                        'motherName': 'माता का पूरा नाम',
-                        'fatherName': 'पिता का पूरा नाम',
-                        'graduateName': 'स्नातक का पूरा नाम',
-                        'degree': 'जैसे, विज्ञान स्नातक',
-                        'school': 'विश्वविद्यालय/स्कूल का नाम',
-                        'major': 'अध्ययन का क्षेत्र',
-                        'coupleNames': 'दंपति के नाम',
-                        'marriageYears': 'विवाह के वर्ष',
-                        'honoreeName': 'सम्मानित व्यक्ति का पूरा नाम',
-                        'position': 'नौकरी का पद',
-                        'company': 'कंपनी का नाम',
-                        'startYear': 'शुरुआत का वर्ष'
-                    },
-                    'defaultText': {
-                        'weddingDescription': 'अत्यधिक खुशी और प्यार के साथ, हम आपको अपने विशेष दिन का जश्न मनाने के लिए आमंत्रित करते हैं क्योंकि हम हमेशा के लिए एक साथ रहने की अपनी यात्रा शुरू कर रहे हैं। आपकी उपस्थिति हमारे जश्न को पूरा बनाएगी।',
-                        'birthdayDescription': 'हंसी, खुशी और अद्भुत यादों से भरे दिन में हमारे साथ जुड़ें क्योंकि हम जीवन की सुंदर यात्रा के एक और वर्ष का जश्न मनाते हैं।',
-                        'anniversaryDescription': 'हमारे साथ प्यार, प्रतिबद्धता और अनगिनत यादों के सुंदर वर्षों का जश्न मनाएं जो हमने एक साथ साझा किए हैं।',
-                        'graduationDescription': 'इस महत्वपूर्ण मील के पत्थर और जीवन की यात्रा में एक नए अध्याय की शुरुआत का जश्न मनाने में हमारे साथ जुड़ें।',
-                        'babyshowerDescription': 'हमारे परिवार में एक कीमती नई जिंदगी का स्वागत करने की तैयारी में हमारे उत्साह में साझा करें।',
-                        'retirementDescription': 'हमारे साथ एक अध्याय के अंत और जीवन में नए रोमांच की शुरुआत का जश्न मनाएं।',
-                        'loveStoryText': 'हमारी प्रेम कहानी एक साधारण नमस्ते से शुरू हुई और कुछ सुंदर में बदल गई। एक साथ बिताया हर पल एक आशीर्वाद रहा है, और अब हम प्यार और प्रतिबद्धता की अपनी यात्रा में अगला कदम उठाने के लिए तैयार हैं।',
-                        'eventStoryText': 'जीवन के सुंदर क्षणों का जश्न, प्यार, खुशी और अद्भुत यादों से भरा जिसे हम हमेशा संजोएंगे।'
-                    }
-                },
-                'telugu': {
-                    'eventTitle': 'ఈవెంట్ శీర్షిక',
-                    'eventDate': 'ఈవెంట్ తేదీ',
-                    'eventDescription': 'ఈవెంట్ వివరణ',
-                    'loveStory': 'ప్రేమ కథ',
-                    'eventStory': 'ఈవెంట్ కథ',
-                    'hostName': 'హోస్ట్ పేరు',
-                    'contactPhone': 'కాంటాక్ట్ ఫోన్',
-                    'contactEmail': 'కాంటాక్ట్ ఇమెయిల్',
-                    'venueAddress': 'వేన్యూ చిరునామా',
-                    'brideName': 'అమ్మాయి పేరు',
-                    'groomName': 'అబ్బాయి పేరు',
-                    'birthdayPerson': 'పుట్టినరోజు వ్యక్తి పేరు',
-                    'age': 'వయస్సు',
-                    'startTime': 'ప్రారంభ సమయం',
-                    'dinnerTime': 'డిన్నర్ సమయం',
-                    'muhurthamTime': 'ముహూర్తం సమయం',
-                    'receptionTime': 'రిసెప్షన్ సమయం',
-                    'motherName': 'అమ్మ పేరు',
-                    'fatherName': 'నాన్న పేరు',
-                    'graduateName': 'గ్రాడ్యుయేట్ పేరు',
-                    'degree': 'డిగ్రీ',
-                    'school': 'స్కూల్',
-                    'major': 'విషయం',
-                    'coupleNames': 'దంపతుల పేర్లు',
-                    'marriageYears': 'వివాహ సంవత్సరాలు',
-                    'honoreeName': 'గౌరవించబడిన వ్యక్తి పేరు',
-                    'position': 'పదవి',
-                    'company': 'కంపెనీ',
-                    'startYear': 'ప్రారంభ సంవత్సరం',
-                    'placeholder': {
-                        'eventTitle': 'ఉదా., సారా & జాన్ వెడ్డింగ్',
-                        'eventDescription': 'మీ ఈవెంట్ గురించి వివరించండి, ప్రత్యేక సూచనలు జోడించండి, లేదా వ్యక్తిగత సందేశం చేర్చండి...',
-                        'loveStory': 'మీ అందమైన ప్రేమ కథను పంచుకోండి...',
-                        'eventStory': 'మీ ఈవెంట్ కథను పంచుకోండి...',
-                        'contactPhone': 'విచారణల కోసం ఫోన్ నంబర్',
-                        'contactEmail': 'విచారణల కోసం ఇమెయిల్',
-                        'venueAddress': 'వేన్యూ చిరునామాను నమోదు చేయండి...',
-                        'brideName': 'అమ్మాయి పూర్తి పేరు',
-                        'groomName': 'అబ్బాయి పూర్తి పేరు',
-                        'birthdayPerson': 'పుట్టినరోజు వ్యక్తి పేరు',
-                        'age': 'వయస్సు',
-                        'motherName': 'అమ్మ పూర్తి పేరు',
-                        'fatherName': 'నాన్న పూర్తి పేరు',
-                        'graduateName': 'గ్రాడ్యుయేట్ పూర్తి పేరు',
-                        'degree': 'ఉదా., సైన్స్ బ్యాచిలర్',
-                        'school': 'విశ్వవిద్యాలయం/స్కూల్ పేరు',
-                        'major': 'అధ్యయన రంగం',
-                        'coupleNames': 'దంపతుల పేర్లు',
-                        'marriageYears': 'వివాహ సంవత్సరాలు',
-                        'honoreeName': 'గౌరవించబడిన వ్యక్తి పూర్తి పేరు',
-                        'position': 'ఉద్యోగ పదవి',
-                        'company': 'కంపెనీ పేరు',
-                        'startYear': 'ప్రారంభ సంవత్సరం'
-                    },
-                    'defaultText': {
-                        'weddingDescription': 'అత్యంత ఆనందం మరియు ప్రేమతో, మేము ఎప్పటికీ కలిసి ఉండే మా ప్రయాణాన్ని ప్రారంభిస్తున్నందున మా ప్రత్యేక రోజును జరుపుకోవడానికి మిమ్మల్ని ఆహ్వానిస్తున్నాము. మీ హాజరు మా వేడుకను పూర్తి చేస్తుంది.',
-                        'birthdayDescription': 'జీవితం యొక్క అందమైన ప్రయాణం యొక్క మరో సంవత్సరాన్ని జరుపుకుంటున్నందున, నవ్వులు, ఆనందం మరియు అద్భుతమైన జ్ఞాపకాలతో నిండిన రోజులో మాతో చేరండి.',
-                        'anniversaryDescription': 'మేము కలిసి పంచుకున్న ప్రేమ, కట్టుబాటు మరియు అనంతమైన జ్ఞాపకాల యొక్క అందమైన సంవత్సరాలను జరుపుకోవడానికి మాతో జరుపుకోండి.',
-                        'graduationDescription': 'ఈ ముఖ్యమైన మైలురాయి మరియు జీవిత ప్రయాణంలో కొత్త అధ్యాయం యొక్క ప్రారంభాన్ని జరుపుకోవడానికి మాతో చేరండి.',
-                        'babyshowerDescription': 'మా కుటుంబంలోకి ఒక విలువైన కొత్త జీవితాన్ని స్వాగతించడానికి సిద్ధమవుతున్నందున మా ఉత్సాహంలో పంచుకోండి.',
-                        'retirementDescription': 'ఒక అధ్యాయం యొక్క ముగింపు మరియు జీవితంలో కొత్త సాహసాల ప్రారంభాన్ని గుర్తించడానికి మాతో జరుపుకోండి.',
-                        'loveStoryText': 'మా ప్రేమ కథ ఒక సాధారణ హలోతో ప్రారంభమైంది మరియు అందమైనదిగా మారింది. కలిసి గడిపిన ప్రతి క్షణం ఒక ఆశీర్వాదం, మరియు ఇప్పుడు మేము ప్రేమ మరియు కట్టుబాటు యొక్క మా ప్రయాణంలో తదుపరి అడుగు వేయడానికి సిద్ధంగా ఉన్నాము.',
-                        'eventStoryText': 'జీవితం యొక్క అందమైన క్షణాల వేడుక, ప్రేమ, ఆనందం మరియు అద్భుతమైన జ్ఞాపకాలతో నిండి ఉంటుంది, వీటిని మేము ఎప్పటికీ సంరక్షిస్తాము.'
-                    }
-                },
-                'kannada': {
-                    'eventTitle': 'ಈವೆಂಟ್ ಶೀರ್ಷಿಕೆ',
-                    'eventDate': 'ಈವೆಂಟ್ ದಿನಾಂಕ',
-                    'eventDescription': 'ಈವೆಂಟ್ ವಿವರಣೆ',
-                    'loveStory': 'ಪ್ರೀತಿಯ ಕಥೆ',
-                    'eventStory': 'ಈವೆಂಟ್ ಕಥೆ',
-                    'hostName': 'ಹೋಸ್ಟ್ ಹೆಸರು',
-                    'contactPhone': 'ಸಂಪರ್ಕ ಫೋನ್',
-                    'contactEmail': 'ಸಂಪರ್ಕ ಇಮೇಲ್',
-                    'venueAddress': 'ವೇನ್ಯೂ ವಿಳಾಸ',
-                    'brideName': 'ಮದುವೆಯ ಹೆಣ್ಣು ಹೆಸರು',
-                    'groomName': 'ಮದುವೆಯ ಗಂಡು ಹೆಸರು',
-                    'birthdayPerson': 'ಹುಟ್ಟುಹಬ್ಬದ ವ್ಯಕ್ತಿಯ ಹೆಸರು',
-                    'age': 'ವಯಸ್ಸು',
-                    'startTime': 'ಪ್ರಾರಂಭ ಸಮಯ',
-                    'dinnerTime': 'ಡಿನ್ನರ್ ಸಮಯ',
-                    'muhurthamTime': 'ಮುಹೂರ್ತ ಸಮಯ',
-                    'receptionTime': 'ರಿಸೆಪ್ಷನ್ ಸಮಯ',
-                    'motherName': 'ಅಮ್ಮ ಹೆಸರು',
-                    'fatherName': 'ಅಪ್ಪ ಹೆಸರು',
-                    'graduateName': 'ಗ್ರ್ಯಾಜುಯೇಟ್ ಹೆಸರು',
-                    'degree': 'ಪದವಿ',
-                    'school': 'ಶಾಲೆ',
-                    'major': 'ವಿಷಯ',
-                    'coupleNames': 'ದಂಪತಿಗಳ ಹೆಸರುಗಳು',
-                    'marriageYears': 'ವಿವಾಹದ ವರ್ಷಗಳು',
-                    'honoreeName': 'ಗೌರವಿಸಲಾದ ವ್ಯಕ್ತಿಯ ಹೆಸರು',
-                    'position': 'ಹುದ್ದೆ',
-                    'company': 'ಕಂಪನಿ',
-                    'startYear': 'ಪ್ರಾರಂಭದ ವರ್ಷ',
-                    'placeholder': {
-                        'eventTitle': 'ಉದಾ., ಸಾರಾ & ಜಾನ್ ವೆಡ್ಡಿಂಗ್',
-                        'eventDescription': 'ನಿಮ್ಮ ಈವೆಂಟ್ ಬಗ್ಗೆ ವಿವರಿಸಿ, ವಿಶೇಷ ಸೂಚನೆಗಳನ್ನು ಸೇರಿಸಿ, ಅಥವಾ ವೈಯಕ್ತಿಕ ಸಂದೇಶವನ್ನು ಸೇರಿಸಿ...',
-                        'loveStory': 'ನಿಮ್ಮ ಸುಂದರ ಪ್ರೀತಿಯ ಕಥೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳಿ...',
-                        'eventStory': 'ನಿಮ್ಮ ಈವೆಂಟ್ ಕಥೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳಿ...',
-                        'contactPhone': 'ಪ್ರಶ್ನೆಗಳಿಗಾಗಿ ಫೋನ್ ನಂಬರ್',
-                        'contactEmail': 'ಪ್ರಶ್ನೆಗಳಿಗಾಗಿ ಇಮೇಲ್',
-                        'venueAddress': 'ವೇನ್ಯೂ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ...',
-                        'brideName': 'ಮದುವೆಯ ಹೆಣ್ಣಿನ ಪೂರ್ಣ ಹೆಸರು',
-                        'groomName': 'ಮದುವೆಯ ಗಂಡಿನ ಪೂರ್ಣ ಹೆಸರು',
-                        'birthdayPerson': 'ಹುಟ್ಟುಹಬ್ಬದ ವ್ಯಕ್ತಿಯ ಹೆಸರು',
-                        'age': 'ವಯಸ್ಸು',
-                        'motherName': 'ಅಮ್ಮ ಪೂರ್ಣ ಹೆಸರು',
-                        'fatherName': 'ಅಪ್ಪ ಪೂರ್ಣ ಹೆಸರು',
-                        'graduateName': 'ಗ್ರ್ಯಾಜುಯೇಟ್ ಪೂರ್ಣ ಹೆಸರು',
-                        'degree': 'ಉದಾ., ಸೈನ್ಸ್ ಬ್ಯಾಚಿಲರ್',
-                        'school': 'ವಿಶ್ವವಿದ್ಯಾಲಯ/ಶಾಲೆಯ ಹೆಸರು',
-                        'major': 'ಅಧ್ಯಯನದ ಕ್ಷೇತ್ರ',
-                        'coupleNames': 'ದಂಪತಿಗಳ ಹೆಸರುಗಳು',
-                        'marriageYears': 'ವಿವಾಹದ ವರ್ಷಗಳು',
-                        'honoreeName': 'ಗೌರವಿಸಲಾದ ವ್ಯಕ್ತಿಯ ಪೂರ್ಣ ಹೆಸರು',
-                        'position': 'ಉದ್ಯೋಗದ ಹುದ್ದೆ',
-                        'company': 'ಕಂಪನಿಯ ಹೆಸರು',
-                        'startYear': 'ಪ್ರಾರಂಭದ ವರ್ಷ'
-                    },
-                    'defaultText': {
-                        'weddingDescription': 'ಅತ್ಯಂತ ಸಂತೋಷ ಮತ್ತು ಪ್ರೀತಿಯೊಂದಿಗೆ, ನಾವು ಶಾಶ್ವತವಾಗಿ ಒಟ್ಟಿಗೆ ಇರುವ ನಮ್ಮ ಪ್ರಯಾಣವನ್ನು ಪ್ರಾರಂಭಿಸುತ್ತಿರುವಾಗ ನಮ್ಮ ವಿಶೇಷ ದಿನವನ್ನು ಆಚರಿಸಲು ನಿಮ್ಮನ್ನು ಆಹ್ವಾನಿಸುತ್ತೇವೆ. ನಿಮ್ಮ ಉಪಸ್ಥಿತಿ ನಮ್ಮ ಆಚರಣೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುತ್ತದೆ.',
-                        'birthdayDescription': 'ಜೀವನದ ಸುಂದರ ಪ್ರಯಾಣದ ಮತ್ತೊಂದು ವರ್ಷವನ್ನು ಆಚರಿಸುತ್ತಿರುವಾಗ, ನಗು, ಸಂತೋಷ ಮತ್ತು ಅದ್ಭುತ ಸ್ಮರಣೆಗಳಿಂದ ತುಂಬಿದ ದಿನದಲ್ಲಿ ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ.',
-                        'anniversaryDescription': 'ನಾವು ಒಟ್ಟಿಗೆ ಹಂಚಿಕೊಂಡ ಪ್ರೀತಿ, ಬದ್ಧತೆ ಮತ್ತು ಅನಂತ ಸ್ಮರಣೆಗಳ ಸುಂದರ ವರ್ಷಗಳನ್ನು ಆಚರಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಆಚರಿಸಿ.',
-                        'graduationDescription': 'ಈ ಮಹತ್ವಪೂರ್ಣ ಮೈಲಿಗಲ್ಲು ಮತ್ತು ಜೀವನದ ಪ್ರಯಾಣದಲ್ಲಿ ಹೊಸ ಅಧ್ಯಾಯದ ಪ್ರಾರಂಭವನ್ನು ಆಚರಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ.',
-                        'babyshowerDescription': 'ನಮ್ಮ ಕುಟುಂಬಕ್ಕೆ ಅಮೂಲ್ಯವಾದ ಹೊಸ ಜೀವನವನ್ನು ಸ್ವಾಗತಿಸಲು ಸಿದ್ಧರಾಗುತ್ತಿರುವಾಗ ನಮ್ಮ ಉತ್ಸಾಹದಲ್ಲಿ ಪಾಲುಗೊಳ್ಳಿ.',
-                        'retirementDescription': 'ಒಂದು ಅಧ್ಯಾಯದ ಅಂತ್ಯ ಮತ್ತು ಜೀವನದಲ್ಲಿ ಹೊಸ ಸಾಹಸಗಳ ಪ್ರಾರಂಭವನ್ನು ಗುರುತಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಆಚರಿಸಿ.',
-                        'loveStoryText': 'ನಮ್ಮ ಪ್ರೀತಿಯ ಕಥೆ ಸರಳ ಹಲೋದಿಂದ ಪ್ರಾರಂಭವಾಯಿತು ಮತ್ತು ಸುಂದರವಾದದ್ದಾಗಿ ಬೆಳೆಯಿತು. ಒಟ್ಟಿಗೆ ಕಳೆದ ಪ್ರತಿ ಕ್ಷಣವೂ ಒಂದು ಆಶೀರ್ವಾದವಾಗಿದೆ, ಮತ್ತು ಈಗ ನಾವು ಪ್ರೀತಿ ಮತ್ತು ಬದ್ಧತೆಯ ನಮ್ಮ ಪ್ರಯಾಣದಲ್ಲಿ ಮುಂದಿನ ಹೆಜ್ಜೆ ಹಾಕಲು ಸಿದ್ಧರಾಗಿದ್ದೇವೆ.',
-                        'eventStoryText': 'ಜೀವನದ ಸುಂದರ ಕ್ಷಣಗಳ ಆಚರಣೆ, ಪ್ರೀತಿ, ಸಂತೋಷ ಮತ್ತು ಅದ್ಭುತ ಸ್ಮರಣೆಗಳಿಂದ ತುಂಬಿದ್ದು, ಅದನ್ನು ನಾವು ಶಾಶ್ವತವಾಗಿ ಸಂರಕ್ಷಿಸುತ್ತೇವೆ.'
-                    }
-                }
-            };
-            
-            const currentLang = translations[languageValue] || translations['english'];
-            
-            // Update all labels
-            Object.keys(currentLang).forEach(key => {
-                if (key !== 'placeholder' && key !== 'defaultText') {
-                    const elements = document.querySelectorAll(`label[for="${key}"], .form-label`);
-                    elements.forEach(element => {
-                        if (element.textContent.includes(key) || element.getAttribute('for') === key) {
-                            element.textContent = currentLang[key];
-                        }
-                    });
-                }
-            });
-            
-            // Update section headers and other text elements
-            updateSectionHeaders(languageValue);
-            
-            // Update placeholders
-            Object.keys(currentLang.placeholder).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.placeholder = currentLang.placeholder[key];
-                }
-            });
-            
-            // Update default text content based on template type
-            const selectedTemplate = document.querySelector('input[name="selectedTemplate"]').value;
-            if (selectedTemplate) {
-                const eventDescription = document.getElementById('eventDescription');
-                const loveStory = document.getElementById('loveStory');
-                const eventStory = document.getElementById('eventStory');
-                
-                // Always update the textareas with translated content, even if they have existing content
-                if (eventDescription) {
-                    if (selectedTemplate.includes('wedding')) {
-                        eventDescription.value = currentLang.defaultText.weddingDescription;
-                    } else if (selectedTemplate.includes('birthday')) {
-                        eventDescription.value = currentLang.defaultText.birthdayDescription;
-                    } else if (selectedTemplate.includes('anniversary')) {
-                        eventDescription.value = currentLang.defaultText.anniversaryDescription;
-                    } else if (selectedTemplate.includes('graduation')) {
-                        eventDescription.value = currentLang.defaultText.graduationDescription;
-                    } else if (selectedTemplate.includes('babyshower')) {
-                        eventDescription.value = currentLang.defaultText.babyshowerDescription;
-                    } else if (selectedTemplate.includes('retirement')) {
-                        eventDescription.value = currentLang.defaultText.retirementDescription;
-                    }
-                }
-                
-                if (loveStory) {
-                    loveStory.value = currentLang.defaultText.loveStoryText;
-                }
-                
-                if (eventStory) {
-                    eventStory.value = currentLang.defaultText.eventStoryText;
-                }
-            }
-            
-            // Store the language choice for later use
-            document.getElementById('language').setAttribute('data-language', languageValue);
-            
-            console.log('Language changed to:', languageValue);
-            
-            // Show live preview indicator
-            showLivePreviewIndicator();
-        }
-
-        // Function to update section headers and other text elements
-        function updateSectionHeaders(languageValue) {
-            // Define section header translations
-            const sectionTranslations = {
-                'english': {
-                    'eventDetails': 'Event Details',
-                    'eventSpecificDetails': 'Event-Specific Details',
-                    'contactInformation': 'Contact Information',
-                    'eventPhotos': 'Event Photos',
-                    'createInvitation': 'Create Invitation'
-                },
-                'hindi': {
-                    'eventDetails': 'कार्यक्रम विवरण',
-                    'eventSpecificDetails': 'कार्यक्रम-विशिष्ट विवरण',
-                    'contactInformation': 'संपर्क जानकारी',
-                    'eventPhotos': 'कार्यक्रम तस्वीरें',
-                    'createInvitation': 'निमंत्रण बनाएं'
-                },
-                'telugu': {
-                    'eventDetails': 'ఈవెంట్ వివరాలు',
-                    'eventSpecificDetails': 'ఈవెంట్-నిర్దిష్ట వివరాలు',
-                    'contactInformation': 'సంప్రదింపు సమాచారం',
-                    'eventPhotos': 'ఈవెంట్ ఫోటోలు',
-                    'createInvitation': 'ఆహ్వానం సృష్టించండి'
-                },
-                'kannada': {
-                    'eventDetails': 'ಈವೆಂಟ್ ವಿವರಗಳು',
-                    'eventSpecificDetails': 'ಈವೆಂಟ್-ನಿರ್ದಿಷ್ಟ ವಿವರಗಳು',
-                    'contactInformation': 'ಸಂಪರ್ಕ ಮಾಹಿತಿ',
-                    'eventPhotos': 'ಈವೆಂಟ್ ಫೋಟೋಗಳು',
-                    'createInvitation': 'ಆಹ್ವಾನವನ್ನು ರಚಿಸಿ'
-                }
-            };
-            
-            const currentSectionLang = sectionTranslations[languageValue] || sectionTranslations['english'];
-            
-            // Update section headers
-            const sectionHeaders = document.querySelectorAll('.section-header h3');
-            sectionHeaders.forEach(header => {
-                const text = header.textContent.toLowerCase();
-                if (text.includes('event details')) {
-                    header.textContent = currentSectionLang.eventDetails;
-                } else if (text.includes('event-specific') || text.includes('specific details')) {
-                    header.textContent = currentSectionLang.eventSpecificDetails;
-                } else if (text.includes('contact information')) {
-                    header.textContent = currentSectionLang.contactInformation;
-                } else if (text.includes('event photos')) {
-                    header.textContent = currentSectionLang.eventPhotos;
-                } else if (text.includes('create invitation')) {
-                    header.textContent = currentSectionLang.createInvitation;
-                }
-            });
-            
-            // Update step indicators
-            const stepIndicators = document.querySelectorAll('.step-indicator span');
-            stepIndicators.forEach(step => {
-                const text = step.textContent.toLowerCase();
-                if (text.includes('event details')) {
-                    step.textContent = currentSectionLang.eventDetails;
-                } else if (text.includes('photos') || text.includes('create')) {
-                    step.textContent = currentSectionLang.eventPhotos;
-                }
-            });
-        }
-
-        // Function to show live preview indicator
-        function showLivePreviewIndicator() {
-            const indicator = document.getElementById('livePreviewIndicator');
-            if (indicator) {
-                indicator.style.display = 'block';
-                
-                // Auto-hide after 3 seconds
-                setTimeout(() => {
-                    indicator.style.display = 'none';
-                }, 3000);
-            }
-        }
-
-        // Function to get translations object
-        function getTranslations() {
-            return {
-                'english': {
-                    'defaultText': {
-                        'weddingDescription': 'With immense joy and love, we invite you to celebrate our special day as we begin our journey of forever together. Your presence will make our celebration complete.',
-                        'birthdayDescription': 'Join us for a day filled with laughter, joy, and wonderful memories as we celebrate another year of life\'s beautiful journey.',
-                        'anniversaryDescription': 'Celebrate with us the beautiful years of love, commitment, and countless memories we\'ve shared together.',
-                        'graduationDescription': 'Join us in celebrating this significant milestone and the beginning of a new chapter in life\'s journey.',
-                        'babyshowerDescription': 'Share in our excitement as we prepare to welcome a precious new life into our family.',
-                        'retirementDescription': 'Celebrate with us as we mark the end of one chapter and the beginning of new adventures in life.',
-                        'loveStoryText': 'Our love story began with a simple hello and grew into something beautiful. Every moment together has been a blessing, and now we\'re ready to take the next step in our journey of love and commitment.',
-                        'eventStoryText': 'A celebration of life\'s beautiful moments, filled with love, joy, and wonderful memories that we\'ll cherish forever.'
-                    }
-                },
-                'hindi': {
-                    'defaultText': {
-                        'weddingDescription': 'अपार खुशी और प्यार के साथ, हम आपको हमारे विशेष दिन का जश्न मनाने के लिए आमंत्रित करते हैं क्योंकि हम हमेशा के लिए एक साथ रहने की अपनी यात्रा शुरू करते हैं। आपकी उपस्थिति हमारे उत्सव को पूरा करेगी।',
-                        'birthdayDescription': 'जीवन की सुंदर यात्रा के एक और वर्ष का जश्न मनाते हुए, हंसी, खुशी और अद्भुत यादों से भरे दिन में हमारे साथ जुड़ें।',
-                        'anniversaryDescription': 'हमारे साथ प्यार, प्रतिबद्धता और अनगिनत यादों के सुंदर वर्षों का जश्न मनाएं जो हमने साझा किए हैं।',
-                        'graduationDescription': 'इस महत्वपूर्ण मील के पत्थर और जीवन की यात्रा में एक नए अध्याय की शुरुआत का जश्न मनाने के लिए हमारे साथ जुड़ें।',
-                        'babyshowerDescription': 'हमारे परिवार में एक कीमती नए जीवन का स्वागत करने की तैयारी करते हुए हमारे उत्साह में साझा करें।',
-                        'retirementDescription': 'हमारे साथ एक अध्याय के अंत और जीवन में नए रोमांच की शुरुआत का जश्न मनाएं।',
-                        'loveStoryText': 'हमारी प्रेम कहानी एक साधारण नमस्ते से शुरू हुई और कुछ सुंदर में बदल गई। एक साथ बिताया हर पल एक आशीर्वाद रहा है, और अब हम प्यार और प्रतिबद्धता की अपनी यात्रा में अगला कदम उठाने के लिए तैयार हैं।',
-                        'eventStoryText': 'जीवन के सुंदर क्षणों का जश्न, प्यार, खुशी और अद्भुत यादों से भरा जिसे हम हमेशा संजोएंगे।'
-                    }
-                },
-                'telugu': {
-                    'defaultText': {
-                        'weddingDescription': 'అత్యంత ఆనందం మరియు ప్రేమతో, మేము ఎప్పటికీ కలిసి ఉండే మా ప్రయాణాన్ని ప్రారంభిస్తున్నందున మా ప్రత్యేక రోజును జరుపుకోవడానికి మిమ్మల్ని ఆహ్వానిస్తున్నాము. మీ హాజరు మా వేడుకను పూర్తి చేస్తుంది.',
-                        'birthdayDescription': 'జీవితం యొక్క అందమైన ప్రయాణం యొక్క మరో సంవత్సరాన్ని జరుపుకుంటున్నందున, నవ్వులు, ఆనందం మరియు అద్భుతమైన జ్ఞాపకాలతో నిండిన రోజులో మాతో చేరండి.',
-                        'anniversaryDescription': 'మేము కలిసి పంచుకున్న ప్రేమ, కట్టుబాటు మరియు అనంతమైన జ్ఞాపకాల యొక్క అందమైన సంవత్సరాలను జరుపుకోవడానికి మాతో జరుపుకోండి.',
-                        'graduationDescription': 'ఈ ముఖ్యమైన మైలురాయి మరియు జీవిత ప్రయాణంలో కొత్త అధ్యాయం యొక్క ప్రారంభాన్ని జరుపుకోవడానికి మాతో చేరండి.',
-                        'babyshowerDescription': 'మా కుటుంబంలోకి ఒక విలువైన కొత్త జీవితాన్ని స్వాగతించడానికి సిద్ధమవుతున్నందున మా ఉత్సాహంలో పంచుకోండి.',
-                        'retirementDescription': 'ఒక అధ్యాయం యొక్క ముగింపు మరియు జీవితంలో కొత్త సాహసాల ప్రారంభాన్ని గుర్తించడానికి మాతో జరుపుకోండి.',
-                        'loveStoryText': 'మా ప్రేమ కథ ఒక సాధారణ హలోతో ప్రారంభమైంది మరియు అందమైనదిగా మారింది. కలిసి గడిపిన ప్రతి క్షణం ఒక ఆశీర్వాదం, మరియు ఇప్పుడు మేము ప్రేమ మరియు కట్టుబాటు యొక్క మా ప్రయాణంలో తదుపరి అడుగు వేయడానికి సిద్ధంగా ఉన్నాము.',
-                        'eventStoryText': 'జీవితం యొక్క అందమైన క్షణాల వేడుక, ప్రేమ, ఆనందం మరియు అద్భుతమైన జ్ఞాపకాలతో నిండి ఉంటుంది, వీటిని మేము ఎప్పటికీ సంరక్షిస్తాము.'
-                    }
-                },
-                'kannada': {
-                    'defaultText': {
-                        'weddingDescription': 'ಅತ್ಯಂತ ಸಂತೋಷ ಮತ್ತು ಪ್ರೀತಿಯೊಂದಿಗೆ, ನಾವು ಶಾಶ್ವತವಾಗಿ ಒಟ್ಟಿಗೆ ಇರುವ ನಮ್ಮ ಪ್ರಯಾಣವನ್ನು ಪ್ರಾರಂಭಿಸುತ್ತಿರುವಾಗ ನಮ್ಮ ವಿಶೇಷ ದಿನವನ್ನು ಆಚರಿಸಲು ನಿಮ್ಮನ್ನು ಆಹ್ವಾನಿಸುತ್ತೇವೆ. ನಿಮ್ಮ ಉಪಸ್ಥಿತಿ ನಮ್ಮ ಆಚರಣೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುತ್ತದೆ.',
-                        'birthdayDescription': 'ಜೀವನದ ಸುಂದರ ಪ್ರಯಾಣದ ಮತ್ತೊಂದು ವರ್ಷವನ್ನು ಆಚರಿಸುತ್ತಿರುವಾಗ, ನಗು, ಸಂತೋಷ ಮತ್ತು ಅದ್ಭುತ ಸ್ಮರಣೆಗಳಿಂದ ತುಂಬಿದ ದಿನದಲ್ಲಿ ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ.',
-                        'anniversaryDescription': 'ನಾವು ಒಟ್ಟಿಗೆ ಹಂಚಿಕೊಂಡ ಪ್ರೀತಿ, ಬದ್ಧತೆ ಮತ್ತು ಅನಂತ ಸ್ಮರಣೆಗಳ ಸುಂದರ ವರ್ಷಗಳನ್ನು ಆಚರಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಆಚರಿಸಿ.',
-                        'graduationDescription': 'ಈ ಮಹತ್ವಪೂರ್ಣ ಮೈಲಿಗಲ್ಲು ಮತ್ತು ಜೀವನದ ಪ್ರಯಾಣದಲ್ಲಿ ಹೊಸ ಅಧ್ಯಾಯದ ಪ್ರಾರಂಭವನ್ನು ಆಚರಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ.',
-                        'babyshowerDescription': 'ನಮ್ಮ ಕುಟುಂಬಕ್ಕೆ ಅಮೂಲ್ಯವಾದ ಹೊಸ ಜೀವನವನ್ನು ಸ್ವಾಗತಿಸಲು ಸಿದ್ಧರಾಗುತ್ತಿರುವಾಗ ನಮ್ಮ ಉತ್ಸಾಹದಲ್ಲಿ ಪಾಲುಗೊಳ್ಳಿ.',
-                        'retirementDescription': 'ಒಂದು ಅಧ್ಯಾಯದ ಅಂತ್ಯ ಮತ್ತು ಜೀವನದಲ್ಲಿ ಹೊಸ ಸಾಹಸಗಳ ಪ್ರಾರಂಭವನ್ನು ಗುರುತಿಸಲು ನಮ್ಮೊಂದಿಗೆ ಆಚರಿಸಿ.',
-                        'loveStoryText': 'ನಮ್ಮ ಪ್ರೀತಿಯ ಕಥೆ ಸರಳ ಹಲೋದಿಂದ ಪ್ರಾರಂಭವಾಯಿತು ಮತ್ತು ಸುಂದರವಾದದ್ದಾಗಿ ಬೆಳೆಯಿತು. ಒಟ್ಟಿಗೆ ಕಳೆದ ಪ್ರತಿ ಕ್ಷಣವೂ ಒಂದು ಆಶೀರ್ವಾದವಾಗಿದೆ, ಮತ್ತು ಈಗ ನಾವು ಪ್ರೀತಿ ಮತ್ತು ಬದ್ಧತೆಯ ನಮ್ಮ ಪ್ರಯಾಣದಲ್ಲಿ ಮುಂದಿನ ಹೆಜ್ಜೆ ಹಾಕಲು ಸಿದ್ಧರಾಗಿದ್ದೇವೆ.',
-                        'eventStoryText': 'ಜೀವನದ ಸುಂದರ ಕ್ಷಣಗಳ ಆಚರಣೆ, ಪ್ರೀತಿ, ಸಂತೋಷ ಮತ್ತು ಅದ್ಭುತ ಸ್ಮರಣೆಗಳಿಂದ ತುಂಬಿದ್ದು, ಅದನ್ನು ನಾವು ಶಾಶ್ವತವಾಗಿ ಸಂರಕ್ಷಿಸುತ್ತೇವೆ.'
-                    }
-                }
-            };
         }
 
         function previewMultipleImages(input, previewId) {
             const preview = document.getElementById(previewId);
-            const grid = document.getElementById('galleryPreviewGrid');
-
-            if (!preview || !grid) return;
-
-            grid.innerHTML = '';
-
+            preview.innerHTML = '';
+            
             if (input.files && input.files.length > 0) {
                 Array.from(input.files).forEach((file, index) => {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        const imgDiv = document.createElement('div');
-                        imgDiv.style.cssText = 'position: relative; display: inline-block; margin: 0.5rem;';
-
-                        imgDiv.innerHTML = `
-                            <img src="${e.target.result}" alt="Gallery ${index + 1}" style="max-width: 100px; max-height: 100px; border-radius: 8px; border: 2px solid #e9ecef;">
-                            <button type="button" class="remove-btn" onclick="removeGalleryImage(this, ${index})" style="position: absolute; top: -10px; right: -10px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        `;
-
-                        grid.appendChild(imgDiv);
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.alt = 'Gallery Image ' + (index + 1);
+                        preview.appendChild(img);
                     };
                     reader.readAsDataURL(file);
                 });
-
-                preview.style.display = 'block';
+                preview.style.display = 'grid';
             } else {
                 preview.style.display = 'none';
             }
         }
-
-        function removeGalleryImage(button, index) {
-            button.parentElement.remove();
-
-            // Update the file input by removing the specific file
-            const galleryInput = document.getElementById('galleryImages');
-            if (galleryInput && galleryInput.files.length > 0) {
-                const dt = new DataTransfer();
-                const files = Array.from(galleryInput.files);
-
-                files.forEach((file, i) => {
-                    if (i !== index) {
-                        dt.items.add(file);
-                    }
-                });
-
-                galleryInput.files = dt.files;
-
-                // Re-render the gallery preview
-                if (dt.files.length > 0) {
-                    previewMultipleImages(galleryInput, 'galleryImagesPreview');
-                } else {
-                    const preview = document.getElementById('galleryImagesPreview');
-                    if (preview) {
-                        preview.style.display = 'none';
-                    }
-                }
-            }
-        }
-
-        // Initialize form
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavigation();
-
-            // Set minimum date to today
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('eventDate').min = today;
-
-            // Show event-specific fields based on selected template
-            showEventSpecificFields();
-        });
-
-        // Show event-specific fields based on template
-        function showEventSpecificFields() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const template = urlParams.get('template') || '';
-
-            // Hide all event-specific sections first
-            document.querySelectorAll('.event-specific-fields').forEach(section => {
-                section.style.display = 'none';
-            });
-
-            // Hide event style section for graduation and retirement
-            const eventStyleSection = document.getElementById('eventStyleSection');
-            if (eventStyleSection) {
-                if (template.includes('graduation') || template.includes('retirement')) {
-                    eventStyleSection.style.display = 'none';
-                } else {
-                    eventStyleSection.style.display = 'block';
-                }
-            }
-
-            // Show the appropriate section based on template
-            if (template.includes('wedding')) {
-                document.getElementById('weddingFields').style.display = 'block';
-                showEventPhotosSection('wedding');
-            } else if (template.includes('birthday')) {
-                document.getElementById('birthdayFields').style.display = 'block';
-                showEventPhotosSection('birthday');
-            } else if (template.includes('babyshower')) {
-                document.getElementById('babyshowerFields').style.display = 'block';
-                showEventPhotosSection('babyshower');
-            } else if (template.includes('graduation')) {
-                document.getElementById('graduationFields').style.display = 'block';
-                showEventPhotosSection('graduation');
-            } else if (template.includes('anniversary')) {
-                document.getElementById('anniversaryFields').style.display = 'block';
-                showEventPhotosSection('anniversary');
-            } else if (template.includes('retirement')) {
-                document.getElementById('retirementFields').style.display = 'block';
-                showEventPhotosSection('retirement');
-            }
-        }
-
-        // Show appropriate photo section in Step 2
-        function showEventPhotosSection(eventType) {
-            const photosSection = document.getElementById('eventPhotosSection');
-            let html = '';
-
-            if (eventType === 'wedding') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-heart"></i>
-                    <h3>Wedding Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label class="form-label">Bride's Photo</label>
-                        <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*" onchange="previewImage(this, 'brideImagePreview')">
-                        <div id="brideImagePreview" class="image-preview" style="display: none;">
-                            <img src="" alt="Bride Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                            <button type="button" class="remove-btn" onclick="removeImage('brideImagePreview', 'brideImage')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <small class="form-hint">Upload bride's photo</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Groom's Photo</label>
-                        <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*" onchange="previewImage(this, 'groomImagePreview')">
-                        <div id="groomImagePreview" class="image-preview" style="display: none;">
-                            <img src="" alt="Groom Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                            <button type="button" class="remove-btn" onclick="removeImage('groomImagePreview', 'groomImage')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <small class="form-hint">Upload groom's photo</small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Couple Photo</label>
-                    <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
-                    <div id="coupleImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Couple Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('coupleImagePreview', 'coupleImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload couple's photo together</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos for the gallery (hold Ctrl/Cmd to select multiple)</small>
-                </div>
-            </div>
-        `;
-            } else if (eventType === 'birthday') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-birthday-cake"></i>
-                    <h3>Birthday Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Birthday Person's Photo</label>
-                    <input type="file" class="form-input" id="birthdayImage" name="birthdayImage" accept="image/*" onchange="previewImage(this, 'birthdayImagePreview')">
-                    <div id="birthdayImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Birthday Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('birthdayImagePreview', 'birthdayImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload birthday person's photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
-                </div>
-            </div>
-        `;
-            } else if (eventType === 'babyshower') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-baby"></i>
-                    <h3>Baby Shower Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Main Baby Photo</label>
-                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                    <div id="mainImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Main Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload main baby photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
-                </div>
-            </div>
-        `;
-            } else if (eventType === 'graduation') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-graduation-cap"></i>
-                    <h3>Graduation Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Graduate Photo</label>
-                    <input type="file" class="form-input" id="graduateImage" name="graduateImage" accept="image/*" onchange="previewImage(this, 'graduateImagePreview')">
-                    <div id="graduateImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Graduate Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('graduateImagePreview', 'graduateImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload graduate's photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Main Graduation Photo</label>
-                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                    <div id="mainImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Main Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload main graduation ceremony photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
-                </div>
-            </div>
-        `;
-            } else if (eventType === 'anniversary') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-heart"></i>
-                    <h3>Anniversary Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Main Anniversary Photo</label>
-                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                    <div id="mainImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Main Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload main anniversary photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Couple Photo</label>
-                    <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
-                    <div id="coupleImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Couple Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('coupleImagePreview', 'coupleImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload couple's current photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos from your journey together</small>
-                </div>
-            </div>
-        `;
-            } else if (eventType === 'retirement') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-chair"></i>
-                    <h3>Retirement Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Honoree Photo</label>
-                    <input type="file" class="form-input" id="honoreeImage" name="honoreeImage" accept="image/*" onchange="previewImage(this, 'honoreeImagePreview')">
-                    <div id="honoreeImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Honoree Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('honoreeImagePreview', 'honoreeImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload retiree's photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Main Retirement Photo</label>
-                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                    <div id="mainImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Main Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload main retirement celebration photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple career highlight photos</small>
-                </div>
-            </div>
-        `;
-            } else if (eventType === 'graduation') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-graduation-cap"></i>
-                    <h3>Graduation Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Graduate's Photo</label>
-                    <input type="file" class="form-input" id="graduateImage" name="graduateImage" accept="image/*" onchange="previewImage(this, 'graduateImagePreview')">
-                    <div id="graduateImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Graduate Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('graduateImagePreview', 'graduateImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload graduate's photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
-                </div>
-            </div>
-        `;
-            } else if (eventType === 'anniversary') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-heart"></i>
-                    <h3>Anniversary Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Couple Photo</label>
-                    <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
-                    <div id="coupleImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Couple Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('coupleImagePreview', 'coupleImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload couple's photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
-                </div>
-            </div>
-        `;
-            } else if (eventType === 'retirement') {
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-chair"></i>
-                    <h3>Retirement Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Honoree's Photo</label>
-                    <input type="file" class="form-input" id="honoreeImage" name="honoreeImage" accept="image/*" onchange="previewImage(this, 'honoreeImagePreview')">
-                    <div id="honoreeImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Honoree Photo Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('honoreeImagePreview', 'honoreeImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload retiring person's photo</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
-                </div>
-            </div>
-        `;
-            } else {
-                // Default case for any other event types
-                html = `
-            <div class="form-section">
-                <div class="section-header">
-                    <i class="fas fa-images"></i>
-                    <h3>Event Photos & Additional Details</h3>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Main Event Image</label>
-                    <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                    <div id="mainImagePreview" class="image-preview" style="display: none;">
-                        <img src="" alt="Main Image Preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px solid #e9ecef; margin-top: 10px;">
-                        <button type="button" class="remove-btn" onclick="removeImage('mainImagePreview', 'mainImage')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <small class="form-hint">Upload main event image</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Gallery Images</label>
-                    <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryImagesPreview')">
-                    <div id="galleryImagesPreview" class="gallery-preview" style="display: none; margin-top: 10px;">
-                        <div id="galleryPreviewGrid" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                    </div>
-                    <small class="form-hint">Upload multiple photos for the gallery</small>
-                </div>
-            </div>
-        `;
-            }
-
-            photosSection.innerHTML = html;
-        }
-
-        // Initialize the page when it loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show event-specific fields and photos section
-            showEventSpecificFields();
-            
-            // If no specific template is selected, show default photos section
-            const urlParams = new URLSearchParams(window.location.search);
-            const template = urlParams.get('template') || '';
-            if (!template) {
-                showEventPhotosSection('general');
-                
-                // Show warning message
-                const templateInfo = document.querySelector('.template-info');
-                if (templateInfo) {
-                    templateInfo.style.display = 'block';
-                }
-            } else {
-                // Hide warning message if template is selected
-                const templateInfo = document.querySelector('.template-info.alert-warning');
-                if (templateInfo) {
-                    templateInfo.style.display = 'none';
-                }
-            }
-            
-            // Ensure form fields have values after a short delay
-            setTimeout(function() {
-                const eventTitleField = document.getElementById('eventTitle');
-                const eventDescriptionField = document.getElementById('eventDescription');
-                
-                // Set event title if empty
-                if (eventTitleField && !eventTitleField.value.trim()) {
-                    if (template.includes('wedding')) {
-                        eventTitleField.value = 'Beautiful Wedding Celebration';
-                    } else if (template.includes('birthday')) {
-                        eventTitleField.value = 'Birthday Party';
-                    } else if (template.includes('anniversary')) {
-                        eventTitleField.value = 'Anniversary Celebration';
-                    } else if (template.includes('graduation')) {
-                        eventTitleField.value = 'Graduation Ceremony';
-                    } else if (template.includes('babyshower')) {
-                        eventTitleField.value = 'Baby Shower';
-                    } else if (template.includes('retirement')) {
-                        eventTitleField.value = 'Retirement Party';
-                    } else {
-                        eventTitleField.value = 'Special Celebration';
-                    }
-                }
-                
-                // Set event description if empty - use translated text
-                if (eventDescriptionField && !eventDescriptionField.value.trim()) {
-                    const currentLanguage = document.getElementById('language').getAttribute('data-language') || 'english';
-                    const translations = getTranslations();
-                    const currentLang = translations[currentLanguage] || translations['english'];
-                    
-                    if (template.includes('wedding')) {
-                        eventDescriptionField.value = currentLang.defaultText.weddingDescription;
-                    } else if (template.includes('birthday')) {
-                        eventDescriptionField.value = currentLang.defaultText.birthdayDescription;
-                    } else if (template.includes('anniversary')) {
-                        eventDescriptionField.value = currentLang.defaultText.anniversaryDescription;
-                    } else if (template.includes('graduation')) {
-                        eventDescriptionField.value = currentLang.defaultText.graduationDescription;
-                    } else if (template.includes('babyshower')) {
-                        eventDescriptionField.value = currentLang.defaultText.babyshowerDescription;
-                    } else if (template.includes('retirement')) {
-                        eventDescriptionField.value = currentLang.defaultText.retirementDescription;
-                    } else {
-                        eventDescriptionField.value = 'We cordially invite you to join us for this special celebration. Your presence will make this day even more memorable.';
-                    }
-                }
-            }, 200);
-        });
     </script>
 {% endblock %}
