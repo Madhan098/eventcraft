@@ -30,6 +30,21 @@
         position: relative;
         z-index: 2;
         margin-bottom: 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .progress-step:hover {
+        transform: translateY(-2px);
+    }
+    
+    .progress-step.pending {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    
+    .progress-step.pending:hover {
+        transform: none;
     }
 
     .progress-step::after {
@@ -101,22 +116,44 @@
     .create-page-container {
         max-width: 1400px;
         margin: 0 auto;
-        padding: 40px 20px;
+        padding: 40px 20px 60px;
         background: var(--bg-cream);
         min-height: 100vh;
+    }
+    
+    /* Smooth page transitions */
+    .theme-selection-page,
+    .details-form-page {
+        animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Page Title */
     .page-title {
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 48px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 20px;
     }
 
     .page-title h1 {
-        font-size: 48px;
+        font-size: 42px;
         font-weight: 700;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         line-height: 1.2;
+        letter-spacing: -0.02em;
     }
 
     .page-title h1 .title-normal {
@@ -131,8 +168,9 @@
     }
 
     .page-title p {
-        font-size: 18px;
+        font-size: 16px;
         color: var(--text-gray);
+        font-weight: 400;
     }
 
     /* Theme Selection Page */
@@ -146,63 +184,99 @@
 
     .theme-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        max-width: 1000px;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 24px;
+        max-width: 1400px;
         margin: 0 auto;
+        padding: 20px 40px;
+        min-height: 400px;
     }
 
     .theme-card {
         background: white;
-        border-radius: 20px;
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
-        border: 3px solid transparent;
+        border: 2px solid transparent;
+        display: flex;
+        flex-direction: column;
     }
 
     .theme-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 16px 40px rgba(160, 120, 120, 0.2);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(160, 120, 120, 0.15);
+        border-color: rgba(160, 120, 120, 0.2);
     }
 
     .theme-card.selected {
         border-color: var(--reddish-brown-dark);
+        box-shadow: 0 8px 24px rgba(160, 120, 120, 0.25);
+        transform: translateY(-2px);
     }
 
-    .theme-card.selected::before {
+    .theme-card.selected:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(160, 120, 120, 0.3);
+    }
+
+    .theme-card.selected::after {
         content: '✓';
         position: absolute;
-        top: 12px;
-        right: 12px;
-        width: 28px;
-        height: 28px;
-        background: var(--reddish-brown-dark);
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
         color: white;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        font-size: 16px;
-        z-index: 3;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        font-size: 18px;
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(160, 120, 120, 0.4);
+        animation: scaleIn 0.2s ease;
+    }
+
+    @keyframes scaleIn {
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
+        }
     }
 
     .theme-image {
         width: 100%;
-        height: 200px;
+        height: 240px;
         object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .theme-card:hover .theme-image {
+        transform: scale(1.05);
     }
 
     .theme-title {
-        padding: 20px;
+        padding: 16px 20px;
         text-align: center;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 600;
         color: var(--text-dark);
+        background: #FAFAFA;
+        border-top: 1px solid #F0F0F0;
+    }
+
+    .theme-card.selected .theme-title {
+        background: rgba(160, 120, 120, 0.05);
+        color: var(--reddish-brown-dark);
+        font-weight: 700;
     }
 
     /* Details Form with Live Preview */
@@ -217,21 +291,23 @@
     .form-preview-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 40px;
+        gap: 32px;
         max-width: 1200px;
         margin: 0 auto;
+        padding: 0 20px;
     }
 
     /* Form Section */
     .form-section-card {
         background: white;
         border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        padding: 32px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        border: 1px solid #F0F0F0;
     }
 
     .form-group {
-        margin-bottom: 24px;
+        margin-bottom: 20px;
     }
 
     .form-label {
@@ -240,6 +316,7 @@
         font-weight: 600;
         color: var(--text-dark);
         margin-bottom: 8px;
+        letter-spacing: -0.01em;
     }
 
     .form-label.required::after {
@@ -250,19 +327,27 @@
     .form-input,
     .form-textarea {
         width: 100%;
-        padding: 14px 16px;
-        border: 2px solid #E5E5E5;
-        border-radius: 12px;
+        padding: 12px 16px;
+        border: 1.5px solid #E5E5E5;
+        border-radius: 10px;
         font-size: 15px;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         font-family: 'Inter', sans-serif;
+        background: #FAFAFA;
+    }
+
+    .form-input:hover,
+    .form-textarea:hover {
+        border-color: rgba(160, 120, 120, 0.3);
+        background: white;
     }
 
     .form-input:focus,
     .form-textarea:focus {
         outline: none;
         border-color: var(--reddish-brown-dark);
-        box-shadow: 0 0 0 4px rgba(160, 120, 120, 0.1);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(160, 120, 120, 0.08);
     }
 
     .form-textarea {
@@ -287,23 +372,25 @@
     .live-preview-card {
         background: white;
         border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        padding: 32px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        border: 1px solid #F0F0F0;
         position: sticky;
-        top: 40px;
+        top: 20px;
         height: fit-content;
-        max-height: calc(100vh - 80px);
+        max-height: calc(100vh - 40px);
         overflow-y: auto;
     }
 
     .preview-title {
-        font-size: 18px;
-        font-weight: 600;
+        font-size: 20px;
+        font-weight: 700;
         color: var(--text-dark);
         margin-bottom: 24px;
         text-align: center;
         padding-bottom: 16px;
         border-bottom: 2px solid #E5E5E5;
+        letter-spacing: -0.02em;
     }
 
     .preview-content {
@@ -320,17 +407,179 @@
         width: 100%;
         max-width: 400px;
         margin: 0 auto;
+        /* Default background - will be overridden by template-bg */
         background: linear-gradient(135deg, #FFF5F0 0%, #FFFFFF 100%);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         border-radius: 16px;
         padding: 40px 30px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         border: 2px solid rgba(160, 120, 120, 0.1);
+        position: relative;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    /* Template background - should override default gradient */
+    .invitation-preview.wedding-bg,
+    .invitation-preview.template-bg {
+        /* Remove default gradient when template is applied */
+        background: none;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        position: relative;
+    }
+    
+    /* Apply template background image directly */
+    .invitation-preview.template-bg {
+        background-color: transparent !important;
+    }
+    
+    .invitation-preview.wedding-bg {
+        background-image: url('/images/templatesimages/wedding.png');
+    }
+    
+    /* Ensure image overlay is always visible on wedding-bg too */
+    .invitation-preview.wedding-bg::after {
+        content: '';
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background-image: url('/images/templatesimages/image.png') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        opacity: 0.6 !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+        border-radius: 16px !important;
+        display: block !important;
+    }
+
+    /* Template design overlay image - appears on all templates */
+    .invitation-preview.template-bg::after {
+        content: '';
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background-image: url('/images/templatesimages/image.png') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        opacity: 0.6 !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+        border-radius: 16px !important;
+        display: block !important;
+    }
+    
+    /* Also add overlay to default preview when no template is selected */
+    .invitation-preview::after {
+        content: '';
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background-image: url('/images/templatesimages/image.png') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        opacity: 0.6 !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+        border-radius: 16px !important;
+        display: block !important;
+    }
+
+    /* Default light overlay when no template */
+    .invitation-preview::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 0;
+        pointer-events: none;
+        border-radius: 16px;
+    }
+
+    /* Remove default overlay when template is active */
+    .invitation-preview.wedding-bg::before,
+    .invitation-preview.template-bg::before {
+        display: none;
+    }
+
+    /* Ensure all preview content is above background and overlay */
+    /* User-uploaded images should be above background but below text */
+    #previewMainImageContainer,
+    #previewBrideGroomContainer,
+    #previewBirthdayImageContainer,
+    #previewCoupleImageContainer,
+    #previewGraduateImageContainer,
+    #previewHonoreeImageContainer {
+        position: relative;
+        z-index: 5 !important;
+        margin: 10px 0;
+    }
+    
+    /* All text content should be above the overlay */
+    .preview-content,
+    .preview-event-name,
+    .preview-date-time,
+    .preview-venue,
+    .preview-hosted,
+    .preview-message {
+        position: relative;
+        z-index: 2 !important;
+    }
+    
+    /* Uploaded images themselves should have high z-index */
+    #previewMainImage,
+    #previewBrideImage,
+    #previewGroomImage,
+    #previewBirthdayImage,
+    #previewCoupleImage,
+    #previewGraduateImage,
+    #previewHonoreeImage {
+        position: relative;
+        z-index: 5 !important;
+        display: block !important;
+    }
+    
+    /* Text elements should have highest z-index */
+    .preview-icon,
+    .preview-event-name,
+    .preview-date-time,
+    .preview-venue,
+    .preview-hosted,
+    .preview-message {
+        position: relative;
+        z-index: 10 !important;
+    }
+    
+    /* Ensure all preview content is above background */
+    .invitation-preview > * {
+        position: relative;
+        z-index: 3;
     }
 
     .preview-icon {
         font-size: 64px;
         margin-bottom: 20px;
         display: block;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .preview-event-name {
@@ -340,6 +589,18 @@
         margin-bottom: 20px;
         font-family: 'Playfair Display', serif;
         line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.7);
+        padding: 10px 15px;
+        border-radius: 8px;
+        display: inline-block;
+    }
+
+    .invitation-preview.wedding-bg .preview-event-name,
+    .invitation-preview.template-bg .preview-event-name {
+        color: #fff;
+        background: rgba(160, 120, 120, 0.85);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     .preview-date-time {
@@ -350,6 +611,17 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 8px 12px;
+        border-radius: 6px;
+    }
+
+    .invitation-preview.wedding-bg .preview-date-time,
+    .invitation-preview.template-bg .preview-date-time {
+        color: #fff;
+        background: rgba(160, 120, 120, 0.75);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .preview-venue {
@@ -361,6 +633,17 @@
         justify-content: center;
         gap: 8px;
         text-align: center;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 8px 12px;
+        border-radius: 6px;
+    }
+
+    .invitation-preview.wedding-bg .preview-venue,
+    .invitation-preview.template-bg .preview-venue {
+        color: #fff;
+        background: rgba(160, 120, 120, 0.75);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .preview-hosted {
@@ -369,6 +652,18 @@
         margin-top: 20px;
         padding-top: 20px;
         border-top: 1px solid rgba(160, 120, 120, 0.2);
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.7);
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    .invitation-preview.wedding-bg .preview-hosted,
+    .invitation-preview.template-bg .preview-hosted {
+        color: #fff;
+        background: rgba(160, 120, 120, 0.75);
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .preview-message {
@@ -377,6 +672,56 @@
         line-height: 1.6;
         margin-top: 20px;
         font-style: italic;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 15px;
+        border-radius: 6px;
+    }
+
+    .invitation-preview.wedding-bg .preview-message,
+    .invitation-preview.template-bg .preview-message {
+        color: #fff;
+        background: rgba(160, 120, 120, 0.75);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Preview Images Overlay */
+    .preview-images-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+    }
+
+    .preview-image-overlay {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .preview-main-image {
+        width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        display: block;
+        z-index: 2;
+        position: relative;
+    }
+    
+    #previewMainImageContainer {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     .preview-placeholder {
@@ -394,12 +739,13 @@
     }
 
     .section-title {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
         color: var(--reddish-brown-dark);
         margin-bottom: 20px;
-        padding-bottom: 10px;
+        padding-bottom: 12px;
         border-bottom: 2px solid var(--golden-yellow);
+        letter-spacing: -0.01em;
     }
 
     /* Image Preview Styles */
@@ -437,7 +783,7 @@
     }
 
     /* Navigation Buttons */
-    .form-navigation {
+        .form-navigation {
         display: flex;
         justify-content: space-between;
         max-width: 1200px;
@@ -477,12 +823,26 @@
         background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
         color: white;
         border: none;
+        box-shadow: 0 2px 8px rgba(160, 120, 120, 0.2);
     }
 
     .btn-continue:hover,
     .btn-preview:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(160, 120, 120, 0.3);
+        box-shadow: 0 6px 20px rgba(160, 120, 120, 0.35);
+    }
+
+    .btn-continue:not(:disabled) {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            box-shadow: 0 2px 8px rgba(160, 120, 120, 0.2);
+        }
+        50% {
+            box-shadow: 0 4px 16px rgba(160, 120, 120, 0.3);
+        }
     }
 
     .btn-continue:disabled {
@@ -495,15 +855,31 @@
     @media (max-width: 968px) {
         .form-preview-container {
             grid-template-columns: 1fr;
+            gap: 24px;
         }
 
         .live-preview-card {
             position: static;
-            margin-top: 40px;
+            margin-top: 24px;
         }
 
         .theme-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            padding: 20px 16px;
+        }
+
+        .form-section-card,
+        .live-preview-card {
+            padding: 24px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+        }
+
+        .page-title p {
+            font-size: 14px;
         }
     }
 
@@ -539,15 +915,15 @@
     <!-- Progress Bar - Exact Match from Images -->
     <div class="progress-bar-container">
         <div class="progress-bar">
-            <div class="progress-step completed" data-step="1">
+            <div class="progress-step completed clickable-step" data-step="1" onclick="navigateToStep(1)">
                 <div class="step-circle">✓</div>
                 <div class="step-label">Occasion</div>
     </div>
-            <div class="progress-step {% if selected_template %}completed{% else %}active{% endif %}" data-step="2">
+            <div class="progress-step {% if selected_template %}completed{% else %}active{% endif %} clickable-step" data-step="2" onclick="navigateToStep(2)">
                 <div class="step-circle">{% if selected_template %}✓{% else %}2{% endif %}</div>
                 <div class="step-label">Theme</div>
     </div>
-            <div class="progress-step {% if selected_template %}active{% else %}pending{% endif %}" data-step="3">
+            <div class="progress-step {% if selected_template %}active{% else %}pending{% endif %} {% if selected_template %}clickable-step{% endif %}" data-step="3" {% if selected_template %}onclick="navigateToStep(3)"{% endif %}>
                 <div class="step-circle">3</div>
                 <div class="step-label">Details</div>
     </div>
@@ -556,10 +932,10 @@
                 <div class="step-label">Preview</div>
         </div>
             </div>
-        </div>
-        
+    </div>
+
     <!-- Theme Selection Page -->
-    {% if not selected_template %}
+    {% if not selected_template and not show_details %}
     <div class="theme-selection-page active" id="themeSelectionPage">
         <div class="page-title">
             <h1>
@@ -571,59 +947,80 @@
 
         <div class="theme-grid">
             {% if templates %}
-                {% for template in templates[:6] %}
+                {% for template in templates %}
+                {# Only show templates that have preview images #}
+                {% if template.preview_image %}
                 {% set template_name_slug = template.name|replace(' ', '_')|lower %}
                 {% set template_img = template.preview_image if template.preview_image else '/static/images/templateselection/naming cermony.jpg' %}
-                {% if template_img and not template_img.startswith('http') and not template_img.startswith('/') %}
-                    {% set template_img = '/static/images/' + template_img %}
-                {% elif template_img and template_img.startswith('/images/') %}
-                    {% set template_img = template_img.replace('/images/', '/static/images/') %}
+                {% if template_img and not template_img.startswith('http') %}
+                    {% if template_img.startswith('/images/') %}
+                        {% set template_img = template_img %}
+                    {% elif template_img.startswith('/static/images/') and 'templatesimages' in template_img %}
+                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
+                    {% elif 'templatesimages' in template_img %}
+                        {% if not template_img.startswith('/') %}
+                            {% set template_img = '/images/' + template_img %}
+    {% else %}
+                            {% set template_img = template_img %}
+                        {% endif %}
+                    {% elif template_img.endswith(('.jpg', '.jpeg', '.png', '.gif')) and not '/' in template_img %}
+                        {# Just filename like "wed.jpg" or "birthday.jpg" - check if it's likely a templatesimages file #}
+                        {% if 'wed' in template_img|lower or 'birthday' in template_img|lower or 'corporate' in template_img|lower or 'ballon' in template_img|lower or 'graduation' in template_img|lower %}
+                            {% set template_img = '/images/templatesimages/' + template_img %}
+                        {% elif not template_img.startswith('/') %}
+                            {% set template_img = '/static/images/' + template_img %}
+                        {% endif %}
+                    {% elif not template_img.startswith('/') %}
+                        {% set template_img = '/static/images/' + template_img %}
+                    {% endif %}
                 {% endif %}
                 {% set template_color = template.color_scheme if template.color_scheme else 'A07878' %}
                 {% set template_name_encoded = template.name|replace(' ', '+') %}
-                <div class="theme-card" data-theme="{{ template_name_slug }}" onclick="selectTheme('{{ template_name_slug }}', '{{ template.id }}', this)">
+                <div class="theme-card" data-theme="{{ template_name_slug }}" data-template-id="{{ template.id }}" data-template-image="{{ template_img }}" onclick="selectTheme('{{ template_name_slug }}', '{{ template.id }}', this)">
                     <img src="{{ template_img }}" 
                          alt="{{ template.name }}" 
                          class="theme-image" 
+                         data-src="{{ template_img }}"
                          loading="lazy"
                          decoding="async"
-                         onerror="this.src='https://via.placeholder.com/300x200/{{ template_color }}/FFFFFF?text={{ template_name_encoded }}'">
+                         onerror="this.onerror=null; this.style.display='block'; this.style.background='#{{ template_color }}'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover'; this.alt='{{ template.name }}';">
                     <div class="theme-title">{{ template.name }}</div>
-        </div>
+    </div>
+    {% endif %}
                 {% endfor %}
-            {% else %}
+    {% else %}
                 <!-- Default Theme Options if no templates in database -->
                 <div class="theme-card" data-theme="modern_minimal" onclick="selectTheme('modern_minimal', '', this)">
-                    <img src="/static/images/templateselection/naming cermony.jpg" alt="Modern Minimal" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Modern+Minimal'">
+                    <img src="/static/images/templateselection/naming cermony.jpg" alt="Modern Minimal" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
                     <div class="theme-title">Modern Minimal</div>
-        </div>
-
-                <div class="theme-card" data-theme="floral_luxury" onclick="selectTheme('floral_luxury', '', this)">
-                    <img src="/static/images/templateselection/partytemplates.jpg" alt="Floral Luxury" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Floral+Luxury'">
-                    <div class="theme-title">Floral Luxury</div>
     </div>
 
+                <div class="theme-card" data-theme="floral_luxury" onclick="selectTheme('floral_luxury', '', this)">
+                    <img src="/static/images/templateselection/partytemplates.jpg" alt="Floral Luxury" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
+                    <div class="theme-title">Floral Luxury</div>
+        </div>
+
                 <div class="theme-card" data-theme="royal_gold" onclick="selectTheme('royal_gold', '', this)">
-                    <img src="/static/images/templateselection/traditionalgettogether.jpg" alt="Royal Gold" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Royal+Gold'">
+                    <img src="/static/images/templateselection/traditionalgettogether.jpg" alt="Royal Gold" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
                     <div class="theme-title">Royal Gold</div>
-                </div>
+            </div>
 
                 <div class="theme-card" data-theme="watercolor_dreams" onclick="selectTheme('watercolor_dreams', '', this)">
-                    <img src="/static/images/templateselection/naming cermony.jpg" alt="Watercolor Dreams" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Watercolor+Dreams'">
+                    <img src="/static/images/templateselection/naming cermony.jpg" alt="Watercolor Dreams" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
                     <div class="theme-title">Watercolor Dreams</div>
-                    </div>
+            </div>
 
                 <div class="theme-card" data-theme="dark_chic" onclick="selectTheme('dark_chic', '', this)">
-                    <img src="/static/images/templateselection/partytemplates.jpg" alt="Dark Chic" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Dark+Chic'">
+                    <img src="/static/images/templateselection/partytemplates.jpg" alt="Dark Chic" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
                     <div class="theme-title">Dark Chic</div>
-                </div>
-
+        </div>
+        
                 <div class="theme-card" data-theme="festive_traditional" onclick="selectTheme('festive_traditional', '', this)">
-                    <img src="/static/images/templateselection/traditionalgettogether.jpg" alt="Festive Traditional" class="theme-image" onerror="this.src='https://via.placeholder.com/300x200?text=Festive+Traditional'">
+                    <img src="/static/images/templateselection/traditionalgettogether.jpg" alt="Festive Traditional" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
                     <div class="theme-title">Festive Traditional</div>
-                </div>
+        </div>
                 {% endif %}
-                </div>
+    </div>
 
         <div class="form-navigation">
             <a href="{{ url_for('templates') }}" class="btn-back">
@@ -632,34 +1029,36 @@
             <button class="btn-continue" id="continueToDetails" disabled onclick="continueToDetails()">
                 Continue <i class="fas fa-arrow-right"></i>
                         </button>
-                    </div>
-                </div>
+        </div>
+        </div>
     {% endif %}
 
     <!-- Details Form Page -->
-    <div class="details-form-page {% if selected_template %}active{% endif %}" id="detailsFormPage">
+    <div class="details-form-page {% if selected_template or show_details %}active{% endif %}" id="detailsFormPage">
         <div class="page-title">
             <h1>
                 <span class="title-normal">Add Your </span>
                 <span class="title-gradient">Special Details</span>
             </h1>
             <p>Watch your invitation come to life</p>
-                </div>
+    </div>
 
         <div class="form-preview-container">
             <!-- Form Section -->
             <div class="form-section-card">
-                <form id="invitationForm" method="POST" action="{{ url_for('create_invitation') }}" enctype="multipart/form-data">
+    <form id="invitationForm" method="POST" action="{{ url_for('create_invitation') }}" enctype="multipart/form-data">
                     <input type="hidden" name="selectedTemplate" value="{{ selected_template }}" id="selectedTemplate">
+                    <input type="hidden" name="templateId" value="" id="templateIdInput">
+                    <input type="hidden" name="templateImageUrl" value="" id="templateImageUrlInput">
                     
-                        <div class="form-group">
+                    <div class="form-group">
                         <label class="form-label required">Event Name</label>
                         <input type="text" class="form-input" id="eventName" name="eventTitle" 
                                placeholder="e.g., Sarah & James or Emma's Sweet 16"
                                value="{% if current_user and selected_template %}{{ current_user.name }}'s Birthday{% endif %}">
-                </div>
+                    </div>
 
-                        <div class="form-group">
+                    <div class="form-group">
                         <label class="form-label required">Event Date</label>
                         <div class="input-with-icon">
                             <input type="date" class="form-input" id="eventDate" name="eventDate">
@@ -672,7 +1071,7 @@
                         <div class="input-with-icon">
                             <input type="time" class="form-input" id="eventTime" name="eventTime">
                             <i class="fas fa-clock"></i>
-                    </div>
+                </div>
                 </div>
 
                         <div class="form-group">
@@ -681,18 +1080,18 @@
                                placeholder="e.g., Garden Estate">
                 </div>
 
-                        <div class="form-group">
+                <div class="form-group">
                         <label class="form-label">Venue Address</label>
                         <input type="text" class="form-input" id="venueAddress" name="venueAddress" 
                                placeholder="e.g., 123 Main St, City, State">
-                </div>
+            </div>
 
                         <div class="form-group">
                         <label class="form-label">Hosted By</label>
                         <input type="text" class="form-input" id="hostedBy" name="hostName" 
                                placeholder="e.g., The Smith Family"
                                value="{{ current_user.name if current_user else '' }}">
-        </div>
+                </div>
 
                     <div class="form-group">
                         <label class="form-label">RSVP Contact</label>
@@ -734,17 +1133,17 @@
                             <option value="Lora, serif">Lora (Sophisticated)</option>
                             <option value="Times New Roman, serif">Times New Roman (Formal)</option>
                         </select>
-                    </div>
+            </div>
 
                     <!-- Main Image Upload -->
                     <div class="form-group">
                         <label class="form-label">Main Image</label>
                         <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
                         <div id="mainImagePreview" class="image-preview"></div>
-                    </div>
+                </div>
 
                     <!-- Event-Specific Fields (Conditional) -->
-                    <div id="weddingFields" class="event-specific-fields" style="display: none;">
+                <div id="weddingFields" class="event-specific-fields" style="display: none;">
                         <h4 class="section-title">Wedding Details</h4>
                         <div class="form-group">
                             <label class="form-label">Bride Name</label>
@@ -758,7 +1157,7 @@
                             <label class="form-label">Bride Image</label>
                             <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*" onchange="previewImage(this, 'brideImagePreview')">
                             <div id="brideImagePreview" class="image-preview"></div>
-                        </div>
+                    </div>
                         <div class="form-group">
                             <label class="form-label">Groom Image</label>
                             <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*" onchange="previewImage(this, 'groomImagePreview')">
@@ -775,10 +1174,10 @@
                         <div class="form-group">
                             <label class="form-label">Love Story (Optional)</label>
                             <textarea class="form-textarea" id="loveStory" name="loveStory" rows="3" placeholder="Share your beautiful love story..."></textarea>
-                        </div>
                     </div>
+                </div>
 
-                    <div id="birthdayFields" class="event-specific-fields" style="display: none;">
+                <div id="birthdayFields" class="event-specific-fields" style="display: none;">
                         <h4 class="section-title">Birthday Details</h4>
                         <div class="form-group">
                             <label class="form-label">Birthday Person Name</label>
@@ -792,7 +1191,7 @@
                             <label class="form-label">Birthday Person Image</label>
                             <input type="file" class="form-input" id="birthdayImage" name="birthdayImage" accept="image/*" onchange="previewImage(this, 'birthdayImagePreview')">
                             <div id="birthdayImagePreview" class="image-preview"></div>
-                        </div>
+                    </div>
                         <div class="form-group">
                             <label class="form-label">Party Start Time</label>
                             <input type="text" class="form-input" id="startTime" name="startTime" placeholder="e.g., 5:00 PM">
@@ -800,8 +1199,8 @@
                         <div class="form-group">
                             <label class="form-label">Dinner Time</label>
                             <input type="text" class="form-input" id="dinnerTime" name="dinnerTime" placeholder="e.g., 8:00 PM">
-                        </div>
                     </div>
+                </div>
 
                     <div id="anniversaryFields" class="event-specific-fields" style="display: none;">
                         <h4 class="section-title">Anniversary Details</h4>
@@ -817,7 +1216,7 @@
                             <label class="form-label">Couple Image</label>
                             <input type="file" class="form-input" id="coupleImage" name="coupleImage" accept="image/*" onchange="previewImage(this, 'coupleImagePreview')">
                             <div id="coupleImagePreview" class="image-preview"></div>
-                        </div>
+                    </div>
                         <div class="form-group">
                             <label class="form-label">Anniversary Dinner Time</label>
                             <input type="text" class="form-input" id="anniversaryDinnerTime" name="anniversaryDinnerTime" placeholder="e.g., 7:00 PM">
@@ -845,10 +1244,10 @@
                         <div class="form-group">
                             <label class="form-label">Baby Shower End Time</label>
                             <input type="text" class="form-input" id="babyshowerEndTime" name="babyshowerEndTime" placeholder="e.g., 6:00 PM">
-                        </div>
                     </div>
+                </div>
 
-                    <div id="graduationFields" class="event-specific-fields" style="display: none;">
+                <div id="graduationFields" class="event-specific-fields" style="display: none;">
                         <h4 class="section-title">Graduation Details</h4>
                         <div class="form-group">
                             <label class="form-label">Graduate Name</label>
@@ -870,8 +1269,8 @@
                             <label class="form-label">Graduate Image</label>
                             <input type="file" class="form-input" id="graduateImage" name="graduateImage" accept="image/*" onchange="previewImage(this, 'graduateImagePreview')">
                             <div id="graduateImagePreview" class="image-preview"></div>
-                        </div>
                     </div>
+                </div>
 
                     <div id="retirementFields" class="event-specific-fields" style="display: none;">
                         <h4 class="section-title">Retirement Details</h4>
@@ -886,7 +1285,7 @@
                         <div class="form-group">
                             <label class="form-label">Company</label>
                             <input type="text" class="form-input" id="company" name="company" placeholder="e.g., ABC Corporation">
-                        </div>
+                    </div>
                         <div class="form-group">
                             <label class="form-label">Start Year</label>
                             <input type="text" class="form-input" id="startYear" name="startYear" placeholder="e.g., 1995">
@@ -895,45 +1294,64 @@
                             <label class="form-label">Honoree Image</label>
                             <input type="file" class="form-input" id="honoreeImage" name="honoreeImage" accept="image/*" onchange="previewImage(this, 'honoreeImagePreview')">
                             <div id="honoreeImagePreview" class="image-preview"></div>
-                        </div>
                     </div>
+                </div>
 
                     <!-- Gallery Images -->
-                    <div class="form-group">
+                        <div class="form-group">
                         <label class="form-label">Gallery Images (Multiple)</label>
                         <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewMultipleImages(this, 'galleryPreview')">
                         <div id="galleryPreview" class="gallery-preview"></div>
-                    </div>
+                        </div>
                 </form>
-                    </div>
+                        </div>
 
             <!-- Live Preview Section -->
             <div class="live-preview-card">
                 <div class="preview-title">Live Preview</div>
                 <div class="preview-content">
                     <div class="invitation-preview" id="invitationPreviewCard">
+                        <div id="previewMainImageContainer" style="display: none;">
+                            <img id="previewMainImage" class="preview-main-image" src="" alt="Main Image">
+                    </div>
+                        <div id="previewBrideGroomContainer" class="preview-images-container" style="display: none;">
+                            <img id="previewBrideImage" class="preview-image-overlay" src="" alt="Bride" style="display: none;">
+                            <img id="previewGroomImage" class="preview-image-overlay" src="" alt="Groom" style="display: none;">
+                        </div>
+                        <div id="previewBirthdayImageContainer" style="display: none;">
+                            <img id="previewBirthdayImage" class="preview-image-overlay" src="" alt="Birthday Person">
+                        </div>
+                        <div id="previewCoupleImageContainer" style="display: none;">
+                            <img id="previewCoupleImage" class="preview-image-overlay" src="" alt="Couple">
+                    </div>
+                        <div id="previewGraduateImageContainer" style="display: none;">
+                            <img id="previewGraduateImage" class="preview-image-overlay" src="" alt="Graduate">
+                </div>
+                        <div id="previewHonoreeImageContainer" style="display: none;">
+                            <img id="previewHonoreeImage" class="preview-image-overlay" src="" alt="Honoree">
+            </div>
                         <div class="preview-icon" id="previewIcon">🎂</div>
                         <div class="preview-event-name" id="previewEventName">
                             Your Event Name
-                        </div>
+        </div>
                         <div class="preview-date-time" id="previewDate" style="display: none;">
                             <i class="fas fa-calendar"></i>
                             <span id="previewDateText"></span>
-                        </div>
+            </div>
                         <div class="preview-date-time" id="previewTime" style="display: none;">
                             <i class="fas fa-clock"></i>
                             <span id="previewTimeText"></span>
-                        </div>
+                </div>
                         <div class="preview-venue" id="previewVenue" style="display: none;">
                             <i class="fas fa-map-marker-alt"></i>
                             <span id="previewVenueText"></span>
-                        </div>
+                    </div>
                         <div class="preview-hosted" id="previewHosted" style="display: none;">
                             <i class="fas fa-user"></i> Hosted by <span id="previewHostedText"></span>
-                        </div>
+                    </div>
                         <div class="preview-message" id="previewMessage" style="display: none;">
                             <span id="previewMessageText"></span>
-                        </div>
+                    </div>
                         <div class="preview-placeholder" id="previewPlaceholder">
                             Start filling the form to see your invitation preview
                         </div>
@@ -995,8 +1413,411 @@
         const previewMessage = document.getElementById('previewMessage');
         const previewMessageText = document.getElementById('previewMessageText');
 
-        // Optimized update preview with debouncing (300ms delay)
-        const debouncedUpdatePreview = debounce(function() {
+        // Store selected template info
+        let selectedTemplateId = null;
+        let selectedTemplateImage = null;
+        let selectedTemplateName = null;
+
+        // Update preview background based on selected template
+        function updatePreviewBackground(templateId, templateImage, templateName) {
+            const previewCard = document.getElementById('invitationPreviewCard');
+            
+            if (templateId && templateImage) {
+                selectedTemplateId = templateId;
+                selectedTemplateImage = templateImage;
+                selectedTemplateName = templateName;
+                
+                // Remove all template classes
+                previewCard.classList.remove('wedding-bg', 'template-bg');
+                
+                // Set background image - ensure full path if relative
+                let bgImage = templateImage;
+                
+                // Clean the URL - remove query parameters and fragments
+                if (bgImage) {
+                    bgImage = bgImage.split('?')[0].split('#')[0];
+                }
+                
+                // Handle different path formats
+                if (bgImage) {
+                    // Clean up the path
+                    bgImage = bgImage.trim();
+                    
+                    // If relative path, make it absolute
+                    if (!bgImage.startsWith('http') && !bgImage.startsWith('/') && !bgImage.startsWith('data:')) {
+                        // Just filename like "wed.jpg" or "birthday.jpg" - check if it's likely a templatesimages file
+                        if (/\.(jpg|jpeg|png|gif)$/i.test(bgImage) && !bgImage.includes('/')) {
+                            const lowerPath = bgImage.toLowerCase();
+                            if (lowerPath.includes('wed') || lowerPath.includes('birthday') || 
+                                lowerPath.includes('corporate') || lowerPath.includes('ballon') || 
+                                lowerPath.includes('graduation') || lowerPath.includes('anniversary') ||
+                                lowerPath.includes('retirement') || lowerPath.includes('babyshower')) {
+                                bgImage = '/images/templatesimages/' + bgImage;
+            } else {
+                                bgImage = '/static/images/' + bgImage;
+                            }
+                        } else {
+                            bgImage = '/' + bgImage;
+                        }
+                    }
+                    
+                    // Fix static paths to use /images/ route - MUST happen before other checks
+                    if (bgImage.includes('/static/images/')) {
+                        bgImage = bgImage.replace(/\/static\/images\//g, '/images/');
+                    }
+                    
+                    // Fix common image filenames that should be in templatesimages
+                    const commonTemplateFiles = ['wed.jpg', 'birthday.jpg', 'corporateevent.jpg', 'birthdaycolourful.jpg', 'birthdayblackgold.jpg', 'GRDUATIONGOLD.jpg'];
+                    for (const fileName of commonTemplateFiles) {
+                        if (bgImage === fileName || bgImage.endsWith('/' + fileName) || bgImage.includes('/' + fileName)) {
+                            bgImage = '/images/templatesimages/' + fileName;
+                            break;
+                        }
+                    }
+                    
+                    // Ensure templatesimages paths are correct
+                    if (bgImage.includes('templatesimages')) {
+                        if (!bgImage.startsWith('/images/templatesimages/')) {
+                            // Extract filename if path contains templatesimages
+                            const filenameMatch = bgImage.match(/templatesimages[\/\\]?([^\/\\]+)$/i);
+                            if (filenameMatch) {
+                                bgImage = '/images/templatesimages/' + filenameMatch[1];
+                            } else {
+                                bgImage = bgImage.replace(/^.*?templatesimages/, '/images/templatesimages');
+                            }
+                        }
+                    }
+                    
+                    // Fix any remaining static paths
+                    if (bgImage.startsWith('/static/')) {
+                        bgImage = bgImage.replace('/static/', '/');
+                    }
+                }
+                
+                // Apply background image - Template image as background overlay
+                // Remove any default background
+                previewCard.style.background = 'none';
+                previewCard.style.backgroundColor = 'transparent';
+                
+                // Set template image as background with proper styling
+                previewCard.style.backgroundImage = `url('${bgImage}')`;
+                previewCard.style.backgroundSize = 'cover';
+                previewCard.style.backgroundPosition = 'center';
+                previewCard.style.backgroundRepeat = 'no-repeat';
+                previewCard.style.backgroundAttachment = 'scroll';
+                
+                // Force the background to be visible with important flag
+                previewCard.style.setProperty('background-image', `url('${bgImage}')`, 'important');
+                previewCard.style.setProperty('background-size', 'cover', 'important');
+                previewCard.style.setProperty('background-position', 'center', 'important');
+                
+                previewCard.classList.add('template-bg');
+                
+                // Ensure background is visible with proper z-index
+                previewCard.style.position = 'relative';
+                previewCard.style.zIndex = '0';
+                
+                // Update hidden form fields for save
+                const templateIdInput = document.getElementById('templateIdInput');
+                const templateImageUrlInput = document.getElementById('templateImageUrlInput');
+                if (templateIdInput) templateIdInput.value = templateId || '';
+                if (templateImageUrlInput) templateImageUrlInput.value = bgImage || '';
+                
+                // Hide icon when template background is active (images will show instead)
+                const previewIcon = document.getElementById('previewIcon');
+                if (previewIcon) {
+                    previewIcon.style.display = 'none';
+                }
+                
+                // Log for debugging
+                console.log('✅ Template background applied to live preview:', {
+                    templateId: templateId,
+                    bgImage: bgImage,
+                    templateName: templateName
+                });
+                
+                // Force re-display of uploaded images on top of new template background
+                setTimeout(() => {
+                    // Main image
+                    const mainImg = document.getElementById('previewMainImage');
+                    const mainContainer = document.getElementById('previewMainImageContainer');
+                    if (mainImg && mainImg.src && mainImg.src !== '' && mainContainer) {
+                        mainContainer.style.display = 'block';
+                        mainContainer.style.setProperty('display', 'block', 'important');
+                        mainImg.style.display = 'block';
+                        mainImg.style.setProperty('display', 'block', 'important');
+                        mainImg.style.zIndex = '5';
+                        mainImg.style.setProperty('z-index', '5', 'important');
+                        mainImg.style.position = 'relative';
+                        mainContainer.style.zIndex = '5';
+                        mainContainer.style.setProperty('z-index', '5', 'important');
+                    }
+                    
+                    // Bride and Groom images
+                    const brideImg = document.getElementById('previewBrideImage');
+                    const groomImg = document.getElementById('previewGroomImage');
+                    const brideGroomContainer = document.getElementById('previewBrideGroomContainer');
+                    if (brideGroomContainer) {
+                        let shouldShow = false;
+                        if (brideImg && brideImg.src && brideImg.src !== '') {
+                            brideImg.style.display = 'block';
+                            brideImg.style.setProperty('display', 'block', 'important');
+                            brideImg.style.zIndex = '5';
+                            brideImg.style.setProperty('z-index', '5', 'important');
+                            brideImg.style.position = 'relative';
+                            shouldShow = true;
+                        }
+                        if (groomImg && groomImg.src && groomImg.src !== '') {
+                            groomImg.style.display = 'block';
+                            groomImg.style.setProperty('display', 'block', 'important');
+                            groomImg.style.zIndex = '5';
+                            groomImg.style.setProperty('z-index', '5', 'important');
+                            groomImg.style.position = 'relative';
+                            shouldShow = true;
+                        }
+                        if (shouldShow) {
+                            brideGroomContainer.style.display = 'flex';
+                            brideGroomContainer.style.setProperty('display', 'flex', 'important');
+                            brideGroomContainer.style.zIndex = '5';
+                            brideGroomContainer.style.setProperty('z-index', '5', 'important');
+                        }
+                    }
+                    
+                    // Birthday image
+                    const birthdayImg = document.getElementById('previewBirthdayImage');
+                    const birthdayContainer = document.getElementById('previewBirthdayImageContainer');
+                    if (birthdayImg && birthdayImg.src && birthdayImg.src !== '' && birthdayContainer) {
+                        birthdayContainer.style.display = 'block';
+                        birthdayContainer.style.setProperty('display', 'block', 'important');
+                        birthdayImg.style.display = 'block';
+                        birthdayImg.style.setProperty('display', 'block', 'important');
+                        birthdayImg.style.zIndex = '5';
+                        birthdayImg.style.setProperty('z-index', '5', 'important');
+                        birthdayImg.style.position = 'relative';
+                        birthdayContainer.style.zIndex = '5';
+                        birthdayContainer.style.setProperty('z-index', '5', 'important');
+                    }
+                    
+                    // Couple image
+                    const coupleImg = document.getElementById('previewCoupleImage');
+                    const coupleContainer = document.getElementById('previewCoupleImageContainer');
+                    if (coupleImg && coupleImg.src && coupleImg.src !== '' && coupleContainer) {
+                        coupleContainer.style.display = 'block';
+                        coupleContainer.style.setProperty('display', 'block', 'important');
+                        coupleImg.style.display = 'block';
+                        coupleImg.style.setProperty('display', 'block', 'important');
+                        coupleImg.style.zIndex = '5';
+                        coupleImg.style.setProperty('z-index', '5', 'important');
+                        coupleImg.style.position = 'relative';
+                        coupleContainer.style.zIndex = '5';
+                        coupleContainer.style.setProperty('z-index', '5', 'important');
+                    }
+                    
+                    // Graduate image
+                    const graduateImg = document.getElementById('previewGraduateImage');
+                    const graduateContainer = document.getElementById('previewGraduateImageContainer');
+                    if (graduateImg && graduateImg.src && graduateImg.src !== '' && graduateContainer) {
+                        graduateContainer.style.display = 'block';
+                        graduateContainer.style.setProperty('display', 'block', 'important');
+                        graduateImg.style.display = 'block';
+                        graduateImg.style.setProperty('display', 'block', 'important');
+                        graduateImg.style.zIndex = '5';
+                        graduateImg.style.setProperty('z-index', '5', 'important');
+                        graduateImg.style.position = 'relative';
+                        graduateContainer.style.zIndex = '5';
+                        graduateContainer.style.setProperty('z-index', '5', 'important');
+                    }
+                    
+                    // Honoree image
+                    const honoreeImg = document.getElementById('previewHonoreeImage');
+                    const honoreeContainer = document.getElementById('previewHonoreeImageContainer');
+                    if (honoreeImg && honoreeImg.src && honoreeImg.src !== '' && honoreeContainer) {
+                        honoreeContainer.style.display = 'block';
+                        honoreeContainer.style.setProperty('display', 'block', 'important');
+                        honoreeImg.style.display = 'block';
+                        honoreeImg.style.setProperty('display', 'block', 'important');
+                        honoreeImg.style.zIndex = '5';
+                        honoreeImg.style.setProperty('z-index', '5', 'important');
+                        honoreeImg.style.position = 'relative';
+                        honoreeContainer.style.zIndex = '5';
+                        honoreeContainer.style.setProperty('z-index', '5', 'important');
+                    }
+                    
+                    console.log('Ensured all uploaded images remain visible on template background');
+                }, 200);
+                
+                console.log('Template background updated:', bgImage);
+            } else {
+                // Reset to default
+                const currentEventType = '{{ event_type or "" }}'.toLowerCase();
+                previewCard.style.backgroundImage = '';
+                
+                if (previewCard && currentEventType === 'wedding') {
+                    previewCard.classList.add('wedding-bg');
+                    previewCard.style.backgroundImage = "url('/images/templatesimages/wedding.png')";
+                    previewCard.style.backgroundSize = 'cover';
+                    previewCard.style.backgroundPosition = 'center';
+                    previewCard.style.backgroundRepeat = 'no-repeat';
+                    
+                    const previewIcon = document.getElementById('previewIcon');
+                    if (previewIcon) {
+                        previewIcon.style.display = 'none';
+                    }
+                } else {
+                    previewCard.classList.remove('wedding-bg', 'template-bg');
+                    previewCard.style.backgroundImage = '';
+                    const previewIcon = document.getElementById('previewIcon');
+                    if (previewIcon) {
+                        previewIcon.style.display = 'block';
+                    }
+                }
+            }
+        }
+
+        // Initialize preview background on page load
+        {% if template_id %}
+            // Template ID from URL - fetch template data
+            const templateIdFromUrl = {{ template_id }};
+            const templateNameFromUrl = '{{ selected_template|default('')|escapejs }}';
+            const templateImageFromUrl = '{{ templates[0].preview_image if templates else '' }}';
+            
+            // Find template card with matching ID
+            const templateCards = document.querySelectorAll('.theme-card');
+            let foundTemplateCard = null;
+            
+            templateCards.forEach(card => {
+                const cardId = card.getAttribute('data-template-id');
+                if (cardId && parseInt(cardId) === templateIdFromUrl) {
+                    foundTemplateCard = card;
+                }
+            });
+            
+            if (foundTemplateCard) {
+                const templateImg = foundTemplateCard.querySelector('.theme-image');
+                const templateTitle = foundTemplateCard.querySelector('.theme-title');
+                const templateDataImage = foundTemplateCard.getAttribute('data-template-image');
+                
+                const imgUrl = templateDataImage || (templateImg ? templateImg.src : null);
+                const imgName = templateTitle ? templateTitle.textContent : templateNameFromUrl;
+                
+                if (imgUrl && !imgUrl.includes('placeholder')) {
+                    updatePreviewBackground(templateIdFromUrl.toString(), imgUrl, imgName);
+                    
+                    // Also directly apply to preview card to ensure it's visible
+                    const previewCard = document.getElementById('invitationPreviewCard');
+                    if (previewCard && imgUrl) {
+                        let cleanUrl = imgUrl.split('?')[0].split('#')[0];
+                        // Fix static paths
+                        if (cleanUrl.includes('/static/images/')) {
+                            cleanUrl = cleanUrl.replace(/\/static\/images\//g, '/images/');
+                        }
+                        // Fix common template files
+                        const commonFiles = ['wed.jpg', 'birthday.jpg', 'corporateevent.jpg', 'birthdaycolourful.jpg', 'birthdayblackgold.jpg', 'GRDUATIONGOLD.jpg'];
+                        for (const fileName of commonFiles) {
+                            if (cleanUrl === fileName || cleanUrl.endsWith('/' + fileName)) {
+                                cleanUrl = '/images/templatesimages/' + fileName;
+                                break;
+                            }
+                        }
+                        if (!cleanUrl.startsWith('/images/') && cleanUrl.includes('templatesimages')) {
+                            cleanUrl = cleanUrl.replace(/^.*?templatesimages/, '/images/templatesimages');
+                        }
+                        previewCard.style.background = 'none';
+                        previewCard.style.backgroundColor = 'transparent';
+                        previewCard.style.backgroundImage = `url('${cleanUrl}')`;
+                        previewCard.style.backgroundSize = 'cover';
+                        previewCard.style.backgroundPosition = 'center';
+                        previewCard.style.backgroundRepeat = 'no-repeat';
+                        previewCard.classList.add('template-bg');
+                        previewCard.style.setProperty('background-image', `url('${cleanUrl}')`, 'important');
+                        console.log('Template background applied on page load:', cleanUrl);
+                    }
+                }
+            } else if (templateImageFromUrl) {
+                // Fallback: use template image from server
+                updatePreviewBackground(templateIdFromUrl.toString(), templateImageFromUrl, templateNameFromUrl);
+                
+                // Also directly apply to preview card
+                const previewCard = document.getElementById('invitationPreviewCard');
+                if (previewCard && templateImageFromUrl) {
+                    let cleanUrl = templateImageFromUrl.split('?')[0].split('#')[0];
+                    // Fix static paths
+                    if (cleanUrl.includes('/static/images/')) {
+                        cleanUrl = cleanUrl.replace(/\/static\/images\//g, '/images/');
+                    }
+                    // Fix common template files
+                    const commonFiles = ['wed.jpg', 'birthday.jpg', 'corporateevent.jpg', 'birthdaycolourful.jpg', 'birthdayblackgold.jpg', 'GRDUATIONGOLD.jpg'];
+                    for (const fileName of commonFiles) {
+                        if (cleanUrl === fileName || cleanUrl.endsWith('/' + fileName)) {
+                            cleanUrl = '/images/templatesimages/' + fileName;
+                            break;
+                        }
+                    }
+                    if (!cleanUrl.startsWith('/images/') && cleanUrl.includes('templatesimages')) {
+                        cleanUrl = cleanUrl.replace(/^.*?templatesimages/, '/images/templatesimages');
+                    }
+                    previewCard.style.background = 'none';
+                    previewCard.style.backgroundColor = 'transparent';
+                    previewCard.style.backgroundImage = `url('${cleanUrl}')`;
+                    previewCard.style.backgroundSize = 'cover';
+                    previewCard.style.backgroundPosition = 'center';
+                    previewCard.style.backgroundRepeat = 'no-repeat';
+                    previewCard.classList.add('template-bg');
+                    previewCard.style.setProperty('background-image', `url('${cleanUrl}')`, 'important');
+                    console.log('Template background applied on page load (fallback):', cleanUrl);
+                }
+            }
+        {% elif selected_template %}
+            const initialTemplateId = '{{ selected_template|replace(" ", "_")|lower }}';
+            const templateElement = document.querySelector(`[data-theme="${initialTemplateId}"]`);
+            if (templateElement) {
+                const templateImg = templateElement.querySelector('.theme-image');
+                const templateTitle = templateElement.querySelector('.theme-title');
+                const templateDataImage = templateElement.getAttribute('data-template-image');
+                
+                const imgUrl = templateDataImage || (templateImg ? templateImg.src : null);
+                const imgName = templateTitle ? templateTitle.textContent : '{{ selected_template }}';
+                
+                if (imgUrl && !imgUrl.includes('placeholder')) {
+                    updatePreviewBackground(initialTemplateId, imgUrl, imgName);
+                    
+                    // Also directly apply to preview card to ensure it's visible
+                    const previewCard = document.getElementById('invitationPreviewCard');
+                    if (previewCard && imgUrl) {
+                        let cleanUrl = imgUrl.split('?')[0].split('#')[0];
+                        // Fix static paths
+                        if (cleanUrl.includes('/static/images/')) {
+                            cleanUrl = cleanUrl.replace(/\/static\/images\//g, '/images/');
+                        }
+                        // Fix common template files
+                        const commonFiles = ['wed.jpg', 'birthday.jpg', 'corporateevent.jpg', 'birthdaycolourful.jpg', 'birthdayblackgold.jpg', 'GRDUATIONGOLD.jpg'];
+                        for (const fileName of commonFiles) {
+                            if (cleanUrl === fileName || cleanUrl.endsWith('/' + fileName)) {
+                                cleanUrl = '/images/templatesimages/' + fileName;
+                                break;
+                            }
+                        }
+                        if (!cleanUrl.startsWith('/images/') && cleanUrl.includes('templatesimages')) {
+                            cleanUrl = cleanUrl.replace(/^.*?templatesimages/, '/images/templatesimages');
+                        }
+                        previewCard.style.background = 'none';
+                        previewCard.style.backgroundColor = 'transparent';
+                        previewCard.style.backgroundImage = `url('${cleanUrl}')`;
+                        previewCard.style.backgroundSize = 'cover';
+                        previewCard.style.backgroundPosition = 'center';
+                        previewCard.style.backgroundRepeat = 'no-repeat';
+                        previewCard.classList.add('template-bg');
+                        previewCard.style.setProperty('background-image', `url('${cleanUrl}')`, 'important');
+                        console.log('Template background applied on page load (selected_template):', cleanUrl);
+                    }
+                }
+            }
+        {% else %}
+            updatePreviewBackground();
+        {% endif %}
+
+        // Real-time update preview - No delay for instant feedback
+        const instantUpdatePreview = function() {
             const eventName = eventNameInput ? eventNameInput.value.trim() : '';
             const eventDate = eventDateInput ? eventDateInput.value : '';
             const eventTime = eventTimeInput ? eventTimeInput.value : '';
@@ -1093,23 +1914,57 @@
             } else {
                 previewPlaceholder.style.display = 'none';
             }
-        }, 300);
+        };
+        
+        // Also create a debounced version for less critical updates
+        const debouncedUpdatePreview = debounce(instantUpdatePreview, 100);
 
-        // Update preview as user types - Event Name (optimized with debouncing)
+        // Update preview as user types - Event Name (INSTANT updates)
         if (eventNameInput) {
-            eventNameInput.addEventListener('input', debouncedUpdatePreview);
-            eventNameInput.addEventListener('change', debouncedUpdatePreview);
+            eventNameInput.addEventListener('input', instantUpdatePreview);
+            eventNameInput.addEventListener('change', instantUpdatePreview);
+            eventNameInput.addEventListener('keyup', instantUpdatePreview);
             
             // Initialize preview with current value immediately
-            debouncedUpdatePreview();
+            instantUpdatePreview();
         }
+        
+        // Update preview for critical fields - INSTANT updates
+        const criticalFields = ['eventDate', 'eventTime', 'hostedBy', 'personalMessage'];
+        criticalFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('input', instantUpdatePreview);
+                field.addEventListener('change', instantUpdatePreview);
+                field.addEventListener('keyup', instantUpdatePreview);
+            }
+        });
 
-        // Update preview for all form fields
+        // Update preview for all form fields - Real-time updates
         const allInputs = document.querySelectorAll('#invitationForm input, #invitationForm textarea, #invitationForm select');
         allInputs.forEach(input => {
-            input.addEventListener('input', debouncedUpdatePreview);
-            input.addEventListener('change', debouncedUpdatePreview);
+            // Skip file inputs - they have their own handlers
+            if (input.type === 'file') {
+                return;
+            }
+            
+            // Use instant updates for text inputs, debounced for selects
+            if (input.tagName === 'SELECT') {
+                input.addEventListener('change', debouncedUpdatePreview);
+            } else {
+                // Instant updates for text inputs
+                input.addEventListener('input', instantUpdatePreview);
+                input.addEventListener('keyup', instantUpdatePreview);
+                input.addEventListener('change', instantUpdatePreview);
+            }
+            
+            // Update immediately on focus for better UX
+            input.addEventListener('focus', function() {
+                instantUpdatePreview();
+            });
         });
+        
+        console.log(`Connected ${allInputs.length} form fields to live preview`);
 
         // Show/hide event-specific fields based on event type
         function showEventSpecificFields(eventType) {
@@ -1192,16 +2047,143 @@
             setDefaultTexts(currentEventType);
         }
             
-        // Theme Selection
+        // Theme Selection - Enhanced with better feedback
         window.selectTheme = function(themeId, templateId, element) {
             // Remove previous selection
             document.querySelectorAll('.theme-card').forEach(card => {
                 card.classList.remove('selected');
             });
 
-            // Mark selected
+            // Mark selected with smooth animation
             element.classList.add('selected');
-            selectedThemeValue = themeId;
+            selectedThemeValue = templateId || themeId;
+            
+                // Store template ID and image for form submission
+            window.selectedTemplateId = templateId;
+            
+            // Update hidden form fields immediately
+            const templateIdInput = document.getElementById('templateIdInput');
+            const templateImageUrlInput = document.getElementById('templateImageUrlInput');
+            
+            // Get template image and name from the selected card
+            const templateImg = element.querySelector('.theme-image');
+            const templateTitle = element.querySelector('.theme-title');
+            
+            // Get the image source - prioritize data-template-image attribute
+            let templateImageUrl = null;
+            
+            // First, try data-template-image attribute (most reliable)
+            const templateDataImage = element.getAttribute('data-template-image');
+            if (templateDataImage) {
+                templateImageUrl = templateDataImage;
+            }
+            
+            // If not found, try from img element
+            if (!templateImageUrl && templateImg) {
+                templateImageUrl = templateImg.getAttribute('data-src') || templateImg.src;
+                
+                // Clean up the URL - remove query params from placeholder URLs
+                if (templateImageUrl && templateImageUrl.includes('placeholder')) {
+                    templateImageUrl = templateDataImage || null;
+                }
+            }
+            
+            // Fix path issues - convert static paths to /images/ paths
+            if (templateImageUrl && !templateImageUrl.startsWith('http') && !templateImageUrl.startsWith('data:')) {
+                // Fix static paths
+                if (templateImageUrl.includes('/static/images/')) {
+                    templateImageUrl = templateImageUrl.replace(/\/static\/images\//g, '/images/');
+                }
+                // Fix common template files without path
+                const commonFiles = ['wed.jpg', 'birthday.jpg', 'corporateevent.jpg', 'birthdaycolourful.jpg', 'birthdayblackgold.jpg', 'GRDUATIONGOLD.jpg'];
+                for (const fileName of commonFiles) {
+                    if (templateImageUrl === fileName || templateImageUrl.endsWith('/' + fileName)) {
+                        templateImageUrl = '/images/templatesimages/' + fileName;
+                        break;
+                    }
+                }
+            }
+            
+            const templateName = templateTitle ? templateTitle.textContent : themeId;
+            
+            // Update preview background with selected template immediately
+            // Apply template image as background in live preview
+            if (templateImageUrl && !templateImageUrl.includes('placeholder')) {
+                // Clean and normalize the URL
+                let cleanUrl = templateImageUrl.split('?')[0].split('#')[0];
+                // Fix static paths
+                if (cleanUrl.includes('/static/images/')) {
+                    cleanUrl = cleanUrl.replace(/\/static\/images\//g, '/images/');
+                }
+                // Fix common template files
+                const commonFiles = ['wed.jpg', 'birthday.jpg', 'corporateevent.jpg', 'birthdaycolourful.jpg', 'birthdayblackgold.jpg', 'GRDUATIONGOLD.jpg'];
+                for (const fileName of commonFiles) {
+                    if (cleanUrl === fileName || cleanUrl.endsWith('/' + fileName)) {
+                        cleanUrl = '/images/templatesimages/' + fileName;
+                        break;
+                    }
+                }
+                if (!cleanUrl.startsWith('/images/') && cleanUrl.includes('templatesimages')) {
+                    cleanUrl = cleanUrl.replace(/^.*?templatesimages/, '/images/templatesimages');
+                }
+                // Fix any remaining static paths
+                if (cleanUrl.startsWith('/static/')) {
+                    cleanUrl = cleanUrl.replace('/static/', '/');
+                }
+                
+                console.log('Template selected - Applying background:', templateId, cleanUrl);
+                
+                // Store template image URL for form submission
+                window.selectedTemplateImage = cleanUrl;
+                
+                // Update hidden form fields immediately
+                if (templateIdInput) templateIdInput.value = templateId || '';
+                if (templateImageUrlInput) templateImageUrlInput.value = cleanUrl;
+                
+                // Apply background immediately using updatePreviewBackground function
+                updatePreviewBackground(templateId || themeId, cleanUrl, templateName);
+                
+                // Also ensure preview card is updated immediately
+                const previewCard = document.getElementById('invitationPreviewCard');
+                if (previewCard) {
+                    // Apply background immediately so it's ready when user goes to details
+                    // Remove default background first
+                    previewCard.style.background = 'none';
+                    previewCard.style.backgroundColor = 'transparent';
+                    previewCard.style.backgroundImage = `url('${cleanUrl}')`;
+                    previewCard.style.backgroundSize = 'cover';
+                    previewCard.style.backgroundPosition = 'center';
+                    previewCard.style.backgroundRepeat = 'no-repeat';
+                    previewCard.classList.add('template-bg');
+                    
+                    // Force the background to be visible with important flag
+                    previewCard.style.setProperty('background-image', `url('${cleanUrl}')`, 'important');
+                    
+                    console.log('Template background applied to preview card:', cleanUrl);
+                }
+                } else {
+                console.warn('Template image URL not found or invalid:', templateImageUrl);
+                // Still try to show the template even if URL has issues
+                if (templateImg && templateImg.src && !templateImg.src.includes('placeholder')) {
+                    let cleanUrl = templateImg.src.split('?')[0].split('#')[0];
+                    // Fix static paths
+                    if (cleanUrl.includes('/static/images/')) {
+                        cleanUrl = cleanUrl.replace(/\/static\/images\//g, '/images/');
+                    }
+                    // Fix common template files
+                    const commonFiles = ['wed.jpg', 'birthday.jpg', 'corporateevent.jpg', 'birthdaycolourful.jpg', 'birthdayblackgold.jpg', 'GRDUATIONGOLD.jpg'];
+                    for (const fileName of commonFiles) {
+                        if (cleanUrl === fileName || cleanUrl.endsWith('/' + fileName)) {
+                            cleanUrl = '/images/templatesimages/' + fileName;
+                            break;
+                        }
+                    }
+                    if (!cleanUrl.startsWith('/images/') && cleanUrl.includes('templatesimages')) {
+                        cleanUrl = cleanUrl.replace(/^.*?templatesimages/, '/images/templatesimages');
+                    }
+                    updatePreviewBackground(templateId || themeId, cleanUrl, templateName);
+                }
+            }
             
             // Update hidden input with template ID or name
             const templateInput = document.getElementById('selectedTemplate');
@@ -1209,12 +2191,20 @@
                 templateInput.value = templateId || themeId;
             }
             
-            // Enable continue button
+            // Enable continue button with smooth transition
             const continueBtn = document.getElementById('continueToDetails');
             if (continueBtn) {
                 continueBtn.disabled = false;
                 continueBtn.style.opacity = '1';
                 continueBtn.style.cursor = 'pointer';
+                continueBtn.style.transition = 'all 0.3s ease';
+            }
+            
+            // Optional: Scroll to continue button on mobile
+            if (window.innerWidth < 968 && continueBtn) {
+                setTimeout(() => {
+                    continueBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 300);
             }
         };
 
@@ -1223,6 +2213,48 @@
             if (!selectedThemeValue) {
                 alert('Please select a theme first');
                 return;
+            }
+
+            // Ensure template background is applied when moving to details page
+            const selectedCard = document.querySelector('.theme-card.selected');
+            if (selectedCard) {
+                const templateDataImage = selectedCard.getAttribute('data-template-image');
+                const templateImg = selectedCard.querySelector('.theme-image');
+                const templateTitle = selectedCard.querySelector('.theme-title');
+                
+                let templateImageUrl = templateDataImage || (templateImg ? templateImg.src : null);
+                const templateName = templateTitle ? templateTitle.textContent : selectedThemeValue;
+                
+                // Clean and normalize the URL
+                if (templateImageUrl) {
+                    templateImageUrl = templateImageUrl.split('?')[0].split('#')[0];
+                    if (!templateImageUrl.startsWith('/images/') && templateImageUrl.includes('templatesimages')) {
+                        templateImageUrl = templateImageUrl.replace(/^.*?templatesimages/, '/images/templatesimages');
+                    }
+                }
+                
+                if (templateImageUrl && !templateImageUrl.includes('placeholder')) {
+                    console.log('Applying template background on continue:', templateImageUrl);
+                    updatePreviewBackground(selectedThemeValue, templateImageUrl, templateName);
+                    
+                    // Also directly apply to preview card to ensure it's visible
+                    const previewCard = document.getElementById('invitationPreviewCard');
+                    if (previewCard) {
+                        // Remove default background first
+                        previewCard.style.background = 'none';
+                        previewCard.style.backgroundColor = 'transparent';
+                        previewCard.style.backgroundImage = `url('${templateImageUrl}')`;
+                        previewCard.style.backgroundSize = 'cover';
+                        previewCard.style.backgroundPosition = 'center';
+                        previewCard.style.backgroundRepeat = 'no-repeat';
+                        previewCard.classList.add('template-bg');
+                        
+                        // Force the background to be visible with important flag
+                        previewCard.style.setProperty('background-image', `url('${templateImageUrl}')`, 'important');
+                        
+                        console.log('Template background applied directly to preview card');
+                    }
+                }
             }
 
             document.getElementById('themeSelectionPage').classList.remove('active');
@@ -1250,7 +2282,7 @@
                     if (circle && !circle.textContent.includes('✓')) {
                         circle.textContent = stepNum;
                     }
-                } else {
+            } else {
                     stepEl.classList.remove('active', 'completed');
                     stepEl.classList.add('pending');
                     const circle = stepEl.querySelector('.step-circle');
@@ -1261,9 +2293,71 @@
             });
         }
 
-        // Form submission
+        // Navigate to step - Make progress bar clickable
+        window.navigateToStep = function(step) {
+            const themeSelectionPage = document.getElementById('themeSelectionPage');
+            const detailsFormPage = document.getElementById('detailsFormPage');
+            
+            if (step === 1) {
+                // Navigate to templates page (occasion/event selection)
+                window.location.href = '/templates';
+            } else if (step === 2) {
+                // Navigate to theme selection
+                if (themeSelectionPage) {
+                    themeSelectionPage.classList.add('active');
+                    if (detailsFormPage) {
+                        detailsFormPage.classList.remove('active');
+                    }
+                    updateProgressBar(2);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            } else if (step === 3) {
+                // Navigate to details form (only if template is selected)
+                if (selectedThemeValue || window.selectedTemplateId) {
+                    if (detailsFormPage) {
+                        detailsFormPage.classList.add('active');
+                        if (themeSelectionPage) {
+                            themeSelectionPage.classList.remove('active');
+                        }
+                        updateProgressBar(3);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+            } else {
+                    alert('Please select a theme first');
+                }
+            } else if (step === 4) {
+                // Navigate to preview (not implemented yet)
+                alert('Preview step not available yet');
+            }
+        };
+        
+        // Form submission - Capture all form data including template background
         window.submitForm = function() {
-            document.getElementById('invitationForm').submit();
+            const form = document.getElementById('invitationForm');
+            
+            // Capture template background info before submission
+            const templateIdInput = document.getElementById('templateIdInput');
+            const templateImageUrlInput = document.getElementById('templateImageUrlInput');
+            
+            if (selectedTemplateId && templateIdInput) {
+                templateIdInput.value = selectedTemplateId;
+            }
+            
+            if (selectedTemplateImage && templateImageUrlInput) {
+                // Clean the URL
+                let cleanUrl = selectedTemplateImage.split('?')[0].split('#')[0];
+                if (!cleanUrl.startsWith('/images/') && cleanUrl.includes('templatesimages')) {
+                    cleanUrl = cleanUrl.replace(/^.*?templatesimages/, '/images/templatesimages');
+                }
+                templateImageUrlInput.value = cleanUrl;
+            }
+            
+            console.log('Submitting form with template data:', {
+                templateId: selectedTemplateId,
+                templateImage: selectedTemplateImage
+            });
+            
+            form.submit();
         };
 
         window.goBack = function() {
@@ -1278,19 +2372,198 @@
         };
         });
 
-        // Image preview functions
-        function previewImage(input, previewId) {
+        // Image preview functions - Must be global for inline onchange handlers
+        window.previewImage = function(input, previewId) {
             const preview = document.getElementById(previewId);
             if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
                     preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
-                    preview.style.display = 'block';
+                preview.style.display = 'block';
+                    
+                    // Update live preview based on image type
+                    const inputId = input.id;
+                    const imageSrc = e.target.result;
+                    
+                    if (inputId === 'mainImage') {
+                        const mainImg = document.getElementById('previewMainImage');
+                        const mainContainer = document.getElementById('previewMainImageContainer');
+                        if (mainImg && mainContainer) {
+                            mainImg.src = imageSrc;
+                            mainImg.style.display = 'block';
+                            mainImg.style.setProperty('display', 'block', 'important');
+                            mainImg.onerror = function() {
+                                console.error('Error loading main image');
+                            };
+                            mainImg.onload = function() {
+                                mainContainer.style.display = 'block';
+                                mainContainer.style.setProperty('display', 'block', 'important');
+                                mainImg.style.display = 'block';
+                                mainImg.style.setProperty('display', 'block', 'important');
+                                mainImg.style.zIndex = '5';
+                                mainImg.style.setProperty('z-index', '5', 'important');
+                                mainImg.style.position = 'relative';
+                                mainContainer.style.zIndex = '5';
+                                mainContainer.style.setProperty('z-index', '5', 'important');
+                                // Hide icon when main image is shown
+                                const previewIcon = document.getElementById('previewIcon');
+                                if (previewIcon) {
+                                    previewIcon.style.display = 'none';
+                                }
+                                console.log('Main image displayed in preview');
+                            };
+                            // Set z-index and display immediately
+                            mainImg.style.zIndex = '5';
+                            mainImg.style.setProperty('z-index', '5', 'important');
+                            mainImg.style.position = 'relative';
+                            mainContainer.style.zIndex = '5';
+                            mainContainer.style.setProperty('z-index', '5', 'important');
+                            mainContainer.style.display = 'block';
+                            mainContainer.style.setProperty('display', 'block', 'important');
+                            mainImg.style.display = 'block';
+                            mainImg.style.setProperty('display', 'block', 'important');
+                            // Immediate display fallback
+                            setTimeout(() => {
+                                if (mainImg.src) {
+                                    mainContainer.style.display = 'block';
+                                    mainContainer.style.setProperty('display', 'block', 'important');
+                                    mainImg.style.display = 'block';
+                                    mainImg.style.setProperty('display', 'block', 'important');
+                                    mainImg.style.zIndex = '5';
+                                    mainImg.style.setProperty('z-index', '5', 'important');
+                                    mainContainer.style.zIndex = '5';
+                                    mainContainer.style.setProperty('z-index', '5', 'important');
+                                }
+                            }, 100);
+                        }
+                    } else if (inputId === 'brideImage') {
+                        const brideImg = document.getElementById('previewBrideImage');
+                        const brideGroomContainer = document.getElementById('previewBrideGroomContainer');
+                        if (brideImg && brideGroomContainer) {
+                            brideImg.src = imageSrc;
+                            brideImg.style.display = 'block';
+                            brideImg.style.setProperty('display', 'block', 'important');
+                            brideImg.style.zIndex = '5';
+                            brideImg.style.setProperty('z-index', '5', 'important');
+                            brideImg.style.position = 'relative';
+                            brideGroomContainer.style.display = 'flex';
+                            brideGroomContainer.style.setProperty('display', 'flex', 'important');
+                            brideGroomContainer.style.zIndex = '5';
+                            brideGroomContainer.style.setProperty('z-index', '5', 'important');
+                            console.log('Bride image displayed in preview');
+                        }
+                    } else if (inputId === 'groomImage') {
+                        const groomImg = document.getElementById('previewGroomImage');
+                        const brideGroomContainer = document.getElementById('previewBrideGroomContainer');
+                        if (groomImg && brideGroomContainer) {
+                            groomImg.src = imageSrc;
+                            groomImg.style.display = 'block';
+                            groomImg.style.setProperty('display', 'block', 'important');
+                            groomImg.style.zIndex = '5';
+                            groomImg.style.setProperty('z-index', '5', 'important');
+                            groomImg.style.position = 'relative';
+                            brideGroomContainer.style.display = 'flex';
+                            brideGroomContainer.style.setProperty('display', 'flex', 'important');
+                            brideGroomContainer.style.zIndex = '5';
+                            brideGroomContainer.style.setProperty('z-index', '5', 'important');
+                            console.log('Groom image displayed in preview');
+                        }
+                    } else if (inputId === 'birthdayImage') {
+                        const birthdayImg = document.getElementById('previewBirthdayImage');
+                        const birthdayContainer = document.getElementById('previewBirthdayImageContainer');
+                        if (birthdayImg && birthdayContainer) {
+                            birthdayImg.src = imageSrc;
+                            birthdayImg.style.display = 'block';
+                            birthdayImg.style.setProperty('display', 'block', 'important');
+                            birthdayImg.style.zIndex = '5';
+                            birthdayImg.style.setProperty('z-index', '5', 'important');
+                            birthdayImg.style.position = 'relative';
+                            birthdayContainer.style.display = 'block';
+                            birthdayContainer.style.setProperty('display', 'block', 'important');
+                            birthdayContainer.style.zIndex = '5';
+                            birthdayContainer.style.setProperty('z-index', '5', 'important');
+                            console.log('Birthday image displayed in preview');
+                        }
+                    } else if (inputId === 'coupleImage') {
+                        const coupleImg = document.getElementById('previewCoupleImage');
+                        const coupleContainer = document.getElementById('previewCoupleImageContainer');
+                        if (coupleImg && coupleContainer) {
+                            coupleImg.src = imageSrc;
+                            coupleImg.style.display = 'block';
+                            coupleImg.style.setProperty('display', 'block', 'important');
+                            coupleImg.style.zIndex = '5';
+                            coupleImg.style.setProperty('z-index', '5', 'important');
+                            coupleImg.style.position = 'relative';
+                            coupleContainer.style.display = 'block';
+                            coupleContainer.style.setProperty('display', 'block', 'important');
+                            coupleContainer.style.zIndex = '5';
+                            coupleContainer.style.setProperty('z-index', '5', 'important');
+                            console.log('Couple image displayed in preview');
+                        }
+                    } else if (inputId === 'graduateImage') {
+                        const graduateImg = document.getElementById('previewGraduateImage');
+                        const graduateContainer = document.getElementById('previewGraduateImageContainer');
+                        if (graduateImg && graduateContainer) {
+                            graduateImg.src = imageSrc;
+                            graduateImg.style.display = 'block';
+                            graduateImg.style.setProperty('display', 'block', 'important');
+                            graduateImg.style.zIndex = '5';
+                            graduateImg.style.setProperty('z-index', '5', 'important');
+                            graduateImg.style.position = 'relative';
+                            graduateContainer.style.display = 'block';
+                            graduateContainer.style.setProperty('display', 'block', 'important');
+                            graduateContainer.style.zIndex = '5';
+                            graduateContainer.style.setProperty('z-index', '5', 'important');
+                            console.log('Graduate image displayed in preview');
+                        }
+                    } else if (inputId === 'honoreeImage') {
+                        const honoreeImg = document.getElementById('previewHonoreeImage');
+                        const honoreeContainer = document.getElementById('previewHonoreeImageContainer');
+                        if (honoreeImg && honoreeContainer) {
+                            honoreeImg.src = imageSrc;
+                            honoreeImg.style.display = 'block';
+                            honoreeImg.style.setProperty('display', 'block', 'important');
+                            honoreeImg.style.zIndex = '5';
+                            honoreeImg.style.setProperty('z-index', '5', 'important');
+                            honoreeImg.style.position = 'relative';
+                            honoreeContainer.style.display = 'block';
+                            honoreeContainer.style.setProperty('display', 'block', 'important');
+                            honoreeContainer.style.zIndex = '5';
+                            honoreeContainer.style.setProperty('z-index', '5', 'important');
+                            console.log('Honoree image displayed in preview');
+                        }
+                    }
                 };
                 reader.readAsDataURL(input.files[0]);
-            } else {
+                    } else {
                 preview.innerHTML = '';
                 preview.style.display = 'none';
+                
+                // Hide corresponding preview images
+                const inputId = input.id;
+                if (inputId === 'mainImage') {
+                    document.getElementById('previewMainImageContainer').style.display = 'none';
+                } else if (inputId === 'brideImage') {
+                    document.getElementById('previewBrideImage').style.display = 'none';
+                    if (!document.getElementById('previewGroomImage').style.display || 
+                        document.getElementById('previewGroomImage').style.display === 'none') {
+                        document.getElementById('previewBrideGroomContainer').style.display = 'none';
+                    }
+                } else if (inputId === 'groomImage') {
+                    document.getElementById('previewGroomImage').style.display = 'none';
+                    if (!document.getElementById('previewBrideImage').style.display || 
+                        document.getElementById('previewBrideImage').style.display === 'none') {
+                        document.getElementById('previewBrideGroomContainer').style.display = 'none';
+                    }
+                } else if (inputId === 'birthdayImage') {
+                    document.getElementById('previewBirthdayImageContainer').style.display = 'none';
+                } else if (inputId === 'coupleImage') {
+                    document.getElementById('previewCoupleImageContainer').style.display = 'none';
+                } else if (inputId === 'graduateImage') {
+                    document.getElementById('previewGraduateImageContainer').style.display = 'none';
+                } else if (inputId === 'honoreeImage') {
+                    document.getElementById('previewHonoreeImageContainer').style.display = 'none';
+                }
             }
         }
 
@@ -1310,9 +2583,9 @@
                     reader.readAsDataURL(file);
                 });
                 preview.style.display = 'grid';
-            } else {
+                    } else {
                 preview.style.display = 'none';
-            }
-        }
+                    }
+                }
     </script>
 {% endblock %}

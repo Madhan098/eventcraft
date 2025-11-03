@@ -3,14 +3,9 @@ const CACHE_NAME = 'eventcraft-pro-v2';
 const urlsToCache = [
     '/',
     '/static/css/style.css',
-    '/static/js/app.js',
-    '/images/birthday.jpg',
-    '/images/anniversery.jpg',
-    '/images/babyshower.jpg',
-    '/images/graduation.jpg',
-    '/images/retirement.jpg',
-    '/images/corporateevent.jpg',
-    '/images/templateselection/wed.jpg'
+    '/static/js/app.js'
+    // Only cache images that actually exist
+    // Removed non-existent images to prevent 404 errors
 ];
 
 // Install event

@@ -169,7 +169,38 @@ def register_routes(app):
     @app.route('/images/<path:filename>')
     def serve_image(filename):
         """Serve images from the root images folder and subdirectories"""
-        return send_from_directory('images', filename)
+        try:
+            import os
+            from pathlib import Path
+            
+            # Handle subdirectories like templatesimages/filename.png
+            if '/' in filename:
+                # Build the full path
+                image_path = os.path.join('images', filename)
+                # Check if file exists
+                if os.path.exists(image_path) and os.path.isfile(image_path):
+                    # Extract directory and filename
+                    parts = filename.split('/')
+                    directory = '/'.join(parts[:-1])
+                    file = parts[-1]
+                    full_path = os.path.join('images', directory)
+                    return send_from_directory(full_path, file)
+                else:
+                    app.logger.warning(f"Image not found: {image_path}")
+                    return "Image not found", 404
+            else:
+                # Direct file in images folder
+                image_path = os.path.join('images', filename)
+                if os.path.exists(image_path) and os.path.isfile(image_path):
+                    return send_from_directory('images', filename)
+                else:
+                    app.logger.warning(f"Image not found: {image_path}")
+                    return "Image not found", 404
+        except Exception as e:
+            app.logger.error(f"Error serving image {filename}: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return "Image not found", 404
 
     @app.route('/auth')
     def auth():
@@ -711,10 +742,261 @@ def register_routes(app):
         # Optimize: Only fetch active event types
         event_types = EventType.query.filter_by(is_active=True).order_by(EventType.sort_order.asc()).all()
         
-        # Fetch templates efficiently - limit to active templates only
-        templates = Template.query.filter_by(is_active=True).limit(50).all()
+        # Fetch all active templates - Only templates with images from templatesimages/
+        templates = Template.query.filter_by(is_active=True)\
+            .filter(Template.preview_image.like('/images/templatesimages/%'))\
+            .order_by(Template.created_at.desc()).all()
         
         return render_template('templates.html', event_types=event_types, templates=templates)
+
+    @app.route('/admin/sync-template-images', methods=['POST'])
+    def sync_template_images():
+        """Sync templates from images/templatesimages folder to database"""
+        if not is_admin():
+            return jsonify({'success': False, 'message': 'Access denied'}), 403
+        
+        try:
+            from pathlib import Path
+            
+            templates_folder = Path('images/templatesimages')
+            
+            if not templates_folder.exists():
+                return jsonify({
+                    'success': False,
+                    'message': f'Folder {templates_folder} does not exist!'
+                }), 400
+            
+            template_images = list(templates_folder.glob('*.png')) + list(templates_folder.glob('*.jpg')) + list(templates_folder.glob('*.jpeg'))
+            
+            imported_count = 0
+            updated_count = 0
+            
+            # Ensure wedding event type exists
+            wedding_type = EventType.query.filter_by(name='wedding').first()
+            if not wedding_type:
+                wedding_type = EventType(
+                    name='wedding',
+                    display_name='Wedding',
+                    description='Celebrate the union of two hearts',
+                    icon='fas fa-heart',
+                    color='#e91e63',
+                    sort_order=1,
+                    is_active=True
+                )
+                db.session.add(wedding_type)
+                db.session.commit()
+            
+            for img_path in template_images:
+                # Extract template name from filename
+                filename = img_path.stem
+                filename_lower = filename.lower()
+                
+                # Determine event type from filename
+                event_type = 'birthday'  # Default
+                if 'wedding' in filename_lower:
+                    event_type = 'wedding'
+                elif 'birthday' in filename_lower:
+                    event_type = 'birthday'
+                elif 'anniversary' in filename_lower:
+                    event_type = 'anniversary'
+                elif 'babyshower' in filename_lower or 'baby' in filename_lower:
+                    event_type = 'babyshower'
+                elif 'graduation' in filename_lower:
+                    event_type = 'graduation'
+                elif 'retirement' in filename_lower:
+                    event_type = 'retirement'
+                
+                # Generate template name from filename
+                template_name = filename
+                
+                # Clean up the name - remove common suffixes
+                template_name = template_name.replace(' Mobile Video', '').replace(' Mobile', '').strip()
+                template_name = template_name.replace('_', ' ').replace('-', ' ')
+                
+                # Capitalize properly
+                words = template_name.split()
+                template_name = ' '.join(word.capitalize() for word in words)
+                
+                # Handle specific patterns
+                if 'ballonbirthday' in filename_lower or 'ballon birthday' in filename_lower:
+                    template_name = 'Balloon Birthday'
+                elif 'birthdayblackgold' in filename_lower or 'birthday black gold' in filename_lower:
+                    template_name = 'Black Gold Birthday'
+                elif 'birthdaycolourful' in filename_lower or 'birthday colourful' in filename_lower:
+                    template_name = 'Colorful Birthday'
+                elif 'cream and pink floral wedding' in filename_lower:
+                    template_name = 'Cream and Pink Floral Wedding'
+                elif 'pastel romantic wedding' in filename_lower:
+                    template_name = 'Pastel Romantic Wedding'
+                elif filename_lower == 'wedding':
+                    template_name = 'Elegant Wedding'
+                
+                if not template_name:
+                    template_name = filename.replace('_', ' ').title()
+                
+                # Image path relative to images folder
+                image_path = f'/images/templatesimages/{img_path.name}'
+                
+                # Check if template exists (by name and event type to avoid duplicates)
+                existing_template = Template.query.filter_by(name=template_name, event_type=event_type).first()
+                
+                if existing_template:
+                    # Update existing template
+                    existing_template.preview_image = image_path
+                    existing_template.is_active = True
+                    updated_count += 1
+                else:
+                    # Create new template
+                    new_template = Template(
+                        name=template_name,
+                        description=f'Elegant {template_name} invitation template',
+                        event_type=event_type,
+                        religious_type='general',
+                        style='modern',
+                        color_scheme='A07878',
+                        preview_image=image_path,
+                        is_active=True
+                    )
+                    db.session.add(new_template)
+                    imported_count += 1
+            
+            db.session.commit()
+            
+            return jsonify({
+                'success': True,
+                'message': f'Successfully synced templates from folder',
+                'imported': imported_count,
+                'updated': updated_count,
+                'total': imported_count + updated_count
+            })
+            
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Error syncing template images: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return jsonify({
+                'success': False,
+                'message': f'Error syncing templates: {str(e)}'
+            }), 500
+
+    @app.route('/admin/import-templates', methods=['POST'])
+    def import_templates():
+        """Import templates from external Momento site"""
+        if not is_admin():
+            return jsonify({'success': False, 'message': 'Access denied'}), 403
+        
+        try:
+            # Fetch templates from Momento site
+            external_url = 'https://momento-33ed8a78.base44.app/createinvite'
+            
+            # Try to get templates - this might require API endpoint or scraping
+            # For now, we'll create a manual import function
+            # You may need to inspect the site's API or HTML structure
+            
+            response = requests.get(external_url, timeout=10)
+            if response.status_code != 200:
+                return jsonify({
+                    'success': False, 
+                    'message': f'Failed to fetch from external site: {response.status_code}'
+                }), 400
+            
+            # Parse the response - this depends on the actual structure of the site
+            # You may need to adjust based on how templates are returned
+            # For now, we'll provide a structure that can be extended
+            
+            imported_count = 0
+            
+            # Example: If the site returns JSON templates
+            try:
+                data = response.json()
+                templates_data = data.get('templates', [])
+                
+                for template_data in templates_data:
+                    # Extract template information
+                    name = template_data.get('name', f'Template {len(Template.query.all()) + 1}')
+                    event_type = template_data.get('event_type', 'birthday')
+                    preview_image = template_data.get('preview_image', '')
+                    description = template_data.get('description', '')
+                    style = template_data.get('style', 'modern')
+                    color_scheme = template_data.get('color_scheme', '')
+                    
+                    # Check if template already exists
+                    existing = Template.query.filter_by(name=name, event_type=event_type).first()
+                    if not existing:
+                        new_template = Template(
+                            name=name,
+                            description=description,
+                            event_type=event_type,
+                            religious_type='general',
+                            style=style,
+                            color_scheme=color_scheme,
+                            preview_image=preview_image,
+                            is_active=True
+                        )
+                        db.session.add(new_template)
+                        imported_count += 1
+                        
+            except (ValueError, KeyError) as e:
+                # If not JSON, try parsing HTML
+                from bs4 import BeautifulSoup
+                try:
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    # Extract template data from HTML - adjust selectors based on actual structure
+                    template_cards = soup.find_all('div', class_='template-card') or soup.find_all('div', {'data-template': True})
+                    
+                    for card in template_cards:
+                        name = card.get('data-name') or card.find('h3') or 'Unknown Template'
+                        if isinstance(name, type(soup)):
+                            name = name.text.strip() if hasattr(name, 'text') else str(name)
+                        
+                        # Try to extract image
+                        img = card.find('img')
+                        preview_image = img.get('src', '') if img else ''
+                        
+                        # Create template if it doesn't exist
+                        existing = Template.query.filter_by(name=name).first()
+                        if not existing:
+                            new_template = Template(
+                                name=name,
+                                description=f'Imported from Momento',
+                                event_type='birthday',  # Default, can be updated
+                                religious_type='general',
+                                style='modern',
+                                preview_image=preview_image,
+                                is_active=True
+                            )
+                            db.session.add(new_template)
+                            imported_count += 1
+                            
+                except Exception as html_error:
+                    # If parsing fails, provide manual import option
+                    return jsonify({
+                        'success': False,
+                        'message': f'Could not parse templates. You may need to add them manually. Error: {str(html_error)}',
+                        'suggestion': 'Visit the site and manually add templates through the admin panel'
+                    }), 400
+            
+            db.session.commit()
+            
+            return jsonify({
+                'success': True,
+                'message': f'Successfully imported {imported_count} templates',
+                'count': imported_count
+            })
+            
+        except requests.RequestException as e:
+            return jsonify({
+                'success': False,
+                'message': f'Failed to connect to external site: {str(e)}'
+            }), 500
+        except Exception as e:
+            db.session.rollback()
+            app.logger.error(f"Error importing templates: {str(e)}")
+            return jsonify({
+                'success': False,
+                'message': f'Error importing templates: {str(e)}'
+            }), 500
 
     @app.route('/preview-template/<template_name>')
     def preview_template(template_name):
@@ -1080,64 +1362,6 @@ def register_routes(app):
         """Show preview modal for a template"""
         return render_template('invitation/preview_modal.html', template_name=template_name)
 
-    @app.route('/template-selector-demo')
-    def template_selector_demo():
-        # Public demo of template selector with images
-        # Sample event data for demo
-        event_data = {
-            'eventTitle': 'Wedding Celebration',
-            'eventDate': 'December 25, 2024',
-            'eventTime': '6:00 PM',
-            'venue': 'Grand Palace Hotel',
-            'hostName': 'John & Jane Smith',
-            'eventType': 'wedding'
-        }
-        
-        # Create sample templates for demo
-        templates = [
-            {'id': 1, 'name': 'Wedding Elegant', 'type': 'wedding'},
-            {'id': 2, 'name': 'Birthday Fun', 'type': 'birthday'},
-            {'id': 3, 'name': 'Anniversary Golden', 'type': 'anniversary'},
-            {'id': 4, 'name': 'Baby Shower Sweet', 'type': 'babyshower'}
-        ]
-        
-        return render_template('invitation/template_selector.html', 
-                             templates=templates, 
-                             event_data=event_data)
-
-    @app.route('/template-selector')
-    def template_selector():
-        # Template selector page with visual previews
-        if not is_authenticated():
-            flash('Please login to create an invitation', 'error')
-            return redirect(url_for('auth'))
-        
-        # Get event data from session or create sample data
-        event_data = {
-            'eventTitle': session.get('event_title', 'Wedding Celebration'),
-            'eventDate': session.get('event_date', 'December 25, 2024'),
-            'eventTime': session.get('event_time', '6:00 PM'),
-            'venue': session.get('venue', 'Grand Palace Hotel'),
-            'hostName': session.get('host_name', 'John & Jane Smith'),
-            'eventType': session.get('event_type', 'wedding')
-        }
-        
-        # Get available templates
-        templates = Template.query.filter_by(is_active=True).all()
-        
-        return render_template('invitation/template_selector.html', 
-                             event_data=event_data, 
-                             templates=templates)
-
-    @app.route('/zety-form')
-    def zety_form():
-        # Zety-style form interface
-        return render_template('invitation/zety_style_form.html')
-
-    @app.route('/zety-perfect')
-    def zety_perfect():
-        # Perfect Zety-style form interface
-        return render_template('invitation/zety_perfect_form.html')
 
     @app.route('/create-invitation')
     def create_invitation():
@@ -1147,7 +1371,12 @@ def register_routes(app):
         
         # Get template and event_type parameters
         selected_template = request.args.get('template')
+        template_id = request.args.get('template_id')  # Template ID from database
         event_type = request.args.get('event_type', 'birthday')  # Default to birthday
+        
+        # If no template is selected, redirect to templates page to select event and template first
+        if not selected_template and not template_id:
+            return redirect(url_for('templates'))
         
         # Get current user information
         try:
@@ -1163,22 +1392,42 @@ def register_routes(app):
             flash('Error retrieving user information', 'error')
             return redirect(url_for('auth'))
         
-        # Fetch templates for the event type - Optimized query with limit
-        templates = Template.query.filter_by(event_type=event_type, is_active=True).limit(12).all()
+        # If template_id is provided, fetch the template from database
+        if template_id:
+            try:
+                template = Template.query.get(int(template_id))
+                if template:
+                    selected_template = template.name
+                    event_type = template.event_type  # Use template's event type
+            except (ValueError, TypeError):
+                pass
         
-        # If no templates found, get limited active templates
-        if not templates:
-            templates = Template.query.filter_by(is_active=True).limit(12).all()
+        # Fetch templates for the selected event type - Only templates with images from templatesimages/
+        templates = Template.query.filter_by(event_type=event_type, is_active=True)\
+            .filter(Template.preview_image.like('/images/templatesimages/%'))\
+            .order_by(Template.name.asc()).all()
+        
+        # Also fetch all active templates for theme selection page - Only with templatesimages/
+        all_templates = Template.query.filter_by(is_active=True)\
+            .filter(Template.preview_image.like('/images/templatesimages/%'))\
+            .order_by(Template.event_type.asc(), Template.name.asc()).all()
         
         # Optimize: Only fetch active event types
         event_types = EventType.query.filter_by(is_active=True).order_by(EventType.sort_order.asc()).limit(10).all()
         
+        # Determine which step to show
+        # If template is selected, go directly to details form, otherwise show theme selection
+        show_details = bool(selected_template or template_id)
+        
         return render_template('invitation/create.html', 
                              event_types=event_types, 
                              selected_template=selected_template,
+                             template_id=template_id if 'template_id' in locals() else None,
                              templates=templates,
+                             all_templates=all_templates,
                              event_type=event_type,
-                             current_user=current_user)
+                             current_user=current_user,
+                             show_details=show_details)
 
     @app.route('/create-invitation', methods=['POST'])
     def create_invitation_post():
@@ -1189,6 +1438,8 @@ def register_routes(app):
         try:
             data = request.form
             selected_template = data.get('selectedTemplate', '')
+            template_id = data.get('templateId', '')
+            template_image_url = data.get('templateImageUrl', '')
             
             # Validate required fields
             if not data.get('eventTitle'):
@@ -1308,7 +1559,9 @@ def register_routes(app):
                 # Font and language customization
                 customization_data=json.dumps({
                     'font_style': data.get('fontStyle', 'default'),
-                    'language': data.get('language', 'english')
+                    'language': data.get('language', 'english'),
+                    'template_id': template_id,
+                    'template_image_url': template_image_url
                 }),
 
                 # Generate unique share URL
@@ -1353,13 +1606,6 @@ def register_routes(app):
     def test():
         return 'Flask app is working!'
 
-    @app.route('/test-template')
-    def test_template():
-        return render_template('test_simple.html')
-
-    @app.route('/test-dashboard')
-    def test_dashboard():
-        return 'Dashboard route is working!'
 
     @app.route('/about')
     def about():
@@ -1379,10 +1625,6 @@ def register_routes(app):
         return render_template('help.html')
 
 
-    @app.route('/drag-drop-editor')
-    def drag_drop_editor():
-        """Drag and drop editor page"""
-        return render_template('invitation/drag_drop_editor.html')
 
 
     # API Routes for Sharing

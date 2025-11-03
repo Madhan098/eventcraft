@@ -40,6 +40,34 @@
     .text-shadow {
         text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5) !important;
     }
+    
+    /* Template design overlay image - appears on all invitation cards */
+    .invitation-card {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .invitation-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/images/templatesimages/image.png') !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        opacity: 0.6 !important;
+        z-index: 1;
+        pointer-events: none;
+    }
+    
+    /* Ensure all content appears above the overlay */
+    .invitation-card > * {
+        position: relative;
+        z-index: 2;
+    }
 </style>
 {% endblock %}
 

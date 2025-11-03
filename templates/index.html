@@ -430,9 +430,10 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: var(--bg-image);
+    background: var(--bg-image);
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     filter: blur(8px);
     z-index: 0;
 }
@@ -482,29 +483,29 @@ body {
     color: var(--reddish-brown-dark);
 }
 
-/* Background Images for Categories */
+/* Background Images for Categories - Use gradient fallbacks */
 .category-card[data-category="wedding"] {
-    --bg-image: url('/images/weddingelegant.jpg');
+    --bg-image: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
 }
 
 .category-card[data-category="birthday"] {
-    --bg-image: url('/images/birthday.jpg');
+    --bg-image: linear-gradient(135deg, var(--golden-yellow) 0%, var(--reddish-brown) 100%);
 }
 
 .category-card[data-category="corporate"] {
-    --bg-image: url('/images/corporateevent.jpg');
+    --bg-image: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--text-dark) 100%);
 }
 
 .category-card[data-category="babyshower"] {
-    --bg-image: url('/images/babyshower.jpg');
+    --bg-image: linear-gradient(135deg, #FFB6C1 0%, var(--golden-yellow) 100%);
 }
 
 .category-card[data-category="anniversary"] {
-    --bg-image: url('/images/anniversery.jpg');
+    --bg-image: linear-gradient(135deg, var(--golden-yellow) 0%, var(--reddish-brown-dark) 100%);
 }
 
 .category-card[data-category="custom"] {
-    --bg-image: url('/images/graduation.jpg');
+    --bg-image: linear-gradient(135deg, var(--reddish-brown) 0%, var(--golden-yellow) 100%);
 }
 
 /* Testimonials Section */

@@ -171,6 +171,24 @@ body {
     transition: all var(--transition);
     position: relative;
     cursor: pointer;
+    overflow: hidden;
+}
+
+/* Template design overlay image - appears on all template preview cards */
+.theme-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/images/templatesimages/image.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    opacity: 0.6 !important;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .theme-card:hover {
@@ -197,9 +215,49 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Card Image Wrapper */
+.card-image-wrapper {
+        width: 100%;
+    height: 250px;
+        border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    background: var(--bg-cream);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}
+
+.theme-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition);
+    display: block;
+    background: var(--bg-cream);
+}
+
+.theme-card:hover .theme-preview-image {
+        transform: scale(1.05);
+}
+
+/* Ensure image wrapper is visible */
+.card-image-wrapper {
+            display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 /* Card Content */
 .card-content {
     position: relative;
+    z-index: 1;
+}
+
+/* Card Image Wrapper should also be above overlay */
+.card-image-wrapper {
+    position: relative;
+    z-index: 1;
 }
 
 .card-title {
@@ -378,7 +436,62 @@ body {
 <!-- Theme Cards Grid -->
 <section class="themes-section">
     <div class="themes-grid" id="themesGrid">
-        <!-- Modern Minimal -->
+        {% if templates %}
+            {% for template in templates %}
+                {% if template.preview_image %}
+                {% set template_name_slug = template.name|replace(' ', '_')|lower %}
+                {% set template_img = template.preview_image if template.preview_image else '/static/images/templateselection/naming cermony.jpg' %}
+                {% if template_img and not template_img.startswith('http') %}
+                    {% if template_img.startswith('/images/') %}
+                        {% set template_img = template_img %}
+                    {% elif template_img.startswith('/static/images/') and 'templatesimages' in template_img %}
+                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
+                    {% elif 'templatesimages' in template_img %}
+                        {% if not template_img.startswith('/') %}
+                            {% set template_img = '/images/' + template_img %}
+                        {% else %}
+                            {% set template_img = template_img %}
+                        {% endif %}
+                    {% elif template_img.endswith(('.jpg', '.jpeg', '.png', '.gif')) and not '/' in template_img %}
+                        {# Just filename like "wed.jpg" or "birthday.jpg" - check if it's likely a templatesimages file #}
+                        {% if 'wed' in template_img|lower or 'birthday' in template_img|lower or 'corporate' in template_img|lower or 'ballon' in template_img|lower or 'graduation' in template_img|lower %}
+                            {% set template_img = '/images/templatesimages/' + template_img %}
+                        {% elif not template_img.startswith('/') %}
+                            {% set template_img = '/static/images/' + template_img %}
+                        {% endif %}
+                    {% elif not template_img.startswith('/') %}
+                        {% set template_img = '/static/images/' + template_img %}
+                    {% endif %}
+                {% endif %}
+                <div class="theme-card" data-category="{{ template.event_type|lower }}" data-event-type="{{ template.event_type|lower }}" data-template-id="{{ template.id }}">
+                    <div class="card-image-wrapper" style="display: flex; visibility: visible; opacity: 1;">
+                        <img src="{{ template_img }}" alt="{{ template.name }}" class="theme-preview-image" loading="lazy" 
+                             style="display: block; width: 100%; height: 100%; object-fit: cover;"
+                             onerror="console.error('Image failed to load: {{ template_img }}'); this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.alt='{{ template.name }}';"
+                             onload="console.log('Template image loaded: {{ template.name }}');">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">{{ template.name }}</h3>
+                        <p class="card-description">{{ template.description if template.description else 'Beautiful invitation template' }}</p>
+                        <div class="card-tags">
+                            <span class="tag">{{ template.event_type|lower }}</span>
+                            {% if template.style %}
+                            <span class="tag">{{ template.style|lower }}</span>
+                            {% endif %}
+                        </div>
+                        <a href="/create-invitation?template_id={{ template.id }}&event_type={{ template.event_type }}" class="use-theme-btn">
+                            Use This Theme
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        
+        <!-- Fallback Templates (only show if no database templates) -->
+        {% if not templates or templates|length == 0 %}
+        <!-- Modern Minimal (Fallback) -->
         <div class="theme-card" data-category="wedding corporate engagement">
             <div class="color-palette">
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
@@ -392,21 +505,21 @@ body {
                     <span class="tag">wedding</span>
                     <span class="tag">corporate</span>
                     <span class="tag">engagement</span>
-                        </div>
+                </div>
                 <a href="/create-invitation?template=modern_minimal" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                    </div>
-                    </div>
-            
+            </div>
+        </div>
+        
         <!-- Floral Luxury -->
         <div class="theme-card" data-category="wedding babyshower anniversary">
             <div class="color-palette">
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
                 <div class="color-circle" style="background: #90EE90;"></div>
                 <div class="color-circle" style="background: var(--golden-yellow);"></div>
-                    </div>
+            </div>
             <div class="card-content">
                 <h3 class="card-title">Floral Luxury</h3>
                 <p class="card-description">Elegant botanical designs with golden accents</p>
@@ -414,21 +527,21 @@ body {
                     <span class="tag">wedding</span>
                     <span class="tag">baby shower</span>
                     <span class="tag">anniversary</span>
-                </div>
+        </div>
                 <a href="/create-invitation?template=floral_luxury" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-            </div>
-        </div>
-        
+    </div>
+                </div>
+                
         <!-- Royal Gold -->
         <div class="theme-card" data-category="wedding anniversary corporate">
             <div class="color-palette">
                 <div class="color-circle" style="background: #000000;"></div>
                 <div class="color-circle" style="background: var(--golden-yellow);"></div>
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-            </div>
+                </div>
             <div class="card-content">
                 <h3 class="card-title">Royal Gold</h3>
                 <p class="card-description">Opulent and regal with metallic brilliance</p>
@@ -436,13 +549,13 @@ body {
                     <span class="tag">wedding</span>
                     <span class="tag">anniversary</span>
                     <span class="tag">corporate</span>
-        </div>
+                    </div>
                 <a href="/create-invitation?template=royal_gold" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-    </div>
-                </div>
+                            </div>
+                            </div>
                 
         <!-- Watercolor Dreams -->
         <div class="theme-card" data-category="birthday babyshower engagement">
@@ -450,7 +563,7 @@ body {
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
                 <div class="color-circle" style="background: #DDA0DD;"></div>
                 <div class="color-circle" style="background: #90EE90;"></div>
-                </div>
+                        </div>
             <div class="card-content">
                 <h3 class="card-title">Watercolor Dreams</h3>
                 <p class="card-description">Soft, artistic washes of color</p>
@@ -463,9 +576,9 @@ body {
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                            </div>
-                            </div>
-                
+                    </div>
+                </div>
+
         <!-- Dark Chic -->
         <div class="theme-card" data-category="corporate birthday anniversary">
             <div class="color-palette">
@@ -572,7 +685,8 @@ body {
                     <i class="fas fa-arrow-right"></i>
                 </a>
                         </div>
-        </div>
+                        </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
@@ -595,9 +709,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Filter cards
             themeCards.forEach(card => {
-                const categories = card.dataset.category.split(' ');
+                const eventType = card.dataset.eventType || '';
+                const categories = card.dataset.category ? card.dataset.category.split(' ') : [];
                 
-                if (filter === 'all' || categories.includes(filter)) {
+                // Check both event-type and category for compatibility
+                const matches = filter === 'all' || 
+                               eventType === filter || 
+                               categories.includes(filter);
+                
+                if (matches) {
                     card.style.display = 'block';
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(20px)';
@@ -620,16 +740,55 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Initial animation
+    // Initial animation - make sure all cards are visible
     themeCards.forEach((card, index) => {
+        card.style.display = 'block'; // Ensure display is set
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
+        
+        // Make sure image wrappers are visible immediately
+        const imageWrappers = card.querySelectorAll('.card-image-wrapper');
+        imageWrappers.forEach(wrapper => {
+            wrapper.style.display = 'flex';
+            wrapper.style.visibility = 'visible';
+            wrapper.style.opacity = '1';
+            wrapper.style.height = '250px';
+        });
+        
+        // Make sure images are visible immediately
+        const images = card.querySelectorAll('.theme-preview-image');
+        images.forEach(img => {
+            img.style.display = 'block';
+            img.style.visibility = 'visible';
+            img.style.opacity = '1';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+        });
         
         setTimeout(() => {
             card.style.transition = 'all 0.4s ease';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
         }, index * 100);
+    });
+    
+    // Log templates count for debugging
+    console.log('Total theme cards found:', themeCards.length);
+    const dbTemplateCards = document.querySelectorAll('.theme-card[data-template-id]');
+    console.log('Database template cards:', dbTemplateCards.length);
+    
+    // Log all image sources for debugging
+    const allImages = document.querySelectorAll('.theme-preview-image');
+    console.log('Total images found:', allImages.length);
+    allImages.forEach((img, idx) => {
+        console.log(`Image ${idx + 1}:`, {
+            src: img.src,
+            alt: img.alt,
+            complete: img.complete,
+            naturalWidth: img.naturalWidth,
+            naturalHeight: img.naturalHeight
+        });
     });
 });
 </script>

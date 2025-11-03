@@ -8,11 +8,12 @@
     <meta http-equiv="Expires" content="0">
     <title>{% block title %}EventCraft Pro - Clean Digital Invitations{% endblock %}</title>
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png">
+    <!-- Favicon (optional - remove if files don't exist) -->
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" onerror="this.remove()">
+    <!-- Favicon fallback - only load if exists -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png" onerror="this.remove()">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png" onerror="this.remove()">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png" onerror="this.remove()">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -3396,58 +3397,6 @@
             }
         }
 
-        /* Welcome offer modal styles */
-        .welcome-offer-modal {
-            border-radius: 20px;
-            border: none;
-            box-shadow: var(--shadow-lg);
-            background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-            color: white;
-        }
-
-        .welcome-offer-icon {
-            animation: bounce 2s infinite;
-        }
-
-        .offer-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            color: white;
-        }
-
-        .welcome-offer-modal .btn-close {
-            filter: invert(1);
-        }
-
-        .welcome-offer-modal .btn-primary {
-            background: white;
-            color: var(--reddish-brown-dark);
-            border: none;
-            font-weight: 600;
-            padding: 12px 24px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .welcome-offer-modal .btn-primary:hover {
-            background: #f8f9fa;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-
-        .welcome-offer-modal .btn-outline-secondary {
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3);
-            background: transparent;
-        }
-
-        .welcome-offer-modal .btn-outline-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            color: white;
-        }
 
         /* Performance optimization styles */
         .lazy-image {
@@ -3653,45 +3602,6 @@
         </div>
     </div>
 
-    <!-- Welcome Offer Popup -->
-    <div id="welcomeOfferModal" class="modal fade" tabindex="-1" aria-labelledby="welcomeOfferModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content welcome-offer-modal">
-                <div class="modal-header border-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center p-4">
-                    <div class="welcome-offer-icon mb-3">
-                        <i class="fas fa-gift fa-3x text-primary"></i>
-                    </div>
-                    <h4 class="modal-title mb-3">Welcome to EventCraft Pro! 🎉</h4>
-                    <p class="text-muted mb-4">Get started with our premium features and create stunning invitations in minutes.</p>
-                    <div class="welcome-offer-content">
-                        <div class="offer-item mb-2">
-                            <i class="fas fa-check text-success me-2"></i>
-                            <span>Free access to all premium templates</span>
-                        </div>
-                        <div class="offer-item mb-2">
-                            <i class="fas fa-check text-success me-2"></i>
-                            <span>Unlimited invitations for 30 days</span>
-                        </div>
-                        <div class="offer-item mb-3">
-                            <i class="fas fa-check text-success me-2"></i>
-                            <span>Advanced analytics and tracking</span>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <a href="{{ url_for('auth') }}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-rocket me-2"></i>Start Creating Free
-                        </a>
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Maybe Later
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Scroll Progress Indicator -->
     <div class="scroll-progress" id="scrollProgress"></div>
@@ -4676,31 +4586,6 @@
                 hideLoading();
             });
 
-            // Show welcome offer for new users
-            function showWelcomeOffer() {
-                // Check if user has seen the welcome offer before
-                const hasSeenOffer = localStorage.getItem('eventcraft_welcome_seen');
-                const isNewUser = !sessionStorage.getItem('eventcraft_user_visited');
-                
-                if (!hasSeenOffer && isNewUser) {
-                    // Mark as visited
-                    sessionStorage.setItem('eventcraft_user_visited', 'true');
-                    
-                    // Show modal after a short delay
-                    setTimeout(() => {
-                        const modal = new bootstrap.Modal(document.getElementById('welcomeOfferModal'));
-                        modal.show();
-                        
-                        // Mark as seen when modal is closed
-                        document.getElementById('welcomeOfferModal').addEventListener('hidden.bs.modal', function() {
-                            localStorage.setItem('eventcraft_welcome_seen', 'true');
-                        });
-                    }, 2000);
-                }
-            }
-            
-            // Show welcome offer
-            showWelcomeOffer();
 
             // Performance optimization - Lazy loading
             function initLazyLoading() {
@@ -4737,10 +4622,10 @@
 
             // Preload critical resources
             function preloadCriticalResources() {
+                // Only preload images that actually exist
                 const criticalImages = [
-                    '/images/templateselection/wed.jpg',
-                    '/images/birthday.jpg',
-                    '/images/corporateevent.jpg'
+                    // Add only images that are confirmed to exist
+                    // '/images/templatesimages/wedding.png'
                 ];
 
                 criticalImages.forEach(src => {
@@ -4900,155 +4785,6 @@
             }
         }
         
-        // 🌟 Global Page Loading Screen with Page-Specific Messages - Runs Immediately
-        (function() {
-            // Determine current page
-            const path = window.location.pathname;
-            let loadingMessage = 'Loading amazing content...';
-            let loadingIcon = '✨';
-            
-            if (path.includes('/templates') || path.includes('/template')) {
-                loadingMessage = 'Wonderful templates are loading for you, please wait...';
-                loadingIcon = '🎨';
-            } else if (path.includes('/create-invitation') || path.includes('/create')) {
-                loadingMessage = 'Preparing your invitation creator, please wait...';
-                loadingIcon = '📝';
-            } else if (path.includes('/dashboard')) {
-                loadingMessage = 'Fetching your dashboard, please wait...';
-                loadingIcon = '📊';
-            } else if (path.includes('/analytics')) {
-                loadingMessage = 'Gathering your analytics, please wait...';
-                loadingIcon = '📈';
-            } else if (path.includes('/about')) {
-                loadingMessage = 'Loading our story, please wait...';
-                loadingIcon = '👥';
-            } else if (path.includes('/contact')) {
-                loadingMessage = 'Preparing contact form, please wait...';
-                loadingIcon = '💌';
-            } else if (path.includes('/auth') || path.includes('/login') || path.includes('/register')) {
-                loadingMessage = 'Setting up your account, please wait...';
-                loadingIcon = '🔐';
-            } else if (path.includes('/invitation/view') || path.includes('/invitation/final')) {
-                loadingMessage = 'Loading your beautiful invitation, please wait...';
-                loadingIcon = '💌';
-            } else {
-                loadingMessage = 'Loading amazing content...';
-                loadingIcon = '✨';
-            }
-            
-            // Create loading overlay
-            const loadingOverlay = document.createElement('div');
-            loadingOverlay.id = 'global-loading-overlay';
-            loadingOverlay.innerHTML = `
-                <div class="loading-content">
-                    <div class="loading-icon">${loadingIcon}</div>
-                    <div class="loading-spinner-animated"></div>
-                    <div class="loading-message">${loadingMessage}</div>
-                    <div class="loading-progress">
-                        <div class="loading-progress-bar"></div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(loadingOverlay);
-            
-            // Prevent navigation during loading
-            document.body.style.overflow = 'hidden';
-            
-            // Hide loading screen when page is fully loaded - Faster loading
-            window.addEventListener('load', function() {
-                setTimeout(function() {
-                    loadingOverlay.style.opacity = '0';
-                    loadingOverlay.style.transition = 'opacity 0.3s ease-out';
-                    setTimeout(function() {
-                        loadingOverlay.remove();
-                        document.body.style.overflow = '';
-                    }, 300);
-                }, 100); // Reduced from 300ms to 100ms
-            });
-            
-            // Also hide when DOM is ready (faster for most pages)
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function() {
-                    setTimeout(function() {
-                        if (loadingOverlay && loadingOverlay.parentNode) {
-                            loadingOverlay.style.opacity = '0';
-                            loadingOverlay.style.transition = 'opacity 0.3s ease-out';
-                            setTimeout(function() {
-                                if (loadingOverlay && loadingOverlay.parentNode) {
-                                    loadingOverlay.remove();
-                                    document.body.style.overflow = '';
-                                }
-                            }, 300);
-                        }
-                    }, 150);
-                });
-            }
-            
-            // Show loading on page navigation - Prevent navigation during loading
-            document.addEventListener('click', function(e) {
-                const link = e.target.closest('a');
-                if (link && link.href && !link.href.includes('#')) {
-                    const href = link.getAttribute('href');
-                    if (href && !href.startsWith('javascript:') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('#')) {
-                        // Check if it's an internal link
-                        if (href.startsWith('/') || (href.includes(window.location.hostname) && !href.startsWith('http'))) {
-                            e.preventDefault();
-                            
-                            // Determine loading message for next page
-                            let nextMessage = 'Loading amazing content...';
-                            let nextIcon = '✨';
-                            
-                            if (href.includes('/templates') || href.includes('/template')) {
-                                nextMessage = 'Wonderful templates are loading for you, please wait...';
-                                nextIcon = '🎨';
-                            } else if (href.includes('/create-invitation') || href.includes('/create')) {
-                                nextMessage = 'Preparing your invitation creator, please wait...';
-                                nextIcon = '📝';
-                            } else if (href.includes('/dashboard')) {
-                                nextMessage = 'Fetching your dashboard, please wait...';
-                                nextIcon = '📊';
-                            } else if (href.includes('/analytics')) {
-                                nextMessage = 'Gathering your analytics, please wait...';
-                                nextIcon = '📈';
-                            } else if (href.includes('/about')) {
-                                nextMessage = 'Loading our story, please wait...';
-                                nextIcon = '👥';
-                            } else if (href.includes('/contact')) {
-                                nextMessage = 'Preparing contact form, please wait...';
-                                nextIcon = '💌';
-                            } else if (href.includes('/auth') || href.includes('/login') || href.includes('/register')) {
-                                nextMessage = 'Setting up your account, please wait...';
-                                nextIcon = '🔐';
-                            } else if (href.includes('/invitation/view') || href.includes('/invitation/final')) {
-                                nextMessage = 'Loading your beautiful invitation, please wait...';
-                                nextIcon = '💌';
-                            }
-                            
-                            const newLoadingOverlay = document.createElement('div');
-                            newLoadingOverlay.id = 'navigation-loading-overlay';
-                            newLoadingOverlay.innerHTML = `
-                                <div class="loading-content">
-                                    <div class="loading-icon">${nextIcon}</div>
-                                    <div class="loading-spinner-animated"></div>
-                                    <div class="loading-message">${nextMessage}</div>
-                                    <div class="loading-progress">
-                                        <div class="loading-progress-bar"></div>
-                                    </div>
-                                </div>
-                            `;
-                            document.body.appendChild(newLoadingOverlay);
-                            document.body.style.overflow = 'hidden';
-                            
-                            // Navigate after showing loading
-                            setTimeout(function() {
-                                window.location.href = href;
-                            }, 300);
-                        }
-                    }
-                }
-            });
-        })();
-
         // 🎨 Professional Scroll Animations - Sitewide
         document.addEventListener('DOMContentLoaded', function() {
             // Enhanced Intersection Observer with multiple animation types
@@ -5262,7 +4998,7 @@
                     animation: pulse 2s infinite;
                 }
                 
-                /* 🌟 Global Loading Screen Styles */
+                /* 🌟 Professional Loading Screen Styles */
                 #global-loading-overlay,
                 #navigation-loading-overlay {
                     position: fixed;
@@ -5270,74 +5006,105 @@
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+                    background: var(--bg-cream);
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     z-index: 99999;
                     opacity: 1;
-                    transition: opacity 0.5s ease-out;
-                    backdrop-filter: blur(10px);
+                    transition: opacity 0.4s ease-out;
                 }
                 
                 .loading-content {
                     text-align: center;
-                    color: white;
-                    max-width: 400px;
-                    padding: 40px;
+                    color: var(--text-dark);
+                    max-width: 320px;
+                    padding: 50px 40px;
+                    background: white;
+                    border-radius: 20px;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+                    position: relative;
                 }
                 
-                .loading-icon {
-                    font-size: 64px;
-                    margin-bottom: 24px;
-                    animation: bounce 1.5s ease-in-out infinite;
-                    display: inline-block;
+                .loading-content::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+                    border-radius: 20px 20px 0 0;
                 }
                 
-                @keyframes bounce {
-                    0%, 100% { transform: translateY(0) scale(1); }
-                    50% { transform: translateY(-20px) scale(1.1); }
+                .loading-logo {
+                    width: 60px;
+                    height: 60px;
+                    margin: 0 auto 24px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 32px;
+                    font-weight: 700;
+                    color: var(--reddish-brown-dark);
+                    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    animation: pulse 2s ease-in-out infinite;
                 }
                 
                 .loading-spinner-animated {
-                    width: 60px;
-                    height: 60px;
-                    border: 4px solid rgba(255, 255, 255, 0.3);
-                    border-top: 4px solid white;
+                    width: 50px;
+                    height: 50px;
+                    border: 3px solid var(--bg-cream);
+                    border-top: 3px solid var(--reddish-brown-dark);
+                    border-right: 3px solid var(--golden-yellow);
                     border-radius: 50%;
-                    animation: spin 1s linear infinite;
-                    margin: 0 auto 24px;
+                    animation: spin 0.8s linear infinite;
+                    margin: 0 auto 28px;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
                 }
                 
                 .loading-message {
-                    font-size: 20px;
-                    font-weight: 600;
-                    margin-bottom: 24px;
-                    line-height: 1.5;
-                    animation: fadeInUp 0.6s ease-out;
+                    font-size: 16px;
+                    font-weight: 500;
+                    color: var(--text-gray);
+                    margin-bottom: 20px;
+                    line-height: 1.6;
+                    font-family: 'Inter', sans-serif;
                 }
                 
                 .loading-progress {
                     width: 100%;
-                    height: 6px;
-                    background: rgba(255, 255, 255, 0.3);
-                    border-radius: 3px;
+                    height: 4px;
+                    background: #F0F0F0;
+                    border-radius: 2px;
                     overflow: hidden;
-                    margin-top: 20px;
+                    margin-top: 0;
                 }
                 
                 .loading-progress-bar {
                     height: 100%;
-                    background: white;
-                    border-radius: 3px;
-                    animation: progressLoad 2s ease-in-out infinite;
-                    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+                    background: linear-gradient(90deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+                    border-radius: 2px;
+                    animation: progressLoad 1.5s ease-in-out infinite;
+                    width: 0%;
                 }
                 
                 @keyframes progressLoad {
-                    0% { width: 0%; opacity: 0.8; }
-                    50% { width: 70%; opacity: 1; }
-                    100% { width: 100%; opacity: 0.8; }
+                    0% { width: 10%; }
+                    50% { width: 60%; }
+                    100% { width: 100%; }
+                }
+                
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.8; transform: scale(1.05); }
                 }
                 
                 /* Enhanced Smooth Scrolling */
@@ -5418,15 +5185,23 @@
                 /* Enhanced Responsive Animations */
                 @media (max-width: 768px) {
                     .loading-content {
-                        padding: 30px 20px;
+                        padding: 40px 30px;
+                        max-width: 280px;
                     }
                     
-                    .loading-icon {
-                        font-size: 48px;
+                    .loading-logo {
+                        width: 50px;
+                        height: 50px;
+                        font-size: 28px;
+                    }
+                    
+                    .loading-spinner-animated {
+                        width: 40px;
+                        height: 40px;
                     }
                     
                     .loading-message {
-                        font-size: 16px;
+                        font-size: 14px;
                     }
                 }
                 
