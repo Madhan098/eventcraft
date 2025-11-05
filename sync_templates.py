@@ -52,16 +52,17 @@ def sync_templates_from_folder():
             filename_lower = filename.lower()
             
             # Determine event type from filename
+            # Check for specific patterns first (e.g., "wedding anniversary" should be anniversary)
             event_type = 'birthday'  # Default
-            if 'wedding' in filename_lower:
+            if 'anniversary' in filename_lower:
+                event_type = 'anniversary'
+            elif 'wedding' in filename_lower:
                 event_type = 'wedding'
             elif 'birthday' in filename_lower:
                 event_type = 'birthday'
-            elif 'anniversary' in filename_lower:
-                event_type = 'anniversary'
             elif 'babyshower' in filename_lower or 'baby' in filename_lower:
                 event_type = 'babyshower'
-            elif 'graduation' in filename_lower:
+            elif 'graduation' in filename_lower or 'grduation' in filename_lower:
                 event_type = 'graduation'
             elif 'retirement' in filename_lower:
                 event_type = 'retirement'
@@ -78,7 +79,9 @@ def sync_templates_from_folder():
             template_name = ' '.join(word.capitalize() for word in words)
             
             # Handle specific patterns
-            if 'ballonbirthday' in filename_lower or 'ballon birthday' in filename_lower:
+            if 'cream and pink wedding anniversary' in filename_lower:
+                template_name = 'Cream and Pink Wedding Anniversary'
+            elif 'ballonbirthday' in filename_lower or 'ballon birthday' in filename_lower:
                 template_name = 'Balloon Birthday'
             elif 'birthdayblackgold' in filename_lower or 'birthday black gold' in filename_lower:
                 template_name = 'Black Gold Birthday'

@@ -2,154 +2,200 @@
 
 {% block title %}Privacy Policy - EventCraft Pro{% endblock %}
 
-{% block content %}
-<!-- Privacy Hero Section -->
-<section class="privacy-hero py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <div class="hero-content">
-                    <h1 class="hero-title mb-3">
-                        Privacy <span class="text-gradient">Policy</span>
-                    </h1>
-                    <p class="hero-subtitle mb-4">
-                        Simple and transparent information about how we protect your data
-                    </p>
-                    <div class="privacy-meta text-muted">
-                        <span><i class="fas fa-calendar me-1"></i>Last updated: January 2025</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Privacy Content Section -->
-<section class="privacy-content py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="privacy-text">
-                    
-                    <div class="privacy-section mb-5">
-                        <h2 class="section-title">What We Collect</h2>
-                        <p>We only collect information you provide to us:</p>
-                        <ul>
-                            <li><strong>Account Information:</strong> Name, email, and password</li>
-                            <li><strong>Event Details:</strong> Invitation content and guest information</li>
-                            <li><strong>Usage Data:</strong> How you use our platform to improve our service</li>
-                        </ul>
-                    </div>
-
-                    <div class="privacy-section mb-5">
-                        <h2 class="section-title">How We Use Your Information</h2>
-                        <p>We use your information to:</p>
-                        <ul>
-                            <li>Create and manage your invitations</li>
-                            <li>Send you important updates about your account</li>
-                            <li>Improve our platform and services</li>
-                            <li>Provide customer support when you need it</li>
-                        </ul>
-                    </div>
-
-                    <div class="privacy-section mb-5">
-                        <h2 class="section-title">Data Protection</h2>
-                        <p>We take your privacy seriously:</p>
-                        <ul>
-                            <li><strong>We never sell your data</strong> to third parties</li>
-                            <li><strong>Secure storage:</strong> All data is encrypted and protected</li>
-                            <li><strong>Limited sharing:</strong> Only with trusted service providers</li>
-                            <li><strong>Your control:</strong> You can delete your account anytime</li>
-                        </ul>
-                    </div>
-
-                    <div class="privacy-section mb-5">
-                        <h2 class="section-title">Your Rights</h2>
-                        <p>You have the right to:</p>
-                        <ul>
-                            <li>Access your personal information</li>
-                            <li>Update or correct your data</li>
-                            <li>Delete your account and data</li>
-                            <li>Opt out of marketing emails</li>
-                        </ul>
-                    </div>
-
-                    <div class="privacy-section mb-5">
-                        <h2 class="section-title">Cookies</h2>
-                        <p>We use cookies to:</p>
-                        <ul>
-                            <li>Remember your login status</li>
-                            <li>Save your preferences</li>
-                            <li>Understand how you use our platform</li>
-                        </ul>
-                        <p>You can disable cookies in your browser settings.</p>
-                    </div>
-
-                    <div class="privacy-section mb-5">
-                        <h2 class="section-title">Contact Us</h2>
-                        <p>If you have any questions about this Privacy Policy, please contact us:</p>
-                        <div class="contact-info p-3 bg-light rounded">
-                            <p class="mb-2"><strong>Email:</strong> privacy@eventcraftpro.com</p>
-                            <p class="mb-2"><strong>Support:</strong> support@eventcraftpro.com</p>
-                            <p class="mb-0"><strong>Response Time:</strong> Within 24 hours</p>
-                        </div>
-                    </div>
-
-                    <div class="summary-box p-4 bg-primary-subtle rounded mt-5">
-                        <h4 class="text-primary mb-3"><i class="fas fa-shield-alt me-2"></i>Quick Summary</h4>
-                        <p class="mb-0">We protect your data, never sell it, and give you full control. Simple as that!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
-
 {% block extra_head %}
 <style>
-.privacy-hero {
-    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-coral) 100%);
+.policy-hero {
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+    padding: 80px 0;
     color: white;
 }
 
-.privacy-hero .text-gradient {
-    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.policy-content {
+    padding: 60px 0;
 }
 
-.section-title {
-    color: #2d3748;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
+.policy-card {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.policy-card h2 {
+    color: #2C2C2C;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 40px 0 20px 0;
+}
+
+.policy-card h2:first-child {
+    margin-top: 0;
+}
+
+.policy-card h3 {
+    color: #B39090;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 30px 0 15px 0;
+}
+
+.policy-card p, .policy-card li {
+    color: #666;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.policy-card ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.policy-card li {
+    margin-bottom: 10px;
+}
+
+.last-updated {
+    background: #FAFAFA;
+    padding: 15px 20px;
+    border-radius: 10px;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 30px;
     font-weight: 600;
 }
 
-.privacy-content p {
-    line-height: 1.7;
-    color: #4a5568;
-    margin-bottom: 1rem;
-}
-
-.privacy-content ul {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
-}
-
-.privacy-content li {
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
-    color: #4a5568;
-}
-
-.contact-info {
-    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-}
-
-.summary-box {
-    border-left: 4px solid var(--primary-teal);
+@media (max-width: 768px) {
+    .policy-card {
+        padding: 30px 20px;
+    }
+    
+    .policy-hero {
+        padding: 60px 0;
+    }
 }
 </style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="policy-hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">Privacy Policy</h1>
+        <p class="lead" style="opacity: 0.95;">How we protect your information</p>
+    </div>
+</section>
+
+<!-- Policy Content -->
+<section class="policy-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="policy-card">
+                    <div class="last-updated">
+                        <i class="fas fa-calendar-alt me-2"></i>Last Updated: November 2024
+                    </div>
+                    
+                    <p>
+                        At EventCraft Pro, we take your privacy seriously. This policy explains how we collect, use, and protect your personal information.
+                    </p>
+                    
+                    <h2>1. Information We Collect</h2>
+                    <h3>Personal Information</h3>
+                    <ul>
+                        <li><strong>Account Data:</strong> Name, email address, and password when you sign up</li>
+                        <li><strong>Invitation Data:</strong> Event details, images, and content you create</li>
+                        <li><strong>Contact Information:</strong> Name and email when you contact us</li>
+                    </ul>
+                    
+                    <h3>Usage Information</h3>
+                    <ul>
+                        <li>How you use our platform (pages visited, features used)</li>
+                        <li>Device information (browser type, IP address)</li>
+                        <li>Cookies for functionality and analytics</li>
+                    </ul>
+                    
+                    <h2>2. How We Use Your Information</h2>
+                    <p>We use your information to:</p>
+                    <ul>
+                        <li>Provide and improve our services</li>
+                        <li>Create and manage your invitations</li>
+                        <li>Send important updates about your account</li>
+                        <li>Respond to your questions and support requests</li>
+                        <li>Ensure platform security and prevent fraud</li>
+                    </ul>
+                    
+                    <h2>3. Data Protection</h2>
+                    <p>We protect your data through:</p>
+                    <ul>
+                        <li><strong>Encryption:</strong> All data is encrypted in transit and at rest</li>
+                        <li><strong>Secure Storage:</strong> Your files are stored on secure servers</li>
+                        <li><strong>Access Controls:</strong> Limited team access to user data</li>
+                        <li><strong>Regular Audits:</strong> Security reviews and updates</li>
+                    </ul>
+                    
+                    <h2>4. Data Sharing</h2>
+                    <p>We <strong>never sell</strong> your personal information. We only share data:</p>
+                    <ul>
+                        <li>When you share invitations with others (as intended)</li>
+                        <li>With service providers (hosting, analytics) under strict agreements</li>
+                        <li>When required by law</li>
+                    </ul>
+                    
+                    <h2>5. Your Rights</h2>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li><strong>Access:</strong> Request a copy of your data</li>
+                        <li><strong>Edit:</strong> Update your account information</li>
+                        <li><strong>Delete:</strong> Request deletion of your account and data</li>
+                        <li><strong>Export:</strong> Download your invitations and data</li>
+                        <li><strong>Opt-out:</strong> Unsubscribe from marketing emails</li>
+                    </ul>
+                    
+                    <h2>6. Cookies</h2>
+                    <p>We use cookies to:</p>
+                    <ul>
+                        <li>Keep you logged in</li>
+                        <li>Remember your preferences</li>
+                        <li>Understand how you use our platform</li>
+                        <li>Improve your experience</li>
+                    </ul>
+                    <p>You can disable cookies in your browser, but some features may not work properly.</p>
+                    
+                    <h2>7. Data Retention</h2>
+                    <p>
+                        We keep your data for as long as your account is active. If you delete your account, 
+                        we'll remove your personal information within 30 days (except data we're required to keep by law).
+                    </p>
+                    
+                    <h2>8. Children's Privacy</h2>
+                    <p>
+                        EventCraft Pro is not intended for children under 13. We don't knowingly collect 
+                        information from children. If we discover we have, we'll delete it immediately.
+                    </p>
+                    
+                    <h2>9. Changes to This Policy</h2>
+                    <p>
+                        We may update this policy occasionally. We'll notify you of significant changes via email 
+                        or a notice on our platform. Continued use means you accept the updated policy.
+                    </p>
+                    
+                    <h2>10. Contact Us</h2>
+                    <p>
+                        Questions about privacy? Contact us at:
+                    </p>
+                    <p>
+                        <strong>Email:</strong> <a href="mailto:madhanjaladi@gmail.com" style="color: #B39090; text-decoration: none; font-weight: 600;">madhanjaladi@gmail.com</a>
+                    </p>
+                    
+                    <div style="margin-top: 40px; padding: 25px; background: #FAFAFA; border-radius: 12px; border-left: 4px solid #B39090;">
+                        <p style="margin: 0; font-weight: 600; color: #2C2C2C;">
+                            <i class="fas fa-shield-alt me-2" style="color: #B39090;"></i>
+                            Your trust is important to us. We're committed to being transparent about how we handle your data.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

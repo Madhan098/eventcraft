@@ -164,7 +164,55 @@ def register_routes(app):
     def index():
         if is_authenticated():
             return redirect(url_for('dashboard'))
-        return render_template('index.html')
+        
+        # Get all images from images/home directory
+        home_images = []
+        home_images_dir = os.path.join('images', 'home')
+        if os.path.exists(home_images_dir):
+            try:
+                for filename in os.listdir(home_images_dir):
+                    filepath = os.path.join(home_images_dir, filename)
+                    # Check if it's a file and has image extension
+                    if os.path.isfile(filepath) and filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
+                        home_images.append({
+                            'filename': filename,
+                            'path': f'/images/home/{filename}'
+                        })
+                # Sort images by filename for consistent ordering
+                home_images.sort(key=lambda x: x['filename'])
+                app.logger.info(f"Found {len(home_images)} images in {home_images_dir}")
+            except Exception as e:
+                app.logger.error(f"Error reading home images directory: {str(e)}")
+        else:
+            app.logger.warning(f"Home images directory does not exist: {home_images_dir}")
+        
+        # Get category images from images/home1 directory
+        category_images = {}
+        home1_images_dir = os.path.join('images', 'home1')
+        if os.path.exists(home1_images_dir):
+            try:
+                # Map category names to image filenames
+                category_mapping = {
+                    'wedding': 'weddings.jpg',
+                    'birthday': 'birthdays.jpg',
+                    'corporate': 'corporateevents.jpg',
+                    'babyshower': 'babyshowers.jpg',
+                    'anniversary': 'anniversaries.jpg',
+                    'custom': 'customevents.jpg'
+                }
+                
+                for category, image_filename in category_mapping.items():
+                    image_path = os.path.join(home1_images_dir, image_filename)
+                    if os.path.exists(image_path) and os.path.isfile(image_path):
+                        category_images[category] = f'/images/home1/{image_filename}'
+                
+                app.logger.info(f"Found {len(category_images)} category images in {home1_images_dir}")
+            except Exception as e:
+                app.logger.error(f"Error reading home1 images directory: {str(e)}")
+        else:
+            app.logger.warning(f"Home1 images directory does not exist: {home1_images_dir}")
+        
+        return render_template('index.html', home_images=home_images, category_images=category_images)
 
     @app.route('/images/<path:filename>')
     def serve_image(filename):
@@ -526,8 +574,11 @@ def register_routes(app):
             token_response = requests.post(token_url, data=token_data)
             
             if token_response.status_code != 200:
-                app.logger.error(f"Token exchange failed: {token_response.status_code} - {token_response.text}")
-                flash('Failed to exchange authorization code for token', 'error')
+                error_details = token_response.text
+                app.logger.error(f"Token exchange failed: {token_response.status_code} - {error_details}")
+                app.logger.error(f"Redirect URI used: {app.config['GOOGLE_REDIRECT_URI']}")
+                app.logger.error(f"Client ID configured: {'Yes' if app.config['GOOGLE_CLIENT_ID'] else 'No'}")
+                flash('Google sign-in failed. Please ensure your Google account settings allow third-party apps.', 'error')
                 return redirect(url_for('auth'))
             
             token_json = token_response.json()
@@ -792,16 +843,17 @@ def register_routes(app):
                 filename_lower = filename.lower()
                 
                 # Determine event type from filename
+                # Check for specific patterns first (e.g., "wedding anniversary" should be anniversary)
                 event_type = 'birthday'  # Default
-                if 'wedding' in filename_lower:
+                if 'anniversary' in filename_lower:
+                    event_type = 'anniversary'
+                elif 'wedding' in filename_lower:
                     event_type = 'wedding'
                 elif 'birthday' in filename_lower:
                     event_type = 'birthday'
-                elif 'anniversary' in filename_lower:
-                    event_type = 'anniversary'
                 elif 'babyshower' in filename_lower or 'baby' in filename_lower:
                     event_type = 'babyshower'
-                elif 'graduation' in filename_lower:
+                elif 'graduation' in filename_lower or 'grduation' in filename_lower:
                     event_type = 'graduation'
                 elif 'retirement' in filename_lower:
                     event_type = 'retirement'
@@ -818,7 +870,9 @@ def register_routes(app):
                 template_name = ' '.join(word.capitalize() for word in words)
                 
                 # Handle specific patterns
-                if 'ballonbirthday' in filename_lower or 'ballon birthday' in filename_lower:
+                if 'cream and pink wedding anniversary' in filename_lower:
+                    template_name = 'Cream and Pink Wedding Anniversary'
+                elif 'ballonbirthday' in filename_lower or 'ballon birthday' in filename_lower:
                     template_name = 'Balloon Birthday'
                 elif 'birthdayblackgold' in filename_lower or 'birthday black gold' in filename_lower:
                     template_name = 'Black Gold Birthday'
@@ -1393,12 +1447,13 @@ def register_routes(app):
             return redirect(url_for('auth'))
         
         # If template_id is provided, fetch the template from database
+        selected_template_obj = None
         if template_id:
             try:
-                template = Template.query.get(int(template_id))
-                if template:
-                    selected_template = template.name
-                    event_type = template.event_type  # Use template's event type
+                selected_template_obj = Template.query.get(int(template_id))
+                if selected_template_obj:
+                    selected_template = selected_template_obj.name
+                    event_type = selected_template_obj.event_type  # Use template's event type
             except (ValueError, TypeError):
                 pass
         
@@ -1422,6 +1477,7 @@ def register_routes(app):
         return render_template('invitation/create.html', 
                              event_types=event_types, 
                              selected_template=selected_template,
+                             selected_template_obj=selected_template_obj,
                              template_id=template_id if 'template_id' in locals() else None,
                              templates=templates,
                              all_templates=all_templates,
@@ -1969,10 +2025,10 @@ def register_routes(app):
             'mainImage': invitation.main_image,
             'galleryImages': json.loads(invitation.gallery_images) if invitation.gallery_images else [],
             
-            # Contact info
-            'hostName': invitation.host_name or '',
+            # Contact info - default to user name and email if not set
+            'hostName': invitation.host_name or (invitation.user.name if invitation.user else ''),
             'contactPhone': invitation.contact_phone or '',
-            'contactEmail': invitation.contact_email or '',
+            'contactEmail': invitation.contact_email or (invitation.user.email if invitation.user else ''),
             
             # Time and venue data (structured format)
             'timeData': {

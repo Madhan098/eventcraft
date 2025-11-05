@@ -1,0 +1,162 @@
+{# Preview Card - Used for simple invitation display #}
+<div class="container my-5" style="position: relative; z-index: 2;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="invitation-card p-5 shadow-lg text-center">
+                <!-- Main Image - DISPLAYED FIRST -->
+                {% if invitation.main_image %}
+                <div class="text-center mb-4">
+                    <img src="{{ url_for('uploaded_file', filename=invitation.main_image) }}" 
+                         alt="Event Image" 
+                         class="img-fluid rounded shadow"
+                         style="max-height: 400px; width: 100%; object-fit: cover;">
+                </div>
+                {% endif %}
+
+                <!-- Event Icon -->
+                <div class="mb-4">
+                    {% if invitation.event_type == 'wedding' %}
+                        <div class="display-1">💍</div>
+                        <h2 class="text-muted">Wedding Invitation</h2>
+                    {% elif invitation.event_type == 'birthday' %}
+                        <div class="display-1">🎂</div>
+                        <h2 class="text-muted">Birthday Celebration</h2>
+                    {% elif invitation.event_type == 'anniversary' %}
+                        <div class="display-1">💑</div>
+                        <h2 class="text-muted">Anniversary Celebration</h2>
+                    {% elif invitation.event_type == 'babyshower' %}
+                        <div class="display-1">👶</div>
+                        <h2 class="text-muted">Baby Shower</h2>
+                    {% elif invitation.event_type == 'graduation' %}
+                        <div class="display-1">🎓</div>
+                        <h2 class="text-muted">Graduation Celebration</h2>
+                    {% elif invitation.event_type == 'retirement' %}
+                        <div class="display-1">🎉</div>
+                        <h2 class="text-muted">Retirement Party</h2>
+                    {% else %}
+                        <div class="display-1">✨</div>
+                        <h2 class="text-muted">Special Event</h2>
+                    {% endif %}
+                </div>
+
+                <!-- Event Title -->
+                <h1 class="mb-4 text-overlay" style="font-size: 2.5rem;">
+                    {{ invitation.title }}
+                </h1>
+
+                <!-- Main Details -->
+                <div class="mb-4">
+                    {% if invitation.event_date %}
+                    <div class="text-overlay d-inline-block mb-3">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        {{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date is not string else invitation.event_date }}
+                    </div>
+                    {% endif %}
+
+                    {% if invitation.event_time %}
+                    <div class="text-overlay d-inline-block mb-3 ms-3">
+                        <i class="fas fa-clock me-2"></i>
+                        {{ invitation.event_time }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Description -->
+                {% if invitation.description %}
+                <div class="mb-4">
+                    <div class="text-overlay" style="max-width: 600px; margin: 0 auto;">
+                        <p class="lead">{{ invitation.description }}</p>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Main Image -->
+                {% if invitation.main_image %}
+                <div class="mb-4">
+                    <img src="{{ url_for('uploaded_file', filename=invitation.main_image) }}" 
+                         alt="Event" 
+                         class="img-fluid rounded shadow"
+                         style="max-height: 400px; object-fit: cover;">
+                </div>
+                {% endif %}
+
+                <!-- Venue -->
+                {% if invitation.venue_address %}
+                <div class="venue-info mb-4">
+                    <h4 style="color: #6F4E37; font-weight: 600; margin-bottom: 15px;">
+                        <i class="fas fa-map-marker-alt me-2" style="color: #D4AF37;"></i>Location
+                    </h4>
+                    <p class="mb-3" style="color: #5D4037; font-size: 16px;">{{ invitation.venue_address }}</p>
+                    <button onclick="openLocation('{{ invitation.venue_address }}')" 
+                            class="btn btn-location"
+                            style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%); 
+                                   color: white; 
+                                   border: none; 
+                                   padding: 12px 30px; 
+                                   border-radius: 25px; 
+                                   font-weight: 600; 
+                                   font-size: 16px;
+                                   cursor: pointer;
+                                   transition: all 0.3s ease;
+                                   box-shadow: 0 4px 15px rgba(111, 78, 55, 0.3);
+                                   display: inline-flex;
+                                   align-items: center;
+                                   gap: 8px;">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Get Directions
+                    </button>
+                </div>
+                {% endif %}
+
+                <!-- Host -->
+                {% if invitation.host_name %}
+                <div class="mb-4">
+                    <div class="text-overlay d-inline-block">
+                        <i class="fas fa-user me-2"></i>
+                        Hosted by {{ invitation.host_name }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- RSVP Info -->
+                {% if invitation.contact_email or invitation.contact_phone %}
+                <div class="mb-4">
+                    <div class="text-overlay d-inline-block">
+                        <strong>RSVP:</strong>
+                        {% if invitation.contact_email %}
+                            <a href="mailto:{{ invitation.contact_email }}" class="text-primary ms-2">
+                                {{ invitation.contact_email }}
+                            </a>
+                        {% endif %}
+                        {% if invitation.contact_phone %}
+                            <span class="ms-2">{{ invitation.contact_phone }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Gallery Images - PROMINENT DISPLAY -->
+                {% if invitation.gallery_images %}
+                    {% set gallery = invitation.gallery_images|from_json if invitation.gallery_images is string else invitation.gallery_images %}
+                    {% if gallery and gallery|length > 0 %}
+                    <div class="text-center mb-5 mt-5">
+                        <h3 class="mb-4" style="font-weight: 700; font-size: 1.8rem; color: #6F4E37;">📸 Photo Gallery</h3>
+                        <div class="row g-3 mb-4">
+                            {% for image in gallery[:12] %}
+                            <div class="col-lg-4 col-md-6 col-6">
+                                <img src="{{ url_for('uploaded_file', filename=image) }}" 
+                                     alt="Gallery Image {{ loop.index }}" 
+                                     class="img-fluid rounded shadow"
+                                     style="width: 100%; height: 250px; object-fit: cover; cursor: pointer; border: 3px solid #D4AF37; transition: transform 0.3s;"
+                                     onclick="this.style.transform = this.style.transform === 'scale(1.5)' ? 'scale(1)' : 'scale(1.5)'; this.style.zIndex = this.style.zIndex === '1000' ? '1' : '1000'; this.style.position = this.style.position === 'relative' ? 'static' : 'relative';">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+

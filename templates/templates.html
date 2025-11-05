@@ -174,22 +174,7 @@ body {
     overflow: hidden;
 }
 
-/* Template design overlay image - appears on all template preview cards */
-.theme-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('/images/templatesimages/image.png') !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    opacity: 0.6 !important;
-    z-index: 0;
-    pointer-events: none;
-}
+/* Template design overlay image - removed per user request */
 
 .theme-card:hover {
     transform: translateY(-8px);
@@ -440,7 +425,7 @@ body {
             {% for template in templates %}
                 {% if template.preview_image %}
                 {% set template_name_slug = template.name|replace(' ', '_')|lower %}
-                {% set template_img = template.preview_image if template.preview_image else '/static/images/templateselection/naming cermony.jpg' %}
+                {% set template_img = template.preview_image if template.preview_image and 'placeholder.com' not in template.preview_image and 'via.placeholder' not in template.preview_image else '/images/templatesimages/wedding.png' %}
                 {% if template_img and not template_img.startswith('http') %}
                     {% if template_img.startswith('/images/') %}
                         {% set template_img = template_img %}
@@ -454,21 +439,27 @@ body {
                         {% endif %}
                     {% elif template_img.endswith(('.jpg', '.jpeg', '.png', '.gif')) and not '/' in template_img %}
                         {# Just filename like "wed.jpg" or "birthday.jpg" - check if it's likely a templatesimages file #}
-                        {% if 'wed' in template_img|lower or 'birthday' in template_img|lower or 'corporate' in template_img|lower or 'ballon' in template_img|lower or 'graduation' in template_img|lower %}
+                        {% if 'wed' in template_img|lower or 'birthday' in template_img|lower or 'corporate' in template_img|lower or 'ballon' in template_img|lower or 'graduation' in template_img|lower or 'retirement' in template_img|lower or 'grduation' in template_img|lower %}
                             {% set template_img = '/images/templatesimages/' + template_img %}
                         {% elif not template_img.startswith('/') %}
-                            {% set template_img = '/static/images/' + template_img %}
+                            {% set template_img = '/images/templatesimages/' + template_img %}
                         {% endif %}
                     {% elif not template_img.startswith('/') %}
-                        {% set template_img = '/static/images/' + template_img %}
+                        {% set template_img = '/images/templatesimages/' + template_img %}
+                    {% endif %}
+                    
+                    {# Always convert /static/images/ to /images/ #}
+                    {% if template_img.startswith('/static/images/') %}
+                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
                     {% endif %}
                 {% endif %}
                 <div class="theme-card" data-category="{{ template.event_type|lower }}" data-event-type="{{ template.event_type|lower }}" data-template-id="{{ template.id }}">
                     <div class="card-image-wrapper" style="display: flex; visibility: visible; opacity: 1;">
-                        <img src="{{ template_img }}" alt="{{ template.name }}" class="theme-preview-image" loading="lazy" 
+                        {% set safe_img = template_img if 'placeholder.com' not in template_img and 'via.placeholder' not in template_img else '/images/templatesimages/wedding.png' %}
+                        <img src="{{ safe_img }}" alt="{{ template.name }}" class="theme-preview-image" loading="lazy" 
                              style="display: block; width: 100%; height: 100%; object-fit: cover;"
-                             onerror="console.error('Image failed to load: {{ template_img }}'); this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.alt='{{ template.name }}';"
-                             onload="console.log('Template image loaded: {{ template.name }}');">
+                             onerror="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onerror, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; return; } console.error('Image failed to load: {{ safe_img }}'); this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.alt='{{ template.name }}';"
+                             onload="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onload, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; } console.log('Template image loaded: {{ template.name }}');">
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">{{ template.name }}</h3>
@@ -740,11 +731,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Initial animation - make sure all cards are visible
+    // Initial display - make cards visible immediately, then animate
     themeCards.forEach((card, index) => {
-        card.style.display = 'block'; // Ensure display is set
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
+        // Make card visible immediately
+        card.style.display = 'block';
+        card.style.visibility = 'visible';
         
         // Make sure image wrappers are visible immediately
         const imageWrappers = card.querySelectorAll('.card-image-wrapper');
@@ -766,11 +757,15 @@ document.addEventListener('DOMContentLoaded', function() {
             img.style.objectFit = 'cover';
         });
         
+        // Animate in after a short delay
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
         setTimeout(() => {
             card.style.transition = 'all 0.4s ease';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
-        }, index * 100);
+        }, index * 50); // Faster animation
     });
     
     // Log templates count for debugging

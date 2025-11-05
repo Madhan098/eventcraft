@@ -90,6 +90,46 @@
             color: var(--accent-yellow-hover);
         }
 
+        .event-info-section {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .event-info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .event-info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .event-info-item i {
+            color: var(--primary-teal);
+            font-size: 1.2rem;
+            width: 30px;
+            margin-right: 1rem;
+        }
+
+        .event-info-item .label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+            min-width: 100px;
+        }
+
+        .event-info-item .value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .invitation-header h1 {
@@ -98,6 +138,26 @@
             
             .invitation-content {
                 padding: 1rem 0;
+            }
+
+            .event-info-section {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .event-info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem 0;
+            }
+
+            .event-info-item i {
+                margin-bottom: 0.5rem;
+            }
+
+            .event-info-item .label {
+                min-width: auto;
+                margin-bottom: 0.25rem;
             }
         }
     </style>
@@ -114,22 +174,74 @@
         <!-- Invitation Content -->
         <div class="invitation-content">
             <div class="container">
+                <!-- Default Event Information Section -->
+                <div class="event-info-section">
+                    <div class="event-info-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="label">Date:</span>
+                        <span class="value">{{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else 'Date TBD' }}</span>
+                    </div>
+                    <div class="event-info-item">
+                        <i class="fas fa-clock"></i>
+                        <span class="label">Time:</span>
+                        <span class="value">
+                            {% if event_data.timeData.muhurthamTime %}
+                                {{ event_data.timeData.muhurthamTime }}
+                            {% elif event_data.timeData.startTime %}
+                                {{ event_data.timeData.startTime }}
+                            {% elif event_data.timeData.anniversaryDinnerTime %}
+                                {{ event_data.timeData.anniversaryDinnerTime }}
+                            {% elif event_data.timeData.babyshowerStartTime %}
+                                {{ event_data.timeData.babyshowerStartTime }}
+                            {% elif event_data.eventTime %}
+                                {{ event_data.eventTime }}
+                            {% else %}
+                                Time TBD
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="event-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="label">Venue:</span>
+                        <span class="value">{{ event_data.venueData.venue or event_data.venue or 'Venue TBD' }}</span>
+                    </div>
+                    <div class="event-info-item">
+                        <i class="fas fa-user-circle"></i>
+                        <span class="label">Hosted By:</span>
+                        <span class="value">
+                            {% if event_data.hostName %}
+                                {{ event_data.hostName }}
+                            {% elif invitation.user %}
+                                {{ invitation.user.name }}
+                            {% else %}
+                                Host TBD
+                            {% endif %}
+                            {% if event_data.contactEmail or (invitation.user and invitation.user.email) %}
+                                <span style="color: var(--text-secondary); font-size: 0.9rem;">
+                                    ({{ event_data.contactEmail or invitation.user.email }})
+                                </span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
                 <!-- Include the invitation template content here -->
-                {% if invitation.template_type == 'wedding_elegant' %}
+                {% set template_type = invitation.template_name|replace(' ', '_')|lower if invitation.template_name else '' %}
+                {% if 'wedding_elegant' in template_type or template_type == 'wedding_elegant' %}
                     {% include 'invitation/templates/wedding_elegant.html' %}
-                {% elif invitation.template_type == 'wedding_hindu_traditional' %}
+                {% elif 'wedding_hindu_traditional' in template_type or 'hindu' in template_type %}
                     {% include 'invitation/templates/wedding_hindu_traditional.html' %}
-                {% elif invitation.template_type == 'wedding_muslim_elegant' %}
+                {% elif 'wedding_muslim_elegant' in template_type or 'muslim' in template_type %}
                     {% include 'invitation/templates/wedding_muslim_elegant.html' %}
-                {% elif invitation.template_type == 'birthday_fun_colorful' %}
+                {% elif 'birthday_fun_colorful' in template_type or 'birthday' in template_type %}
                     {% include 'invitation/templates/birthday_fun_colorful.html' %}
-                {% elif invitation.template_type == 'babyshower_sweet_pink' %}
+                {% elif 'babyshower_sweet_pink' in template_type or 'babyshower' in template_type %}
                     {% include 'invitation/templates/babyshower_sweet_pink.html' %}
-                {% elif invitation.template_type == 'graduation_success_modern' %}
+                {% elif 'graduation_success_modern' in template_type or 'graduation' in template_type %}
                     {% include 'invitation/templates/graduation_success_modern.html' %}
-                {% elif invitation.template_type == 'retirement_golden_classic' %}
+                {% elif 'retirement_golden_classic' in template_type or 'retirement' in template_type %}
                     {% include 'invitation/templates/retirement_golden_classic.html' %}
-                {% elif invitation.template_type == 'anniversary_golden_elegant' %}
+                {% elif 'anniversary_golden_elegant' in template_type or 'anniversary' in template_type %}
                     {% include 'invitation/templates/anniversary_golden_elegant.html' %}
                 {% else %}
                     {% include 'invitation/templates/wedding_elegant.html' %}

@@ -709,7 +709,7 @@
             <div class="section-header">
                 <h2 class="section-title">Recent Invitations</h2>
                 <div class="section-actions">
-                    <a href="/create-invitation" class="btn btn-primary" style="background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%); border: none; color: white; padding: 12px 24px; font-weight: 600; border-radius: 12px; box-shadow: 0 4px 16px rgba(160, 120, 120, 0.25); transition: all 0.3s ease;">
+                    <a href="/create-invitation" class="btn btn-primary" style="background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%); border: none; color: white; padding: 12px 24px; font-weight: 600; border-radius: 12px; box-shadow: 0 4px 16px rgba(201, 174, 174, 0.2); transition: all 0.3s ease;">
                         <i class="fas fa-plus me-2"></i>
                         + Create New
                     </a>
@@ -720,11 +720,29 @@
             <div class="invitation-grid">
                 {% for invitation in invitations[:6] %}
                 <div class="invitation-card">
-                    <div class="invitation-preview">
+                    <div class="invitation-preview" style="position: relative; {% if invitation.customization_data %}{% set customization = invitation.customization_data|from_json %}{% if customization.template_image_url %}background-image: url('{{ customization.template_image_url }}'); background-size: cover; background-position: center;{% endif %}{% endif %}">
                         {% if invitation.main_image %}
-                        <img src="/static/uploads/{{ invitation.main_image }}" alt="{{ invitation.title }}">
+                        <img src="/static/uploads/{{ invitation.main_image }}" alt="{{ invitation.title }}" style="position: relative; z-index: 2;">
+                        {% elif invitation.bride_image or invitation.groom_image %}
+                        <div style="display: flex; gap: 5px; justify-content: center; position: relative; z-index: 2;">
+                            {% if invitation.bride_image %}
+                            <img src="/static/uploads/{{ invitation.bride_image }}" alt="Bride" style="width: 48%; height: 150px; object-fit: cover; border-radius: 8px;">
+                            {% endif %}
+                            {% if invitation.groom_image %}
+                            <img src="/static/uploads/{{ invitation.groom_image }}" alt="Groom" style="width: 48%; height: 150px; object-fit: cover; border-radius: 8px;">
+                            {% endif %}
+                        </div>
+                        {% elif invitation.gallery_images %}
+                        {% set gallery = invitation.gallery_images|from_json if invitation.gallery_images is string else invitation.gallery_images %}
+                        {% if gallery and gallery|length > 0 %}
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; position: relative; z-index: 2;">
+                            {% for image in gallery[:4] %}
+                            <img src="/static/uploads/{{ image }}" alt="Gallery" style="width: 100%; height: 75px; object-fit: cover; border-radius: 4px;">
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                         {% else %}
-                        <div class="preview-placeholder">
+                        <div class="preview-placeholder" style="position: relative; z-index: 2;">
                             <i class="fas fa-image"></i>
                         </div>
                         {% endif %}

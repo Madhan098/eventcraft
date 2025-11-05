@@ -1,1003 +1,323 @@
 {% extends "base.html" %}
 
-{% block title %}About EventCraft Pro - Professional Invitation Platform{% endblock %}
+{% block title %}About Us - EventCraft Pro{% endblock %}
 
 {% block extra_head %}
 <style>
-/* 🎨 About Page - Modern Design Matching Homepage Theme */
-:root {
-    --reddish-brown: #A07878;
-    --reddish-brown-dark: #8B5A5A;
-    --golden-yellow: #D4A85A;
-    --golden-yellow-bright: #FFD700;
-    --bg-cream: #FAFAFA;
-    --bg-white: #FFFFFF;
-    --text-dark: #000000;
-    --text-gray: #666666;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Simple & Professional About Page for Startup */
+.about-hero {
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+    padding: 80px 0;
+    color: white;
 }
 
-/* Founder Hero Section - Horizontal Layout */
-.founder-hero-section {
-    background: var(--bg-white);
-    border-radius: 24px;
-    padding: 60px;
-    box-shadow: var(--shadow-lg);
-    margin-bottom: 80px;
-    display: flex;
-    align-items: center;
-    gap: 60px;
-    transition: all var(--transition);
-    border: 2px solid rgba(160, 120, 120, 0.1);
-    position: relative;
-    overflow: visible;
+.about-section {
+    padding: 60px 0;
 }
 
-.founder-hero-section:hover {
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
-    transform: translateY(-4px);
-    border-color: rgba(160, 120, 120, 0.3);
-}
-
-.founder-image-hero {
-    flex-shrink: 0;
-    position: relative;
-    padding: 8px;
-    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-    border-radius: 50%;
-    box-shadow: 0 8px 32px rgba(160, 120, 120, 0.3);
-    transition: all var(--transition);
-}
-
-.founder-image-hero:hover {
-    transform: scale(1.05);
-    box-shadow: 0 12px 40px rgba(160, 120, 120, 0.4);
-}
-
-.founder-image-hero img {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 5px solid white;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    transition: all var(--transition);
-    display: block;
-    position: relative;
-    z-index: 2;
-}
-
-.founder-image-hero img:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-}
-
-/* Highlight glow effect */
-.founder-image-hero::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-    opacity: 0.3;
-    z-index: 1;
-    animation: pulse-glow 2s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-    0%, 100% {
-        opacity: 0.3;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.5;
-        transform: scale(1.05);
-    }
-}
-
-.founder-message-hero {
-    flex: 1;
-}
-
-.founder-message-hero h3 {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 24px;
-    line-height: 1.2;
-}
-
-.founder-message-hero blockquote {
-    background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-white) 100%);
-    border-left: 4px solid var(--reddish-brown-dark);
-    border-radius: 12px;
-    padding: 32px;
-    margin: 0;
-    position: relative;
-}
-
-.founder-message-hero blockquote::before {
-    content: '"';
-    position: absolute;
-    top: 10px;
-    left: 20px;
-    font-size: 64px;
-    color: var(--reddish-brown);
-    font-family: serif;
-    opacity: 0.2;
-    line-height: 1;
-}
-
-.founder-message-hero blockquote p {
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--text-dark);
-    margin-bottom: 16px;
-    position: relative;
-    z-index: 1;
-}
-
-.founder-message-hero .blockquote-footer {
-    margin-top: 32px;
-    padding-top: 24px;
-    border-top: 2px solid rgba(160, 120, 120, 0.3);
-    font-size: 16px;
-}
-
-.founder-message-hero .blockquote-footer strong {
-    color: var(--reddish-brown-dark);
-    font-weight: 700;
-    font-size: 20px;
-    display: block;
-    margin-bottom: 4px;
-    text-transform: none;
-    letter-spacing: 0.5px;
-}
-
-.founder-message-hero .blockquote-footer cite {
-    color: var(--text-gray);
-    font-size: 14px;
-    font-style: normal;
-    display: block;
-    margin-top: 4px;
-}
-
-/* Team Section - Side by Side Grid */
-.team-card {
-    background: var(--bg-white);
+.founder-section {
+    background: white;
     border-radius: 20px;
-    padding: 40px 30px;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: all var(--transition);
-    height: 100%;
-    border: 1px solid rgba(160, 120, 120, 0.1);
+    padding: 50px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    margin: -80px auto 60px;
+    max-width: 1000px;
+    position: relative;
+    z-index: 10;
 }
 
-.team-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--reddish-brown);
+.founder-card {
+    display: flex;
+    gap: 40px;
+    align-items: center;
 }
 
-.team-avatar img {
-    width: 140px;
-    height: 140px;
-    object-fit: cover;
+.founder-img {
+    flex-shrink: 0;
+}
+
+.founder-img img {
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    border: 3px solid var(--reddish-brown-dark);
-    box-shadow: var(--shadow-md);
-    margin-bottom: 24px;
-    transition: all var(--transition);
+    object-fit: cover;
+    border: 5px solid #6F4E37;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
-.team-card:hover .team-avatar img {
-    transform: scale(1.05);
-    box-shadow: var(--shadow-lg);
-}
-
-.team-name {
-    font-size: 22px;
+.founder-content h2 {
+    color: #3E2723;
+    font-size: 28px;
     font-weight: 700;
-    color: var(--text-dark);
     margin-bottom: 8px;
 }
 
-.team-role {
-    font-size: 16px;
-    color: var(--reddish-brown-dark);
+.founder-role {
+    color: #6F4E37;
+    font-size: 18px;
     font-weight: 600;
-    margin-bottom: 16px;
-}
-
-.team-bio {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-gray);
     margin-bottom: 20px;
 }
 
-.team-social a {
-    color: var(--reddish-brown-dark);
-    font-size: 20px;
-    transition: all var(--transition);
-}
-
-.team-social a:hover {
-    color: var(--golden-yellow);
-    transform: scale(1.2);
-}
-
-/* Value Cards */
-.value-card {
-    background: var(--bg-white);
-    border-radius: 20px;
-    padding: 40px 30px;
-    text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: all var(--transition);
-    height: 100%;
-    border: 1px solid rgba(160, 120, 120, 0.1);
-}
-
-.value-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--reddish-brown);
-}
-
-.value-icon {
-    font-size: 48px;
-    color: var(--reddish-brown-dark);
-    margin-bottom: 24px;
-    transition: all var(--transition);
-}
-
-.value-card:hover .value-icon {
-    color: var(--golden-yellow);
-    transform: scale(1.1);
-}
-
-.value-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 16px;
-}
-
-.value-description {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-gray);
-}
-
-/* Section Headers */
-.section-title {
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 16px;
-    line-height: 1.2;
-}
-
-.section-subtitle {
-    font-size: 18px;
-    color: var(--text-gray);
-    margin-bottom: 60px;
-}
-
-.hero-section {
-    background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-white) 100%);
-    padding: 100px 0 80px;
-}
-
-.mission-section,
-.values-section,
-.team-section {
-    padding: 80px 0;
-}
-
-.mission-section {
-    background: var(--bg-white);
-}
-
-.values-section {
-    background: var(--bg-cream);
-}
-
-.team-section {
-    background: var(--bg-white);
-}
-
-/* Supported By Section */
-.supported-by-section {
-    background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-white) 100%);
-    padding: 80px 0;
-}
-
-.supported-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--text-dark);
-}
-
-.supported-title i {
-    color: var(--reddish-brown-dark);
-}
-
-.supported-description {
+.founder-content p {
+    color: #666;
+    line-height: 1.8;
     font-size: 16px;
-    line-height: 1.7;
-    color: var(--text-gray);
 }
 
-.feature-item {
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    color: var(--text-gray);
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
 }
 
-.feature-item i {
-    color: var(--golden-yellow);
+.team-member {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: all 0.3s;
 }
 
-.logo-card {
-    background: var(--bg-white);
-    border-radius: 20px;
+.team-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.team-member img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 3px solid #D4AF37;
+}
+
+.team-member h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3E2723;
+    margin-bottom: 8px;
+}
+
+.team-member .role {
+    color: #6F4E37;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.team-member p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.team-member a {
+    color: #6F4E37;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.team-member a:hover {
+    color: #D4AF37;
+}
+
+.simple-card {
+    background: white;
+    border-radius: 16px;
     padding: 40px;
-    box-shadow: var(--shadow-lg);
-    transition: all var(--transition);
-    border: 1px solid rgba(160, 120, 120, 0.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    text-align: center;
 }
 
-.logo-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-}
-
-.company-name {
+.simple-card h3 {
+    color: #3E2723;
     font-size: 24px;
     font-weight: 700;
-    color: var(--text-dark);
+    margin-bottom: 16px;
 }
 
-.company-tagline {
-    color: var(--reddish-brown-dark);
-    font-weight: 600;
-    font-size: 14px;
-}
-
-/* CTA Section */
-.cta-section {
-    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-    padding: 100px 0;
-    color: white;
-}
-
-.cta-title {
-    font-size: 48px;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 20px;
-}
-
-.cta-subtitle {
-    font-size: 20px;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 40px;
-}
-
-/* About Page Mobile Responsiveness */
-/* Mobile Responsive Styles */
-@media (max-width: 992px) {
-    .founder-hero-section {
-        flex-direction: column;
-        text-align: center;
-        padding: 40px 30px;
-        gap: 40px;
-    }
-    
-    .founder-image-hero img {
-        width: 200px;
-        height: 200px;
-    }
-    
-    .founder-message-hero {
-        width: 100%;
-    }
-    
-    .team-card {
-        margin-bottom: 24px;
-    }
+.simple-card p {
+    color: #666;
+    line-height: 1.7;
+    font-size: 15px;
 }
 
 @media (max-width: 768px) {
-    .hero-section {
-        padding: 60px 0 40px !important;
+    .founder-card {
+        flex-direction: column;
+        text-align: center;
     }
     
-    .section-title {
-        font-size: 36px !important;
-    }
-    
-    .founder-hero-section {
+    .founder-section {
         padding: 30px 20px;
+        margin: -50px 20px 40px;
     }
     
-    .founder-image-hero img {
-        width: 180px;
-        height: 180px;
+    .founder-img img {
+        width: 150px;
+        height: 150px;
     }
     
-    .founder-message-hero h3 {
-        font-size: 24px;
+    .about-hero {
+        padding: 60px 0;
     }
     
-    .founder-message-hero blockquote {
-        padding: 24px;
-    }
-    
-    .team-card {
-        padding: 30px 20px !important;
-    }
-    
-    .team-avatar img {
-        width: 120px !important;
-        height: 120px !important;
-    }
-    
-    .value-card {
-        padding: 30px 20px !important;
-        margin-bottom: 24px;
+    .team-grid {
+        grid-template-columns: 1fr;
     }
 }
-
-@media (max-width: 576px) {
-    .hero-section {
-        padding: 1.5rem 0 !important;
-    }
-    
-    .hero-title {
-        font-size: 1.75rem !important;
-    }
-    
-    .hero-subtitle {
-        font-size: 0.95rem !important;
-    }
-    
-    .hero-visual i {
-        font-size: 2.5rem !important;
-    }
-    
-    .hero-visual h3 {
-        font-size: 1.1rem !important;
-    }
-    
-    .section-title {
-        font-size: 1.5rem !important;
-    }
-    
-    .section-subtitle {
-        font-size: 0.85rem !important;
-    }
-    
-    .team-card {
-        padding: 1rem !important;
-        margin-bottom: 1rem !important;
-    }
-    
-    .team-avatar img {
-        width: 80px !important;
-        height: 80px !important;
-    }
-    
-    .team-name {
-        font-size: 1.1rem !important;
-    }
-    
-    .team-role {
-        font-size: 0.85rem !important;
-    }
-    
-    .team-bio {
-        font-size: 0.85rem !important;
-    }
-    
-    .value-card {
-        padding: 1rem !important;
-    }
-    
-    .value-icon {
-        font-size: 1.75rem !important;
-    }
-    
-    .value-title {
-        font-size: 1rem !important;
-    }
-    
-    .value-description {
-        font-size: 0.85rem !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 1.5rem !important;
-    }
-    
-    .hero-subtitle {
-        font-size: 0.9rem !important;
-    }
-    
-    .hero-visual i {
-        font-size: 2rem !important;
-    }
-    
-    .hero-visual h3 {
-        font-size: 1rem !important;
-    }
-    
-    .section-title {
-        font-size: 1.25rem !important;
-    }
-    
-    .section-subtitle {
-        font-size: 0.8rem !important;
-    }
-    
-    .team-card {
-        padding: 0.75rem !important;
-    }
-    
-    .team-avatar img {
-        width: 70px !important;
-        height: 70px !important;
-    }
-    
-    .team-name {
-        font-size: 1rem !important;
-    }
-    
-    .team-role {
-        font-size: 0.8rem !important;
-    }
-    
-    .team-bio {
-        font-size: 0.8rem !important;
-    }
-    
-    .value-card {
-        padding: 0.75rem !important;
-    }
-    
-    .value-icon {
-        font-size: 1.5rem !important;
-    }
-    
-    .value-title {
-        font-size: 0.95rem !important;
-    }
-    
-    .value-description {
-        font-size: 0.8rem !important;
-    }
-}
-
-/* 🔥 ELECTRIC FOUNDER HERO SECTION - STUNNING STYLING */
-.founder-hero-section {
-    background: rgba(26, 31, 58, 0.8);
-    border-radius: var(--radius-xl);
-    padding: 2rem;
-    border: 2px solid var(--border-color);
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition-normal);
-    position: relative;
-    overflow: hidden;
-}
-
-.founder-hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--gradient-card);
-    opacity: 0.1;
-    z-index: -1;
-}
-
-.founder-hero-section:hover {
-    border-color: var(--secondary);
-    box-shadow: var(--shadow-floral);
-    transform: translateY(-5px) scale(1.02);
-}
-
-.founder-image-hero img {
-    transition: all var(--transition-normal);
-    position: relative;
-}
-
-.founder-image-hero img:hover {
-    transform: scale(1.05);
-    box-shadow: var(--shadow-floral);
-}
-
-.founder-image-hero img::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: var(--gradient-electric);
-    border-radius: 50%;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity var(--transition-normal);
-}
-
-.founder-image-hero img:hover::before {
-    opacity: 1;
-}
-
-.founder-message-hero blockquote {
-    position: relative;
-    padding-left: 2rem;
-}
-
-.founder-message-hero blockquote::before {
-    content: '"';
-    position: absolute;
-    top: -1rem;
-    left: 0;
-    font-size: 4rem;
-    color: var(--primary);
-    font-family: serif;
-    opacity: 0.3;
-    line-height: 1;
-}
-
-.founder-message-hero .blockquote-footer {
-    border-top: 1px solid var(--border-color);
-    padding-top: 1rem;
-    margin-top: 1rem;
-}
-
-.founder-message-hero .blockquote-footer::before {
-    content: '— ';
-    color: var(--primary);
-    font-weight: bold;
-}
-
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero Section with Founder Message -->
-<section class="hero-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h1 class="display-4 fw-bold mb-3" style="font-size: 56px; color: var(--text-dark);">
-                About <span style="background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--golden-yellow) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">EventCraft Pro</span>
-                    </h1>
-            <p class="lead" style="font-size: 20px; color: var(--text-gray); max-width: 800px; margin: 0 auto;">
-                        We're revolutionizing how people create and share event invitations. Our mission is to make beautiful, professional invitations accessible to everyone, everywhere.
-                    </p>
-                </div>
-        
-        <!-- Founder Section - Horizontal Layout -->
-        <div class="founder-hero-section">
-            <div class="founder-image-hero">
+<!-- Hero -->
+<section class="about-hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">About EventCraft Pro</h1>
+        <p class="lead" style="max-width: 700px; margin: 0 auto; opacity: 0.95;">
+            Making beautiful event invitations accessible to everyone
+        </p>
+    </div>
+</section>
+
+<!-- Founder Section - Priority -->
+<div class="container">
+    <div class="founder-section">
+        <div class="founder-card">
+            <div class="founder-img">
                 <img src="/images/about/developer.jpg" alt="J Madhan - Founder & CEO">
             </div>
-            <div class="founder-message-hero">
-                <h3>A Message from Our Founder</h3>
-                <blockquote>
-                    <p>
-                                    "I founded EventCraft Pro with a simple vision: to democratize beautiful event invitations. Every special moment deserves a stunning invitation, and technology should make that possible for everyone, not just professional designers."
-                                </p>
-                    <p>
-                                    "Our team is dedicated to creating tools that are both powerful and intuitive. We believe that when you remove the barriers to beautiful design, amazing things happen. That's why we've built EventCraft Pro - to empower every event creator to bring their vision to life."
-                                </p>
-                    <footer class="blockquote-footer">
-                        <strong style="color: var(--reddish-brown-dark); font-size: 22px; font-weight: 700; letter-spacing: 0.5px;">J Madhan</strong>
-                        <cite title="Source Title" style="display: block; margin-top: 6px; color: var(--text-gray); font-style: normal; font-size: 15px;">Founder & CEO, EventCraft Pro</cite>
-                                </footer>
-                            </blockquote>
+            <div class="founder-content">
+                <h2>J Madhan</h2>
+                <div class="founder-role">Founder & CEO</div>
+                <p>
+                    "I built EventCraft Pro to solve a simple problem: creating professional invitations was too complicated. 
+                    Every celebration deserves a beautiful invitation, and I wanted to make that possible for everyone."
+                </p>
+                <p style="margin-top: 15px;">
+                    "After months of development, we've created a platform that's both powerful and easy to use. 
+                    Our mission is simple - help people celebrate life's special moments with stunning invitations."
+                </p>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-<!-- Mission Section -->
-<section class="mission-section">
+<!-- Our Story -->
+<section class="about-section" style="background: #FAFAFA;">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Our Mission</h2>
-            <p class="section-subtitle">To democratize beautiful event invitations by providing powerful, intuitive tools that anyone can use to create stunning digital invitations in minutes.</p>
-        </div>
-        <div class="row align-items-center">
+        <div class="row">
             <div class="col-lg-8 mx-auto">
-                <div class="mission-content text-center">
-                    <p class="lead mb-4" style="font-size: 18px; line-height: 1.7; color: var(--text-gray);">
-                        We believe that every special moment deserves a beautiful invitation. Whether it's a wedding, birthday, corporate event, or any celebration, our platform empowers you to create professional-quality invitations without the need for design expertise.
+                <div class="simple-card">
+                    <h3>Our Story</h3>
+                    <p>
+                        EventCraft Pro started as a solo project and has grown into a platform used by people worldwide. 
+                        We're a small, passionate team focused on making event planning easier and more beautiful.
                     </p>
-                    <div class="mission-visual">
-                        <div class="value-card" style="max-width: 500px; margin: 0 auto;">
-                            <div class="value-icon">
-                                <i class="fas fa-heart"></i>
-                        </div>
-                            <h4 class="value-title">Passion for Events</h4>
-                            <p class="value-description">
-                                We understand that every event is unique and special. That's why we've built a platform that adapts to your vision, not the other way around.
-                            </p>
-                        </div>
-                    </div>
+                    <p style="margin-top: 15px;">
+                        We're not trying to be the biggest - we're trying to be the best at what we do: 
+                        helping you create stunning invitations that make your events memorable.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Values Section -->
-<section class="values-section">
+<!-- Team -->
+<section class="about-section">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title">Our Values</h2>
-            <p class="section-subtitle">The principles that guide everything we do</p>
+            <h2 class="fw-bold" style="color: #2C2C2C; font-size: 36px;">Meet the Team</h2>
+            <p style="color: #666; font-size: 16px;">The people making EventCraft Pro possible</p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <h4 class="value-title">Innovation</h4>
-                    <p class="value-description">
-                        We continuously push the boundaries of what's possible in digital invitation design, incorporating the latest technologies and design trends.
-                    </p>
-                </div>
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="/images/about/ashwinprofile.jpg" alt="Ashwin Sri Chandra Chinni">
+                <h4>Ashwin Sri Chandra Chinni</h4>
+                <div class="role">Quality Assurance Lead</div>
+                <p>Ensures everything works perfectly. Testing every feature to deliver a flawless experience.</p>
+                <a href="https://www.linkedin.com/in/ashwin-sri-chandra-chinni-185772370/" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
             </div>
             
-            <div class="col-lg-4 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h4 class="value-title">User-Centric</h4>
-                    <p class="value-description">
-                        Every feature we build is designed with our users in mind. We listen, learn, and iterate based on real feedback from event creators worldwide.
-                    </p>
-                </div>
+            <div class="team-member">
+                <img src="/images/about/mahathi profile.jpg" alt="Mahathi Tarugu">
+                <h4>Mahathi Tarugu</h4>
+                <div class="role">Research Lead</div>
+                <p>Studies user needs and market trends to guide our product development.</p>
+                <a href="https://www.linkedin.com/in/mahathi-tarugu-02351235b" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
             </div>
             
-            <div class="col-lg-4 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h4 class="value-title">Trust & Security</h4>
-                    <p class="value-description">
-                        Your data and privacy are our top priorities. We use enterprise-grade security and are fully GDPR compliant to protect your information.
-                    </p>
-                </div>
+            <div class="team-member">
+                <img src="/images/about/baajiprofile.png" alt="Shaik Baaji">
+                <h4>Shaik Baaji</h4>
+                <div class="role">Content Specialist</div>
+                <p>Creates engaging content and helps users get the most out of our platform.</p>
+                <a href="https://www.linkedin.com/in/shaik-baaji-b4bb65363" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
             </div>
             
-            <div class="col-lg-4 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h4 class="value-title">Simplicity</h4>
-                    <p class="value-description">
-                        Powerful features don't have to be complicated. We make complex design tasks simple and intuitive for users of all skill levels.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <h4 class="value-title">Accessibility</h4>
-                    <p class="value-description">
-                        Beautiful invitations should be accessible to everyone, regardless of location, budget, or technical expertise. We're committed to breaking down barriers.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="value-card">
-                    <div class="value-icon">
-                        <i class="fas fa-handshake"></i>
-                    </div>
-                    <h4 class="value-title">Partnership</h4>
-                    <p class="value-description">
-                        We work closely with event planners, designers, and businesses to understand their needs and build solutions that truly serve their goals.
-                    </p>
-                </div>
+            <div class="team-member">
+                <img src="/images/about/yoshitha.png" alt="Yoshitha">
+                <h4>Yoshitha</h4>
+                <div class="role">Marketing Specialist</div>
+                <p>Spreads the word about EventCraft Pro and connects with our growing community.</p>
+                <a href="#" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Team Section -->
-<section class="team-section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Meet Our Team</h2>
-            <p class="section-subtitle">The passionate people behind EventCraft Pro</p>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="team-card">
-                    <div class="team-avatar">
-                        <img src="/images/about/ashwinprofile.jpg" alt="Ashwin Sri Chandra Chinni - Head of Testing & Quality Assurance">
-                    </div>
-                    <h4 class="team-name">Ashwin Sri Chandra Chinni</h4>
-                    <p class="team-role">Head of Testing & Quality Assurance</p>
-                    <p class="team-bio">
-                        Quality assurance expert ensuring our platform delivers flawless experiences. Ashwin leads our testing initiatives to guarantee reliability, performance, and user satisfaction across all features and devices.
-                    </p>
-                    <div class="team-social">
-                        <a href="https://www.linkedin.com/in/ashwin-sri-chandra-chinni-185772370/" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <div class="team-card">
-                    <div class="team-avatar">
-                        <img src="/images/about/mahathi profile.jpg" alt="Mahathi Tarugu - Lead Researcher">
-                    </div>
-                    <h4 class="team-name">Mahathi Tarugu</h4>
-                    <p class="team-role">Lead Researcher</p>
-                    <p class="team-bio">
-                        Research specialist focused on user experience and market trends. Mahathi conducts in-depth research to understand user needs and market dynamics, helping us build features that truly matter to our community.
-                    </p>
-                    <div class="team-social">
-                        <a href="https://www.linkedin.com/in/mahathi-tarugu-02351235b" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <div class="team-card">
-                    <div class="team-avatar">
-                        <img src="/images/about/baajiprofile.png" alt="Shaik Baaji - Content Creation Specialist">
-                    </div>
-                    <h4 class="team-name">Shaik Baaji</h4>
-                    <p class="team-role">Content Creation Specialist</p>
-                    <p class="team-bio">
-                        Creative content strategist responsible for developing engaging content and marketing materials. Shaik Baaji creates compelling content that showcases our platform's capabilities and helps users understand the value of EventCraft Pro.
-                    </p>
-                    <div class="team-social">
-                        <a href="https://www.linkedin.com/in/shaik-baaji-b4bb65363?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <div class="team-card">
-                    <div class="team-avatar">
-                        <img src="/images/about/yoshitha.png" alt="Yoshitha - Marketing Specialist">
-                    </div>
-                    <h4 class="team-name">Yoshitha</h4>
-                    <p class="team-role">Marketing Specialist</p>
-                    <p class="team-bio">
-                        Marketing expert focused on digital growth and brand awareness. Yoshitha develops and executes marketing strategies to expand our reach and connect with event creators globally, ensuring EventCraft Pro becomes the go-to platform for invitations.
-                    </p>
-                    <div class="team-social">
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Supported By Section -->
-<section class="supported-by-section">
+<!-- Supported By -->
+<section class="about-section" style="background: #FAFAFA;">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-8">
-                <div class="supported-content">
-                    <h3 class="supported-title mb-3">
-                        <i class="fas fa-handshake me-2"></i>
-                        Supported by Mentorly
-                    </h3>
-                    <p class="supported-description mb-3">
-                        EventCraft Pro is proudly supported by <strong>Mentorly.co.in</strong>, a leading AI education platform that empowers learners worldwide. 
-                        Mentorly is at the forefront of AI education, bridging the gap between advanced technology and learners globally.
-                    </p>
-                    <div class="supported-features">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="feature-item mb-2">
-                                    <i class="fas fa-check-circle me-2"></i>
-                                    <span>Real-Time AI Applications</span>
-                                </div>
-                                <div class="feature-item mb-2">
-                                    <i class="fas fa-check-circle me-2"></i>
-                                    <span>Professionals Trained</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="feature-item mb-2">
-                                    <i class="fas fa-check-circle me-2"></i>
-                                    <span>AI Tools Mastered</span>
-                                </div>
-                                <div class="feature-item mb-2">
-                                    <i class="fas fa-check-circle me-2"></i>
-                                    <span>Tools Evaluated</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-lg-7">
+                <h3 class="fw-bold mb-3" style="color: #2C2C2C;">Supported by Mentorly</h3>
+                <p style="color: #666; line-height: 1.7;">
+                    EventCraft Pro is proudly supported by <strong>Mentorly.co.in</strong>, a leading AI education platform. 
+                    Mentorly empowers learners worldwide with cutting-edge AI training and real-world applications.
+                </p>
             </div>
-            <div class="col-lg-4 text-center">
-                <div class="mentorly-logo-container">
-                    <div class="logo-card">
-                        <div class="mentorly-logo mb-3">
-                            <img src="/images/mentorly logo.jpeg" alt="Mentorly Logo" style="width: 100px; height: 100px; object-fit: contain; border-radius: 12px;">
-                        </div>
-                        <h4 class="company-name mb-2">Mentorly</h4>
-                        <p class="company-tagline mb-3">Empowering AI Learners Everywhere</p>
-                        <a href="https://mentorly.co.in/" target="_blank" class="btn btn-lg" style="background: var(--reddish-brown-dark); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all var(--transition);">
-                            <i class="fas fa-external-link-alt me-1"></i>Visit Website
-                        </a>
-                    </div>
+            <div class="col-lg-5 text-center">
+                <div class="simple-card">
+                    <img src="/images/mentorly logo.jpeg" alt="Mentorly" style="width: 100px; height: 100px; border-radius: 12px; margin-bottom: 20px;">
+                    <h4 style="font-size: 22px; font-weight: 700; color: #2C2C2C;">Mentorly</h4>
+                    <p style="color: #B39090; font-size: 14px; margin-bottom: 20px;">Empowering AI Learners</p>
+                    <a href="https://mentorly.co.in/" target="_blank" class="btn" style="background: #B39090; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                        Visit Mentorly <i class="fas fa-external-link-alt ms-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CTA Section -->
-<section class="cta-section">
+<!-- CTA -->
+<section class="about-section" style="background: linear-gradient(135deg, #B39090 0%, #DCBE85 100%); color: white;">
     <div class="container text-center">
-        <h2 class="cta-title">Ready to Join Our Community?</h2>
-        <p class="cta-subtitle">Start creating beautiful invitations today and be part of the EventCraft Pro family</p>
+        <h2 class="fw-bold mb-3" style="font-size: 36px;">Ready to Get Started?</h2>
+        <p class="mb-4" style="font-size: 18px; opacity: 0.95;">Join thousands creating beautiful invitations</p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <a href="{{ url_for('templates') }}" class="btn btn-lg" style="background: white; color: var(--reddish-brown-dark); border: none; padding: 16px 32px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: all var(--transition); box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                <i class="fas fa-rocket me-2"></i>Get Started Free
+            <a href="{{ url_for('templates') }}" class="btn btn-lg" style="background: white; color: #B39090; padding: 14px 32px; border-radius: 10px; font-weight: 700; text-decoration: none;">
+                Start Creating <i class="fas fa-arrow-right ms-2"></i>
             </a>
-            <a href="{{ url_for('contact') }}" class="btn btn-lg" style="background: transparent; color: white; border: 2px solid white; padding: 16px 32px; border-radius: 12px; font-weight: 600; text-decoration: none; transition: all var(--transition);">
-                <i class="fas fa-envelope me-2"></i>Contact Us
+            <a href="{{ url_for('contact') }}" class="btn btn-lg" style="background: transparent; border: 2px solid white; color: white; padding: 14px 32px; border-radius: 10px; font-weight: 600; text-decoration: none;">
+                Contact Us <i class="fas fa-envelope ms-2"></i>
             </a>
         </div>
     </div>
 </section>
-{% endblock %}
-
-{% block extra_scripts %}
-<script>
-// Add smooth animations for team cards
-document.addEventListener('DOMContentLoaded', function() {
-    const teamCards = document.querySelectorAll('.team-card');
-    
-    teamCards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        
-        setTimeout(() => {
-            card.style.transition = 'all 0.6s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, index * 200);
-    });
-});
-</script>
 {% endblock %}

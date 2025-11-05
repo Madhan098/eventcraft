@@ -6,6 +6,10 @@ from extensions import db
 import json
 import datetime
 
+# Load environment variables from .env file
+from dotenv import load_dotenv
+load_dotenv()  # This loads the .env file automatically
+
 # Create the app
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = os.environ.get("SESSION_SECRET", "eventcraft-secret-key-2024")
@@ -74,6 +78,13 @@ def from_json_filter(value):
         return json.loads(value)
     return {}
 
+@app.template_filter('tojson')
+def tojson_filter(value):
+    """Convert value to JSON string, safe for JavaScript"""
+    if value is None:
+        return '""'
+    return json.dumps(str(value))
+
 # Add custom Jinja2 functions
 @app.template_global('template_exists')
 def template_exists(template_path):
@@ -91,6 +102,12 @@ def inject_session():
     return dict(session=session)
 
 # Add CORS headers
+@app.route('/.well-known/appspecific/com.chrome.devtools.json')
+def chrome_devtools():
+    """Handle Chrome DevTools request - return empty JSON to prevent 404"""
+    from flask import jsonify
+    return jsonify({}), 200
+
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -117,6 +134,42 @@ def after_request(response):
     # Allow modern cross-origin isolation without being overly strict for this app
     response.headers.setdefault('Cross-Origin-Opener-Policy', 'same-origin-allow-popups')
     response.headers.setdefault('Cross-Origin-Embedder-Policy', 'credentialless')
+    # Content Security Policy
+    # NOTE: eval() is intentionally blocked for security. This warning is expected and GOOD.
+    # We do NOT use eval() in our code, but some third-party libraries (like html2canvas) might.
+    # If functionality is broken (e.g., image downloading), you can enable 'unsafe-eval' below,
+    # but it's NOT recommended as it reduces security protection against XSS attacks.
+    # 
+    # To enable eval() (NOT RECOMMENDED for security):
+    # Change script-src to: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net ..."
+    #
+    # The CSP below blocks eval() while allowing:
+    # - Inline scripts (needed for Jinja2 templates)
+    # - Scripts from trusted CDNs (Bootstrap, Font Awesome, etc.)
+    # - Styles from trusted sources
+    
+    # Set to True only if you absolutely need eval() for third-party libraries
+    # and you understand the security risks
+    ALLOW_UNSAFE_EVAL = False  # Set to True if html2canvas or other library needs it
+    
+    script_src = "'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.ckeditor.com https://html2canvas.hertzen.com https://www.gstatic.com"
+    if ALLOW_UNSAFE_EVAL:
+        script_src += " 'unsafe-eval'"
+    
+    csp = (
+        "default-src 'self'; "
+        f"script-src {script_src}; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
+        "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; "
+        "img-src 'self' data: https: blob:; "
+        "connect-src 'self' https:; "
+        "frame-src 'self' https://www.google.com; "
+        "object-src 'none'; "
+        "base-uri 'self'; "
+        "form-action 'self'; "
+        "frame-ancestors 'self';"
+    )
+    response.headers.setdefault('Content-Security-Policy', csp)
 
     return response
 

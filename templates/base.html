@@ -9,11 +9,7 @@
     <title>{% block title %}EventCraft Pro - Clean Digital Invitations{% endblock %}</title>
     
     <!-- Favicon (optional - remove if files don't exist) -->
-    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" onerror="this.remove()">
-    <!-- Favicon fallback - only load if exists -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/apple-touch-icon.png" onerror="this.remove()">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon-32x32.png" onerror="this.remove()">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon-16x16.png" onerror="this.remove()">
+    <!-- Removed favicon links to prevent 404 errors -->
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -40,74 +36,74 @@
     
     <style>
         :root {
-            /* 🎨 Momento Theme - Exact Homepage Design */
+            /* ☕ Coffee & Gold Theme - Warm & Professional */
             
-            /* Exact Color Palette from Homepage */
-            --reddish-brown: #A07878;
-            --reddish-brown-dark: #8B5A5A;
-            --reddish-brown-light: #B89090;
-            --golden-yellow: #D4A85A;
-            --golden-yellow-bright: #FFD700;
-            --golden-yellow-light: #F4D03F;
+            /* Coffee & Gold Color Palette */
+            --reddish-brown: #6F4E37; /* Dark Coffee Brown */
+            --reddish-brown-dark: #5D4037; /* Darker Coffee */
+            --reddish-brown-light: #8B7355; /* Medium Coffee */
+            --golden-yellow: #D4AF37; /* Rich Gold */
+            --golden-yellow-bright: #E6C34F; /* Bright Gold */
+            --golden-yellow-light: #F0DFA8; /* Light Gold */
             
-            /* Primary Colors - Reddish Brown */
-            --primary: #A07878;
-            --primary-hover: #8B5A5A;
-            --primary-dark: #8B5A5A;
-            --primary-light: #B89090;
-            --primary-teal: #A07878;
+            /* Primary Colors - Coffee Brown */
+            --primary: #6F4E37;
+            --primary-hover: #5D4037;
+            --primary-dark: #5D4037;
+            --primary-light: #8B7355;
+            --primary-teal: #6F4E37;
             
-            /* Secondary Colors - Golden Yellow */
-            --secondary: #D4A85A;
-            --secondary-hover: #C4974A;
-            --secondary-dark: #B8873A;
-            --secondary-light: #E4B86A;
-            --secondary-coral: #D4A85A;
+            /* Secondary Colors - Gold */
+            --secondary: #D4AF37;
+            --secondary-hover: #C9A02E;
+            --secondary-dark: #B8941F;
+            --secondary-light: #E6C34F;
+            --secondary-coral: #D4AF37;
             
             /* Accent Colors */
-            --accent: #A07878;
-            --accent-hover: #8B5A5A;
-            --accent-dark: #8B5A5A;
-            --accent-light: #B89090;
-            --accent-yellow: #D4A85A;
+            --accent: #6F4E37;
+            --accent-hover: #5D4037;
+            --accent-dark: #5D4037;
+            --accent-light: #8B7355;
+            --accent-yellow: #D4AF37;
             
             /* Premium Accents - Gold */
-            --gold: #D4A85A;
-            --gold-light: #F4D03F;
-            --copper: #A07878;
+            --gold: #D4AF37;
+            --gold-light: #F0DFA8;
+            --copper: #8B7355;
             
             /* Background Colors - Cream & Whites */
-            --bg-main: #FAFAFA;
+            --bg-main: #FFF9F5;
             --bg-white: #FFFFFF;
             --bg-primary: #FFFFFF;
-            --bg-secondary: #FAFAFA;
+            --bg-secondary: #FFF9F5;
             --bg-tertiary: #F5F5F5;
-            --bg-accent: rgba(160, 120, 120, 0.05);
+            --bg-accent: rgba(111, 78, 55, 0.05);
             --bg-card: #FFFFFF;
-            --bg-dark: #000000;
-            --bg-cream: #FAFAFA;
+            --bg-dark: #3E2723;
+            --bg-cream: #F5E6D3;
             --bg-pink-beige: #FFF5F0;
             
             /* Text Colors */
-            --text-primary: #000000;
-            --text-secondary: #666666;
-            --text-light: #999999;
-            --text-dark: #000000;
+            --text-primary: #3E2723;
+            --text-secondary: #5D4037;
+            --text-light: #8B7355;
+            --text-dark: #3E2723;
             --text-tertiary: #666666;
-            --text-muted: #CCCCCC;
+            --text-muted: #999999;
             
-            /* Gradients - Matching Homepage */
-            --gradient-primary: linear-gradient(135deg, #A07878 0%, #D4A85A 100%);
-            --gradient-secondary: linear-gradient(135deg, #D4A85A 0%, #F4D03F 100%);
-            --gradient-accent: linear-gradient(135deg, #A07878 0%, #8B5A5A 100%);
-            --gradient-gold: linear-gradient(135deg, #D4A85A 0%, #F4D03F 100%);
-            --gradient-floral: linear-gradient(135deg, #A07878 0%, #D4A85A 50%, #F4D03F 100%);
-            --gradient-bg: linear-gradient(135deg, #FFF5F0 0%, #FAFAFA 100%);
-            --gradient-hero: linear-gradient(135deg, #FFF5F0 0%, #FAFAFA 100%);
+            /* Gradients - Coffee & Gold */
+            --gradient-primary: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+            --gradient-secondary: linear-gradient(135deg, #D4AF37 0%, #F0DFA8 100%);
+            --gradient-accent: linear-gradient(135deg, #6F4E37 0%, #5D4037 100%);
+            --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #E6C34F 100%);
+            --gradient-floral: linear-gradient(135deg, #6F4E37 0%, #8B7355 50%, #D4AF37 100%);
+            --gradient-bg: linear-gradient(135deg, #F5E6D3 0%, #FFF9F5 100%);
+            --gradient-hero: linear-gradient(135deg, #F5E6D3 0%, #FFF9F5 100%);
             --gradient-card: #FFFFFF;
             --gradient-success: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%);
-            --gradient-warning: linear-gradient(135deg, #D4A85A 0%, #F4D03F 100%);
-            --gradient-danger: linear-gradient(135deg, #A07878 0%, #8B5A5A 100%);
+            --gradient-warning: linear-gradient(135deg, #D4AF37 0%, #E6C34F 100%);
+            --gradient-danger: linear-gradient(135deg, #6F4E37 0%, #5D4037 100%);
             
             /* Shadows - Clean & Subtle */
             --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -117,15 +113,15 @@
             --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.15);
             --shadow-2xl: 0 16px 64px rgba(0, 0, 0, 0.18);
             --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.1);
-            --shadow-glass-hover: 0 12px 48px rgba(160, 120, 120, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.3);
-            --shadow-glass-intense: 0 20px 60px rgba(160, 120, 120, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.4);
+            --shadow-glass-hover: 0 12px 48px rgba(111, 78, 55, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.3);
+            --shadow-glass-intense: 0 20px 60px rgba(111, 78, 55, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.4);
             
             /* Glassmorphism Colors */
             --glass-bg-light: rgba(255, 255, 255, 0.75);
             --glass-bg-medium: rgba(255, 255, 255, 0.6);
             --glass-bg-dark: rgba(255, 255, 255, 0.5);
             --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-border-hover: rgba(160, 120, 120, 0.3);
+            --glass-border-hover: rgba(111, 78, 55, 0.3);
             --glass-blur: blur(20px);
             --glass-blur-intense: blur(30px);
             
@@ -216,6 +212,15 @@
             min-height: 100vh;
             position: relative;
             scroll-behavior: smooth;
+            /* Mobile Performance Optimizations */
+            -webkit-overflow-scrolling: touch;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Smooth scrolling for all elements */
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
         
         /* Clean Background - No Pattern */
@@ -846,6 +851,57 @@
             position: relative;
         }
         
+        /* Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #6F4E37 0%, #D4AF37 100%);
+            z-index: 9999;
+            transition: width 0.3s ease;
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(111, 78, 55, 0.3);
+            transition: all 0.3s ease;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(111, 78, 55, 0.4);
+            background: linear-gradient(135deg, #5D4037 0%, #C9A02E 100%);
+        }
+        
+        .back-to-top:active {
+            transform: translateY(-2px);
+        }
         
         /* Accessibility Improvements */
         /* High contrast mode support */
@@ -2499,8 +2555,8 @@
         /* Floating Get Started Button */
         .floating-get-started {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+            bottom: 30px;
+            right: 100px;
             z-index: 1000;
             opacity: 0;
             transform: translateY(100px);
@@ -2515,14 +2571,14 @@
         }
 
         .floating-btn {
-            background: var(--gradient-floral) !important;
+            background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%) !important;
             border: none !important;
             color: white !important;
             padding: 1rem 1.5rem !important;
             border-radius: 50px !important;
             font-weight: 600 !important;
             font-size: 1rem !important;
-            box-shadow: 0 8px 25px rgba(0, 163, 136, 0.3) !important;
+            box-shadow: 0 8px 25px rgba(111, 78, 55, 0.3) !important;
             transition: all 0.3s ease !important;
             position: relative !important;
             overflow: hidden !important;
@@ -2550,13 +2606,176 @@
 
         .floating-btn:hover {
             transform: translateY(-3px) scale(1.05) !important;
-            box-shadow: 0 12px 35px rgba(0, 163, 136, 0.4) !important;
+            box-shadow: 0 12px 35px rgba(111, 78, 55, 0.4) !important;
+            background: linear-gradient(135deg, #5D4037 0%, #C9A02E 100%) !important;
             color: white !important;
             text-decoration: none !important;
         }
 
         .floating-btn:active {
             transform: translateY(-1px) scale(1.02) !important;
+        }
+
+        /* Responsive adjustments for floating buttons */
+        @media (max-width: 768px) {
+            .floating-get-started {
+                bottom: 85px;
+                right: 20px;
+                left: 20px;
+                width: auto;
+            }
+            
+            .floating-btn {
+                width: 100%;
+                justify-content: center !important;
+                font-size: 0.9rem !important;
+                padding: 0.9rem 1.2rem !important;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .floating-get-started {
+                bottom: 75px;
+            }
+            
+            .floating-btn {
+                font-size: 0.85rem !important;
+                padding: 0.8rem 1rem !important;
+            }
+        }
+
+        /* ============================================
+           MOBILE OPTIMIZATIONS - PERFORMANCE & VISIBILITY
+           ============================================ */
+        
+        /* Touch-friendly tap targets (minimum 44x44px) */
+        @media (max-width: 768px) {
+            .btn, button, a.btn {
+                min-height: 44px;
+                min-width: 44px;
+                padding: 12px 20px;
+                font-size: 16px;
+                touch-action: manipulation;
+            }
+            
+            /* Larger touch targets for navigation */
+            .navbar-nav .nav-link {
+                padding: 12px 16px;
+                font-size: 16px;
+            }
+            
+            /* Mobile navbar optimization */
+            .navbar {
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+            }
+            
+            /* Optimize container padding for mobile */
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Reduce hero font sizes for mobile readability */
+            h1, .h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            h2, .h2 {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+            
+            h3, .h3 {
+                font-size: 1.25rem;
+                line-height: 1.4;
+            }
+            
+            /* Mobile card spacing */
+            .card {
+                margin-bottom: 1rem;
+            }
+            
+            /* Optimize form inputs for mobile */
+            .form-control, .form-select {
+                font-size: 16px;
+                padding: 12px 16px;
+                min-height: 44px;
+            }
+            
+            /* Mobile modal adjustments */
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            
+            /* Fast hardware acceleration for animations */
+            .btn, .card, .navbar, .back-to-top, .floating-btn {
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+                will-change: transform;
+            }
+        }
+        
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+            
+            h1, .h1 {
+                font-size: 1.75rem;
+            }
+            
+            h2, .h2 {
+                font-size: 1.35rem;
+            }
+            
+            .container {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+            
+            /* Stack buttons vertically on very small screens */
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn-group .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        /* Performance optimizations for all devices */
+        * {
+            /* Prevent text selection lag on mobile */
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+        }
+        
+        /* Optimize images for mobile */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Lazy loading hint for browsers */
+        img[loading="lazy"] {
+            content-visibility: auto;
+        }
+        
+        /* Improve scroll performance */
+        .main-content {
+            contain: layout style paint;
         }
 
         /* Enhanced Footer CTA Button */
@@ -4680,7 +4899,7 @@
                 confettiContainer.className = 'confetti';
                 document.body.appendChild(confettiContainer);
 
-                const colors = ['#8B5A5A', '#A07878', '#D4A85A', '#FFD700', '#43e97b'];
+                const colors = ['#A17E7E', '#B39090', '#DCBE85', '#E8CE92', '#66BB6A'];
                 
                 for (let i = 0; i < 50; i++) {
                     const confettiPiece = document.createElement('div');

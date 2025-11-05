@@ -2,155 +2,252 @@
 
 {% block title %}Terms of Service - EventCraft Pro{% endblock %}
 
-{% block content %}
-<!-- Terms Hero Section -->
-<section class="terms-hero py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <div class="hero-content">
-                    <h1 class="hero-title mb-3">
-                        Terms of <span class="text-gradient">Service</span>
-                    </h1>
-                    <p class="hero-subtitle mb-4">
-                        Simple terms for using EventCraft Pro
-                    </p>
-                    <div class="terms-meta text-muted">
-                        <span><i class="fas fa-calendar me-1"></i>Last updated: January 2025</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Terms Content Section -->
-<section class="terms-content py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="terms-text">
-                    
-                    <div class="terms-section mb-5">
-                        <h2 class="section-title">Using Our Service</h2>
-                        <p>By using EventCraft Pro, you agree to:</p>
-                        <ul>
-                            <li>Use our platform for creating invitations only</li>
-                            <li>Not share inappropriate or illegal content</li>
-                            <li>Keep your account information accurate</li>
-                            <li>Respect other users and our community</li>
-                        </ul>
-                    </div>
-
-                    <div class="terms-section mb-5">
-                        <h2 class="section-title">Your Content</h2>
-                        <p>You own your invitations and content. We only use it to:</p>
-                        <ul>
-                            <li>Create and display your invitations</li>
-                            <li>Provide our service to you</li>
-                            <li>Improve our platform</li>
-                        </ul>
-                        <p>You're responsible for making sure your content doesn't violate any laws or rights.</p>
-                    </div>
-
-                    <div class="terms-section mb-5">
-                        <h2 class="section-title">Account & Payments</h2>
-                        <p>For your account:</p>
-                        <ul>
-                            <li>You must be at least 13 years old</li>
-                            <li>Keep your password secure</li>
-                            <li>You can cancel anytime</li>
-                            <li>We offer a 30-day money-back guarantee</li>
-                        </ul>
-                    </div>
-
-                    <div class="terms-section mb-5">
-                        <h2 class="section-title">Our Responsibilities</h2>
-                        <p>We promise to:</p>
-                        <ul>
-                            <li>Keep your data secure and private</li>
-                            <li>Provide reliable service</li>
-                            <li>Respond to support requests quickly</li>
-                            <li>Never sell your personal information</li>
-                        </ul>
-                    </div>
-
-                    <div class="terms-section mb-5">
-                        <h2 class="section-title">Limitations</h2>
-                        <p>Please understand that:</p>
-                        <ul>
-                            <li>We can't guarantee 100% uptime</li>
-                            <li>We're not responsible for third-party services</li>
-                            <li>We may update these terms occasionally</li>
-                            <li>We can suspend accounts that violate our rules</li>
-                        </ul>
-                    </div>
-
-                    <div class="terms-section mb-5">
-                        <h2 class="section-title">Contact Us</h2>
-                        <p>If you have questions about these terms, please contact us:</p>
-                        <div class="contact-info p-3 bg-light rounded">
-                            <p class="mb-2"><strong>Email:</strong> legal@eventcraftpro.com</p>
-                            <p class="mb-2"><strong>Support:</strong> support@eventcraftpro.com</p>
-                            <p class="mb-0"><strong>Response Time:</strong> Within 24 hours</p>
-                        </div>
-                    </div>
-
-                    <div class="summary-box p-4 bg-primary-subtle rounded mt-5">
-                        <h4 class="text-primary mb-3"><i class="fas fa-info-circle me-2"></i>Quick Summary</h4>
-                        <p class="mb-0">Use our service responsibly, respect others, and we'll take care of the rest. Simple and fair!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endblock %}
-
 {% block extra_head %}
 <style>
 .terms-hero {
-    background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-coral) 100%);
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+    padding: 80px 0;
     color: white;
 }
 
-.terms-hero .text-gradient {
-    background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.terms-content {
+    padding: 60px 0;
 }
 
-.section-title {
-    color: #2d3748;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
+.terms-card {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.terms-card h2 {
+    color: #2C2C2C;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 40px 0 20px 0;
+}
+
+.terms-card h2:first-child {
+    margin-top: 0;
+}
+
+.terms-card h3 {
+    color: #B39090;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 30px 0 15px 0;
+}
+
+.terms-card p, .terms-card li {
+    color: #666;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.terms-card ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+.terms-card li {
+    margin-bottom: 10px;
+}
+
+.last-updated {
+    background: #FAFAFA;
+    padding: 15px 20px;
+    border-radius: 10px;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 30px;
     font-weight: 600;
 }
 
-.terms-content p {
-    line-height: 1.7;
-    color: #4a5568;
-    margin-bottom: 1rem;
-}
-
-.terms-content ul {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
-}
-
-.terms-content li {
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
-    color: #4a5568;
-}
-
-.contact-info {
-    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-}
-
-.summary-box {
-    border-left: 4px solid var(--primary-teal);
+@media (max-width: 768px) {
+    .terms-card {
+        padding: 30px 20px;
+    }
+    
+    .terms-hero {
+        padding: 60px 0;
+    }
 }
 </style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="terms-hero">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">Terms of Service</h1>
+        <p class="lead" style="opacity: 0.95;">Our agreement with you</p>
+    </div>
+</section>
+
+<!-- Terms Content -->
+<section class="terms-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="terms-card">
+                    <div class="last-updated">
+                        <i class="fas fa-calendar-alt me-2"></i>Last Updated: November 2024
+                    </div>
+                    
+                    <p>
+                        Welcome to EventCraft Pro! By using our platform, you agree to these terms. 
+                        Please read them carefully.
+                    </p>
+                    
+                    <h2>1. Using Our Service</h2>
+                    <h3>Account Requirements</h3>
+                    <ul>
+                        <li>You must be at least 13 years old to use EventCraft Pro</li>
+                        <li>Provide accurate information when signing up</li>
+                        <li>Keep your password secure and don't share your account</li>
+                        <li>You're responsible for all activity on your account</li>
+                    </ul>
+                    
+                    <h3>Acceptable Use</h3>
+                    <p>You agree to:</p>
+                    <ul>
+                        <li>Use EventCraft Pro for lawful purposes only</li>
+                        <li>Respect others' intellectual property rights</li>
+                        <li>Not upload harmful content (malware, viruses, etc.)</li>
+                        <li>Not harass, abuse, or spam other users</li>
+                        <li>Not try to hack or disrupt our services</li>
+                    </ul>
+                    
+                    <h2>2. Your Content</h2>
+                    <h3>Ownership</h3>
+                    <p>
+                        You own all content you create on EventCraft Pro (invitations, images, text). 
+                        We don't claim any ownership of your content.
+                    </p>
+                    
+                    <h3>License to Us</h3>
+                    <p>
+                        By using our service, you give us permission to:
+                    </p>
+                    <ul>
+                        <li>Store and display your content</li>
+                        <li>Share your invitations with people you choose</li>
+                        <li>Use your content to provide and improve our services</li>
+                    </ul>
+                    <p>We won't use your content for marketing without your permission.</p>
+                    
+                    <h3>Your Responsibility</h3>
+                    <p>You're responsible for:</p>
+                    <ul>
+                        <li>Making sure you have the rights to upload content</li>
+                        <li>Not infringing on others' copyrights or trademarks</li>
+                        <li>The accuracy of information in your invitations</li>
+                    </ul>
+                    
+                    <h2>3. Our Services</h2>
+                    <h3>What We Provide</h3>
+                    <p>EventCraft Pro provides:</p>
+                    <ul>
+                        <li>Tools to create digital invitations</li>
+                        <li>Templates and design resources</li>
+                        <li>Storage for your invitations and media</li>
+                        <li>Sharing and RSVP management features</li>
+                    </ul>
+                    
+                    <h3>Service Availability</h3>
+                    <p>
+                        We strive for 99.9% uptime, but we can't guarantee uninterrupted service. 
+                        We may need to perform maintenance or updates occasionally.
+                    </p>
+                    
+                    <h2>4. Free & Paid Features</h2>
+                    <p>EventCraft Pro offers both free and premium features:</p>
+                    <ul>
+                        <li><strong>Free:</strong> Basic invitation creation and sharing</li>
+                        <li><strong>Premium:</strong> Additional templates, features, and storage (coming soon)</li>
+                    </ul>
+                    <p>We reserve the right to modify pricing and features with advance notice.</p>
+                    
+                    <h2>5. Termination</h2>
+                    <h3>By You</h3>
+                    <p>
+                        You can close your account anytime by contacting us. 
+                        We'll delete your data as outlined in our Privacy Policy.
+                    </p>
+                    
+                    <h3>By Us</h3>
+                    <p>We may suspend or terminate your account if:</p>
+                    <ul>
+                        <li>You violate these terms</li>
+                        <li>Your account is inactive for over 2 years</li>
+                        <li>We're required to by law</li>
+                        <li>You engage in fraudulent activity</li>
+                    </ul>
+                    <p>We'll try to give you advance notice when possible.</p>
+                    
+                    <h2>6. Liability</h2>
+                    <h3>Our Responsibility</h3>
+                    <p>
+                        We work hard to keep EventCraft Pro running smoothly, but we can't be held responsible for:
+                    </p>
+                    <ul>
+                        <li>Loss of data due to technical failures</li>
+                        <li>Issues caused by third-party services</li>
+                        <li>Content created by users</li>
+                        <li>Indirect damages or losses</li>
+                    </ul>
+                    
+                    <h3>Your Responsibility</h3>
+                    <p>
+                        You're responsible for backing up important content and for any damages 
+                        resulting from your violation of these terms.
+                    </p>
+                    
+                    <h2>7. Intellectual Property</h2>
+                    <p>EventCraft Pro's platform, including:</p>
+                    <ul>
+                        <li>Our code, design, and features</li>
+                        <li>Our logo and branding</li>
+                        <li>Our templates and graphics</li>
+                    </ul>
+                    <p>...are owned by us and protected by copyright and trademark laws.</p>
+                    
+                    <h2>8. Changes to Terms</h2>
+                    <p>
+                        We may update these terms from time to time. We'll notify you of major changes 
+                        via email or a notice on our platform. Continued use after changes means you accept the new terms.
+                    </p>
+                    
+                    <h2>9. Disputes</h2>
+                    <p>
+                        If you have an issue, please contact us first at 
+                        <a href="mailto:madhanjaladi@gmail.com" style="color: #B39090; text-decoration: none; font-weight: 600;">madhanjaladi@gmail.com</a>. 
+                        We'll do our best to resolve it quickly and fairly.
+                    </p>
+                    
+                    <h2>10. General</h2>
+                    <ul>
+                        <li><strong>Entire Agreement:</strong> These terms constitute the full agreement between you and EventCraft Pro</li>
+                        <li><strong>Severability:</strong> If any part is found invalid, the rest remains in effect</li>
+                        <li><strong>No Waiver:</strong> Our failure to enforce any right doesn't waive that right</li>
+                    </ul>
+                    
+                    <h2>11. Contact</h2>
+                    <p>Questions about these terms?</p>
+                    <p>
+                        <strong>Email:</strong> <a href="mailto:madhanjaladi@gmail.com" style="color: #B39090; text-decoration: none; font-weight: 600;">madhanjaladi@gmail.com</a>
+                    </p>
+                    
+                    <div style="margin-top: 40px; padding: 25px; background: #FAFAFA; border-radius: 12px; border-left: 4px solid #B39090;">
+                        <p style="margin: 0; font-weight: 600; color: #2C2C2C;">
+                            <i class="fas fa-handshake me-2" style="color: #B39090;"></i>
+                            We're building EventCraft Pro to be fair and transparent. If you have questions or concerns, we're here to help.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

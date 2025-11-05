@@ -86,21 +86,31 @@ html {
 }
 
 /* Enhanced hover effects */
-.card:hover, .team-card:hover, .value-card:hover, .category-card:hover {
+.card:hover, .team-card:hover, .value-card:hover, .category-card:hover, .feature-card:hover, .step-card:hover {
     transform: translateY(-8px) scale(1.02) !important;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15) !important;
 }
 
 .btn-primary:hover {
     animation: pulse 2s infinite;
 }
 
+/* New section styles */
+.feature-card, .step-card {
+    cursor: pointer;
+}
+
+.stat-item {
+    animation: fadeInScale 0.8s ease forwards;
+}
+
 :root {
-    /* Exact Color Palette from Images */
-    --reddish-brown: #A07878;
-    --reddish-brown-dark: #8B5A5A;
-    --golden-yellow: #D4A85A;
-    --golden-yellow-bright: #FFD700;
-    --golden-yellow-light: #F4D03F;
+    /* Perfectly Balanced Color Palette - Just Right */
+    --reddish-brown: #B39090;        /* Balanced medium brown-pink */
+    --reddish-brown-dark: #A17E7E;   /* Balanced medium-dark brown */
+    --golden-yellow: #DCBE85;        /* Balanced warm gold */
+    --golden-yellow-bright: #E8CE92; /* Balanced bright gold */
+    --golden-yellow-light: #F0DBAA;  /* Balanced light gold */
     
     /* Background Colors */
     --bg-cream: #FAFAFA;
@@ -109,14 +119,14 @@ html {
     --bg-gradient: linear-gradient(135deg, #FFF5F0 0%, #FAFAFA 100%);
     
     /* Text Colors */
-    --text-dark: #000000;
+    --text-dark: #2C2C2C;            /* Softer black for better readability */
     --text-gray: #666666;
     --text-light-gray: #999999;
     
-    /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    /* Shadows - Softer */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
     
     /* Transitions */
     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -132,9 +142,45 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
-    background: var(--bg-white);
+    background: linear-gradient(-45deg, #F5E6D3, #FFF9F5, #F0DFA8, #E6D5C3);
+    background-size: 400% 400%;
+    animation: gradientFlow 15s ease infinite;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(111, 78, 55, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(230, 195, 79, 0.06) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='laceFloral' x='0' y='0' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.15'%3E%3Cpath d='M200 60 Q190 80 200 100 Q210 80 200 60 M200 60 Q180 70 160 80 Q180 90 200 100 Q220 90 240 80 Q220 70 200 60' stroke='%236F4E37' stroke-width='1' fill='none'/%3E%3Cpath d='M140 100 Q130 120 140 140 Q150 120 140 100' stroke='%23D4AF37' stroke-width='1' fill='none'/%3E%3Cpath d='M260 100 Q250 120 260 140 Q270 120 260 100' stroke='%236F4E37' stroke-width='1' fill='none'/%3E%3Cpath d='M200 180 Q190 200 200 220 Q210 200 200 180' stroke='%23D4AF37' stroke-width='0.8' fill='none'/%3E%3Ccircle cx='120' cy='120' r='3' fill='%23E6C34F' opacity='0.25'/%3E%3Ccircle cx='280' cy='280' r='2' fill='%236F4E37' opacity='0.25'/%3E%3Ccircle cx='200' cy='200' r='2.5' fill='%23D4AF37' opacity='0.25'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23laceFloral)'/%3E%3C/svg%3E");
+    background-size: 600px 600px;
+    background-position: 0 0;
+    background-repeat: repeat;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 1;
+    animation: patternShift 30s linear infinite;
+}
+
+@keyframes patternShift {
+    0% { background-position: 0 0; }
+    100% { background-position: 600px 600px; }
 }
 
 /* Hero Section - Pinkish-Beige Gradient Background */
@@ -146,6 +192,23 @@ body {
     background: var(--bg-gradient);
     position: relative;
     overflow: hidden;
+    z-index: 1;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='heroLace' x='0' y='0' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.11'%3E%3Cpath d='M200 60 Q190 80 200 100 Q210 80 200 60 M200 60 Q180 70 160 80 Q180 90 200 100 Q220 90 240 80 Q220 70 200 60' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M140 100 Q130 120 140 140 Q150 120 140 100 M140 100 Q120 110 100 120 Q120 130 140 140 Q160 130 180 120 Q160 110 140 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M260 100 Q250 120 260 140 Q270 120 260 100 M260 100 Q240 110 220 120 Q240 130 260 140 Q280 130 300 120 Q280 110 260 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M200 180 Q190 200 200 220 Q210 200 200 180' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M140 220 Q130 240 140 260 Q150 240 140 220' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M260 220 Q250 240 260 260 Q270 240 260 220' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M100 80 Q90 90 100 100 Q110 90 100 80 M300 80 Q290 90 300 100 Q310 90 300 80' stroke='%23888' stroke-width='0.5' fill='none'/%3E%3Cpath d='M200 140 L160 160 M200 140 L240 160' stroke='%23888' stroke-width='0.3' fill='none'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23heroLace)'/%3E%3C/svg%3E");
+    background-size: 600px 600px;
+    background-position: 0 0;
+    background-repeat: repeat;
+    opacity: 1;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .hero-container {
@@ -156,6 +219,8 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 80px;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 
@@ -245,7 +310,8 @@ body {
 /* Hero Cards Right - Stacked Effect */
 .hero-cards {
     position: relative;
-    height: 600px;
+    height: 700px;
+    width: 100%;
 }
 
 .invitation-card-stack {
@@ -290,43 +356,41 @@ body {
 
 .invitation-card {
     position: absolute;
-    width: 320px;
+    width: 420px;
+    height: 520px;
     background: var(--bg-white);
-    border-radius: 16px;
-    padding: 32px;
+    border-radius: 20px;
+    padding: 0;
     box-shadow: var(--shadow-lg);
-    transition: all var(--transition);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     z-index: 2;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .invitation-card:hover {
-    transform: translateY(-8px) rotate(2deg);
-    box-shadow: var(--shadow-lg);
-    z-index: 3;
+    transform: translateY(-8px) rotate(2deg) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    z-index: 10;
 }
 
-.invitation-card:nth-child(3) {
-    top: 0;
-    right: 0;
-    transform: rotate(-5deg);
-    z-index: 2;
+.invitation-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-.invitation-card:nth-child(4) {
-    top: 80px;
-    right: 40px;
-    background: #1a1a1a;
-    color: #FFFFFF;
-    transform: rotate(3deg);
-    z-index: 3;
-}
-
-.invitation-card:nth-child(5) {
-    top: 160px;
-    right: 80px;
-    transform: rotate(-2deg);
-    z-index: 2;
+/* Image cards will be positioned dynamically via JavaScript */
+.invitation-card.image-card {
+    display: block !important;
+    visibility: visible !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
 }
 
 .card-icon {
@@ -354,6 +418,24 @@ body {
 .event-categories {
     padding: 100px 0;
     background: var(--bg-white);
+    position: relative;
+    z-index: 1;
+}
+
+.event-categories::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='categoryLace' x='0' y='0' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.12'%3E%3Cpath d='M200 60 Q190 80 200 100 Q210 80 200 60 M200 60 Q180 70 160 80 Q180 90 200 100 Q220 90 240 80 Q220 70 200 60' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M140 100 Q130 120 140 140 Q150 120 140 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M260 100 Q250 120 260 140 Q270 120 260 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M200 180 Q190 200 200 220 Q210 200 200 180' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M100 80 Q90 90 100 100 Q110 90 100 80 M300 80 Q290 90 300 100 Q310 90 300 80' stroke='%23888' stroke-width='0.5' fill='none'/%3E%3Cpath d='M200 140 L160 160 M200 140 L240 160' stroke='%23888' stroke-width='0.3' fill='none'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23categoryLace)'/%3E%3C/svg%3E");
+    background-size: 600px 600px;
+    background-position: 0 0;
+    background-repeat: repeat;
+    opacity: 1;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .section-header {
@@ -398,11 +480,14 @@ body {
 
 .category-card {
     position: relative;
-    height: 400px;
     border-radius: 20px;
     overflow: hidden;
     cursor: pointer;
     transition: all var(--transition);
+    background: var(--bg-white);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-md);
 }
 
 .category-card:hover {
@@ -410,48 +495,34 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
-.category-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    z-index: 1;
-}
-
-.category-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--bg-image);
+.category-card-image {
+    width: 100%;
+    height: 250px;
+    background-image: var(--category-bg-image);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(8px);
-    z-index: 0;
+    flex-shrink: 0;
+}
+
+.category-card:not([style*="--category-bg-image"]) .category-card-image {
+    background-image: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
 }
 
 .category-content {
     position: relative;
-    z-index: 2;
-    padding: 32px;
-    height: 100%;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    flex-grow: 1;
+    background: var(--bg-white);
 }
 
 .category-icon {
     font-size: 40px;
     color: var(--reddish-brown-dark);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .category-title {
@@ -465,12 +536,16 @@ body {
     font-size: 16px;
     color: var(--text-gray);
     line-height: 1.5;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .category-link {
     color: var(--reddish-brown-dark);
     font-weight: 600;
+    padding: 8px 0;
+    display: inline-block;
+    text-decoration: none;
+    transition: color 0.3s ease;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -484,34 +559,30 @@ body {
 }
 
 /* Background Images for Categories - Use gradient fallbacks */
-.category-card[data-category="wedding"] {
-    --bg-image: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-}
-
-.category-card[data-category="birthday"] {
-    --bg-image: linear-gradient(135deg, var(--golden-yellow) 0%, var(--reddish-brown) 100%);
-}
-
-.category-card[data-category="corporate"] {
-    --bg-image: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--text-dark) 100%);
-}
-
-.category-card[data-category="babyshower"] {
-    --bg-image: linear-gradient(135deg, #FFB6C1 0%, var(--golden-yellow) 100%);
-}
-
-.category-card[data-category="anniversary"] {
-    --bg-image: linear-gradient(135deg, var(--golden-yellow) 0%, var(--reddish-brown-dark) 100%);
-}
-
-.category-card[data-category="custom"] {
-    --bg-image: linear-gradient(135deg, var(--reddish-brown) 0%, var(--golden-yellow) 100%);
-}
+/* Category-specific background images are now set via inline styles using --category-bg-image */
 
 /* Testimonials Section */
 .testimonials-section {
     padding: 100px 0;
     background: var(--bg-cream);
+    position: relative;
+    z-index: 1;
+}
+
+.testimonials-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='testimonialLace' x='0' y='0' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.12'%3E%3Cpath d='M200 60 Q190 80 200 100 Q210 80 200 60 M200 60 Q180 70 160 80 Q180 90 200 100 Q220 90 240 80 Q220 70 200 60' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M140 100 Q130 120 140 140 Q150 120 140 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M260 100 Q250 120 260 140 Q270 120 260 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M200 180 Q190 200 200 220 Q210 200 200 180' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M100 80 Q90 90 100 100 Q110 90 100 80 M300 80 Q290 90 300 100 Q310 90 300 80' stroke='%23888' stroke-width='0.5' fill='none'/%3E%3Cpath d='M200 140 L160 160 M200 140 L240 160' stroke='%23888' stroke-width='0.3' fill='none'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23testimonialLace)'/%3E%3C/svg%3E");
+    background-size: 600px 600px;
+    background-position: 0 0;
+    background-repeat: repeat;
+    opacity: 1;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .testimonials-header {
@@ -632,7 +703,12 @@ body {
     }
     
     .hero-cards {
-        height: 400px;
+        height: 500px;
+    }
+    
+    .invitation-card {
+        width: 360px;
+        height: 450px;
     }
     
     .categories-grid,
@@ -645,6 +721,7 @@ body {
     .hero-section {
         padding: 60px 0;
         min-height: auto;
+        overflow: hidden;
     }
     
     .hero-container {
@@ -656,15 +733,18 @@ body {
     .hero-title {
         font-size: 36px;
         line-height: 1.2;
+        word-wrap: break-word;
     }
     
     .hero-subtitle {
         font-size: 16px;
+        line-height: 1.5;
     }
     
     .section-title,
     .testimonials-title {
         font-size: 32px;
+        line-height: 1.2;
     }
     
     .section-header,
@@ -682,16 +762,48 @@ body {
     
     .hero-cards {
         height: 400px;
+        margin: 0 auto;
+        /* Hardware acceleration for smooth animations */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
     
     .invitation-card {
-        width: 280px;
+        width: 300px;
+        height: 380px;
+        /* Hardware acceleration */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform;
     }
     
     .btn-primary,
     .btn-secondary {
         width: 100%;
         justify-content: center;
+        min-height: 50px;
+        font-size: 16px;
+        touch-action: manipulation;
+    }
+    
+    /* Optimize hero CTA buttons */
+    .hero-cta {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+    
+    .hero-cta .btn {
+        width: 100%;
+    }
+    
+    /* Improve mobile card performance */
+    .category-card,
+    .testimonial-card {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
     }
     
 }
@@ -703,20 +815,32 @@ body {
     
     .hero-title {
         font-size: 28px;
+        line-height: 1.2;
     }
     
     .hero-subtitle {
         font-size: 14px;
+        line-height: 1.5;
     }
     
     .section-title,
     .testimonials-title {
         font-size: 24px;
+        line-height: 1.2;
     }
     
     .section-subtitle,
     .testimonials-subtitle {
         font-size: 14px;
+        line-height: 1.5;
+    }
+    
+    /* Smaller buttons for very small screens */
+    .btn-primary,
+    .btn-secondary {
+        min-height: 48px;
+        font-size: 15px;
+        padding: 12px 16px;
     }
     
     .hero-cards {
@@ -747,7 +871,7 @@ body {
                 <span class="title-spark">Spark </span>
                 <span class="title-joy">Joy</span>
                         </h1>
-            <p class="hero-subtitle">Design stunning, personalized invitations for every celebration. Weddings, birthdays, or any moment worth remembering — make it unforgettable.</p>
+            <p class="hero-subtitle">Where every celebration begins with a beautifully crafted invitation that tells your unique story. From your heart to their hands.</p>
             
             <div class="hero-cta">
                 <a href="{{ url_for('templates') }}" class="btn btn-primary">
@@ -758,13 +882,22 @@ body {
                         </div>
                         
         <div class="hero-cards">
-            <div class="invitation-card-stack">
+            <div class="invitation-card-stack" id="imageCardStack">
                 <!-- Lottie Animation Background -->
                 <div id="lottie-animation-back" class="lottie-animation-back"></div>
                 
                 <!-- Lottie Animation Front -->
                 <div id="lottie-animation-front" class="lottie-animation-front"></div>
                 
+                {% if home_images and home_images|length > 0 %}
+                    {% for image in home_images[:10] %}
+                    <div class="invitation-card image-card" data-image-index="{{ loop.index0 }}" data-image-path="{{ image.path }}" style="background-image: url('{{ image.path }}'); background-size: cover; background-position: center; background-repeat: no-repeat; position: absolute; width: 420px; height: 520px; border-radius: 20px; overflow: hidden; display: block; visibility: visible; opacity: 1;">
+                        <!-- Fallback img tag for debugging -->
+                        <img src="{{ image.path }}" alt="Invitation {{ loop.index }}" style="display: none;" onload="console.log('Image loaded successfully: {{ image.path }}');" onerror="console.error('Image failed to load: {{ image.path }}');">
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <!-- Fallback cards if no images -->
                 <div class="invitation-card">
                     <div class="card-icon">💍</div>
                     <div class="card-title">Sarah & James</div>
@@ -780,6 +913,7 @@ body {
                     <div class="card-title">Sweet Six</div>
                     <div class="card-content">Join us for an unforgettable<br>celebration<br><br>Emma's Birthday Bash<br>Saturday, 8 PM</div>
                     </div>
+                {% endif %}
                     </div>
         </div>
     </div>
@@ -796,7 +930,8 @@ body {
         </div>
         
     <div class="categories-grid">
-        <div class="category-card" data-category="wedding">
+        <div class="category-card" data-category="wedding" {% if category_images and category_images.get('wedding') %}style="--category-bg-image: url('{{ category_images['wedding'] }}');"{% endif %}>
+            <div class="category-card-image"></div>
             <div class="category-content">
                 <div>
                     <div class="category-icon">💖</div>
@@ -809,7 +944,8 @@ body {
                 </div>
                 </div>
                 
-        <div class="category-card" data-category="birthday">
+        <div class="category-card" data-category="birthday" {% if category_images and category_images.get('birthday') %}style="--category-bg-image: url('{{ category_images['birthday'] }}');"{% endif %}>
+            <div class="category-card-image"></div>
             <div class="category-content">
                 <div>
                     <div class="category-icon">🎂</div>
@@ -822,7 +958,8 @@ body {
             </div>
             </div>
             
-        <div class="category-card" data-category="corporate">
+        <div class="category-card" data-category="corporate" {% if category_images and category_images.get('corporate') %}style="--category-bg-image: url('{{ category_images['corporate'] }}');"{% endif %}>
+            <div class="category-card-image"></div>
             <div class="category-content">
                 <div>
                     <div class="category-icon">💼</div>
@@ -835,7 +972,8 @@ body {
     </div>
         </div>
         
-        <div class="category-card" data-category="babyshower">
+        <div class="category-card" data-category="babyshower" {% if category_images and category_images.get('babyshower') %}style="--category-bg-image: url('{{ category_images['babyshower'] }}');"{% endif %}>
+            <div class="category-card-image"></div>
             <div class="category-content">
                 <div>
                     <div class="category-icon">👶</div>
@@ -848,7 +986,8 @@ body {
             </div>
             </div>
         
-        <div class="category-card" data-category="anniversary">
+        <div class="category-card" data-category="anniversary" {% if category_images and category_images.get('anniversary') %}style="--category-bg-image: url('{{ category_images['anniversary'] }}');"{% endif %}>
+            <div class="category-card-image"></div>
             <div class="category-content">
                 <div>
                     <div class="category-icon">🎁</div>
@@ -861,7 +1000,8 @@ body {
                     </div>
                 </div>
                 
-        <div class="category-card" data-category="custom">
+        <div class="category-card" data-category="custom" {% if category_images and category_images.get('custom') %}style="--category-bg-image: url('{{ category_images['custom'] }}');"{% endif %}>
+            <div class="category-card-image"></div>
             <div class="category-content">
                 <div>
                     <div class="category-icon">✨</div>
@@ -872,6 +1012,97 @@ body {
                     Explore Themes
                 </a>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section - Why Choose Us -->
+<section class="features-section" style="padding: 100px 0; background: rgba(255, 255, 255, 0.7); position: relative; z-index: 1;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 40px;">
+        <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+            <h2 class="section-title">
+                <span class="title-normal">Why </span>
+                <span class="title-magic">EventCraft Pro</span>
+                <span class="title-normal">?</span>
+            </h2>
+            <p class="section-subtitle">Everything you need to create stunning invitations in minutes</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
+                <div style="font-size: 48px; margin-bottom: 20px;">⚡</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Lightning Fast</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Create beautiful invitations in under 5 minutes with our intuitive drag-and-drop interface</p>
+            </div>
+            
+            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
+                <div style="font-size: 48px; margin-bottom: 20px;">🎨</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Designer Templates</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Choose from 100+ professionally designed templates for every occasion</p>
+            </div>
+            
+            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
+                <div style="font-size: 48px; margin-bottom: 20px;">📱</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Mobile Optimized</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Perfect viewing experience on any device - phone, tablet, or desktop</p>
+            </div>
+            
+            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
+                <div style="font-size: 48px; margin-bottom: 20px;">✉️</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Easy Sharing</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Share via WhatsApp, email, or social media with a single click</p>
+            </div>
+            
+            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
+                <div style="font-size: 48px; margin-bottom: 20px;">🌍</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Multi-Language</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Support for English, Hindi, Telugu, Kannada and more languages</p>
+            </div>
+            
+            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
+                <div style="font-size: 48px; margin-bottom: 20px;">📊</div>
+                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Track RSVPs</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Know who's coming with built-in RSVP tracking and guest management</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works-section" style="padding: 100px 0; background: rgba(255, 255, 255, 0.8); position: relative; z-index: 1;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 40px;">
+        <div class="section-header" style="text-align: center; margin-bottom: 60px;">
+            <h2 class="section-title">
+                <span class="title-normal">Create Your Perfect </span>
+                <span class="title-magic">Invitation</span>
+            </h2>
+            <p class="section-subtitle">Just 3 simple steps to wow your guests</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+            <div class="step-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; position: relative;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--reddish-brown), var(--golden-yellow)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">1</div>
+                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Choose a Template</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Browse through our stunning collection and pick your favorite design</p>
+            </div>
+            
+            <div class="step-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; position: relative;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--golden-yellow), var(--golden-yellow-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">2</div>
+                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Customize Details</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Add your event details, photos, and personal touch with our easy editor</p>
+            </div>
+            
+            <div class="step-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; position: relative;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--reddish-brown-dark), var(--reddish-brown)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">3</div>
+                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Share & Celebrate</h3>
+                <p style="color: var(--text-gray); line-height: 1.6;">Send your beautiful invitation to guests via link, email, or social media</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="{{ url_for('templates') }}" class="btn btn-primary" style="font-size: 18px; padding: 16px 40px;">
+                Start Creating Now →
+            </a>
         </div>
     </div>
 </section>
@@ -999,7 +1230,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, observerOptions);
     
     // Observe all cards with enhanced animations
-    document.querySelectorAll('.category-card, .testimonial-card, .section-header').forEach((card, index) => {
+    document.querySelectorAll('.category-card, .testimonial-card, .section-header, .feature-card, .step-card, .stat-item').forEach((card, index) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(30px) scale(0.95)';
         card.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -1025,7 +1256,246 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300 + index * 200);
     });
     
-    // Card hover tilt effect
+    // Interactive stacked image card carousel
+    const imageCards = document.querySelectorAll('.invitation-card.image-card');
+    const cardStack = document.getElementById('imageCardStack');
+    let currentImageIndex = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let lastCycleTime = 0;
+    const cycleDelay = 600; // Minimum time between cycles (ms)
+    
+    console.log('Image cards found:', imageCards.length);
+    
+    if (imageCards.length > 0) {
+        // Initialize: Show first few cards, hide others
+        imageCards.forEach((card, index) => {
+            const cardIndex = parseInt(card.getAttribute('data-image-index')) || index;
+            
+            // Ensure card has proper positioning
+            if (!card.style.position || card.style.position === '') {
+                card.style.position = 'absolute';
+            }
+            
+            // Position cards in a stacked effect
+            if (index < 3) {
+                // Show first 3 cards with different positions and rotations
+                const zIndex = 3 - index;
+                card.style.zIndex = zIndex.toString();
+                card.style.opacity = '1';
+                card.style.visibility = 'visible';
+                card.style.display = 'block';
+                
+                // Different positions for each visible card
+                if (index === 0) {
+                    card.style.top = '0px';
+                    card.style.right = '0px';
+                    card.style.transform = 'rotate(-5deg)';
+                } else if (index === 1) {
+                    card.style.top = '80px';
+                    card.style.right = '40px';
+                    card.style.transform = 'rotate(3deg)';
+                } else if (index === 2) {
+                    card.style.top = '160px';
+                    card.style.right = '80px';
+                    card.style.transform = 'rotate(-2deg)';
+                }
+                
+                console.log(`Card ${index} initialized at z-index ${zIndex}, position: top=${card.style.top}, right=${card.style.right}`);
+            } else {
+                // Hide cards beyond the first 3
+                card.style.zIndex = '0';
+                card.style.opacity = '0';
+                card.style.visibility = 'hidden';
+                card.style.display = 'none';
+                card.style.transform = 'scale(0.8) translateX(-100px)';
+            }
+        });
+        
+        console.log('Image cards initialized successfully');
+        
+        // Function to cycle to next image
+        function cycleToNextImage() {
+            const now = Date.now();
+            if (now - lastCycleTime < cycleDelay) {
+                return; // Prevent too frequent cycling
+            }
+            lastCycleTime = now;
+            
+            if (imageCards.length === 0) return;
+            
+            // Find and hide current top card
+            const currentTopCard = Array.from(imageCards).find(card => {
+                const zIndex = parseInt(card.style.zIndex) || 0;
+                return zIndex === 3;
+            });
+            
+            if (currentTopCard) {
+                // Animate current top card out
+                currentTopCard.style.zIndex = '0';
+                currentTopCard.style.opacity = '0';
+                currentTopCard.style.visibility = 'hidden';
+                currentTopCard.style.transform = 'translateX(-150px) rotate(-15deg) scale(0.7)';
+                currentTopCard.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            }
+            
+            // Move all visible cards up one level
+            imageCards.forEach(card => {
+                const currentZ = parseInt(card.style.zIndex) || 0;
+                if (currentZ > 0 && currentZ < 3) {
+                    const newZ = currentZ + 1;
+                    card.style.zIndex = newZ.toString();
+                    
+                    // Update position based on new z-index
+                    if (newZ === 2) {
+                        card.style.top = '0px';
+                        card.style.right = '0px';
+                        card.style.transform = 'rotate(-5deg)';
+                        card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    } else if (newZ === 3) {
+                        card.style.top = '80px';
+                        card.style.right = '40px';
+                        card.style.transform = 'rotate(3deg)';
+                        card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    }
+                }
+            });
+            
+            // Show next card from the back (find the one with z-index 0)
+            currentImageIndex = (currentImageIndex + 1) % imageCards.length;
+            const nextCard = imageCards[currentImageIndex];
+            
+            // Reset and show next card
+            setTimeout(() => {
+                nextCard.style.zIndex = '1';
+                nextCard.style.opacity = '1';
+                nextCard.style.visibility = 'visible';
+                nextCard.style.top = '160px';
+                nextCard.style.right = '80px';
+                nextCard.style.transform = 'rotate(-2deg)';
+                nextCard.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            }, 100);
+        }
+        
+        // Hover effect: Show next image on hover
+        if (cardStack) {
+            let hoverTimeout;
+            cardStack.addEventListener('mouseenter', function() {
+                hoverTimeout = setTimeout(() => {
+                    cycleToNextImage();
+                }, 800); // Cycle after 800ms of hover
+            });
+            
+            cardStack.addEventListener('mouseleave', function() {
+                if (hoverTimeout) {
+                    clearTimeout(hoverTimeout);
+                }
+            });
+        }
+        
+        // Drag effect: Cycle through images while dragging
+        if (cardStack) {
+            cardStack.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                dragStartX = e.clientX;
+            });
+            
+            let dragCycleTimeout;
+            cardStack.addEventListener('mousemove', function(e) {
+                if (isDragging) {
+                    const dragDistance = Math.abs(e.clientX - dragStartX);
+                    if (dragDistance > 80 && !dragCycleTimeout) {
+                        cycleToNextImage();
+                        dragStartX = e.clientX; // Reset to prevent continuous cycling
+                        dragCycleTimeout = setTimeout(() => {
+                            dragCycleTimeout = null;
+                        }, cycleDelay);
+                    }
+                }
+            });
+            
+            cardStack.addEventListener('mouseup', function() {
+                isDragging = false;
+                if (dragCycleTimeout) {
+                    clearTimeout(dragCycleTimeout);
+                    dragCycleTimeout = null;
+                }
+            });
+            
+            cardStack.addEventListener('mouseleave', function() {
+                isDragging = false;
+                if (dragCycleTimeout) {
+                    clearTimeout(dragCycleTimeout);
+                    dragCycleTimeout = null;
+                }
+            });
+        }
+        
+        // Card hover tilt effect for individual cards (only on top card)
+        imageCards.forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                if (!isDragging) {
+                    const currentZ = parseInt(card.style.zIndex) || 0;
+                    // Only apply tilt if this is the top card
+                    if (currentZ === 3) {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = (y - centerY) / 15;
+                        const rotateY = (centerX - x) / 15;
+                        
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px) scale(1.05)`;
+                    }
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                // Reset to default position for this card's z-index
+                const currentZ = parseInt(card.style.zIndex) || 0;
+                if (currentZ === 3) {
+                    card.style.transform = 'rotate(3deg) translateY(0) scale(1)';
+                } else if (currentZ === 2) {
+                    card.style.transform = 'rotate(-5deg) translateY(0) scale(1)';
+                } else if (currentZ === 1) {
+                    card.style.transform = 'rotate(-2deg) translateY(0) scale(1)';
+                }
+            });
+        });
+        
+        // Auto-cycle every 5 seconds - continuous rotation
+        let autoCycleInterval;
+        if (document.hasFocus()) {
+            autoCycleInterval = setInterval(() => {
+                if (document.hasFocus() && !isDragging) {
+                    const hovered = cardStack && cardStack.matches(':hover');
+                    if (!hovered) {
+                        cycleToNextImage();
+                    }
+                }
+            }, 5000); // Changed to 5 seconds as requested
+        }
+        
+        // Pause auto-cycle when page loses focus
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                if (autoCycleInterval) {
+                    clearInterval(autoCycleInterval);
+                }
+            } else {
+                autoCycleInterval = setInterval(() => {
+                    if (document.hasFocus() && !isDragging) {
+                        const hovered = cardStack && cardStack.matches(':hover');
+                        if (!hovered) {
+                            cycleToNextImage();
+                        }
+                    }
+                }, 5000); // Changed to 5 seconds as requested
+            }
+        });
+    } else {
+        // Fallback: Original card hover tilt effect for non-image cards
     document.querySelectorAll('.invitation-card').forEach(card => {
         card.addEventListener('mousemove', function(e) {
             const rect = card.getBoundingClientRect();
@@ -1042,6 +1512,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.style.transform = '';
         });
     });
+    }
 });
 </script>
 {% endblock %}
