@@ -2049,8 +2049,8 @@
             padding: 0.75rem;
             border-radius: 8px;
             transition: all var(--transition-bounce);
-            z-index: 1001;
-            position: relative;
+            z-index: 1010 !important;
+            position: relative !important;
             width: 48px;
             height: 48px;
             align-items: center;
@@ -2062,6 +2062,7 @@
             -ms-user-select: none;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+            pointer-events: auto !important;
         }
 
         .mobile-nav-toggle:hover {
@@ -2150,12 +2151,14 @@
                 visibility: visible !important;
                 opacity: 1 !important;
                 position: relative !important;
-                z-index: 1001 !important;
+                z-index: 1010 !important;
                 align-items: center !important;
                 justify-content: center !important;
                 width: 48px !important;
                 height: 48px !important;
                 border-radius: 8px !important;
+                pointer-events: auto !important;
+                cursor: pointer !important;
                 background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%) !important;
                 border: 2px solid var(--reddish-brown-dark) !important;
                 box-shadow: var(--shadow-md) !important;
@@ -2184,7 +2187,7 @@
                 align-items: center;
                 gap: 0.5rem;
                 position: relative;
-                z-index: 1001;
+                z-index: 1000;
                 flex-shrink: 0;
             }
             
@@ -2196,7 +2199,7 @@
                 align-items: center;
                 gap: 0.5rem;
                 position: relative;
-                z-index: 1001;
+                z-index: 1000;
                 flex-shrink: 0;
             }
             
