@@ -1,714 +1,838 @@
 {% extends "base.html" %}
 
-{% block title %}Create Invitation - EventCraft Pro{% endblock %}
+{% block title %}Create Invitation - {{ title }}{% endblock %}
 
-{% block extra_head %}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@400;600;700&family=Great+Vibes&family=Cinzel:wght@400;600;700&family=Anton&family=Dancing+Script:wght@400;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans_Devanagari:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+{% block extra_css %}
 <style>
-    /* Progress Bar */
+/* NOTE: The linter will show errors for Jinja2 template syntax */
+
+/* Create Page Layout */
+.create-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+}
+
+/* 3-Step Progress Bar */
+.progress-bar-container {
+    max-width: 700px;
+    margin: 0 auto 50px;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.progress-steps::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 12%;
+    right: 12%;
+    height: 4px;
+    background: #E8E8E8;
+    z-index: 0;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+.progress-step-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #E8E8E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    color: #999;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.progress-step.active .progress-step-circle {
+    border-color: var(--reddish-brown-dark);
+    background: var(--reddish-brown-dark);
+    color: white;
+    box-shadow: 0 4px 15px rgba(93, 64, 55, 0.3);
+}
+
+.progress-step.completed .progress-step-circle {
+    border-color: var(--golden-yellow);
+    background: var(--golden-yellow);
+    color: var(--reddish-brown-dark);
+}
+
+.progress-step-label {
+    font-size: 14px;
+    color: #999;
+    font-weight: 600;
+    text-align: center;
+}
+
+.progress-step.active .progress-step-label {
+    color: var(--reddish-brown-dark);
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Left Panel - Template Selection & Form */
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.step-content {
+    display: none;
+}
+
+.step-content.active {
+    display: block;
+}
+
+/* Theme Gallery */
+.themes-container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.themes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.themes-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--reddish-brown-dark);
+    margin: 0;
+}
+
+.themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.theme-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.theme-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.theme-card.selected {
+    border-color: var(--golden-yellow);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.theme-preview-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.theme-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 10px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Form Container */
+.form-container {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--reddish-brown-dark);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-section-title i {
+    color: var(--golden-yellow);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--reddish-brown-dark);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #E8E8E8;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--reddish-brown-dark);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(93, 64, 55, 0.1);
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Navigation Buttons */
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-nav {
+    flex: 1;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-prev {
+    background: #F5F5F5;
+    color: var(--reddish-brown-dark);
+}
+
+.btn-prev:hover {
+    background: #E8E8E8;
+    transform: translateX(-3px);
+}
+
+.btn-next, .btn-submit {
+    background: var(--reddish-brown-dark);
+    color: white;
+}
+
+.btn-next:hover, .btn-submit:hover {
+    background: var(--reddish-brown);
+    transform: translateX(3px);
+    box-shadow: 0 6px 20px rgba(93, 64, 55, 0.3);
+}
+
+/* Right Panel - Live Preview */
+.right-panel {
+    position: sticky;
+    top: 100px;
+}
+
+.preview-container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.preview-header h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--reddish-brown-dark);
+    margin: 0;
+}
+
+.invitation-preview {
+    width: 100%;
+    aspect-ratio: 9/16;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Template Background */
+.template-background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.95 !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Ensure all preview text is visible on templates */
+.invitation-preview > *:not(.template-background-image) {
+    position: relative;
+    z-index: 1;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.preview-event-name {
+    font-size: clamp(24px, 5vw, 32px);
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 15px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.preview-details {
+    font-size: clamp(12px, 3vw, 14px);
+    color: #FFFFFF;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.25);
+    padding: 8px 15px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.preview-icon {
+    font-size: 18px;
+    color: #FFFFFF;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.preview-message {
+    font-size: clamp(13px, 3.5vw, 16px);
+    color: #FFFFFF;
+    margin-top: 20px;
+    font-style: italic;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.preview-placeholder {
+    color: #999;
+    font-size: 16px;
+}
+
+.preview-host-name {
+    font-size: clamp(14px, 3.5vw, 18px);
+    color: #FFFFFF;
+    margin-top: 20px;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Event-Specific Fields */
+.wedding-fields {
+    display: none;
+}
+
+.wedding-fields.active {
+    display: block;
+}
+
+/* Image Upload */
+.image-upload-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.image-upload-box {
+    border: 2px dashed #E8E8E8;
+    border-radius: 10px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.image-upload-box:hover {
+    border-color: var(--golden-yellow);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+.image-upload-box i {
+    font-size: 36px;
+    color: var(--golden-yellow);
+    margin-bottom: 10px;
+}
+
+.image-upload-box p {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+}
+
+.image-upload-box input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.image-preview {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Font & Language Selection */
+.style-selection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .right-panel {
+        position: static;
+        order: -1;
+    }
+    
+    .themes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .create-container {
+        padding: 20px 15px 60px;
+    }
+    
     .progress-bar-container {
-        max-width: 1000px;
-        margin: 0 auto 40px;
-        padding: 40px 20px 0;
-    }
-
-    .progress-bar {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        width: 100%;
-        padding: 0 20px;
-    }
-
-    .progress-step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex: 1;
-        position: relative;
-        z-index: 2;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        margin-bottom: 30px;
     }
     
-    .progress-step:hover {
-        transform: translateY(-2px);
-    }
-    
-    .progress-step.pending {
-        cursor: not-allowed;
-        opacity: 0.6;
-    }
-
-    .progress-step::after {
-        content: '';
-        position: absolute;
-        top: 20px;
-        left: calc(50% + 20px);
-        width: calc(100% - 40px);
-        height: 3px;
-        background: #E5E5E5;
-        z-index: 1;
-    }
-
-    .progress-step:last-child::after {
-        display: none;
-    }
-
-    .progress-step.completed::after,
-    .progress-step.active::after {
-        background: linear-gradient(90deg, #6F4E37 0%, #D4AF37 100%);
-    }
-
-    .step-circle {
+    .progress-step-circle {
         width: 40px;
         height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
         font-size: 16px;
-        margin-bottom: 8px;
-        position: relative;
-        z-index: 2;
-        transition: all 0.3s ease;
     }
-
-    .progress-step.completed .step-circle {
-        background: #6F4E37;
-        color: white;
+    
+    .progress-step-label {
+        font-size: 12px;
     }
-
-    .progress-step.active .step-circle {
-        background: #D4AF37;
-        color: white;
-    }
-
-    .progress-step.pending .step-circle {
-        background: #E5E5E5;
-        color: #999;
-    }
-
-    .step-label {
-        font-size: 14px;
-        font-weight: 500;
-        color: #666;
-        text-align: center;
-    }
-
-    .progress-step.completed .step-label,
-    .progress-step.active .step-label {
-        color: #6F4E37;
-        font-weight: 600;
-    }
-
-    /* Page Container */
-    .create-page-container {
-        max-width: 1400px;
-        margin: 0 auto;
+    
+    .themes-container,
+    .form-container,
+    .preview-container {
         padding: 20px;
     }
-
-    /* Theme Selection Page */
-    .theme-selection-page {
-        display: none;
+    
+    .form-row,
+    .image-upload-container,
+    .style-selection {
+        grid-template-columns: 1fr !important;
     }
-
-    .theme-selection-page.active {
-        display: block;
+    
+    .themes-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
-
-    .page-title {
-        text-align: center;
-        margin-bottom: 40px;
+    
+    .theme-preview-image {
+        height: 150px;
     }
-
-    .page-title h1 {
-        font-size: 42px;
-        font-weight: 700;
-        margin-bottom: 12px;
-        color: #3E2723;
-    }
-
-    .page-title .title-normal {
-        color: #3E2723;
-    }
-
-    .page-title .title-gradient {
-        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .page-title p {
-        font-size: 18px;
-        color: #666;
-    }
-
-    .theme-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 24px;
-        margin-bottom: 40px;
-    }
-
-    .theme-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        border: 2px solid transparent;
-    }
-
-    .theme-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    .theme-card.selected {
-        border-color: #D4AF37;
-        box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
-    }
-
-    .theme-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .theme-title {
-        padding: 16px;
-        font-weight: 600;
-        color: #3E2723;
-        text-align: center;
-    }
-
-    .form-navigation {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 40px;
-    }
-
-    .btn-back, .btn-continue {
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        border: none;
-    }
-
-    .btn-back {
-        background: #F5F5F5;
-        color: #666;
-    }
-
-    .btn-back:hover {
-        background: #E0E0E0;
-    }
-
-    .btn-continue {
-        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
-        color: white;
-    }
-
-    .btn-continue:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .btn-continue:not(:disabled):hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
-    }
-
-    /* Details Form Page */
-    .details-form-page {
-        display: none;
-    }
-
-    .details-form-page.active {
-        display: block;
-    }
-
-    .form-preview-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        margin-top: 40px;
-    }
-
-    @media (max-width: 1024px) {
-        .form-preview-container {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .form-section-card, .live-preview-card {
-        background: white;
-        border-radius: 16px;
-        padding: 32px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-group {
-        margin-bottom: 24px;
-    }
-
-    .form-label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #3E2723;
-    }
-
-    .form-label.required::after {
-        content: ' *';
-        color: #D32F2F;
-    }
-
-    .form-input, .form-select, .form-textarea {
-        width: 100%;
-        padding: 12px 16px;
-        border: 2px solid #E0E0E0;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        font-family: inherit;
-    }
-
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
-        outline: none;
-        border-color: #D4AF37;
-        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-    }
-
-    .form-textarea {
-        min-height: 100px;
-        resize: vertical;
-    }
-
-    .image-upload-group {
-        margin-bottom: 24px;
-    }
-
-    .image-preview {
-        margin-top: 12px;
-        display: none;
-    }
-
-    .image-preview img {
-        max-width: 100%;
-        max-height: 200px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .rsvp-contact-fields {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-
-    @media (max-width: 768px) {
-        .rsvp-contact-fields {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .event-specific-fields {
-        display: none;
-    }
-
-    .preview-title {
-        font-size: 24px;
-        font-weight: 700;
-        margin-bottom: 24px;
-        color: #3E2723;
-        text-align: center;
-    }
-
+    
     .invitation-preview {
-        width: 100%;
-        background: linear-gradient(135deg, #FFF5F0 0%, #FFFFFF 100%);
-        border-radius: 16px;
-        padding: 40px 30px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        min-height: 600px;
-        display: flex;
+        aspect-ratio: 9/16;
+        padding: 20px;
+    }
+    
+    .form-navigation {
         flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        position: relative;
-        overflow: hidden;
     }
-
-    .template-background-image {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        object-position: center !important;
-        z-index: 1 !important;
-        opacity: 0.95 !important;
-        pointer-events: none !important;
-        border-radius: 16px !important;
-        display: block !important;
-        visibility: visible !important;
-    }
-
-    .template-background-image[src]:not([src=""]) {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 0.95 !important;
-    }
-
-    .template-background-image.loaded {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 0.95 !important;
-        z-index: 1 !important;
-    }
-
-    .invitation-preview > *:not(.template-background-image) {
-        position: relative !important;
-        z-index: 2 !important;
-        color: #FFFFFF;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    }
-
-    .preview-icon {
-        font-size: 64px;
-        margin-bottom: 10px;
-        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
-    }
-
-    .preview-event-name {
-        font-size: 28px;
-        font-weight: 700;
-        color: #FFFFFF;
-        text-align: center;
-        margin-bottom: 20px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
-        background: rgba(0, 0, 0, 0.3);
-        padding: 10px 20px;
-        border-radius: 10px;
-    }
-
-    .preview-details {
-        text-align: center;
-        color: #FFFFFF;
-        margin-bottom: 10px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5);
-        background: rgba(0, 0, 0, 0.25);
-        padding: 8px 15px;
-        border-radius: 8px;
-        display: inline-block;
-    }
-
-    .btn-submit {
+    
+    .btn-nav {
         width: 100%;
-        padding: 16px;
-        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
-        color: white;
-        border: none;
-        border-radius: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .progress-steps::before {
+        left: 8%;
+        right: 8%;
+    }
+    
+    .themes-header h3,
+    .form-section-title,
+    .preview-header h3 {
         font-size: 18px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 24px;
     }
-
-    .btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
+    
+    .themes-grid {
+        max-height: 400px;
     }
-
-    .btn-submit:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+}
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="create-page-container">
+<div class="create-container">
     <!-- Progress Bar -->
     <div class="progress-bar-container">
-        <div class="progress-bar">
-            <div class="progress-step {% if not selected_template and not show_details %}active{% elif selected_template or show_details %}completed{% endif %}" onclick="navigateToStep(1)">
-                <div class="step-circle">1</div>
-                <div class="step-label">Select Theme</div>
+        <div class="progress-steps">
+            <div class="progress-step active" id="progressStep1">
+                <div class="progress-step-circle">1</div>
+                <div class="progress-step-label">Choose Template</div>
             </div>
-            <div class="progress-step {% if selected_template or show_details %}active{% endif %}">
-                <div class="step-circle">2</div>
-                <div class="step-label">Add Details</div>
+            <div class="progress-step" id="progressStep2">
+                <div class="progress-step-circle">2</div>
+                <div class="progress-step-label">Add Details</div>
             </div>
-            <div class="progress-step pending">
-                <div class="step-circle">3</div>
-                <div class="step-label">Review</div>
+            <div class="progress-step" id="progressStep3">
+                <div class="progress-step-circle">3</div>
+                <div class="progress-step-label">Preview & Submit</div>
             </div>
         </div>
     </div>
 
-    <!-- Theme Selection Page -->
-    {% if not selected_template and not show_details %}
-    <div class="theme-selection-page active" id="themeSelectionPage">
-        <div class="page-title">
-            <h1>
-                <span class="title-normal">Choose Your </span>
-                <span class="title-gradient">Theme</span>
-            </h1>
-            <p>Select a design that speaks to your style</p>
-        </div>
-
-        <div class="theme-grid">
-            {% if templates %}
-                {% for template in templates %}
-                {% if template.preview_image %}
-                {% set template_img = template.preview_image %}
-                <div class="theme-card" data-template-id="{{ template.id }}" data-template-image="{{ template_img }}" onclick="selectTheme('{{ template.id }}', this)">
-                    <img src="{{ template_img }}" alt="{{ template.name }}" class="theme-image">
-                    <div class="theme-title">{{ template.name }}</div>
+    <!-- Content Grid -->
+    <div class="content-grid">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <form method="POST" action="{{ url_for('create_invitation') }}" enctype="multipart/form-data" id="invitationForm">
+                {{ form.hidden_tag() }}
+                
+                <!-- Hidden inputs for template selection -->
+                <input type="hidden" id="templateIdInput" name="template_id" value="">
+                <input type="hidden" id="templateImageUrlInput" name="template_image_url" value="">
+                <input type="hidden" id="autoColorTheme" name="auto_color_theme" value="">
+                
+                <!-- Step 1: Template Selection -->
+                <div class="step-content active" id="step1">
+                    <div class="themes-container">
+                        <div class="themes-header">
+                            <h3><i class="fas fa-palette me-2"></i>Choose Your Template</h3>
+                        </div>
+                        <div class="themes-grid">
+                            {% if templates %}
+                                {% for template in templates %}
+                                <div class="theme-card" 
+                                     data-template-id="{{ template.id }}"
+                                     data-template-image="{{ template.preview_image }}"
+                                     onclick="selectTheme('{{ template.id }}', this)">
+                                    <img src="/static{{ template.preview_image }}" 
+                                         alt="{{ template.name }}" 
+                                         class="theme-preview-image"
+                                         loading="lazy">
+                                    <div class="theme-card-overlay">{{ template.name }}</div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-center">No templates available for this event type.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn-nav btn-next" onclick="nextStep()">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
-                {% endif %}
-                {% endfor %}
-            {% endif %}
-        </div>
 
-        <div class="form-navigation">
-            <a href="{{ url_for('templates') }}" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Back
-            </a>
-            <button class="btn-continue" id="continueToDetails" disabled onclick="continueToDetails()">
-                Continue <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Details Form Page -->
-    <div class="details-form-page {% if selected_template or show_details %}active{% endif %}" id="detailsFormPage">
-        <div class="page-title">
-            <h1>
-                <span class="title-normal">Add Your </span>
-                <span class="title-gradient">Special Details</span>
-            </h1>
-            <p>Watch your invitation come to life</p>
-        </div>
-
-        <div class="form-preview-container">
-            <!-- Form Section -->
-            <div class="form-section-card">
-                <form id="invitationForm" method="POST" action="{{ url_for('create_invitation_post') }}" enctype="multipart/form-data">
-                    <input type="hidden" name="templateId" value="{% if template_id %}{{ template_id }}{% endif %}" id="templateIdInput">
-                    <input type="hidden" name="templateImageUrl" value="" id="templateImageUrlInput">
-                    <input type="hidden" name="eventType" value="{{ event_type }}" id="eventTypeInput">
-                    <input type="hidden" name="autoColorTheme" value="" id="autoColorTheme">
+                <!-- Step 2: Event Details -->
+                <div class="step-content" id="step2">
+                    <div class="form-container">
+                        <div class="form-section-title">
+                            <i class="fas fa-info-circle"></i> Event Details
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="eventName">Event Name *</label>
+                            {{ form.title(class="form-control", id="eventName", placeholder="e.g., John's 30th Birthday", required=True, oninput="updatePreview()") }}
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="eventDate">Event Date *</label>
+                                {{ form.event_date(class="form-control", id="eventDate", required=True, oninput="updatePreview()") }}
+                            </div>
+                            <div class="form-group">
+                                <label for="eventTime">Event Time *</label>
+                                {{ form.event_time(class="form-control", id="eventTime", required=True, oninput="updatePreview()") }}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="venue">Venue *</label>
+                            {{ form.venue(class="form-control", id="venue", placeholder="e.g., Grand Ballroom Hotel", required=True, oninput="updatePreview()") }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hostName">Host Name *</label>
+                            {{ form.host_name(class="form-control", id="hostName", placeholder="Hosted by...", required=True, oninput="updatePreview()") }}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Personal Message</label>
+                            {{ form.message(class="form-control", id="message", placeholder="Add a special message...", oninput="updatePreview()") }}
+                        </div>
+                        
+                        <!-- Wedding-Specific Fields -->
+                        <div class="wedding-fields" id="weddingFields">
+                            <div class="form-section-title" style="margin-top: 30px;">
+                                <i class="fas fa-ring"></i> Couple Details
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="brideName">Bride's Name</label>
+                                    {{ form.bride_name(class="form-control", id="brideName", placeholder="Bride's Name", oninput="updatePreview()") }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="groomName">Groom's Name</label>
+                                    {{ form.groom_name(class="form-control", id="groomName", placeholder="Groom's Name", oninput="updatePreview()") }}
+                                </div>
+                            </div>
+                            
+                            <div class="image-upload-container">
+                                <div class="image-upload-box">
+                                    <i class="fas fa-image"></i>
+                                    <p>Bride's Photo</p>
+                                    {{ form.bride_image(id="brideImage", onchange="previewImage(this, 'bridePreview')") }}
+                                    <img id="bridePreview" class="image-preview" style="display:none;">
+                                </div>
+                                <div class="image-upload-box">
+                                    <i class="fas fa-image"></i>
+                                    <p>Groom's Photo</p>
+                                    {{ form.groom_image(id="groomImage", onchange="previewImage(this, 'groomPreview')") }}
+                                    <img id="groomPreview" class="image-preview" style="display:none;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Main Image Upload (Non-Wedding) -->
+                        <div class="form-group" id="mainImageUpload">
+                            <label>Event Image</label>
+                            <div class="image-upload-box">
+                                <i class="fas fa-camera"></i>
+                                <p>Upload Image</p>
+                                {{ form.main_image(id="mainImage", onchange="previewImage(this, 'mainPreview')") }}
+                                <img id="mainPreview" class="image-preview" style="display:none;">
+                            </div>
+                        </div>
+                        
+                        <!-- RSVP Contact -->
+                        <div class="form-section-title" style="margin-top: 30px;">
+                            <i class="fas fa-address-book"></i> RSVP Contact
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="rsvpMobile">Mobile Number</label>
+                                {{ form.rsvp_contact(class="form-control", id="rsvpMobile", placeholder="+1 234 567 8900", type="tel") }}
+                            </div>
+                            <div class="form-group">
+                                <label for="rsvpEmail">Email Address</label>
+                                {{ form.rsvp_email(class="form-control", id="rsvpEmail", placeholder="rsvp@example.com", type="email") }}
+                            </div>
+                        </div>
+                        
+                        <!-- Style Selection -->
+                        <div class="form-section-title" style="margin-top: 30px;">
+                            <i class="fas fa-paint-brush"></i> Styling
+                        </div>
+                        
+                        <div class="style-selection">
+                            <div class="form-group">
+                                <label for="language">Language</label>
+                                {{ form.language(class="form-control", id="language") }}
+                            </div>
+                            <div class="form-group">
+                                <label for="fontStyle">Font Style</label>
+                                {{ form.font_style(class="form-control", id="fontStyle") }}
+                            </div>
+                        </div>
+                    </div>
                     
-                    <div class="form-group">
-                        <label class="form-label required" for="eventName">Event Name</label>
-                        <input type="text" class="form-input" id="eventName" name="eventTitle" 
-                               placeholder="e.g., Sarah & James Wedding"
-                               value="{% if current_user and event_type %}{{ current_user.name }}'s {{ event_type.title() }}{% endif %}">
+                    <div class="form-navigation">
+                        <button type="button" class="btn-nav btn-prev" onclick="prevStep()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn-nav btn-next" onclick="nextStep()">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label class="form-label required" for="eventDate">Event Date</label>
-                        <input type="date" class="form-input" id="eventDate" name="eventDate">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="eventTime">Event Time</label>
-                        <input type="time" class="form-input" id="eventTime" name="eventTime">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="venueAddress">Venue Address</label>
-                        <textarea class="form-textarea" id="venueAddress" name="venueAddress" placeholder="Enter venue address"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="hostedBy">Hosted By</label>
-                        <input type="text" class="form-input" id="hostedBy" name="hostedBy" placeholder="e.g., The Smith Family">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="personalMessage">Personal Message</label>
-                        <textarea class="form-textarea" id="personalMessage" name="personalMessage" placeholder="Add a personal message"></textarea>
-                    </div>
-
-                    <!-- Wedding Specific Fields -->
-                    <div class="event-specific-fields" id="weddingFields">
-                        <div class="form-group">
-                            <label class="form-label" for="brideName">Bride Name</label>
-                            <input type="text" class="form-input" id="brideName" name="brideName" placeholder="Bride's name">
+                <!-- Step 3: Review & Submit -->
+                <div class="step-content" id="step3">
+                    <div class="form-container">
+                        <div class="form-section-title">
+                            <i class="fas fa-check-circle"></i> Review Your Invitation
                         </div>
-                        <div class="form-group">
-                            <label class="form-label" for="groomName">Groom Name</label>
-                            <input type="text" class="form-input" id="groomName" name="groomName" placeholder="Groom's name">
-                        </div>
-                        <div class="image-upload-group">
-                            <label class="form-label" for="brideImage">Bride Photo</label>
-                            <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*" onchange="previewImage(this, 'brideImagePreview')">
-                            <div class="image-preview" id="brideImagePreview"></div>
-                        </div>
-                        <div class="image-upload-group">
-                            <label class="form-label" for="groomImage">Groom Photo</label>
-                            <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*" onchange="previewImage(this, 'groomImagePreview')">
-                            <div class="image-preview" id="groomImagePreview"></div>
-                        </div>
+                        <p style="color: #666; margin-bottom: 30px;">
+                            Check the preview on the right and make sure everything looks perfect. You can go back to edit if needed.
+                        </p>
                     </div>
-
-                    <!-- Main Image Upload -->
-                    <div class="image-upload-group">
-                        <label class="form-label" for="mainImage">Cover Image</label>
-                        <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                        <div class="image-preview" id="mainImagePreview"></div>
+                    
+                    <div class="form-navigation">
+                        <button type="button" class="btn-nav btn-prev" onclick="prevStep()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="submit" class="btn-nav btn-submit">
+                            <i class="fas fa-paper-plane"></i> Create Invitation
+                        </button>
                     </div>
+                </div>
+            </form>
+        </div>
 
-                    <!-- Gallery Images -->
-                    <div class="image-upload-group">
-                        <label class="form-label" for="galleryImages">Gallery Images</label>
-                        <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewGalleryImages(this)">
-                        <div class="image-preview" id="galleryImagesPreview"></div>
-                    </div>
-
-                    <!-- RSVP Contact -->
-                    <div class="form-group">
-                        <label class="form-label">RSVP Contact</label>
-                        <div class="rsvp-contact-fields">
-                            <div class="form-group">
-                                <label class="form-label" for="rsvpMobile">Mobile Number</label>
-                                <input type="tel" class="form-input" id="rsvpMobile" name="rsvpMobile" placeholder="+1234567890">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="rsvpEmail">Email Address</label>
-                                <input type="email" class="form-input" id="rsvpEmail" name="rsvpEmail" placeholder="rsvp@example.com">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Language Selection -->
-                    <div class="form-group">
-                        <label class="form-label" for="language">Language</label>
-                        <select class="form-select" id="language" name="language">
-                            <option value="english">English</option>
-                            <option value="telugu">Telugu</option>
-                            <option value="hindi">Hindi</option>
-                            <option value="kannada">Kannada</option>
-                            <option value="tamil">Tamil</option>
-                        </select>
-                    </div>
-
-                    <!-- Font Style -->
-                    <div class="form-group">
-                        <label class="form-label" for="fontStyle">Font Style</label>
-                        <select class="form-select" id="fontStyle" name="fontStyle">
-                            <option value="'Inter', sans-serif">Inter</option>
-                            <option value="'Playfair Display', serif">Playfair Display</option>
-                            <option value="'Times New Roman', serif">Times New Roman</option>
-                            <option value="'Dancing Script', cursive">Dancing Script</option>
-                            <option value="'Great Vibes', cursive">Great Vibes</option>
-                            <option value="'Cinzel', serif">Cinzel</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn-submit" id="submitBtn">
-                        <i class="fas fa-check"></i> Create Invitation
-                    </button>
-                </form>
-            </div>
-
-            <!-- Live Preview -->
-            <div class="live-preview-card">
-                <div class="preview-title">Live Preview</div>
+        <!-- Right Panel - Live Preview -->
+        <div class="right-panel">
+            <div class="preview-container">
+                <div class="preview-header">
+                    <h3><i class="fas fa-eye me-2"></i>Live Preview</h3>
+                </div>
                 <div class="invitation-preview" id="invitationPreview">
-                    <!-- Template Background Image -->
-                    <img class="template-background-image" 
-                         id="templateBackgroundImage"
-                         alt="Template Design"
-                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.95; pointer-events: none; border-radius: 16px;">
-                    
-                    <!-- Main Image -->
-                    <div id="previewMainImage" style="display: none; margin-bottom: 15px; text-align: center;">
-                        <img id="previewMainImageImg" style="max-width: 100%; max-height: 200px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Main Image">
+                    <img src="" alt="Template Background" class="template-background-image" id="templateBackgroundImage" style="display:none;">
+                    <div class="preview-icon" id="previewIcon">🎉</div>
+                    <div class="preview-event-name" id="previewEventName">Your Event Name</div>
+                    <div class="preview-details" id="previewDate">
+                        <i class="fas fa-calendar"></i> Select Date
                     </div>
-                    
-                    <div class="preview-icon" id="previewIcon">
-                        {% if event_type == 'birthday' %}🎂
-                        {% elif event_type == 'wedding' %}💍
-                        {% elif event_type == 'anniversary' %}💑
-                        {% elif event_type == 'babyshower' %}👶
-                        {% else %}🎉{% endif %}
+                    <div class="preview-details" id="previewTime">
+                        <i class="fas fa-clock"></i> Select Time
                     </div>
-                    
-                    <div class="preview-event-name" id="previewEventName">
-                        {% if current_user and event_type %}
-                            {{ current_user.name }}'s {{ event_type.title() }}
-                        {% else %}
-                            Your Event Name
-                        {% endif %}
+                    <div class="preview-details" id="previewVenue">
+                        <i class="fas fa-map-marker-alt"></i> Venue Location
                     </div>
-                    
-                    <!-- Bride and Groom (for weddings) -->
-                    <div id="previewWeddingSection" style="display: none; margin: 20px 0; text-align: center;">
-                        <div id="previewBrideName" style="display: none; font-size: 20px; font-weight: 600; margin-bottom: 10px;"></div>
-                        <div id="previewBrideImageDiv" style="display: none; margin-bottom: 20px;">
-                            <img id="previewBrideImageImg" style="max-width: 150px; max-height: 150px; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Bride">
-                        </div>
-                        <div id="previewGroomName" style="display: none; font-size: 20px; font-weight: 600; margin-bottom: 10px;"></div>
-                        <div id="previewGroomImageDiv" style="display: none;">
-                            <img id="previewGroomImageImg" style="max-width: 150px; max-height: 150px; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Groom">
-                        </div>
-                    </div>
-                    
-                    <div class="preview-details" id="previewDate"></div>
-                    <div class="preview-details" id="previewTime"></div>
-                    <div class="preview-details" id="previewVenue"></div>
-                    <div class="preview-details" id="previewHostedBy"></div>
-                    <div class="preview-details" id="previewMessage" style="font-style: italic; margin-top: 20px;"></div>
-                    
-                    <!-- Gallery Preview -->
-                    <div id="livePreviewGallery" style="display: none; margin-top: 20px; width: 100%;">
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                            <!-- Gallery images will be inserted here -->
-                        </div>
-                    </div>
+                    <div class="preview-message" id="previewMessage"></div>
+                    <div class="preview-host-name" id="previewHost">Hosted by...</div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+{# Hidden data container for server-injected values #}
+<div id="serverData" style="display:none;">
+    <script type="application/json" id="serverDataJson">
+    {
+        "eventType": {{ event_type|tojson|safe if event_type else '""' }},
+        "templateId": {{ template_id|tojson|safe if template_id else 'null' }},
+        "templates": {{ templates|tojson|safe if templates else '[]' }}
+    }
+    </script>
+</div>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
+// @ts-ignore - Suppress linter errors for this file
 // Global variables
 let selectedTemplateId = null;
 let selectedTemplateImage = null;
 
-// Event type from server - FIXED: Proper string handling
-{% if event_type -%}
-var currentEventType = {{ event_type|tojson|safe }}.toLowerCase();
-{%- else -%}
-var currentEventType = '';
-{%- endif %}
+// Read server data from JSON script tag
+const serverDataJson = document.getElementById('serverDataJson');
+const SERVER_DATA = serverDataJson ? JSON.parse(serverDataJson.textContent) : {
+    eventType: '',
+    templateId: null,
+    templates: []
+};
+
+// Event type from server
+var currentEventType = SERVER_DATA.eventType ? String(SERVER_DATA.eventType).toLowerCase() : '';
 
 // Icon mapping
 const eventIcons = {
@@ -727,274 +851,179 @@ window.selectTheme = function(templateId, element) {
     });
     
     element.classList.add('selected');
-    selectedTemplateId = templateId;
+    selectedTemplateId = String(templateId);
+    selectedTemplateImage = element.getAttribute('data-template-image');
     
-    const templateImage = element.getAttribute('data-template-image');
-    if (templateImage) {
-        let imagePath = templateImage;
-        if (imagePath && !imagePath.startsWith('http')) {
-            if (imagePath.startsWith('/static/images/')) {
-                imagePath = imagePath.replace('/static/images/', '/images/');
-            } else if (imagePath.includes('templatesimages') && !imagePath.startsWith('/')) {
-                imagePath = '/images/' + imagePath;
-            }
-        }
-        
-        selectedTemplateImage = imagePath;
-        sessionStorage.setItem('selectedTemplateId', templateId);
-        sessionStorage.setItem('selectedTemplateImage', imagePath);
-        
-        console.log('✅ Theme selected:', {id: templateId, image: imagePath});
-    }
+    console.log('✅ Template selected:', {id: selectedTemplateId, image: selectedTemplateImage});
     
-    const continueBtn = document.getElementById('continueToDetails');
-    if (continueBtn) {
-        continueBtn.disabled = false;
-    }
-};
-
-// Continue to details
-window.continueToDetails = function() {
-    if (!selectedTemplateId) {
-        alert('Please select a theme first');
-        return;
-    }
+    // Set form inputs
+    const templateIdInput = document.getElementById('templateIdInput');
+    const templateImageUrlInput = document.getElementById('templateImageUrlInput');
+    if (templateIdInput) templateIdInput.value = String(selectedTemplateId);
+    if (templateImageUrlInput) templateImageUrlInput.value = String(selectedTemplateImage);
     
-    document.getElementById('themeSelectionPage').classList.remove('active');
-    document.getElementById('detailsFormPage').classList.add('active');
+    // Save to sessionStorage
+    sessionStorage.setItem('selectedTemplateId', selectedTemplateId);
+    sessionStorage.setItem('selectedTemplateImage', selectedTemplateImage);
     
     // Apply template background immediately
     applyTemplateBackground();
 };
 
-// Apply template background - FIXED
+// Apply template background image
 function applyTemplateBackground() {
-    const preview = document.getElementById('invitationPreview');
-    const backgroundImage = document.getElementById('templateBackgroundImage');
+    const templateBg = document.getElementById('templateBackgroundImage');
+    if (!templateBg) return;
     
-    if (!preview || !backgroundImage) {
-        console.warn('Preview or background image element not found');
-        return;
+    if (selectedTemplateImage && selectedTemplateImage !== '') {
+        let imagePath = selectedTemplateImage;
+        
+        // Normalize path
+        if (!imagePath.startsWith('http') && !imagePath.startsWith('/')) {
+            imagePath = '/static/images/templatesimages/' + imagePath;
+        }
+        if (imagePath.startsWith('/images/')) {
+            imagePath = '/static' + imagePath;
+        }
+        
+        console.log('🎨 Applying template background:', imagePath);
+        templateBg.src = imagePath;
+        templateBg.style.display = 'block';
+        templateBg.style.visibility = 'visible';
+        templateBg.style.opacity = '0.95';
+    } else {
+        templateBg.style.display = 'none';
+    }
+}
+
+// Show event-specific fields
+function showEventSpecificFields() {
+    const weddingFields = document.getElementById('weddingFields');
+    const mainImageUpload = document.getElementById('mainImageUpload');
+    
+    if (currentEventType === 'wedding' || currentEventType === 'anniversary') {
+        weddingFields.classList.add('active');
+        mainImageUpload.style.display = 'none';
+    } else {
+        weddingFields.classList.remove('active');
+        mainImageUpload.style.display = 'block';
     }
     
-    if (selectedTemplateImage) {
-        console.log('🎨 Applying template background:', selectedTemplateImage);
-        
-        backgroundImage.src = selectedTemplateImage;
-        backgroundImage.style.display = 'block';
-        backgroundImage.style.visibility = 'visible';
-        backgroundImage.style.opacity = '0.95';
-        backgroundImage.classList.add('loaded');
-        
-        backgroundImage.onload = function() {
-            console.log('✅ Template image loaded successfully');
-            this.style.display = 'block';
-            this.style.visibility = 'visible';
-            this.style.opacity = '0.95';
-        };
-        
-        backgroundImage.onerror = function() {
-            console.error('❌ Failed to load template image:', selectedTemplateImage);
-        };
+    // Update icon
+    const previewIcon = document.getElementById('previewIcon');
+    if (previewIcon && eventIcons[currentEventType]) {
+        previewIcon.textContent = eventIcons[currentEventType];
     }
+}
+
+// Update live preview
+function updatePreview() {
+    const eventName = document.getElementById('eventName').value || 'Your Event Name';
+    const eventDate = document.getElementById('eventDate').value;
+    const eventTime = document.getElementById('eventTime').value;
+    const venue = document.getElementById('venue').value || 'Venue Location';
+    const message = document.getElementById('message').value;
+    const hostName = document.getElementById('hostName').value || 'Hosted by...';
+    
+    document.getElementById('previewEventName').textContent = eventName;
+    document.getElementById('previewDate').innerHTML = `<i class="fas fa-calendar"></i> ${eventDate || 'Select Date'}`;
+    document.getElementById('previewTime').innerHTML = `<i class="fas fa-clock"></i> ${eventTime || 'Select Time'}`;
+    document.getElementById('previewVenue').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${venue}`;
+    document.getElementById('previewMessage').textContent = message;
+    document.getElementById('previewHost').textContent = hostName;
 }
 
 // Image preview
 window.previewImage = function(input, previewId) {
     const preview = document.getElementById(previewId);
-    if (!preview) return;
-    
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+            preview.src = e.target.result;
             preview.style.display = 'block';
-            
-            // Update live preview
-            if (input.id === 'mainImage') {
-                updateLivePreviewImages(input.id, e.target.result);
-                extractColorsFromImage(e.target.result);
-            } else if (input.id === 'brideImage') {
-                updateLivePreviewImages(input.id, e.target.result);
-            } else if (input.id === 'groomImage') {
-                updateLivePreviewImages(input.id, e.target.result);
-            }
         };
         reader.readAsDataURL(input.files[0]);
-    } else {
-        preview.innerHTML = '';
-        preview.style.display = 'none';
+        
+        // Auto color theme extraction (for main image)
+        if (input.id === 'mainImage' && input.files[0]) {
+            extractColorsFromImage(input.files[0]);
+        }
     }
 };
 
-// Gallery images preview
-function previewGalleryImages(input) {
-    const preview = document.getElementById('galleryImagesPreview');
-    if (!preview) return;
-    
-    preview.innerHTML = '';
-    preview.style.display = 'grid';
-    preview.style.gridTemplateColumns = 'repeat(3, 1fr)';
-    preview.style.gap = '10px';
-    
-    Array.from(input.files).forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.style.width = '100%';
-            img.style.borderRadius = '8px';
-            preview.appendChild(img);
+// Extract dominant colors from uploaded image
+function extractColorsFromImage(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            
+            let r = 0, g = 0, b = 0, count = 0;
+            for (let i = 0; i < data.length; i += 4) {
+                r += data[i];
+                g += data[i + 1];
+                b += data[i + 2];
+                count++;
+            }
+            
+            r = Math.floor(r / count);
+            g = Math.floor(g / count);
+            b = Math.floor(b / count);
+            
+            const dominantColor = `rgb(${r}, ${g}, ${b})`;
+            console.log('🎨 Dominant color extracted:', dominantColor);
+            
+            // Store in hidden input
+            document.getElementById('autoColorTheme').value = dominantColor;
         };
-        reader.readAsDataURL(file);
-    });
-}
-
-// Update live preview images
-function updateLivePreviewImages(inputId, imageSrc) {
-    if (inputId === 'mainImage') {
-        const previewMainImage = document.getElementById('previewMainImage');
-        const previewMainImageImg = document.getElementById('previewMainImageImg');
-        if (previewMainImage && previewMainImageImg) {
-            previewMainImageImg.src = imageSrc;
-            previewMainImage.style.display = 'block';
-        }
-    } else if (inputId === 'brideImage') {
-        const previewBrideImageDiv = document.getElementById('previewBrideImageDiv');
-        const previewBrideImageImg = document.getElementById('previewBrideImageImg');
-        if (previewBrideImageDiv && previewBrideImageImg) {
-            previewBrideImageImg.src = imageSrc;
-            previewBrideImageDiv.style.display = 'block';
-        }
-    } else if (inputId === 'groomImage') {
-        const previewGroomImageDiv = document.getElementById('previewGroomImageDiv');
-        const previewGroomImageImg = document.getElementById('previewGroomImageImg');
-        if (previewGroomImageDiv && previewGroomImageImg) {
-            previewGroomImageImg.src = imageSrc;
-            previewGroomImageDiv.style.display = 'block';
-        }
-    }
-}
-
-// Extract colors from image for auto theme
-function extractColorsFromImage(imageSrc) {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = this.width;
-        canvas.height = this.height;
-        ctx.drawImage(this, 0, 0);
-        
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        
-        let r = 0, g = 0, b = 0;
-        let count = 0;
-        
-        for (let i = 0; i < data.length; i += 16) {
-            r += data[i];
-            g += data[i + 1];
-            b += data[i + 2];
-            count++;
-        }
-        
-        r = Math.floor(r / count);
-        g = Math.floor(g / count);
-        b = Math.floor(b / count);
-        
-        const primaryHex = '#' + [r, g, b].map(x => {
-            const hex = x.toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-        }).join('');
-        
-        const secondaryHex = '#' + [Math.min(255, r + 30), Math.min(255, g + 30), Math.min(255, b + 30)].map(x => {
-            const hex = x.toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-        }).join('');
-        
-        document.getElementById('autoColorTheme').value = JSON.stringify({
-            primary: primaryHex,
-            secondary: secondaryHex
-        });
+        img.src = e.target.result;
     };
-    img.src = imageSrc;
+    reader.readAsDataURL(file);
 }
 
-// Update preview
-function updatePreview() {
-    const eventName = document.getElementById('eventName').value;
-    const eventDate = document.getElementById('eventDate').value;
-    const eventTime = document.getElementById('eventTime').value;
-    const venueAddress = document.getElementById('venueAddress').value;
-    const hostedBy = document.getElementById('hostedBy').value;
-    const personalMessage = document.getElementById('personalMessage').value;
-    
-    const previewEventName = document.getElementById('previewEventName');
-    const previewDate = document.getElementById('previewDate');
-    const previewTime = document.getElementById('previewTime');
-    const previewVenue = document.getElementById('previewVenue');
-    const previewHostedBy = document.getElementById('previewHostedBy');
-    const previewMessage = document.getElementById('previewMessage');
-    
-    if (previewEventName) previewEventName.textContent = eventName || 'Your Event Name';
-    if (previewDate) previewDate.textContent = eventDate ? 'Date: ' + new Date(eventDate).toLocaleDateString() : '';
-    if (previewTime) previewTime.textContent = eventTime ? 'Time: ' + eventTime : '';
-    if (previewVenue) previewVenue.textContent = venueAddress ? 'Venue: ' + venueAddress : '';
-    if (previewHostedBy) previewHostedBy.textContent = hostedBy ? 'Hosted by: ' + hostedBy : '';
-    if (previewMessage) previewMessage.textContent = personalMessage || '';
-    
-    // Update bride and groom names
-    const brideNameEl = document.getElementById('brideName');
-    const brideName = brideNameEl ? brideNameEl.value.trim() : '';
-    const groomNameEl = document.getElementById('groomName');
-    const groomName = groomNameEl ? groomNameEl.value.trim() : '';
-    
-    const previewBrideName = document.getElementById('previewBrideName');
-    const previewGroomName = document.getElementById('previewGroomName');
-    const previewWeddingSection = document.getElementById('previewWeddingSection');
-    
-    if (brideName || groomName) {
-        if (previewBrideName && brideName) {
-            previewBrideName.textContent = brideName;
-            previewBrideName.style.display = 'block';
-        }
-        if (previewGroomName && groomName) {
-            previewGroomName.textContent = groomName;
-            previewGroomName.style.display = 'block';
-        }
-        if (previewWeddingSection) {
-            previewWeddingSection.style.display = 'block';
-        }
+// Step navigation
+let currentStep = 1;
+
+function nextStep() {
+    if (currentStep === 1 && !selectedTemplateId) {
+        alert('Please select a template first!');
+        return;
     }
     
-    // Apply font style
-    const fontStyleEl = document.getElementById('fontStyle');
-    const fontStyle = fontStyleEl ? fontStyleEl.value : null;
-    const previewContainer = document.getElementById('invitationPreview');
-    if (fontStyle && previewContainer) {
-        previewContainer.style.fontFamily = fontStyle;
+    if (currentStep < 3) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById(`progressStep${currentStep}`).classList.remove('active');
+        document.getElementById(`progressStep${currentStep}`).classList.add('completed');
+        
+        currentStep++;
+        
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        document.getElementById(`progressStep${currentStep}`).classList.add('active');
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
-    // Apply template background
-    applyTemplateBackground();
 }
 
-// Show event-specific fields
-function showEventSpecificFields() {
-    document.querySelectorAll('.event-specific-fields').forEach(el => {
-        el.style.display = 'none';
-    });
-    
-    const fieldMap = {
-        'wedding': 'weddingFields'
-    };
-    
-    const fieldId = fieldMap[currentEventType];
-    if (fieldId) {
-        const field = document.getElementById(fieldId);
-        if (field) field.style.display = 'block';
+function prevStep() {
+    if (currentStep > 1) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById(`progressStep${currentStep}`).classList.remove('active');
+        
+        currentStep--;
+        
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        document.getElementById(`progressStep${currentStep}`).classList.remove('completed');
+        document.getElementById(`progressStep${currentStep}`).classList.add('active');
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }
 
@@ -1003,53 +1032,53 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Page loaded, initializing...');
     showEventSpecificFields();
     
-    // Check if template was passed from URL - FIXED
-    {% if template_id and templates %}
-    const urlTemplateId = '{{ template_id }}';
-    console.log('🔍 Checking URL template ID:', urlTemplateId);
-    {% for template in templates %}
-    if ('{{ template.id }}' === urlTemplateId) {
-        selectedTemplateId = '{{ template.id }}';
-        {% if template.preview_image %}
-        {% set template_img = template.preview_image %}
-        {% if template_img and not template_img.startswith('http') %}
-        {%- if template_img.startswith('/images/') -%}
-        {%- set template_img = template_img -%}
-        {%- elif template_img.startswith('/static/images/') -%}
-        {%- set template_img = template_img.replace('/static/images/', '/images/') -%}
-        {%- elif 'templatesimages' in template_img -%}
-        {%-  if not template_img.startswith('/') -%}
-        {%-  set template_img = '/images/' + template_img -%}
-        {%-  endif -%}
-        {%- elif not template_img.startswith('/') -%}
-        {%- set template_img = '/images/templatesimages/' + template_img -%}
-        {%- endif %}
-        {% endif %}
-        selectedTemplateImage = {{ template_img|tojson|safe }};
-        {% else %}
-        selectedTemplateImage = '';
-        {% endif %}
+    // Check if template was passed from URL - Using SERVER_DATA
+    if (SERVER_DATA.templateId && SERVER_DATA.templates.length > 0) {
+        const urlTemplateId = String(SERVER_DATA.templateId);
+        console.log('🔍 Checking URL template ID:', urlTemplateId);
         
-        console.log('✅ Template from URL:', {id: selectedTemplateId, image: selectedTemplateImage});
-        
-        // Set form inputs
-        const templateIdInput = document.getElementById('templateIdInput');
-        const templateImageUrlInput = document.getElementById('templateImageUrlInput');
-        if (templateIdInput && selectedTemplateId) {
-            templateIdInput.value = selectedTemplateId;
-        }
-        if (templateImageUrlInput && selectedTemplateImage) {
-            templateImageUrlInput.value = selectedTemplateImage;
-        }
-        
-        // Apply template immediately with retries
-        if (selectedTemplateImage) {
-            setTimeout(() => applyTemplateBackground(), 100);
-            setTimeout(() => applyTemplateBackground(), 500);
+        for (const template of SERVER_DATA.templates) {
+            if (String(template.id) === urlTemplateId) {
+                selectedTemplateId = String(template.id);
+                
+                // Normalize template image path
+                let templateImg = template.preview_image || '';
+                if (templateImg && !templateImg.startsWith('http')) {
+                    if (templateImg.startsWith('/images/')) {
+                        // Already correct
+                    } else if (templateImg.startsWith('/static/images/')) {
+                        templateImg = templateImg.replace('/static/images/', '/images/');
+                    } else if (templateImg.includes('templatesimages')) {
+                        if (!templateImg.startsWith('/')) {
+                            templateImg = '/images/' + templateImg;
+                        }
+                    } else if (!templateImg.startsWith('/')) {
+                        templateImg = '/images/templatesimages/' + templateImg;
+                    }
+                }
+                selectedTemplateImage = templateImg;
+                
+                console.log('✅ Template from URL:', {id: selectedTemplateId, image: selectedTemplateImage});
+                
+                // Set form inputs
+                const templateIdInput = document.getElementById('templateIdInput');
+                const templateImageUrlInput = document.getElementById('templateImageUrlInput');
+                if (templateIdInput && selectedTemplateId) {
+                    templateIdInput.value = String(selectedTemplateId);
+                }
+                if (templateImageUrlInput && selectedTemplateImage) {
+                    templateImageUrlInput.value = String(selectedTemplateImage);
+                }
+                
+                // Apply template immediately with retries
+                if (selectedTemplateImage) {
+                    setTimeout(() => applyTemplateBackground(), 100);
+                    setTimeout(() => applyTemplateBackground(), 500);
+                }
+                break;
+            }
         }
     }
-    {% endfor %}
-    {% endif %}
     
     // Check sessionStorage
     const storedId = sessionStorage.getItem('selectedTemplateId');
@@ -1058,36 +1087,20 @@ document.addEventListener('DOMContentLoaded', function() {
     if (storedId && storedImage) {
         selectedTemplateId = storedId;
         let imagePath = storedImage;
-        if (imagePath && !imagePath.startsWith('http')) {
-            if (imagePath.startsWith('/static/images/')) {
-                imagePath = imagePath.replace('/static/images/', '/images/');
-            }
-        }
         selectedTemplateImage = imagePath;
-        sessionStorage.removeItem('selectedTemplateId');
-        sessionStorage.removeItem('selectedTemplateImage');
         
-        console.log('✅ Template from storage:', {id: selectedTemplateId, image: selectedTemplateImage});
+        const templateIdInput = document.getElementById('templateIdInput');
+        const templateImageUrlInput = document.getElementById('templateImageUrlInput');
+        if (templateIdInput) templateIdInput.value = String(storedId);
+        if (templateImageUrlInput) templateImageUrlInput.value = String(imagePath);
         
-        if (selectedTemplateImage) {
-            applyTemplateBackground();
+        const templateCard = document.querySelector(`.theme-card[data-template-id="${storedId}"]`);
+        if (templateCard) {
+            templateCard.classList.add('selected');
         }
+        
+        applyTemplateBackground();
     }
-    
-    // Attach event listeners
-    const inputs = ['eventName', 'eventDate', 'eventTime', 'venueAddress', 'hostedBy', 'personalMessage', 'fontStyle', 'language', 'brideName', 'groomName'];
-    inputs.forEach(id => {
-        const input = document.getElementById(id);
-        if (input) {
-            input.addEventListener('input', updatePreview);
-            input.addEventListener('change', updatePreview);
-        }
-    });
-    
-    // Initial preview update
-    updatePreview();
-    
-    console.log('✅ Initialization complete');
 });
 </script>
 {% endblock %}

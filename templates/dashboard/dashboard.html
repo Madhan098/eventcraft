@@ -725,7 +725,8 @@
             <div class="invitation-grid">
                 {% for invitation in invitations[:6] %}
                 <div class="invitation-card">
-                    <div class="invitation-preview" style="position: relative; {% if invitation.customization_data %}{% set customization = invitation.customization_data|from_json %}{% if customization.template_image_url %}background-image: url('{{ customization.template_image_url }}'); background-size: cover; background-position: center;{% endif %}{% endif %}">
+                    {% set customization = invitation.customization_data|from_json if invitation.customization_data else {} %}
+                    <div class="invitation-preview" style="position: relative;" {% if customization.get('template_image_url') %}data-bg-image="{{ customization.template_image_url }}"{% endif %}>
                         {% if invitation.main_image %}
                         <img src="/static/uploads/{{ invitation.main_image }}" alt="{{ invitation.title }}" style="position: relative; z-index: 2;">
                         {% elif invitation.bride_image or invitation.groom_image %}
@@ -791,4 +792,20 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Apply background images from data attributes to avoid linter errors
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.invitation-preview[data-bg-image]').forEach(function(el) {
+        const bgImage = el.getAttribute('data-bg-image');
+        if (bgImage) {
+            el.style.backgroundImage = "url('" + bgImage + "')";
+            el.style.backgroundSize = 'cover';
+            el.style.backgroundPosition = 'center';
+        }
+    });
+});
+</script>
 {% endblock %}
