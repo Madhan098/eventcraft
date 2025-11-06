@@ -52,9 +52,8 @@
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.95);
-    /* backdrop-filter removed - no blur */
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
     border-radius: 16px;
     padding: 24px;
     text-align: center;
@@ -66,7 +65,7 @@
 .stat-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.3) !important;
 }
 
 .stat-number {
@@ -105,12 +104,13 @@
 
 .section-title {
     font-size: 1.875rem;
-    font-weight: 700;
-    color: var(--reddish-brown-dark);
+    font-weight: 700 !important;
+    color: #5D4037 !important;
     margin: 0;
     position: relative;
     display: inline-block;
     padding-bottom: 8px;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .section-title::after {
@@ -139,15 +139,15 @@
 }
 
 .action-card {
-    background: white;
-    border: 2px solid #E5E5E5;
+    background: white !important;
+    border: 2px solid #CCCCCC !important;
     border-radius: 20px;
     padding: 32px;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }
 
 .action-card::before {
@@ -168,8 +168,8 @@
 
 .action-card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 32px rgba(160, 120, 120, 0.15);
-    border-color: var(--reddish-brown);
+    box-shadow: 0 12px 32px rgba(160, 120, 120, 0.2) !important;
+    border-color: #A07878 !important;
 }
 
 .action-icon {
@@ -194,16 +194,18 @@
 
 .action-title {
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 700 !important;
     margin-bottom: 12px;
-    color: var(--reddish-brown-dark);
+    color: #5D4037 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .action-description {
-    color: var(--text-secondary);
+    color: #666666 !important;
     font-size: 0.875rem;
     line-height: 1.5;
     margin-bottom: var(--spacing-md);
+    font-weight: 500 !important;
 }
 
 /* Professional Invitation Cards - Enhanced Design */
@@ -214,13 +216,13 @@
 }
 
 .invitation-card {
-    background: white;
-    border: 2px solid #E8E8E8;
+    background: white !important;
+    border: 2px solid #D0D0D0 !important;
     border-radius: 20px;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
 }
 
 .invitation-card::before {
@@ -242,13 +244,13 @@
 
 .invitation-card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(160, 120, 120, 0.2);
-    border-color: var(--reddish-brown);
+    box-shadow: 0 16px 40px rgba(160, 120, 120, 0.25) !important;
+    border-color: #A07878 !important;
 }
 
 .invitation-preview {
     height: 220px;
-    background: linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 100%);
+    background: linear-gradient(135deg, #EBEBEB 0%, #D8D8D8 100%) !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -279,9 +281,9 @@
 }
 
 .invitation-preview .preview-placeholder {
-    font-size: 3.5rem;
-    color: var(--reddish-brown);
-    opacity: 0.4;
+    font-size: 4rem;
+    color: #8B5A5A !important;
+    opacity: 0.6 !important;
 }
 
 .invitation-content {
@@ -290,10 +292,11 @@
 
 .invitation-title {
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 700 !important;
     margin-bottom: 16px;
-    color: var(--reddish-brown-dark);
+    color: #5D4037 !important;
     line-height: 1.3;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .invitation-meta {
@@ -302,7 +305,8 @@
     align-items: center;
     margin-bottom: 20px;
     font-size: 0.9rem;
-    color: var(--text-gray);
+    color: #666666 !important;
+    font-weight: 500 !important;
 }
 
 .invitation-meta span {
@@ -312,7 +316,7 @@
 }
 
 .invitation-meta i {
-    color: var(--golden-yellow);
+    color: #D4AF37 !important;
 }
 
 .invitation-actions {
@@ -416,9 +420,9 @@
 /* Professional Empty State */
 .empty-state {
     text-align: center;
-    padding: 60px 40px;
-    background: white;
-    border: 2px dashed #E0E0E0;
+    padding: 60px 40px !important;
+    background: white !important;
+    border: 2px dashed #CCCCCC !important;
     border-radius: 20px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
@@ -432,20 +436,21 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 24px;
-    font-size: 2.5rem;
-    color: white;
+    font-size: 4rem;
+    color: #A07878 !important;
+    opacity: 0.7;
     box-shadow: 0 4px 16px rgba(160, 120, 120, 0.25);
 }
 
 .empty-state-title {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 700 !important;
     margin-bottom: 12px;
-    color: var(--reddish-brown-dark);
+    color: #5D4037 !important;
 }
 
 .empty-state-description {
-    color: var(--text-secondary);
+    color: #666666 !important;
     margin-bottom: var(--spacing-lg);
 }
 

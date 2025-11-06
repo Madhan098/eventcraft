@@ -3,34 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>{% block title %}EventCraft Pro - Clean Digital Invitations{% endblock %}</title>
+    <!-- Performance optimization: Enable caching -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#6F4E37">
+    <title>{% block title %}EventCraft Pro - Professional Digital Invitations{% endblock %}</title>
     
     <!-- Favicon - Simple emoji icon to prevent 404 errors -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎉</text></svg>">
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts - Floral Theme (preconnect for performance) -->
+    <!-- Preconnect to external resources for better performance -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     
-    <!-- Floral Animations CSS -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    
+    <!-- Font Awesome - Async load for better performance -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    
+    <!-- Google Fonts - Optimized loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS - Optimized -->
     <link rel="stylesheet" href="/static/css/floral-animations.css">
-    
-    <!-- Glassmorphism CSS -->
-    <link rel="stylesheet" href="/static/css/glassmorphism.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/style.css?v=8.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=9.0">
     
     {% block extra_head %}{% endblock %}
     
@@ -198,8 +198,14 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            height: 100%;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background: #FFFFFF;
@@ -207,20 +213,19 @@
             font-size: 16px;
             font-weight: 400;
             letter-spacing: -0.01em;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             min-height: 100vh;
             position: relative;
-            scroll-behavior: smooth;
-            /* Mobile Performance Optimizations */
+            /* Performance optimizations */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             -webkit-overflow-scrolling: touch;
             -webkit-tap-highlight-color: transparent;
-        }
-        
-        /* Smooth scrolling for all elements */
-        html {
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+            /* Hardware acceleration */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: scroll-position;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
         
         /* Clean white background - no overlay needed */
@@ -233,67 +238,61 @@
             display: none;
         }
 
-        /* Typography - Floral Theme with Elegant Serif */
+        /* Professional Typography - Optimized */
         h1, .h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            font-weight: 600;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        h2, .h2 {
-            font-family: 'Inter', sans-serif;
-            font-size: 2.75rem;
+            font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 700;
             line-height: 1.2;
             letter-spacing: -0.02em;
             color: var(--text-primary);
-            margin-bottom: var(--spacing-md);
+            margin-bottom: 1.5rem;
+        }
+
+        h2, .h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
         }
 
         h3, .h3 {
             font-family: 'Inter', sans-serif;
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 3vw, 2rem);
             font-weight: 600;
             line-height: 1.3;
             color: var(--text-primary);
-            margin-bottom: var(--spacing-md);
+            margin-bottom: 1rem;
         }
         
         h4, .h4 {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.5rem;
+            font-size: clamp(1.25rem, 2.5vw, 1.5rem);
             font-weight: 600;
             line-height: 1.4;
             color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
+            margin-bottom: 0.75rem;
         }
         
         .floral-accent {
-            font-family: 'Inter', sans-serif;
             color: var(--primary);
             font-weight: 600;
         }
 
         h5, .h5 {
-            font-family: 'Inter', sans-serif;
             font-size: 1.25rem;
             font-weight: 600;
             line-height: 1.5;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
+            margin-bottom: 0.5rem;
         }
 
         h6, .h6 {
-            font-family: 'Inter', sans-serif;
             font-size: 1.125rem;
             font-weight: 600;
             line-height: 1.5;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
+            margin-bottom: 0.5rem;
         }
 
         p {
@@ -316,11 +315,11 @@
             font-weight: 600;
             font-size: 0.875rem;
             line-height: 1.5;
-            border-radius: var(--radius-full);
+            border-radius: 50px;
             padding: 0.75rem 1.5rem;
             border: 2px solid transparent;
             cursor: pointer;
-            transition: all var(--transition-bounce);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -329,7 +328,11 @@
             position: relative;
             overflow: hidden;
             letter-spacing: 0.3px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            /* Performance optimization */
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         .btn::before {
@@ -437,34 +440,28 @@
             border-radius: var(--radius-sm);
         }
 
-        /* 🌸 Enhanced Glassmorphism Card Styles */
+        /* Enhanced Card Styles - Optimized for Performance */
         .card {
-            background: var(--glass-bg-light);
-            /* backdrop-filter removed - no blur */
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            box-shadow: var(--shadow-glass);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #FFFFFF;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
             position: relative;
-            isolation: isolate;
+            /* Performance optimization */
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
         
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, 
-                rgba(160, 120, 120, 0.1) 0%, 
-                rgba(212, 168, 90, 0.1) 50%,
-                rgba(139, 90, 90, 0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
-            pointer-events: none;
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .card:active {
+            transform: translateY(-2px);
         }
         
         .card::after {
