@@ -1,0 +1,18 @@
+# ===================================================================
+# COPY THIS FILE TO .env IN YOUR PROJECT ROOT
+# ===================================================================
+# Steps:
+# 1. Create a new file named ".env" (no extension) in your project root
+# 2. Copy the contents below into it
+# 3. Save the file
+# 4. Restart your Flask app (python app.py)
+# ===================================================================
+
+SESSION_SECRET=your-super-secret-session-key-2024
+
+GOOGLE_CLIENT_ID=835499388459-br178k12amc1foaku2kq17n1sopapcit.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+GOOGLE_REDIRECT_URI=http://localhost:5000/auth/google/callback
+
+FLASK_ENV=development
+

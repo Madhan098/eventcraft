@@ -5,17 +5,18 @@
 {% block extra_head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* 🎨 Theme Gallery - Exact Design Match */
+/* 🎨 Theme Gallery - Clean Design with Image-First Layout */
 :root {
-    --reddish-brown: #A07878;
-    --reddish-brown-dark: #8B5A5A;
-    --golden-yellow: #D4A85A;
+    --reddish-brown: #6F4E37;
+    --reddish-brown-dark: #5D4037;
+    --golden-yellow: #D4AF37;
     --golden-yellow-bright: #FFD700;
     
-    --bg-cream: #FAFAFA;
+    --bg-cream: #FFFFFF;
     --bg-white: #FFFFFF;
+    --bg-card: #FAFAFA;
     
-    --text-dark: #000000;
+    --text-dark: #1a1a1a;
     --text-gray: #666666;
     --text-light-gray: #999999;
     
@@ -66,7 +67,7 @@ body {
 
 .title-icon {
     font-size: 48px;
-    background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--golden-yellow) 100%);
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -78,14 +79,25 @@ body {
 }
 
 .title-theme {
-    color: var(--text-dark);
-}
-
-.title-gallery {
-    background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--reddish-brown-dark) 100%);
+    background: linear-gradient(135deg, #6F4E37 0%, #C9A961 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    font-weight: 800;
+}
+
+.title-gallery {
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #FFA500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    animation: shimmer-gold 3s ease-in-out infinite;
+}
+
+@keyframes shimmer-gold {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
 }
 
 .theme-gallery-subtitle {
@@ -133,14 +145,14 @@ body {
 }
 
 .filter-btn.active {
-    background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--golden-yellow) 100%);
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
     border-color: transparent;
     color: #FFFFFF;
     box-shadow: var(--shadow-sm);
 }
 
 .filter-btn.active:hover {
-    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+    background: linear-gradient(135deg, #5D4037 0%, #C9A961 100%);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
@@ -152,74 +164,62 @@ body {
 }
 
 .themes-grid {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 32px;
     min-height: 400px;
-    position: relative;
 }
 
-/* Glassmorphism Theme Card */
+/* Theme Card - Image First Design */
 .theme-card {
-    background: rgba(255, 255, 255, 0.95);
-    /* backdrop-filter removed - no blur */
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    padding: 32px;
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition);
-    position: relative;
-    cursor: pointer;
+    background: var(--bg-white);
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
     overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
 }
-
-/* Template design overlay image - removed per user request */
 
 .theme-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
-    background: rgba(255, 255, 255, 0.85);
+    border-color: var(--golden-yellow);
 }
 
-/* Color Palette */
-.color-palette {
-        position: absolute;
-    top: 24px;
-    right: 24px;
-        display: flex;
-    gap: 8px;
-    z-index: 2;
-}
-
-.color-circle {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Card Image Wrapper */
+/* Card Image - Takes up top 60% */
 .card-image-wrapper {
-        width: 100%;
-    height: 250px;
-        border-radius: 12px;
+    width: 100%;
+    height: 280px;
     overflow: hidden;
-    margin-bottom: 24px;
+    background: var(--bg-card);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition);
+    display: block;
+}
+
+.theme-card:hover .theme-preview-image {
+    transform: scale(1.08);
+}
+
+/* Image Loading State */
+.card-image-wrapper.loading {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: skeleton-loading 1.5s infinite;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-}
-
-.card-image-wrapper.loaded {
-    background: var(--bg-cream);
-    animation: none;
 }
 
 @keyframes skeleton-loading {
@@ -227,83 +227,88 @@ body {
     100% { background-position: -200% 0; }
 }
 
-.theme-preview-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--transition), opacity 0.3s ease;
-    display: block;
-    background: var(--bg-cream);
-    opacity: 0;
+/* Image Placeholder */
+.image-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-gray);
 }
 
-.theme-preview-image.loaded {
-    opacity: 1;
-}
-
-.theme-card:hover .theme-preview-image {
-        transform: scale(1.05);
-}
-
-/* Ensure image wrapper is visible */
-.card-image-wrapper {
-            display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Card Content */
-.card-content {
-    position: relative;
-    z-index: 1;
-}
-
-/* Card Image Wrapper should also be above overlay */
-.card-image-wrapper {
-    position: relative;
-    z-index: 1;
-}
-
-.card-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-dark);
+.image-placeholder i {
+    font-size: 48px;
     margin-bottom: 12px;
+    opacity: 0.3;
 }
 
+.image-placeholder p {
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+/* Card Content - Below Image */
+.card-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+}
+
+/* Template Name - Bold & Prominent with Gradient */
+.card-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+    /* Coffee & Gold gradient */
+    background: linear-gradient(135deg, #6F4E37 0%, #C9A961 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.theme-card:hover .card-title {
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Event Type Badge */
+.event-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+    color: #FFFFFF;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+    width: fit-content;
+}
+
+/* Description */
 .card-description {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--text-gray);
     line-height: 1.6;
-    margin-bottom: 24px;
+    margin: 0;
+    flex: 1;
 }
 
-/* Tags */
-.card-tags {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
-}
-
-.tag {
-    padding: 6px 12px;
-    background: #333333;
-    color: #FFFFFF;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: lowercase;
-}
-
-/* Use Theme Button */
+/* Use Template Button */
 .use-theme-btn {
     width: 100%;
     padding: 14px 24px;
-    background: #333333;
+    background: var(--text-dark);
     color: #FFFFFF;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
@@ -314,10 +319,11 @@ body {
     gap: 8px;
     font-family: inherit;
     text-decoration: none;
+    margin-top: auto;
 }
 
 .use-theme-btn:hover {
-    background: #000000;
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
@@ -330,10 +336,52 @@ body {
     transform: translateX(4px);
 }
 
+/* Template Count */
+.template-count {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #FFFFFF;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 2;
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 40px;
+}
+
+.empty-state i {
+    font-size: 64px;
+    color: var(--text-light-gray);
+    margin-bottom: 24px;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    font-size: 16px;
+    color: var(--text-gray);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 /* Responsive */
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
     .themes-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
     }
 }
 
@@ -375,21 +423,15 @@ body {
     
     .themes-grid {
         grid-template-columns: 1fr;
-        gap: 24px;
-    }
-    
-    .theme-card {
-        padding: 24px;
+        gap: 20px;
     }
     
     .card-image-wrapper {
-        height: 200px;
+        height: 220px;
     }
     
-    /* Optimize images for mobile */
-    .theme-preview-image {
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
+    .card-content {
+        padding: 20px;
     }
 }
 
@@ -430,7 +472,7 @@ body {
             </span>
         </h1>
         <p class="theme-gallery-subtitle">Explore our curated collection of invitation designs. Each theme tells a unique story — find yours.</p>
-            </div>
+    </div>
 </section>
 
 <!-- Filter Buttons -->
@@ -442,272 +484,86 @@ body {
         <button class="filter-btn" data-filter="engagement">Engagement</button>
         <button class="filter-btn" data-filter="anniversary">Anniversary</button>
         <button class="filter-btn" data-filter="babyshower">Baby Shower</button>
+        <button class="filter-btn" data-filter="graduation">Graduation</button>
+        <button class="filter-btn" data-filter="retirement">Retirement</button>
         <button class="filter-btn" data-filter="corporate">Corporate</button>
-        <button class="filter-btn" data-filter="custom">Custom</button>
-                            </div>
+    </div>
 </section>
 
 <!-- Theme Cards Grid -->
 <section class="themes-section">
     <div class="themes-grid" id="themesGrid">
-        {% if templates %}
+        {% if templates and templates|length > 0 %}
             {% for template in templates %}
-                {% if template.preview_image %}
-                {% set template_name_slug = template.name|replace(' ', '_')|lower %}
-                {% set template_img = template.preview_image if template.preview_image and 'placeholder.com' not in template.preview_image and 'via.placeholder' not in template.preview_image else '/images/templatesimages/wedding.png' %}
-                {% if template_img and not template_img.startswith('http') %}
-                    {% if template_img.startswith('/images/') %}
-                        {% set template_img = template_img %}
-                    {% elif template_img.startswith('/static/images/') and 'templatesimages' in template_img %}
-                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
-                    {% elif 'templatesimages' in template_img %}
-                        {% if not template_img.startswith('/') %}
-                            {% set template_img = '/images/' + template_img %}
-                        {% else %}
-                            {% set template_img = template_img %}
-                        {% endif %}
-                    {% elif template_img.endswith(('.jpg', '.jpeg', '.png', '.gif')) and not '/' in template_img %}
-                        {# Just filename like "wed.jpg" or "birthday.jpg" - check if it's likely a templatesimages file #}
-                        {% if 'wed' in template_img|lower or 'birthday' in template_img|lower or 'corporate' in template_img|lower or 'ballon' in template_img|lower or 'graduation' in template_img|lower or 'retirement' in template_img|lower or 'grduation' in template_img|lower %}
-                            {% set template_img = '/images/templatesimages/' + template_img %}
-                        {% elif not template_img.startswith('/') %}
-                            {% set template_img = '/images/templatesimages/' + template_img %}
-                        {% endif %}
-                    {% elif not template_img.startswith('/') %}
-                        {% set template_img = '/images/templatesimages/' + template_img %}
+                {% set template_img = template.preview_image %}
+                
+                {# Ensure correct image path #}
+                {% if template_img %}
+                    {# Remove /static/ prefix if present #}
+                    {% if template_img.startswith('/static/') %}
+                        {% set template_img = template_img.replace('/static/', '/') %}
                     {% endif %}
                     
-                    {# Always convert /static/images/ to /images/ #}
-                    {% if template_img.startswith('/static/images/') %}
-                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
+                    {# Ensure it starts with /images/ #}
+                    {% if not template_img.startswith('/images/') and not template_img.startswith('http') %}
+                        {% if template_img.startswith('/') %}
+                            {% set template_img = '/images' + template_img %}
+                        {% else %}
+                            {% set template_img = '/images/' + template_img %}
+                        {% endif %}
                     {% endif %}
+                {% else %}
+                    {% set template_img = '/images/templatesimages/default.png' %}
                 {% endif %}
-                <div class="theme-card" data-category="{{ template.event_type|lower }}" data-event-type="{{ template.event_type|lower }}" data-template-id="{{ template.id }}">
-                    <div class="card-image-wrapper" style="display: flex; visibility: visible; opacity: 1;">
-                        {% set safe_img = template_img if 'placeholder.com' not in template_img and 'via.placeholder' not in template_img else '/images/templatesimages/wedding.png' %}
-                        <img src="{{ safe_img }}" alt="{{ template.name }}" class="theme-preview-image" 
+                
+                <div class="theme-card" 
+                     data-event-type="{{ template.event_type|lower }}" 
+                     data-template-id="{{ template.id }}">
+                    
+                    <!-- Image First -->
+                    <div class="card-image-wrapper loading">
+                        <img src="{{ template_img }}" 
+                             alt="{{ template.name }}" 
+                             class="theme-preview-image"
                              loading="lazy"
-                             decoding="async"
-                             style="display: block; width: 100%; height: 100%; object-fit: cover;"
-                             onerror="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onerror, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; return; } console.error('Image failed to load: {{ safe_img }}'); this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.alt='{{ template.name }}';"
-                             onload="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onload, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; } else { this.classList.add('loaded'); this.closest('.card-image-wrapper')?.classList.add('loaded'); }">
+                             onerror="this.onerror=null; this.closest('.card-image-wrapper').innerHTML='<div class=\'image-placeholder\'><i class=\'fas fa-image\'></i><p>{{ template.name }}</p></div>';"
+                             onload="this.closest('.card-image-wrapper').classList.remove('loading');">
                     </div>
+                    
+                    <!-- Content Below Image -->
                     <div class="card-content">
+                        <!-- Template Name -->
                         <h3 class="card-title">{{ template.name }}</h3>
-                        <p class="card-description">{{ template.description if template.description else 'Beautiful invitation template' }}</p>
-                        <div class="card-tags">
-                            <span class="tag">{{ template.event_type|lower }}</span>
-                            {% if template.style %}
-                            <span class="tag">{{ template.style|lower }}</span>
-                            {% endif %}
+                        
+                        <!-- Event Type Badge -->
+                        <div class="event-type-badge">
+                            <i class="fas fa-tag"></i>
+                            {{ template.event_type }}
                         </div>
-                        <a href="/create-invitation?template_id={{ template.id }}&event_type={{ template.event_type }}" class="use-theme-btn">
-                            Use This Theme
+                        
+                        <!-- Description -->
+                        {% if template.description %}
+                        <p class="card-description">{{ template.description }}</p>
+                        {% else %}
+                        <p class="card-description">Beautiful {{ template.event_type }} invitation template perfect for your special occasion.</p>
+                        {% endif %}
+                        
+                        <!-- Use Template Button -->
+                        <a href="/create-invitation?template_id={{ template.id }}&event_type={{ template.event_type }}" 
+                           class="use-theme-btn">
+                            Choose This Template
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
-                    </div>
-                {% endif %}
+                </div>
             {% endfor %}
-        {% endif %}
-        
-        <!-- Fallback Templates (only show if no database templates) -->
-        {% if not templates or templates|length == 0 %}
-        <!-- Modern Minimal (Fallback) -->
-        <div class="theme-card" data-category="wedding corporate engagement">
-            <div class="color-palette">
-                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                <div class="color-circle" style="background: #000000;"></div>
-                <div class="color-circle" style="background: var(--reddish-brown-dark);"></div>
-                    </div>
-            <div class="card-content">
-                <h3 class="card-title">Modern Minimal</h3>
-                <p class="card-description">Clean lines and sophisticated simplicity</p>
-                <div class="card-tags">
-                    <span class="tag">wedding</span>
-                    <span class="tag">corporate</span>
-                    <span class="tag">engagement</span>
-                </div>
-                <a href="/create-invitation?template=modern_minimal" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+        {% else %}
+            <!-- Empty State -->
+            <div class="empty-state">
+                <i class="fas fa-palette"></i>
+                <h3>No Templates Available</h3>
+                <p>We're working on adding beautiful templates for you. Please check back soon!</p>
             </div>
-        </div>
-        
-        <!-- Floral Luxury -->
-        <div class="theme-card" data-category="wedding babyshower anniversary">
-            <div class="color-palette">
-                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                <div class="color-circle" style="background: #90EE90;"></div>
-                <div class="color-circle" style="background: var(--golden-yellow);"></div>
-            </div>
-            <div class="card-content">
-                <h3 class="card-title">Floral Luxury</h3>
-                <p class="card-description">Elegant botanical designs with golden accents</p>
-                <div class="card-tags">
-                    <span class="tag">wedding</span>
-                    <span class="tag">baby shower</span>
-                    <span class="tag">anniversary</span>
-        </div>
-                <a href="/create-invitation?template=floral_luxury" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-    </div>
-                </div>
-                
-        <!-- Royal Gold -->
-        <div class="theme-card" data-category="wedding anniversary corporate">
-            <div class="color-palette">
-                <div class="color-circle" style="background: #000000;"></div>
-                <div class="color-circle" style="background: var(--golden-yellow);"></div>
-                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                </div>
-            <div class="card-content">
-                <h3 class="card-title">Royal Gold</h3>
-                <p class="card-description">Opulent and regal with metallic brilliance</p>
-                <div class="card-tags">
-                    <span class="tag">wedding</span>
-                    <span class="tag">anniversary</span>
-                    <span class="tag">corporate</span>
-                    </div>
-                <a href="/create-invitation?template=royal_gold" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                            </div>
-                            </div>
-                
-        <!-- Watercolor Dreams -->
-        <div class="theme-card" data-category="birthday babyshower engagement">
-            <div class="color-palette">
-                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                <div class="color-circle" style="background: #DDA0DD;"></div>
-                <div class="color-circle" style="background: #90EE90;"></div>
-                        </div>
-            <div class="card-content">
-                <h3 class="card-title">Watercolor Dreams</h3>
-                <p class="card-description">Soft, artistic washes of color</p>
-                <div class="card-tags">
-                    <span class="tag">birthday</span>
-                    <span class="tag">baby shower</span>
-                    <span class="tag">engagement</span>
-                    </div>
-                <a href="/create-invitation?template=watercolor_dreams" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                    </div>
-                </div>
-
-        <!-- Dark Chic -->
-        <div class="theme-card" data-category="corporate birthday anniversary">
-            <div class="color-palette">
-                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                <div class="color-circle" style="background: var(--reddish-brown-dark);"></div>
-                <div class="color-circle" style="background: var(--golden-yellow);"></div>
-                        </div>
-            <div class="card-content">
-                <h3 class="card-title">Dark Chic</h3>
-                <p class="card-description">Bold and modern with dramatic contrast</p>
-                <div class="card-tags">
-                    <span class="tag">corporate</span>
-                    <span class="tag">birthday</span>
-                    <span class="tag">anniversary</span>
-                    </div>
-                <a href="/create-invitation?template=dark_chic" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                    </div>
-                </div>
-
-        <!-- Festive Traditional -->
-        <div class="theme-card" data-category="birthday anniversary custom">
-            <div class="color-palette">
-                <div class="color-circle" style="background: var(--golden-yellow);"></div>
-                <div class="color-circle" style="background: var(--reddish-brown-dark);"></div>
-                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                        </div>
-            <div class="card-content">
-                <h3 class="card-title">Festive Traditional</h3>
-                <p class="card-description">Classic celebration with timeless charm</p>
-                <div class="card-tags">
-                    <span class="tag">birthday</span>
-                    <span class="tag">anniversary</span>
-                    <span class="tag">custom</span>
-                    </div>
-                <a href="/create-invitation?template=festive_traditional" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                    </div>
-                </div>
-
-        <!-- Additional templates from your existing data -->
-        <div class="theme-card" data-category="wedding">
-            <div class="color-palette">
-                <div class="color-circle" style="background: #FFF5F0;"></div>
-                <div class="color-circle" style="background: var(--reddish-brown);"></div>
-                <div class="color-circle" style="background: var(--golden-yellow);"></div>
-                        </div>
-            <div class="card-content">
-                <h3 class="card-title">Wedding Elegant</h3>
-                <p class="card-description">Perfect for your special day</p>
-                <div class="card-tags">
-                    <span class="tag">wedding</span>
-                    <span class="tag">elegant</span>
-                    <span class="tag">engagement</span>
-                    </div>
-                <a href="/create-invitation?template=wedding_elegant" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                    </div>
-                </div>
-
-        <div class="theme-card" data-category="birthday">
-            <div class="color-palette">
-                <div class="color-circle" style="background: #FF6B6B;"></div>
-                <div class="color-circle" style="background: #4ECDC4;"></div>
-                <div class="color-circle" style="background: #FFE66D;"></div>
-                        </div>
-            <div class="card-content">
-                <h3 class="card-title">Birthday Fun</h3>
-                <p class="card-description">Vibrant and playful celebration</p>
-                <div class="card-tags">
-                    <span class="tag">birthday</span>
-                    <span class="tag">fun</span>
-                    <span class="tag">custom</span>
-                    </div>
-                <a href="/create-invitation?template=birthday_fun" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                    </div>
-                </div>
-
-        <div class="theme-card" data-category="corporate">
-            <div class="color-palette">
-                <div class="color-circle" style="background: #2C3E50;"></div>
-                <div class="color-circle" style="background: #3498DB;"></div>
-                <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                        </div>
-            <div class="card-content">
-                <h3 class="card-title">Corporate Professional</h3>
-                <p class="card-description">Professional events with sophistication</p>
-                <div class="card-tags">
-                    <span class="tag">corporate</span>
-                    <span class="tag">professional</span>
-                    <span class="tag">custom</span>
-                    </div>
-                <a href="/create-invitation?template=corporate_professional" class="use-theme-btn">
-                    Use This Theme
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                        </div>
-                        </div>
         {% endif %}
     </div>
 </section>
@@ -717,16 +573,10 @@ body {
 <script>
 // Filter functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Show loading state
-    const themesGrid = document.getElementById('themesGrid');
-    if (themesGrid) {
-        themesGrid.style.opacity = '0';
-        themesGrid.style.transition = 'opacity 0.3s ease';
-    }
-    
     const filterButtons = document.querySelectorAll('.filter-btn');
     const themeCards = document.querySelectorAll('.theme-card');
     
+    // Filter functionality
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
             // Remove active class from all buttons
@@ -736,18 +586,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const filter = this.dataset.filter;
             
-            // Filter cards
-            themeCards.forEach(card => {
+            // Filter cards with animation
+            themeCards.forEach((card, index) => {
                 const eventType = card.dataset.eventType || '';
-                const categories = card.dataset.category ? card.dataset.category.split(' ') : [];
-                
-                // Check both event-type and category for compatibility
-                const matches = filter === 'all' || 
-                               eventType === filter || 
-                               categories.includes(filter);
+                const matches = filter === 'all' || eventType === filter;
                 
                 if (matches) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex';
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(20px)';
                     
@@ -755,132 +600,56 @@ document.addEventListener('DOMContentLoaded', function() {
                         card.style.transition = 'all 0.4s ease';
                         card.style.opacity = '1';
                         card.style.transform = 'translateY(0)';
-                    }, 10);
-        } else {
-                    card.style.transition = 'all 0.4s ease';
+                    }, index * 30);
+                } else {
+                    card.style.transition = 'all 0.3s ease';
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(-20px)';
                     
                     setTimeout(() => {
                         card.style.display = 'none';
-                    }, 400);
+                    }, 300);
                 }
             });
         });
     });
     
-    // Initial display - make cards visible immediately, then animate
+    // Initial animation
     themeCards.forEach((card, index) => {
-        // Make card visible immediately
-        card.style.display = 'block';
-        card.style.visibility = 'visible';
-        
-        // Make sure image wrappers are visible immediately
-        const imageWrappers = card.querySelectorAll('.card-image-wrapper');
-        imageWrappers.forEach(wrapper => {
-            wrapper.style.display = 'flex';
-            wrapper.style.visibility = 'visible';
-            wrapper.style.opacity = '1';
-            wrapper.style.height = '250px';
-        });
-        
-        // Make sure images are visible immediately
-        const images = card.querySelectorAll('.theme-preview-image');
-        images.forEach(img => {
-            img.style.display = 'block';
-            img.style.visibility = 'visible';
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            
-            // If image is already loaded, show it immediately
-            if (img.complete && img.naturalHeight !== 0) {
-                img.classList.add('loaded');
-                img.closest('.card-image-wrapper')?.classList.add('loaded');
-            }
-        });
-        
-        // Animate in after a short delay (faster on mobile)
-        const isMobile = window.innerWidth <= 768;
-        const delay = isMobile ? index * 20 : index * 50;
-        
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
         
         setTimeout(() => {
-            card.style.transition = 'all 0.3s ease';
+            card.style.transition = 'all 0.4s ease';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
-        }, delay);
+        }, index * 50);
     });
     
-    // Optimize image loading for mobile
-    if (window.innerWidth <= 768) {
-        // Use Intersection Observer for better lazy loading on mobile
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (!img.classList.contains('loaded')) {
-                        // Preload image
-                        const tempImg = new Image();
-                        tempImg.onload = function() {
-                            img.classList.add('loaded');
-                            img.closest('.card-image-wrapper')?.classList.add('loaded');
-                        };
-                        tempImg.src = img.src;
-                    }
-                    observer.unobserve(img);
-                }
-            });
-        }, {
-            rootMargin: '50px',
-            threshold: 0.1
+    // Optimize image loading
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.classList.add('loading');
+                imageObserver.unobserve(img);
+            }
         });
-        
-        // Observe all images
-        document.querySelectorAll('.theme-preview-image').forEach(img => {
-            imageObserver.observe(img);
-        });
-    }
+    }, {
+        rootMargin: '50px'
+    });
     
-    // Handle images that are already loaded (cached)
-    const allImages = document.querySelectorAll('.theme-preview-image');
-    allImages.forEach(img => {
-        // If image is already loaded (cached), show it immediately
-        if (img.complete && img.naturalHeight !== 0) {
-            img.classList.add('loaded');
-            img.closest('.card-image-wrapper')?.classList.add('loaded');
+    // Observe all images
+    document.querySelectorAll('.theme-preview-image').forEach(img => {
+        if (img.complete) {
+            img.closest('.card-image-wrapper')?.classList.remove('loading');
         } else {
-            // Add error handler for images that fail to load
-            img.addEventListener('error', function() {
-                console.error('Image failed to load:', this.src);
-                // Show placeholder or fallback
-                this.style.background = '#A07878';
-                this.style.display = 'flex';
-                this.style.alignItems = 'center';
-                this.style.justifyContent = 'center';
-                this.style.color = '#FFFFFF';
-                this.style.fontSize = '14px';
-                this.alt = 'Image not available';
-            });
+            imageObserver.observe(img);
         }
     });
     
-    // Show grid after initial load
-    if (themesGrid) {
-        setTimeout(() => {
-            themesGrid.style.opacity = '1';
-        }, 100);
-    }
-    
-    // Log templates count for debugging (only in development)
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        console.log('Total theme cards found:', themeCards.length);
-        const dbTemplateCards = document.querySelectorAll('.theme-card[data-template-id]');
-        console.log('Database template cards:', dbTemplateCards.length);
-        console.log('Total images found:', allImages.length);
-    }
+    // Log for debugging
+    console.log('Total templates loaded:', themeCards.length);
 });
 </script>
 {% endblock %}

@@ -116,16 +116,28 @@ body {
     font-size: 56px;
     font-weight: 700;
     line-height: 1.15;
-    color: var(--text-primary);
     margin-bottom: 24px;
     letter-spacing: -0.02em;
-}
-
-.hero-title .highlight {
-    background: linear-gradient(135deg, #C9A961 0%, #8B7355 100%);
+    /* Stunning gradient text */
+    background: linear-gradient(135deg, #6F4E37 0%, #C9A961 50%, #D4AF37 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+.hero-title .highlight {
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #FFA500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
 }
 
 .hero-subtitle {
@@ -263,9 +275,13 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: 42px;
     font-weight: 700;
-    color: var(--text-primary);
     margin-bottom: 20px;
     line-height: 1.3;
+    /* Beautiful gradient for section titles */
+    background: linear-gradient(135deg, #6F4E37 0%, #C9A961 50%, #D4AF37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .section-description {
@@ -732,13 +748,13 @@ body {
                     {% endfor %}
                 {% else %}
                         <div class="showcase-card">
-                            <img src="/static/images/home1/wedding.jpg" alt="Wedding Invitation" loading="lazy">
+                            <img src="/images/home1/weddings.jpg" alt="Wedding Invitation" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #6F4E37, #C9A961)'; this.alt='Wedding Template';">
                             </div>
                         <div class="showcase-card">
-                            <img src="/static/images/home1/birthday.jpg" alt="Birthday Invitation" loading="lazy">
+                            <img src="/images/home1/birthdays.jpg" alt="Birthday Invitation" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #FF6B9D, #FEC163)'; this.alt='Birthday Template';">
                         </div>
                         <div class="showcase-card">
-                            <img src="/static/images/home1/corporate.jpg" alt="Corporate Event" loading="lazy">
+                            <img src="/images/home1/corporateevents.jpg" alt="Corporate Event" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #4A90E2, #357ABD)'; this.alt='Corporate Template';">
                     </div>
                 {% endif %}
                 </div>
@@ -1098,8 +1114,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     otherIcon.style.transform = 'rotate(0deg)';
                     otherItem.style.borderColor = '#F0F0F0';
                 }
-            });
-            
+        });
+        
             // Toggle current FAQ
             if (isOpen) {
                 answer.style.display = 'none';
@@ -1111,8 +1127,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.style.borderColor = 'var(--primary-gold)';
                     }
         });
-    });
-    
+        });
+        
     // No scroll animations - Simple and clean
 });
 </script>
