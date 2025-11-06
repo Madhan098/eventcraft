@@ -157,13 +157,14 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 32px;
+    min-height: 400px;
+    position: relative;
 }
 
 /* Glassmorphism Theme Card */
 .theme-card {
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.95);
+    /* backdrop-filter removed - no blur */
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     padding: 32px;
@@ -207,19 +208,37 @@ body {
         border-radius: 12px;
     overflow: hidden;
     margin-bottom: 24px;
-    background: var(--bg-cream);
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+}
+
+.card-image-wrapper.loaded {
+    background: var(--bg-cream);
+    animation: none;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 .theme-preview-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--transition);
+    transition: transform var(--transition), opacity 0.3s ease;
     display: block;
     background: var(--bg-cream);
+    opacity: 0;
+}
+
+.theme-preview-image.loaded {
+    opacity: 1;
 }
 
 .theme-card:hover .theme-preview-image {
@@ -362,6 +381,16 @@ body {
     .theme-card {
         padding: 24px;
     }
+    
+    .card-image-wrapper {
+        height: 200px;
+    }
+    
+    /* Optimize images for mobile */
+    .theme-preview-image {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
 }
 
 @media (max-width: 480px) {
@@ -456,10 +485,12 @@ body {
                 <div class="theme-card" data-category="{{ template.event_type|lower }}" data-event-type="{{ template.event_type|lower }}" data-template-id="{{ template.id }}">
                     <div class="card-image-wrapper" style="display: flex; visibility: visible; opacity: 1;">
                         {% set safe_img = template_img if 'placeholder.com' not in template_img and 'via.placeholder' not in template_img else '/images/templatesimages/wedding.png' %}
-                        <img src="{{ safe_img }}" alt="{{ template.name }}" class="theme-preview-image" loading="lazy" 
+                        <img src="{{ safe_img }}" alt="{{ template.name }}" class="theme-preview-image" 
+                             loading="lazy"
+                             decoding="async"
                              style="display: block; width: 100%; height: 100%; object-fit: cover;"
                              onerror="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onerror, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; return; } console.error('Image failed to load: {{ safe_img }}'); this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.alt='{{ template.name }}';"
-                             onload="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onload, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; } console.log('Template image loaded: {{ template.name }}');">
+                             onload="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onload, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; } else { this.classList.add('loaded'); this.closest('.card-image-wrapper')?.classList.add('loaded'); }">
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">{{ template.name }}</h3>
@@ -686,6 +717,13 @@ body {
 <script>
 // Filter functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Show loading state
+    const themesGrid = document.getElementById('themesGrid');
+    if (themesGrid) {
+        themesGrid.style.opacity = '0';
+        themesGrid.style.transition = 'opacity 0.3s ease';
+    }
+    
     const filterButtons = document.querySelectorAll('.filter-btn');
     const themeCards = document.querySelectorAll('.theme-card');
     
@@ -751,40 +789,98 @@ document.addEventListener('DOMContentLoaded', function() {
         images.forEach(img => {
             img.style.display = 'block';
             img.style.visibility = 'visible';
-            img.style.opacity = '1';
             img.style.width = '100%';
             img.style.height = '100%';
             img.style.objectFit = 'cover';
+            
+            // If image is already loaded, show it immediately
+            if (img.complete && img.naturalHeight !== 0) {
+                img.classList.add('loaded');
+                img.closest('.card-image-wrapper')?.classList.add('loaded');
+            }
         });
         
-        // Animate in after a short delay
+        // Animate in after a short delay (faster on mobile)
+        const isMobile = window.innerWidth <= 768;
+        const delay = isMobile ? index * 20 : index * 50;
+        
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
         
         setTimeout(() => {
-            card.style.transition = 'all 0.4s ease';
+            card.style.transition = 'all 0.3s ease';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
-        }, index * 50); // Faster animation
+        }, delay);
     });
     
-    // Log templates count for debugging
-    console.log('Total theme cards found:', themeCards.length);
-    const dbTemplateCards = document.querySelectorAll('.theme-card[data-template-id]');
-    console.log('Database template cards:', dbTemplateCards.length);
-    
-    // Log all image sources for debugging
-    const allImages = document.querySelectorAll('.theme-preview-image');
-    console.log('Total images found:', allImages.length);
-    allImages.forEach((img, idx) => {
-        console.log(`Image ${idx + 1}:`, {
-            src: img.src,
-            alt: img.alt,
-            complete: img.complete,
-            naturalWidth: img.naturalWidth,
-            naturalHeight: img.naturalHeight
+    // Optimize image loading for mobile
+    if (window.innerWidth <= 768) {
+        // Use Intersection Observer for better lazy loading on mobile
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (!img.classList.contains('loaded')) {
+                        // Preload image
+                        const tempImg = new Image();
+                        tempImg.onload = function() {
+                            img.classList.add('loaded');
+                            img.closest('.card-image-wrapper')?.classList.add('loaded');
+                        };
+                        tempImg.src = img.src;
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px',
+            threshold: 0.1
         });
+        
+        // Observe all images
+        document.querySelectorAll('.theme-preview-image').forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+    
+    // Handle images that are already loaded (cached)
+    const allImages = document.querySelectorAll('.theme-preview-image');
+    allImages.forEach(img => {
+        // If image is already loaded (cached), show it immediately
+        if (img.complete && img.naturalHeight !== 0) {
+            img.classList.add('loaded');
+            img.closest('.card-image-wrapper')?.classList.add('loaded');
+        } else {
+            // Add error handler for images that fail to load
+            img.addEventListener('error', function() {
+                console.error('Image failed to load:', this.src);
+                // Show placeholder or fallback
+                this.style.background = '#A07878';
+                this.style.display = 'flex';
+                this.style.alignItems = 'center';
+                this.style.justifyContent = 'center';
+                this.style.color = '#FFFFFF';
+                this.style.fontSize = '14px';
+                this.alt = 'Image not available';
+            });
+        }
     });
+    
+    // Show grid after initial load
+    if (themesGrid) {
+        setTimeout(() => {
+            themesGrid.style.opacity = '1';
+        }, 100);
+    }
+    
+    // Log templates count for debugging (only in development)
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('Total theme cards found:', themeCards.length);
+        const dbTemplateCards = document.querySelectorAll('.theme-card[data-template-id]');
+        console.log('Database template cards:', dbTemplateCards.length);
+        console.log('Total images found:', allImages.length);
+    }
 });
 </script>
 {% endblock %}

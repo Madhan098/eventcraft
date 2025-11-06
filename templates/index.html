@@ -502,8 +502,8 @@ body {
 
 .author-info-pro {
     flex: 1;
-}
-
+    }
+    
 .author-name-pro {
     font-weight: 600;
     color: var(--text-primary);
@@ -703,11 +703,11 @@ body {
 <section class="hero-section">
     <div class="container-custom">
         <div class="hero-grid">
-            <div class="hero-content">
+        <div class="hero-content">
                 <div class="hero-badge">✨ Trusted by 10,000+ Event Creators</div>
-                <h1 class="hero-title">
+                        <h1 class="hero-title">
                     Create <span class="highlight">Beautiful</span> Invitations in Minutes
-                </h1>
+                        </h1>
                 <p class="hero-subtitle">
                     Professional digital invitations for weddings, birthdays, corporate events, and every special moment. No design skills required.
                 </p>
@@ -715,35 +715,34 @@ body {
                     <a href="{{ url_for('templates') }}" class="btn-professional btn-primary-pro">
                         <i class="fas fa-magic"></i>
                         Start Creating Free
-                    </a>
+                </a>
                     <a href="#how-it-works" class="btn-professional btn-secondary-pro">
                         <i class="fas fa-play-circle"></i>
-                        See How It Works
-                    </a>
-                </div>
-            </div>
-            
+                                            </a>
+                            </div>
+                        </div>
+                        
             <div class="hero-visual">
                 <div class="card-showcase">
-                    {% if home_images and home_images|length > 0 %}
+                {% if home_images and home_images|length > 0 %}
                         {% for image in home_images[:3] %}
                         <div class="showcase-card">
                             <img src="{{ image.path }}" alt="Invitation {{ loop.index }}" loading="lazy">
-                        </div>
-                        {% endfor %}
-                    {% else %}
+                    </div>
+                    {% endfor %}
+                {% else %}
                         <div class="showcase-card">
                             <img src="/static/images/home1/wedding.jpg" alt="Wedding Invitation" loading="lazy">
-                        </div>
+                            </div>
                         <div class="showcase-card">
                             <img src="/static/images/home1/birthday.jpg" alt="Birthday Invitation" loading="lazy">
                         </div>
                         <div class="showcase-card">
                             <img src="/static/images/home1/corporate.jpg" alt="Corporate Event" loading="lazy">
-                        </div>
-                    {% endif %}
+                    </div>
+                {% endif %}
                 </div>
-            </div>
+                    </div>
         </div>
     </div>
 </section>
@@ -768,10 +767,10 @@ body {
                     <p class="category-desc">Elegant invitations for your special day</p>
                     <a href="{{ url_for('templates') }}" class="category-link-pro">
                         Browse Templates <i class="fas fa-arrow-right"></i>
-                    </a>
+                </a>
                 </div>
-            </div>
-            
+                </div>
+                
             <div class="category-card-pro">
                 <div class="category-image" style="background-image: url('{{ category_images.get("birthday", "/static/images/home1/birthday.jpg") }}');">
                     <div class="category-overlay"></div>
@@ -782,54 +781,54 @@ body {
                     <p class="category-desc">Celebrate another year with style</p>
                     <a href="{{ url_for('templates') }}" class="category-link-pro">
                         Browse Templates <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+                </a>
+            </div>
             </div>
             
             <div class="category-card-pro">
                 <div class="category-image" style="background-image: url('{{ category_images.get("corporate", "/static/images/home1/corporate.jpg") }}');">
                     <div class="category-overlay"></div>
-                </div>
+        </div>
                 <div class="category-body">
                     <div class="category-icon-pro">💼</div>
                     <h3 class="category-title-pro">Corporate Events</h3>
                     <p class="category-desc">Professional invites for business</p>
                     <a href="{{ url_for('templates') }}" class="category-link-pro">
                         Browse Templates <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-            
+                </a>
+    </div>
+        </div>
+        
             <div class="category-card-pro">
                 <div class="category-image" style="background-image: url('{{ category_images.get("babyshower", "/static/images/home1/babyshower.jpg") }}');">
                     <div class="category-overlay"></div>
-                </div>
+            </div>
                 <div class="category-body">
                     <div class="category-icon-pro">👶</div>
                     <h3 class="category-title-pro">Baby Showers</h3>
                     <p class="category-desc">Welcome the newest arrival</p>
                     <a href="{{ url_for('templates') }}" class="category-link-pro">
                         Browse Templates <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+                </a>
             </div>
-            
+            </div>
+        
             <div class="category-card-pro">
                 <div class="category-image" style="background-image: url('{{ category_images.get("anniversary", "/static/images/home1/anniversary.jpg") }}');">
                     <div class="category-overlay"></div>
-                </div>
+        </div>
                 <div class="category-body">
                     <div class="category-icon-pro">💖</div>
                     <h3 class="category-title-pro">Anniversaries</h3>
                     <p class="category-desc">Celebrate love and milestones</p>
                     <a href="{{ url_for('templates') }}" class="category-link-pro">
                         Browse Templates <i class="fas fa-arrow-right"></i>
-                    </a>
+                </a>
+                    </div>
                 </div>
+                
+                                </div>
             </div>
-            
-        </div>
-    </div>
 </section>
 
 <!-- Features Section -->
@@ -927,33 +926,33 @@ body {
             <p class="section-description">See what our happy customers have to say about their experience.</p>
         </div>
         
-        <div class="testimonials-grid">
+    <div class="testimonials-grid">
             <div class="testimonial-card-pro">
-                <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-text">"Absolutely stunning! Made my wedding invitations in minutes. Everyone loved the design and how easy it was to RSVP."</p>
                 <div class="testimonial-author-pro">
                     <div class="author-avatar-pro">SC</div>
                     <div class="author-info-pro">
                         <div class="author-name-pro">Sarah Chen</div>
                         <div class="author-role-pro">Bride</div>
-                    </div>
+                </div>
                 </div>
             </div>
             
             <div class="testimonial-card-pro">
-                <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-text">"The easiest invitation platform I've used. My clients are always impressed with the professional results."</p>
                 <div class="testimonial-author-pro">
                     <div class="author-avatar-pro">MW</div>
                     <div class="author-info-pro">
                         <div class="author-name-pro">Marcus Williams</div>
                         <div class="author-role-pro">Event Planner</div>
-                    </div>
+                </div>
                 </div>
             </div>
             
             <div class="testimonial-card-pro">
-                <div class="testimonial-stars">★★★★★</div>
+            <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-text">"Created perfect baby shower invites that looked like they cost hundreds. The templates are gorgeous!"</p>
                 <div class="testimonial-author-pro">
                     <div class="author-avatar-pro">PP</div>
@@ -1064,21 +1063,21 @@ document.addEventListener('DOMContentLoaded', function() {
             showcaseCards.forEach((card, index) => {
                 if (index === currentIndex % showcaseCards.length) {
                     card.style.zIndex = '3';
-                    card.style.opacity = '1';
+                card.style.opacity = '1';
                 } else if (index === (currentIndex + 1) % showcaseCards.length) {
                     card.style.zIndex = '2';
                     card.style.opacity = '0.9';
                 } else if (index === (currentIndex + 2) % showcaseCards.length) {
                     card.style.zIndex = '1';
                     card.style.opacity = '0.7';
-                } else {
-                    card.style.zIndex = '0';
-                    card.style.opacity = '0';
+            } else {
+                card.style.zIndex = '0';
+                card.style.opacity = '0';
                 }
             });
             currentIndex++;
         }, 3000);
-    }
+            }
     
     // FAQ Accordion Functionality
     const faqItems = document.querySelectorAll('.faq-item');
@@ -1110,32 +1109,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 answer.style.display = 'block';
                 icon.style.transform = 'rotate(180deg)';
                 item.style.borderColor = 'var(--primary-gold)';
-            }
+                    }
         });
     });
     
-    // Smooth scroll animations for elements
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Animate cards on scroll
-    document.querySelectorAll('.category-card-pro, .feature-card-pro, .step-card-pro, .testimonial-card-pro').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'all 0.6s ease ' + (index * 0.1) + 's';
-        observer.observe(card);
-    });
+    // No scroll animations - Simple and clean
 });
 </script>
 {% endblock %}

@@ -4,14 +4,13 @@
 
 {% block extra_head %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@400;600;700&family=Great+Vibes&family=Cinzel:wght@400;600;700&family=Anton&family=Dancing+Script:wght@400;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@400;600;700&family=Great+Vibes&family=Cinzel:wght@400;600;700&family=Anton&family=Dancing+Script:wght@400;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans_Devanagari:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
     /* Progress Bar */
     .progress-bar-container {
         max-width: 1000px;
         margin: 0 auto 40px;
         padding: 40px 20px 0;
-        background: transparent;
     }
 
     .progress-bar {
@@ -22,7 +21,6 @@
         position: relative;
         width: 100%;
         padding: 0 20px;
-        background: transparent;
     }
 
     .progress-step {
@@ -44,10 +42,6 @@
         cursor: not-allowed;
         opacity: 0.6;
     }
-    
-    .progress-step.pending:hover {
-        transform: none;
-    }
 
     .progress-step::after {
         content: '';
@@ -66,7 +60,7 @@
 
     .progress-step.completed::after,
     .progress-step.active::after {
-        background: linear-gradient(90deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+        background: linear-gradient(90deg, #6F4E37 0%, #D4AF37 100%);
     }
 
     .step-circle {
@@ -85,12 +79,12 @@
     }
 
     .progress-step.completed .step-circle {
-        background: var(--reddish-brown-dark);
+        background: #6F4E37;
         color: white;
     }
 
     .progress-step.active .step-circle {
-        background: var(--golden-yellow);
+        background: #D4AF37;
         color: white;
     }
 
@@ -102,12 +96,13 @@
     .step-label {
         font-size: 14px;
         font-weight: 500;
-        color: var(--text-dark);
+        color: #666;
         text-align: center;
     }
 
+    .progress-step.completed .step-label,
     .progress-step.active .step-label {
-        color: var(--reddish-brown-dark);
+        color: #6F4E37;
         font-weight: 600;
     }
 
@@ -115,144 +110,128 @@
     .create-page-container {
         max-width: 1400px;
         margin: 0 auto;
-        padding: 40px 20px 60px;
-        background: var(--bg-cream);
-        min-height: 100vh;
+        padding: 20px;
     }
 
-    /* Page Title */
-    .page-title {
-        text-align: center;
-        margin-bottom: 48px;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0 20px;
-    }
-
-    .page-title h1 {
-        font-size: 42px;
-        font-weight: 700;
-        margin-bottom: 12px;
-        line-height: 1.2;
-    }
-
-    .page-title h1 .title-normal {
-        color: var(--reddish-brown-dark);
-    }
-
-    .page-title h1 .title-gradient {
-        background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .page-title p {
-        font-size: 16px;
-        color: var(--text-gray);
-    }
-
-    /* Theme Selection */
+    /* Theme Selection Page */
     .theme-selection-page {
         display: none;
     }
 
     .theme-selection-page.active {
         display: block;
-        animation: fadeIn 0.4s ease;
     }
 
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .page-title {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .page-title h1 {
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #3E2723;
+    }
+
+    .page-title .title-normal {
+        color: #3E2723;
+    }
+
+    .page-title .title-gradient {
+        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .page-title p {
+        font-size: 18px;
+        color: #666;
     }
 
     .theme-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 24px;
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px 40px;
+        margin-bottom: 40px;
     }
 
     .theme-card {
         background: white;
         border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         cursor: pointer;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border: 2px solid transparent;
     }
 
     .theme-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(160, 120, 120, 0.15);
-        border-color: rgba(160, 120, 120, 0.2);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
 
     .theme-card.selected {
-        border-color: var(--reddish-brown-dark);
-        box-shadow: 0 8px 24px rgba(160, 120, 120, 0.25);
-    }
-
-    .theme-card.selected::after {
-        content: '✓';
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: 32px;
-        height: 32px;
-        background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 18px;
-        z-index: 10;
-        animation: scaleIn 0.2s ease;
-    }
-
-    @keyframes scaleIn {
-        from { transform: scale(0); }
-        to { transform: scale(1); }
+        border-color: #D4AF37;
+        box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
     }
 
     .theme-image {
         width: 100%;
-        height: 240px;
+        height: 200px;
         object-fit: cover;
-        display: block;
-        transition: transform 0.3s ease;
-    }
-
-    .theme-card:hover .theme-image {
-        transform: scale(1.05);
     }
 
     .theme-title {
-        padding: 16px 20px;
-        text-align: center;
-        font-size: 16px;
+        padding: 16px;
         font-weight: 600;
-        color: var(--text-dark);
-        background: #FAFAFA;
-        border-top: 1px solid #F0F0F0;
+        color: #3E2723;
+        text-align: center;
     }
 
-    .theme-card.selected .theme-title {
-        background: rgba(160, 120, 120, 0.05);
-        color: var(--reddish-brown-dark);
-        font-weight: 700;
+    .form-navigation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+    }
+
+    .btn-back, .btn-continue {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        border: none;
+    }
+
+    .btn-back {
+        background: #F5F5F5;
+        color: #666;
+    }
+
+    .btn-back:hover {
+        background: #E0E0E0;
+    }
+
+    .btn-continue {
+        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+        color: white;
+    }
+
+    .btn-continue:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-continue:not(:disabled):hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
     }
 
     /* Details Form Page */
@@ -262,109 +241,111 @@
 
     .details-form-page.active {
         display: block;
-        animation: fadeIn 0.4s ease;
     }
 
     .form-preview-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 32px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
+        gap: 40px;
+        margin-top: 40px;
     }
 
-    /* Form Section */
-    .form-section-card {
+    @media (max-width: 1024px) {
+        .form-preview-container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .form-section-card, .live-preview-card {
         background: white;
-        border-radius: 20px;
+        border-radius: 16px;
         padding: 32px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        border: 1px solid #F0F0F0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 24px;
     }
 
     .form-label {
         display: block;
-        font-size: 14px;
         font-weight: 600;
-        color: var(--text-dark);
         margin-bottom: 8px;
+        color: #3E2723;
     }
 
     .form-label.required::after {
         content: ' *';
-        color: var(--reddish-brown-dark);
+        color: #D32F2F;
     }
 
-    .form-input,
-    .form-textarea {
+    .form-input, .form-select, .form-textarea {
         width: 100%;
         padding: 12px 16px;
-        border: 1.5px solid #E5E5E5;
-        border-radius: 10px;
-        font-size: 15px;
-        transition: all 0.2s ease;
-        font-family: 'Inter', sans-serif;
-        background: #FAFAFA;
+        border: 2px solid #E0E0E0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        font-family: inherit;
     }
 
-    .form-input:hover,
-    .form-textarea:hover {
-        border-color: rgba(160, 120, 120, 0.3);
-        background: white;
-    }
-
-    .form-input:focus,
-    .form-textarea:focus {
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
         outline: none;
-        border-color: var(--reddish-brown-dark);
-        background: white;
-        box-shadow: 0 0 0 3px rgba(160, 120, 120, 0.08);
+        border-color: #D4AF37;
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
     }
 
     .form-textarea {
+        min-height: 100px;
         resize: vertical;
-        min-height: 120px;
     }
 
-    /* Live Preview */
-    .live-preview-card {
-        background: white;
-        border-radius: 20px;
-        padding: 32px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        border: 1px solid #F0F0F0;
-        position: sticky;
-        top: 20px;
-        height: fit-content;
-        max-height: calc(100vh - 40px);
-        overflow-y: auto;
+    .image-upload-group {
+        margin-bottom: 24px;
+    }
+
+    .image-preview {
+        margin-top: 12px;
+        display: none;
+    }
+
+    .image-preview img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .rsvp-contact-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .rsvp-contact-fields {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .event-specific-fields {
+        display: none;
     }
 
     .preview-title {
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 700;
-        color: var(--text-dark);
         margin-bottom: 24px;
+        color: #3E2723;
         text-align: center;
-        padding-bottom: 16px;
-        border-bottom: 2px solid #E5E5E5;
     }
 
     .invitation-preview {
         width: 100%;
         background: linear-gradient(135deg, #FFF5F0 0%, #FFFFFF 100%);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
         border-radius: 16px;
         padding: 40px 30px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        border: 2px solid rgba(160, 120, 120, 0.1);
         min-height: 600px;
         display: flex;
         flex-direction: column;
@@ -373,8 +354,7 @@
         position: relative;
         overflow: hidden;
     }
-    
-    /* Template Background Image - Actual IMG tag */
+
     .template-background-image {
         position: absolute !important;
         top: 0 !important;
@@ -387,185 +367,81 @@
         opacity: 0.95 !important;
         pointer-events: none !important;
         border-radius: 16px !important;
-    }
-    
-    /* Force show when src is set */
-    .template-background-image[src]:not([src=""]) {
         display: block !important;
         visibility: visible !important;
     }
-    
-    /* Ensure all content is above the template background */
+
+    .template-background-image[src]:not([src=""]) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 0.95 !important;
+    }
+
+    .template-background-image.loaded {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 0.95 !important;
+        z-index: 1 !important;
+    }
+
     .invitation-preview > *:not(.template-background-image) {
         position: relative !important;
         z-index: 2 !important;
+        color: #FFFFFF;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     }
 
     .preview-icon {
         font-size: 64px;
         margin-bottom: 10px;
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
     }
 
     .preview-event-name {
         font-size: 28px;
         font-weight: 700;
-        color: var(--text-dark);
-        font-family: 'Playfair Display', serif;
-        background: rgba(255, 255, 255, 0.95);
-        padding: 16px 24px;
-        border-radius: 12px;
-        border: 1px solid rgba(160, 120, 120, 0.2);
+        color: #FFFFFF;
         text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(5px);
-    }
-
-    .preview-date-time,
-    .preview-venue,
-    .preview-hosted,
-    .preview-message {
-        background: rgba(255, 255, 255, 0.95);
-        padding: 10px 16px;
-        border-radius: 8px;
-        border: 1px solid rgba(160, 120, 120, 0.15);
-        display: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(5px);
-    }
-
-    .preview-date-time {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 16px;
-        color: var(--text-gray);
-    }
-
-    .preview-venue {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 16px;
-        color: var(--text-gray);
-    }
-
-    .preview-hosted {
-        font-size: 14px;
-        color: var(--text-gray);
-        margin-top: 10px;
-    }
-
-    .preview-message {
-        font-size: 15px;
-        color: var(--text-gray);
-        line-height: 1.7;
-        font-style: italic;
-        margin-top: 10px;
-    }
-
-    /* Event-Specific Fields */
-    .event-specific-fields {
-        margin-top: 30px;
-        padding-top: 30px;
-        border-top: 2px solid #E5E5E5;
-        display: none;
-    }
-
-    .section-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--reddish-brown-dark);
         margin-bottom: 20px;
-        padding-bottom: 12px;
-        border-bottom: 2px solid var(--golden-yellow);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+        border-radius: 10px;
     }
 
-    .image-preview {
-        margin-top: 12px;
-        display: none;
+    .preview-details {
+        text-align: center;
+        color: #FFFFFF;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.25);
+        padding: 8px 15px;
+        border-radius: 8px;
+        display: inline-block;
     }
 
-    .image-preview img {
+    .btn-submit {
         width: 100%;
-        max-width: 200px;
-        height: auto;
-        border-radius: 12px;
-        border: 2px solid #E5E5E5;
-        margin-top: 8px;
-    }
-
-    /* Navigation Buttons */
-    .form-navigation {
-        display: flex;
-        justify-content: space-between;
-        max-width: 1200px;
-        margin: 40px auto 0;
-        padding: 0 20px;
-    }
-
-    .btn-back,
-    .btn-continue,
-    .btn-preview {
-        padding: 14px 32px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 16px;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        border: 2px solid;
-        cursor: pointer;
-    }
-
-    .btn-back {
-        color: var(--reddish-brown-dark);
-        border-color: var(--reddish-brown-dark);
-        background: white;
-    }
-
-    .btn-back:hover {
-        background: #F8F8F8;
-        transform: translateY(-2px);
-    }
-
-    .btn-continue,
-    .btn-preview {
-        background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+        padding: 16px;
+        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
         color: white;
         border: none;
-        box-shadow: 0 2px 8px rgba(160, 120, 120, 0.2);
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 24px;
     }
 
-    .btn-continue:hover,
-    .btn-preview:hover {
+    .btn-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(160, 120, 120, 0.35);
+        box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
     }
 
-    .btn-continue:disabled {
+    .btn-submit:disabled {
         opacity: 0.5;
         cursor: not-allowed;
-    }
-
-    /* Responsive */
-    @media (max-width: 968px) {
-        .form-preview-container {
-            grid-template-columns: 1fr;
-        }
-
-        .live-preview-card {
-            position: static;
-            margin-top: 24px;
-        }
-
-        .theme-grid {
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        }
-        
-        .rsvp-contact-fields {
-            grid-template-columns: 1fr !important;
-        }
     }
 </style>
 {% endblock %}
@@ -575,21 +451,17 @@
     <!-- Progress Bar -->
     <div class="progress-bar-container">
         <div class="progress-bar">
-            <div class="progress-step completed" onclick="navigateToStep(1)">
-                <div class="step-circle">✓</div>
-                <div class="step-label">Occasion</div>
+            <div class="progress-step {% if not selected_template and not show_details %}active{% elif selected_template or show_details %}completed{% endif %}" onclick="navigateToStep(1)">
+                <div class="step-circle">1</div>
+                <div class="step-label">Select Theme</div>
             </div>
-            <div class="progress-step {% if selected_template %}completed{% else %}active{% endif %}" onclick="navigateToStep(2)">
-                <div class="step-circle">{% if selected_template %}✓{% else %}2{% endif %}</div>
-                <div class="step-label">Theme</div>
-            </div>
-            <div class="progress-step {% if selected_template %}active{% else %}pending{% endif %}" {% if selected_template %}onclick="navigateToStep(3)"{% endif %}>
-                <div class="step-circle">3</div>
-                <div class="step-label">Details</div>
+            <div class="progress-step {% if selected_template or show_details %}active{% endif %}">
+                <div class="step-circle">2</div>
+                <div class="step-label">Add Details</div>
             </div>
             <div class="progress-step pending">
-                <div class="step-circle">4</div>
-                <div class="step-label">Preview</div>
+                <div class="step-circle">3</div>
+                <div class="step-label">Review</div>
             </div>
         </div>
     </div>
@@ -599,8 +471,8 @@
     <div class="theme-selection-page active" id="themeSelectionPage">
         <div class="page-title">
             <h1>
-                <span class="title-normal">Pick Your </span>
-                <span class="title-gradient">Perfect Theme</span>
+                <span class="title-normal">Choose Your </span>
+                <span class="title-gradient">Theme</span>
             </h1>
             <p>Select a design that speaks to your style</p>
         </div>
@@ -644,10 +516,10 @@
             <!-- Form Section -->
             <div class="form-section-card">
                 <form id="invitationForm" method="POST" action="{{ url_for('create_invitation_post') }}" enctype="multipart/form-data">
-                    <input type="hidden" name="selectedTemplate" value="{{ event_type }}_template" id="selectedTemplate">
-                    <input type="hidden" name="templateId" value="{{ template_id if template_id else '' }}" id="templateIdInput">
+                    <input type="hidden" name="templateId" value="{% if template_id %}{{ template_id }}{% endif %}" id="templateIdInput">
                     <input type="hidden" name="templateImageUrl" value="" id="templateImageUrlInput">
                     <input type="hidden" name="eventType" value="{{ event_type }}" id="eventTypeInput">
+                    <input type="hidden" name="autoColorTheme" value="" id="autoColorTheme">
                     
                     <div class="form-group">
                         <label class="form-label required" for="eventName">Event Name</label>
@@ -667,144 +539,99 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="venueAddress">Venue</label>
-                        <input type="text" class="form-input" id="venueAddress" name="venueAddress" placeholder="e.g., Garden Estate, 123 Main St">
+                        <label class="form-label" for="venueAddress">Venue Address</label>
+                        <textarea class="form-textarea" id="venueAddress" name="venueAddress" placeholder="Enter venue address"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="hostedBy">Hosted By</label>
-                        <input type="text" class="form-input" id="hostedBy" name="hostName" 
-                               placeholder="e.g., The Smith Family"
-                               value="{{ current_user.name if current_user else '' }}">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="rsvpContact">RSVP Contact</label>
-                        <div class="rsvp-contact-fields" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                            <div>
-                                <label class="form-label" style="font-size: 13px; margin-bottom: 6px; color: #666;">Mobile Number</label>
-                                <input type="tel" class="form-input" id="rsvpMobile" name="contactMobile" 
-                                       placeholder="+1 (555) 123-4567"
-                                       pattern="[+]?[0-9\s\-\(\)]+">
-                            </div>
-                            <div>
-                                <label class="form-label" style="font-size: 13px; margin-bottom: 6px; color: #666;">Email Address</label>
-                                <input type="email" class="form-input" id="rsvpContact" name="contactEmail" 
-                                       placeholder="email@example.com"
-                                       value="{{ current_user.email if current_user else '' }}">
-                            </div>
-                        </div>
+                        <input type="text" class="form-input" id="hostedBy" name="hostedBy" placeholder="e.g., The Smith Family">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="personalMessage">Personal Message</label>
-                        <textarea class="form-textarea" id="personalMessage" name="eventDescription" 
-                                  placeholder="Add a heartfelt message..."></textarea>
+                        <textarea class="form-textarea" id="personalMessage" name="personalMessage" placeholder="Add a personal message"></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="language">Language</label>
-                        <select class="form-input" id="language" name="language">
-                            <option value="english">English</option>
-                            <option value="telugu">తెలుగు (Telugu)</option>
-                            <option value="hindi">हिन्दी (Hindi)</option>
-                            <option value="kannada">ಕನ್ನಡ (Kannada)</option>
-                            <option value="tamil">தமிழ் (Tamil)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="fontStyle">Font Style</label>
-                        <select class="form-input" id="fontStyle" name="fontStyle">
-                            <option value="'Times New Roman', Times, serif">Times New Roman</option>
-                            <option value="Georgia, serif">Georgia</option>
-                            <option value="'Playfair Display', serif">Playfair Display (Elegant)</option>
-                            <option value="Montserrat, sans-serif">Montserrat (Modern)</option>
-                            <option value="Arial, sans-serif">Arial</option>
-                            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
-                            <option value="'Great Vibes', cursive">Great Vibes (Script)</option>
-                            <option value="'Dancing Script', cursive">Dancing Script</option>
-                            <option value="'Cinzel', serif">Cinzel (Formal)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="mainImage">Main Image</label>
-                        <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
-                        <div id="mainImagePreview" class="image-preview"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="galleryImages">Photo Gallery (Family & Friends)</label>
-                        <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewGalleryImages(this)">
-                        <small style="display: block; margin-top: 5px; color: #666;">You can select multiple images (max 10)</small>
-                        <div id="galleryImagesPreview" class="image-preview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 10px;"></div>
-                    </div>
-
-                    <!-- Event-Specific Fields -->
-                    <div id="weddingFields" class="event-specific-fields">
-                        <h4 class="section-title">Wedding Details</h4>
+                    <!-- Wedding Specific Fields -->
+                    <div class="event-specific-fields" id="weddingFields">
                         <div class="form-group">
                             <label class="form-label" for="brideName">Bride Name</label>
-                            <input type="text" class="form-input" id="brideName" name="brideName" placeholder="e.g., Sarah">
+                            <input type="text" class="form-input" id="brideName" name="brideName" placeholder="Bride's name">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="groomName">Groom Name</label>
-                            <input type="text" class="form-input" id="groomName" name="groomName" placeholder="e.g., James">
+                            <input type="text" class="form-input" id="groomName" name="groomName" placeholder="Groom's name">
+                        </div>
+                        <div class="image-upload-group">
+                            <label class="form-label" for="brideImage">Bride Photo</label>
+                            <input type="file" class="form-input" id="brideImage" name="brideImage" accept="image/*" onchange="previewImage(this, 'brideImagePreview')">
+                            <div class="image-preview" id="brideImagePreview"></div>
+                        </div>
+                        <div class="image-upload-group">
+                            <label class="form-label" for="groomImage">Groom Photo</label>
+                            <input type="file" class="form-input" id="groomImage" name="groomImage" accept="image/*" onchange="previewImage(this, 'groomImagePreview')">
+                            <div class="image-preview" id="groomImagePreview"></div>
                         </div>
                     </div>
 
-                    <div id="birthdayFields" class="event-specific-fields">
-                        <h4 class="section-title">Birthday Details</h4>
-                        <div class="form-group">
-                            <label class="form-label" for="birthdayPerson">Birthday Person</label>
-                            <input type="text" class="form-input" id="birthdayPerson" name="birthdayPerson" placeholder="e.g., Emma">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="age">Age</label>
-                            <input type="text" class="form-input" id="age" name="age" placeholder="e.g., 16">
+                    <!-- Main Image Upload -->
+                    <div class="image-upload-group">
+                        <label class="form-label" for="mainImage">Cover Image</label>
+                        <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" onchange="previewImage(this, 'mainImagePreview')">
+                        <div class="image-preview" id="mainImagePreview"></div>
+                    </div>
+
+                    <!-- Gallery Images -->
+                    <div class="image-upload-group">
+                        <label class="form-label" for="galleryImages">Gallery Images</label>
+                        <input type="file" class="form-input" id="galleryImages" name="galleryImages" accept="image/*" multiple onchange="previewGalleryImages(this)">
+                        <div class="image-preview" id="galleryImagesPreview"></div>
+                    </div>
+
+                    <!-- RSVP Contact -->
+                    <div class="form-group">
+                        <label class="form-label">RSVP Contact</label>
+                        <div class="rsvp-contact-fields">
+                            <div class="form-group">
+                                <label class="form-label" for="rsvpMobile">Mobile Number</label>
+                                <input type="tel" class="form-input" id="rsvpMobile" name="rsvpMobile" placeholder="+1234567890">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="rsvpEmail">Email Address</label>
+                                <input type="email" class="form-input" id="rsvpEmail" name="rsvpEmail" placeholder="rsvp@example.com">
+                            </div>
                         </div>
                     </div>
 
-                    <div id="anniversaryFields" class="event-specific-fields">
-                        <h4 class="section-title">Anniversary Details</h4>
-                        <div class="form-group">
-                            <label class="form-label" for="coupleNames">Couple Names</label>
-                            <input type="text" class="form-input" id="coupleNames" name="coupleNames" placeholder="e.g., Sarah & James">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="marriageYears">Years</label>
-                            <input type="text" class="form-input" id="marriageYears" name="marriageYears" placeholder="e.g., 25">
-                        </div>
+                    <!-- Language Selection -->
+                    <div class="form-group">
+                        <label class="form-label" for="language">Language</label>
+                        <select class="form-select" id="language" name="language">
+                            <option value="english">English</option>
+                            <option value="telugu">Telugu</option>
+                            <option value="hindi">Hindi</option>
+                            <option value="kannada">Kannada</option>
+                            <option value="tamil">Tamil</option>
+                        </select>
                     </div>
 
-                    <div id="babyshowerFields" class="event-specific-fields">
-                        <h4 class="section-title">Baby Shower Details</h4>
-                        <div class="form-group">
-                            <label class="form-label" for="motherName">Mother Name</label>
-                            <input type="text" class="form-input" id="motherName" name="motherName" placeholder="e.g., Sarah">
-                        </div>
+                    <!-- Font Style -->
+                    <div class="form-group">
+                        <label class="form-label" for="fontStyle">Font Style</label>
+                        <select class="form-select" id="fontStyle" name="fontStyle">
+                            <option value="'Inter', sans-serif">Inter</option>
+                            <option value="'Playfair Display', serif">Playfair Display</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="'Dancing Script', cursive">Dancing Script</option>
+                            <option value="'Great Vibes', cursive">Great Vibes</option>
+                            <option value="'Cinzel', serif">Cinzel</option>
+                        </select>
                     </div>
 
-                    <div id="graduationFields" class="event-specific-fields">
-                        <h4 class="section-title">Graduation Details</h4>
-                        <div class="form-group">
-                            <label class="form-label" for="graduateName">Graduate Name</label>
-                            <input type="text" class="form-input" id="graduateName" name="graduateName" placeholder="e.g., Alex">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="degree">Degree</label>
-                            <input type="text" class="form-input" id="degree" name="degree" placeholder="e.g., Bachelor of Science">
-                        </div>
-                    </div>
-
-                    <div id="retirementFields" class="event-specific-fields">
-                        <h4 class="section-title">Retirement Details</h4>
-                        <div class="form-group">
-                            <label class="form-label" for="honoreeName">Honoree Name</label>
-                            <input type="text" class="form-input" id="honoreeName" name="honoreeName" placeholder="e.g., John Smith">
-                        </div>
-                    </div>
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        <i class="fas fa-check"></i> Create Invitation
+                    </button>
                 </form>
             </div>
 
@@ -812,13 +639,13 @@
             <div class="live-preview-card">
                 <div class="preview-title">Live Preview</div>
                 <div class="invitation-preview" id="invitationPreview">
-                    <!-- Template Background Image - Using IMG tag for reliability -->
+                    <!-- Template Background Image -->
                     <img class="template-background-image" 
                          id="templateBackgroundImage"
-                         style="display: none;"
-                         alt="Template Design">
+                         alt="Template Design"
+                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.95; pointer-events: none; border-radius: 16px;">
                     
-                    <!-- Main Image at Top -->
+                    <!-- Main Image -->
                     <div id="previewMainImage" style="display: none; margin-bottom: 15px; text-align: center;">
                         <img id="previewMainImageImg" style="max-width: 100%; max-height: 200px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Main Image">
                     </div>
@@ -828,8 +655,6 @@
                         {% elif event_type == 'wedding' %}💍
                         {% elif event_type == 'anniversary' %}💑
                         {% elif event_type == 'babyshower' %}👶
-                        {% elif event_type == 'graduation' %}🎓
-                        {% elif event_type == 'retirement' %}🎉
                         {% else %}🎉{% endif %}
                     </div>
                     
@@ -841,78 +666,49 @@
                         {% endif %}
                     </div>
                     
-                    <!-- Bride and Groom Names & Photos (for weddings) -->
+                    <!-- Bride and Groom (for weddings) -->
                     <div id="previewWeddingSection" style="display: none; margin: 20px 0; text-align: center;">
-                        <div id="previewBrideName" style="display: none; font-size: 18px; font-weight: 600; margin-bottom: 8px;"></div>
-                        <div id="previewGroomName" style="display: none; font-size: 18px; font-weight: 600; margin-bottom: 15px;"></div>
-                        
-                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                            <div id="previewBrideImageDiv" style="display: none; flex: 1; min-width: 120px; max-width: 150px;">
-                                <img id="previewBrideImageImg" style="width: 100%; height: 150px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Bride">
-                            </div>
-                            <div id="previewGroomImageDiv" style="display: none; flex: 1; min-width: 120px; max-width: 150px;">
-                                <img id="previewGroomImageImg" style="width: 100%; height: 150px; object-fit: cover; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Groom">
-                            </div>
+                        <div id="previewBrideName" style="display: none; font-size: 20px; font-weight: 600; margin-bottom: 10px;"></div>
+                        <div id="previewBrideImageDiv" style="display: none; margin-bottom: 20px;">
+                            <img id="previewBrideImageImg" style="max-width: 150px; max-height: 150px; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Bride">
+                        </div>
+                        <div id="previewGroomName" style="display: none; font-size: 20px; font-weight: 600; margin-bottom: 10px;"></div>
+                        <div id="previewGroomImageDiv" style="display: none;">
+                            <img id="previewGroomImageImg" style="max-width: 150px; max-height: 150px; border-radius: 50%; border: 3px solid #D4AF37; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Groom">
                         </div>
                     </div>
                     
-                    <!-- Other Event-Specific Images -->
-                    <div id="previewEventImage" style="display: none; margin-bottom: 15px; text-align: center;">
-                        <img id="previewEventImageImg" style="max-width: 100%; max-height: 180px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" alt="Event Image">
-                    </div>
+                    <div class="preview-details" id="previewDate"></div>
+                    <div class="preview-details" id="previewTime"></div>
+                    <div class="preview-details" id="previewVenue"></div>
+                    <div class="preview-details" id="previewHostedBy"></div>
+                    <div class="preview-details" id="previewMessage" style="font-style: italic; margin-top: 20px;"></div>
                     
-                    <div class="preview-date-time" id="previewDate">
-                        <i class="fas fa-calendar"></i>
-                        <span id="previewDateText"></span>
-                    </div>
-                    
-                    <div class="preview-date-time" id="previewTime">
-                        <i class="fas fa-clock"></i>
-                        <span id="previewTimeText"></span>
-                    </div>
-                    
-                    <div class="preview-venue" id="previewVenue">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span id="previewVenueText"></span>
-                    </div>
-                    
-                    <div class="preview-hosted" id="previewHosted">
-                        <i class="fas fa-user"></i> Hosted by <span id="previewHostedText"></span>
-                    </div>
-                    
-                    <div class="preview-message" id="previewMessage">
-                        <span id="previewMessageText"></span>
-                    </div>
-                    
-                    <!-- Gallery Images -->
-                    <div id="previewGallerySection" style="display: none; margin-top: 20px;">
-                        <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; text-align: center;">Photo Gallery</h4>
-                        <div id="previewGalleryImagesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;">
-                            <!-- Gallery images will be added here dynamically -->
+                    <!-- Gallery Preview -->
+                    <div id="livePreviewGallery" style="display: none; margin-top: 20px; width: 100%;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                            <!-- Gallery images will be inserted here -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="form-navigation">
-            <button type="button" class="btn-back" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
-            <button type="button" class="btn-preview" onclick="submitForm()">
-                Preview <i class="fas fa-arrow-right"></i>
-            </button>
-        </div>
     </div>
 </div>
+{% endblock %}
 
+{% block extra_scripts %}
 <script>
 // Global variables
 let selectedTemplateId = null;
 let selectedTemplateImage = null;
 
-// Event type from server
-const currentEventType = {{ (event_type or '')|tojson|safe }}.toLowerCase();
+// Event type from server - FIXED: Proper string handling
+{% if event_type -%}
+var currentEventType = {{ event_type|tojson|safe }}.toLowerCase();
+{%- else -%}
+var currentEventType = '';
+{%- endif %}
 
 // Icon mapping
 const eventIcons = {
@@ -923,277 +719,6 @@ const eventIcons = {
     'graduation': '🎓',
     'retirement': '🎉'
 };
-
-// Auto color theme extraction from image
-function extractColorsFromImage(imageSrc, callback) {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-        
-        try {
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-            const colorCounts = {};
-            
-            // Sample pixels (every 10th pixel for performance)
-            for (let i = 0; i < data.length; i += 40) {
-                const r = data[i];
-                const g = data[i + 1];
-                const b = data[i + 2];
-                const a = data[i + 3];
-                
-                // Skip transparent pixels
-                if (a < 128) continue;
-                
-                // Quantize colors to reduce noise
-                const qr = Math.floor(r / 32) * 32;
-                const qg = Math.floor(g / 32) * 32;
-                const qb = Math.floor(b / 32) * 32;
-                const colorKey = `${qr},${qg},${qb}`;
-                
-                colorCounts[colorKey] = (colorCounts[colorKey] || 0) + 1;
-            }
-            
-            // Get top 3 dominant colors
-            const sortedColors = Object.entries(colorCounts)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 3)
-                .map(entry => entry[0].split(',').map(Number));
-            
-            if (sortedColors.length > 0) {
-                const primaryColor = sortedColors[0];
-                const secondaryColor = sortedColors[1] || primaryColor;
-                
-                // Convert to hex
-                const primaryHex = '#' + primaryColor.map(c => c.toString(16).padStart(2, '0')).join('');
-                const secondaryHex = '#' + secondaryColor.map(c => c.toString(16).padStart(2, '0')).join('');
-                
-                // Adjust colors for better contrast (make them more vibrant)
-                const adjustedPrimaryHex = adjustColorForTheme(primaryColor);
-                const adjustedSecondaryHex = adjustColorForTheme(secondaryColor);
-                
-                callback({
-                    primary: adjustedPrimaryHex,
-                    secondary: adjustedSecondaryHex,
-                    primaryHex: adjustedPrimaryHex,
-                    secondaryHex: adjustedSecondaryHex
-                });
-            }
-        } catch (err) {
-            console.error('Color extraction failed:', err);
-        }
-    };
-    img.src = imageSrc;
-}
-
-// Adjust color to make it more suitable for theme
-function adjustColorForTheme(rgb) {
-    const [r, g, b] = rgb;
-    
-    // Increase saturation and adjust brightness
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    const delta = max - min;
-    const lightness = (max + min) / 2;
-    
-    // Make colors more vibrant
-    let newR = r, newG = g, newB = b;
-    
-    if (delta > 0) {
-        const saturation = delta / (255 - Math.abs(2 * lightness - 255));
-        const newSaturation = Math.min(1, saturation * 1.2);
-        
-        // Convert back to RGB with increased saturation
-        const c = (1 - Math.abs(2 * lightness / 255 - 1)) * newSaturation * 255;
-        const x = c * (1 - Math.abs(((max / 255) / (delta / 255)) % 2) - 1));
-        const m = (lightness / 255) * 255 - c / 2;
-        
-        if (max === r) {
-            newR = c + m;
-            newG = x + m;
-            newB = m;
-        } else if (max === g) {
-            newR = x + m;
-            newG = c + m;
-            newB = m;
-        } else {
-            newR = m;
-            newG = x + m;
-            newB = c + m;
-        }
-    }
-    
-    // Ensure values are in valid range
-    newR = Math.max(0, Math.min(255, Math.round(newR)));
-    newG = Math.max(0, Math.min(255, Math.round(newG)));
-    newB = Math.max(0, Math.min(255, Math.round(newB)));
-    
-    return '#' + [newR, newG, newB].map(c => c.toString(16).padStart(2, '0')).join('');
-}
-
-// Apply auto color theme to invitation
-function applyAutoColorTheme(primaryColor, secondaryColor) {
-    // Update CSS variables for the invitation theme
-    const root = document.documentElement;
-    root.style.setProperty('--auto-primary-color', primaryColor);
-    root.style.setProperty('--auto-secondary-color', secondaryColor);
-    
-    // Apply to template container
-    const templateContainer = document.querySelector('.template-container');
-    if (templateContainer) {
-        templateContainer.style.setProperty('--theme-primary', primaryColor);
-        templateContainer.style.setProperty('--theme-secondary', secondaryColor);
-    }
-    
-    // Update preview styling
-    const previewCard = document.querySelector('.live-preview-card');
-    if (previewCard) {
-        previewCard.style.borderColor = primaryColor;
-    }
-    
-    // Show notification
-    if (typeof showToast === 'function') {
-        showToast('Color theme automatically selected from your image!', 'success');
-    }
-}
-
-// Image preview function with auto color theme
-window.previewImage = function(input, previewId) {
-    const preview = document.getElementById(previewId);
-    if (!preview) return;
-    
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
-            preview.style.display = 'block';
-            
-            // Also update live preview
-            updateLivePreviewImages(input.id, e.target.result);
-            
-            // Auto extract colors from main image and apply theme
-            if (input.id === 'mainImage') {
-                extractColorsFromImage(e.target.result, function(colors) {
-                    applyAutoColorTheme(colors.primaryHex, colors.secondaryHex);
-                    
-                    // Store colors for form submission
-                    const colorThemeInput = document.getElementById('autoColorTheme');
-                    if (!colorThemeInput) {
-                        const hiddenInput = document.createElement('input');
-                        hiddenInput.type = 'hidden';
-                        hiddenInput.id = 'autoColorTheme';
-                        hiddenInput.name = 'autoColorTheme';
-                        document.querySelector('form').appendChild(hiddenInput);
-                    }
-                    document.getElementById('autoColorTheme').value = JSON.stringify({
-                        primary: colors.primaryHex,
-                        secondary: colors.secondaryHex
-                    });
-                });
-            }
-        };
-        reader.readAsDataURL(input.files[0]);
-    } else {
-        preview.innerHTML = '';
-        preview.style.display = 'none';
-        updateLivePreviewImages(input.id, null);
-    }
-};
-
-// Update live preview images
-function updateLivePreviewImages(inputId, imageSrc) {
-    // Handle different image types
-    if (inputId === 'mainImage') {
-        const previewMainImage = document.getElementById('previewMainImage');
-        const previewMainImageImg = document.getElementById('previewMainImageImg');
-        if (imageSrc) {
-            previewMainImageImg.src = imageSrc;
-            previewMainImage.style.display = 'block';
-        } else {
-            previewMainImage.style.display = 'none';
-        }
-    } else if (inputId === 'brideImage') {
-        const previewBrideImageDiv = document.getElementById('previewBrideImageDiv');
-        const previewBrideImageImg = document.getElementById('previewBrideImageImg');
-        const previewWeddingSection = document.getElementById('previewWeddingSection');
-        if (imageSrc) {
-            previewBrideImageImg.src = imageSrc;
-            previewBrideImageDiv.style.display = 'block';
-            previewWeddingSection.style.display = 'block';
-        } else {
-            previewBrideImageDiv.style.display = 'none';
-        }
-    } else if (inputId === 'groomImage') {
-        const previewGroomImageDiv = document.getElementById('previewGroomImageDiv');
-        const previewGroomImageImg = document.getElementById('previewGroomImageImg');
-        const previewWeddingSection = document.getElementById('previewWeddingSection');
-        if (imageSrc) {
-            previewGroomImageImg.src = imageSrc;
-            previewGroomImageDiv.style.display = 'block';
-            previewWeddingSection.style.display = 'block';
-        } else {
-            previewGroomImageDiv.style.display = 'none';
-        }
-    } else if (['birthdayImage', 'graduateImage', 'honoreeImage', 'coupleImage'].includes(inputId)) {
-        const previewEventImage = document.getElementById('previewEventImage');
-        const previewEventImageImg = document.getElementById('previewEventImageImg');
-        if (imageSrc) {
-            previewEventImageImg.src = imageSrc;
-            previewEventImage.style.display = 'block';
-        } else {
-            previewEventImage.style.display = 'none';
-        }
-    }
-}
-
-// Preview gallery images
-window.previewGalleryImages = function(input) {
-    const galleryPreview = document.getElementById('galleryImagesPreview');
-    const livePreviewGallery = document.getElementById('previewGallerySection');
-    const livePreviewGrid = document.getElementById('previewGalleryImagesGrid');
-    
-    if (!galleryPreview || !livePreviewGallery || !livePreviewGrid) return;
-    
-    // Clear previous previews
-    galleryPreview.innerHTML = '';
-    livePreviewGrid.innerHTML = '';
-    
-    if (input.files && input.files.length > 0) {
-        const maxFiles = Math.min(input.files.length, 10); // Limit to 10 images
-        
-        for (let i = 0; i < maxFiles; i++) {
-            const file = input.files[i];
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                // Add to form preview
-                const imgDiv = document.createElement('div');
-                imgDiv.style.cssText = 'position: relative; overflow: hidden; border-radius: 8px; aspect-ratio: 1;';
-                imgDiv.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
-                galleryPreview.appendChild(imgDiv);
-                
-                // Add to live preview
-                const liveImgDiv = document.createElement('div');
-                liveImgDiv.style.cssText = 'position: relative; overflow: hidden; border-radius: 8px; aspect-ratio: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.1);';
-                liveImgDiv.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
-                livePreviewGrid.appendChild(liveImgDiv);
-            };
-            
-            reader.readAsDataURL(file);
-        }
-        
-        galleryPreview.style.display = 'grid';
-        livePreviewGallery.style.display = 'block';
-    } else {
-        galleryPreview.style.display = 'none';
-        livePreviewGallery.style.display = 'none';
-    }
-}
 
 // Theme selection
 window.selectTheme = function(templateId, element) {
@@ -1206,9 +731,20 @@ window.selectTheme = function(templateId, element) {
     
     const templateImage = element.getAttribute('data-template-image');
     if (templateImage) {
-        selectedTemplateImage = templateImage;
+        let imagePath = templateImage;
+        if (imagePath && !imagePath.startsWith('http')) {
+            if (imagePath.startsWith('/static/images/')) {
+                imagePath = imagePath.replace('/static/images/', '/images/');
+            } else if (imagePath.includes('templatesimages') && !imagePath.startsWith('/')) {
+                imagePath = '/images/' + imagePath;
+            }
+        }
+        
+        selectedTemplateImage = imagePath;
         sessionStorage.setItem('selectedTemplateId', templateId);
-        sessionStorage.setItem('selectedTemplateImage', templateImage);
+        sessionStorage.setItem('selectedTemplateImage', imagePath);
+        
+        console.log('✅ Theme selected:', {id: templateId, image: imagePath});
     }
     
     const continueBtn = document.getElementById('continueToDetails');
@@ -1226,251 +762,195 @@ window.continueToDetails = function() {
     
     document.getElementById('themeSelectionPage').classList.remove('active');
     document.getElementById('detailsFormPage').classList.add('active');
-    updateProgressBar(3);
     
-    // Apply template background
+    // Apply template background immediately
     applyTemplateBackground();
 };
 
-// Apply template background to preview
+// Apply template background - FIXED
 function applyTemplateBackground() {
     const preview = document.getElementById('invitationPreview');
     const backgroundImage = document.getElementById('templateBackgroundImage');
     
-    if (!preview) {
-        console.warn('⚠️ Preview element not found');
-        return;
-    }
-    
-    if (!backgroundImage) {
-        console.warn('⚠️ Background image element not found');
+    if (!preview || !backgroundImage) {
+        console.warn('Preview or background image element not found');
         return;
     }
     
     if (selectedTemplateImage) {
-        console.log('🎨 Applying template image:', selectedTemplateImage);
+        console.log('🎨 Applying template background:', selectedTemplateImage);
         
-        // Set the image source - This is the most reliable method!
         backgroundImage.src = selectedTemplateImage;
         backgroundImage.style.display = 'block';
         backgroundImage.style.visibility = 'visible';
         backgroundImage.style.opacity = '0.95';
+        backgroundImage.classList.add('loaded');
         
-        // Handle image load success
         backgroundImage.onload = function() {
-            console.log('✅✅✅ Template image LOADED successfully!');
-            console.log('📸 Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+            console.log('✅ Template image loaded successfully');
             this.style.display = 'block';
+            this.style.visibility = 'visible';
+            this.style.opacity = '0.95';
         };
         
-        // Handle image load error
         backgroundImage.onerror = function() {
             console.error('❌ Failed to load template image:', selectedTemplateImage);
-            this.style.display = 'none';
         };
-        
-        console.log('✅ Set image src to:', backgroundImage.src);
-        console.log('✅ Image element:', backgroundImage);
-    } else {
-        console.warn('⚠️ No template image selected');
-        // Hide image if no template
-        backgroundImage.style.display = 'none';
     }
 }
 
-// Navigate to step
-window.navigateToStep = function(step) {
-    if (step === 1) {
-        window.location.href = '/templates';
-    } else if (step === 2) {
-        const themePage = document.getElementById('themeSelectionPage');
-        const detailsPage = document.getElementById('detailsFormPage');
-        if (themePage) {
-            themePage.classList.add('active');
-            if (detailsPage) detailsPage.classList.remove('active');
-            updateProgressBar(2);
-        }
-    } else if (step === 3 && selectedTemplateId) {
-        const detailsPage = document.getElementById('detailsFormPage');
-        const themePage = document.getElementById('themeSelectionPage');
-        if (detailsPage) {
-            detailsPage.classList.add('active');
-            if (themePage) themePage.classList.remove('active');
-            updateProgressBar(3);
-        }
+// Image preview
+window.previewImage = function(input, previewId) {
+    const preview = document.getElementById(previewId);
+    if (!preview) return;
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+            preview.style.display = 'block';
+            
+            // Update live preview
+            if (input.id === 'mainImage') {
+                updateLivePreviewImages(input.id, e.target.result);
+                extractColorsFromImage(e.target.result);
+            } else if (input.id === 'brideImage') {
+                updateLivePreviewImages(input.id, e.target.result);
+            } else if (input.id === 'groomImage') {
+                updateLivePreviewImages(input.id, e.target.result);
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.innerHTML = '';
+        preview.style.display = 'none';
     }
 };
 
-// Update progress bar
-function updateProgressBar(step) {
-    document.querySelectorAll('.progress-step').forEach((stepEl, index) => {
-        const stepNum = index + 1;
-        const circle = stepEl.querySelector('.step-circle');
-        
-        if (stepNum < step) {
-            stepEl.classList.remove('active', 'pending');
-            stepEl.classList.add('completed');
-            if (circle) circle.textContent = '✓';
-        } else if (stepNum === step) {
-            stepEl.classList.remove('completed', 'pending');
-            stepEl.classList.add('active');
-            if (circle && circle.textContent === '✓') circle.textContent = stepNum;
-        } else {
-            stepEl.classList.remove('active', 'completed');
-            stepEl.classList.add('pending');
-        }
+// Gallery images preview
+function previewGalleryImages(input) {
+    const preview = document.getElementById('galleryImagesPreview');
+    if (!preview) return;
+    
+    preview.innerHTML = '';
+    preview.style.display = 'grid';
+    preview.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    preview.style.gap = '10px';
+    
+    Array.from(input.files).forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.width = '100%';
+            img.style.borderRadius = '8px';
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
     });
 }
 
-// Go back
-window.goBack = function() {
-    const themePage = document.getElementById('themeSelectionPage');
-    const detailsPage = document.getElementById('detailsFormPage');
-    
-    if (themePage && themePage.classList.contains('active')) {
-        window.history.back();
-    } else if (detailsPage && detailsPage.classList.contains('active')) {
-        themePage.classList.add('active');
-        detailsPage.classList.remove('active');
-        updateProgressBar(2);
-    } else {
-        window.history.back();
+// Update live preview images
+function updateLivePreviewImages(inputId, imageSrc) {
+    if (inputId === 'mainImage') {
+        const previewMainImage = document.getElementById('previewMainImage');
+        const previewMainImageImg = document.getElementById('previewMainImageImg');
+        if (previewMainImage && previewMainImageImg) {
+            previewMainImageImg.src = imageSrc;
+            previewMainImage.style.display = 'block';
+        }
+    } else if (inputId === 'brideImage') {
+        const previewBrideImageDiv = document.getElementById('previewBrideImageDiv');
+        const previewBrideImageImg = document.getElementById('previewBrideImageImg');
+        if (previewBrideImageDiv && previewBrideImageImg) {
+            previewBrideImageImg.src = imageSrc;
+            previewBrideImageDiv.style.display = 'block';
+        }
+    } else if (inputId === 'groomImage') {
+        const previewGroomImageDiv = document.getElementById('previewGroomImageDiv');
+        const previewGroomImageImg = document.getElementById('previewGroomImageImg');
+        if (previewGroomImageDiv && previewGroomImageImg) {
+            previewGroomImageImg.src = imageSrc;
+            previewGroomImageDiv.style.display = 'block';
+        }
     }
-};
+}
 
-// Submit form
-window.submitForm = function() {
-    const form = document.getElementById('invitationForm');
-    const eventName = document.getElementById('eventName');
-    const eventDate = document.getElementById('eventDate');
-    
-    if (!eventName || !eventName.value.trim()) {
-        alert('Please enter an event name.');
-        if (eventName) eventName.focus();
-        return;
-    }
-    
-    if (!eventDate || !eventDate.value) {
-        alert('Please select an event date.');
-        if (eventDate) eventDate.focus();
-        return;
-    }
-    
-    // Set template info
-    const templateIdInput = document.getElementById('templateIdInput');
-    const templateImageUrlInput = document.getElementById('templateImageUrlInput');
-    const selectedTemplateInput = document.getElementById('selectedTemplate');
-    
-    // Update template ID
-    if (templateIdInput && selectedTemplateId) {
-        templateIdInput.value = selectedTemplateId;
-    }
-    
-    // Update template image URL
-    if (templateImageUrlInput && selectedTemplateImage) {
-        templateImageUrlInput.value = selectedTemplateImage;
-    }
-    
-    // Update selected template name (event_type_template format)
-    if (selectedTemplateInput && currentEventType) {
-        selectedTemplateInput.value = currentEventType + '_template';
-    }
-    
-    console.log('📤 Submitting form with:', {
-        templateId: templateIdInput ? templateIdInput.value : 'none',
-        templateImage: templateImageUrlInput ? templateImageUrlInput.value : 'none',
-        selectedTemplate: selectedTemplateInput ? selectedTemplateInput.value : 'none',
-        eventName: eventName.value,
-        eventDate: eventDate.value
-    });
-    
-    form.submit();
-};
+// Extract colors from image for auto theme
+function extractColorsFromImage(imageSrc) {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        ctx.drawImage(this, 0, 0);
+        
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        
+        let r = 0, g = 0, b = 0;
+        let count = 0;
+        
+        for (let i = 0; i < data.length; i += 16) {
+            r += data[i];
+            g += data[i + 1];
+            b += data[i + 2];
+            count++;
+        }
+        
+        r = Math.floor(r / count);
+        g = Math.floor(g / count);
+        b = Math.floor(b / count);
+        
+        const primaryHex = '#' + [r, g, b].map(x => {
+            const hex = x.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        }).join('');
+        
+        const secondaryHex = '#' + [Math.min(255, r + 30), Math.min(255, g + 30), Math.min(255, b + 30)].map(x => {
+            const hex = x.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        }).join('');
+        
+        document.getElementById('autoColorTheme').value = JSON.stringify({
+            primary: primaryHex,
+            secondary: secondaryHex
+        });
+    };
+    img.src = imageSrc;
+}
 
-// Live preview update
+// Update preview
 function updatePreview() {
-    const eventName = document.getElementById('eventName').value.trim();
+    const eventName = document.getElementById('eventName').value;
     const eventDate = document.getElementById('eventDate').value;
     const eventTime = document.getElementById('eventTime').value;
-    const venueAddress = document.getElementById('venueAddress').value.trim();
-    const hostedBy = document.getElementById('hostedBy').value.trim();
-    const personalMessage = document.getElementById('personalMessage').value.trim();
+    const venueAddress = document.getElementById('venueAddress').value;
+    const hostedBy = document.getElementById('hostedBy').value;
+    const personalMessage = document.getElementById('personalMessage').value;
     
-    // Update event name
     const previewEventName = document.getElementById('previewEventName');
-    if (previewEventName && eventName) {
-        previewEventName.textContent = eventName;
-    }
-    
-    // Update date
     const previewDate = document.getElementById('previewDate');
-    const previewDateText = document.getElementById('previewDateText');
-    if (previewDate && previewDateText && eventDate) {
-        const date = new Date(eventDate);
-        previewDateText.textContent = date.toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
-        previewDate.style.display = 'flex';
-    } else if (previewDate) {
-        previewDate.style.display = 'none';
-    }
-    
-    // Update time
     const previewTime = document.getElementById('previewTime');
-    const previewTimeText = document.getElementById('previewTimeText');
-    if (previewTime && previewTimeText && eventTime) {
-        const [hours, minutes] = eventTime.split(':');
-        const h = parseInt(hours);
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        const displayHours = h % 12 || 12;
-        previewTimeText.textContent = `${displayHours}:${minutes} ${ampm}`;
-        previewTime.style.display = 'flex';
-    } else if (previewTime) {
-        previewTime.style.display = 'none';
-    }
-    
-    // Update venue
     const previewVenue = document.getElementById('previewVenue');
-    const previewVenueText = document.getElementById('previewVenueText');
-    if (previewVenue && previewVenueText && venueAddress) {
-        previewVenueText.textContent = venueAddress;
-        previewVenue.style.display = 'flex';
-    } else if (previewVenue) {
-        previewVenue.style.display = 'none';
-    }
-    
-    // Update hosted by
-    const previewHosted = document.getElementById('previewHosted');
-    const previewHostedText = document.getElementById('previewHostedText');
-    if (previewHosted && previewHostedText && hostedBy) {
-        previewHostedText.textContent = hostedBy;
-        previewHosted.style.display = 'block';
-    } else if (previewHosted) {
-        previewHosted.style.display = 'none';
-    }
-    
-    // Update message
+    const previewHostedBy = document.getElementById('previewHostedBy');
     const previewMessage = document.getElementById('previewMessage');
-    const previewMessageText = document.getElementById('previewMessageText');
-    if (previewMessage && previewMessageText && personalMessage) {
-        previewMessageText.textContent = personalMessage;
-        previewMessage.style.display = 'block';
-    } else if (previewMessage) {
-        previewMessage.style.display = 'none';
-    }
     
-    // Update icon based on event type
-    const previewIcon = document.getElementById('previewIcon');
-    if (previewIcon && currentEventType) {
-        previewIcon.textContent = eventIcons[currentEventType] || '🎉';
-    }
+    if (previewEventName) previewEventName.textContent = eventName || 'Your Event Name';
+    if (previewDate) previewDate.textContent = eventDate ? 'Date: ' + new Date(eventDate).toLocaleDateString() : '';
+    if (previewTime) previewTime.textContent = eventTime ? 'Time: ' + eventTime : '';
+    if (previewVenue) previewVenue.textContent = venueAddress ? 'Venue: ' + venueAddress : '';
+    if (previewHostedBy) previewHostedBy.textContent = hostedBy ? 'Hosted by: ' + hostedBy : '';
+    if (previewMessage) previewMessage.textContent = personalMessage || '';
     
-    // Update bride and groom names (for weddings)
-    const brideName = document.getElementById('brideName')?.value.trim();
-    const groomName = document.getElementById('groomName')?.value.trim();
+    // Update bride and groom names
+    const brideNameEl = document.getElementById('brideName');
+    const brideName = brideNameEl ? brideNameEl.value.trim() : '';
+    const groomNameEl = document.getElementById('groomName');
+    const groomName = groomNameEl ? groomNameEl.value.trim() : '';
+    
     const previewBrideName = document.getElementById('previewBrideName');
     const previewGroomName = document.getElementById('previewGroomName');
     const previewWeddingSection = document.getElementById('previewWeddingSection');
@@ -1489,35 +969,26 @@ function updatePreview() {
         }
     }
     
-    // Apply font style to preview
-    const fontStyle = document.getElementById('fontStyle')?.value;
+    // Apply font style
+    const fontStyleEl = document.getElementById('fontStyle');
+    const fontStyle = fontStyleEl ? fontStyleEl.value : null;
     const previewContainer = document.getElementById('invitationPreview');
     if (fontStyle && previewContainer) {
         previewContainer.style.fontFamily = fontStyle;
     }
     
-    // Note: Language translation is applied in the final view (view_final.html)
-    // The language selection is saved and used when rendering the invitation
-    
-    // Apply template background image to ensure it's visible
+    // Apply template background
     applyTemplateBackground();
 }
 
-// Show/hide event-specific fields
+// Show event-specific fields
 function showEventSpecificFields() {
-    // Hide all
     document.querySelectorAll('.event-specific-fields').forEach(el => {
         el.style.display = 'none';
     });
     
-    // Show relevant
     const fieldMap = {
-        'wedding': 'weddingFields',
-        'birthday': 'birthdayFields',
-        'anniversary': 'anniversaryFields',
-        'babyshower': 'babyshowerFields',
-        'graduation': 'graduationFields',
-        'retirement': 'retirementFields'
+        'wedding': 'weddingFields'
     };
     
     const fieldId = fieldMap[currentEventType];
@@ -1527,102 +998,83 @@ function showEventSpecificFields() {
     }
 }
 
-// Initialize on DOM load
+// Initialize
 document.addEventListener('DOMContentLoaded', function() {
-    // Show event-specific fields
+    console.log('🚀 Page loaded, initializing...');
     showEventSpecificFields();
     
-    // Check if template was passed from URL
+    // Check if template was passed from URL - FIXED
     {% if template_id and templates %}
     const urlTemplateId = '{{ template_id }}';
-    console.log('🔍 Looking for template ID from URL:', urlTemplateId);
+    console.log('🔍 Checking URL template ID:', urlTemplateId);
     {% for template in templates %}
     if ('{{ template.id }}' === urlTemplateId) {
         selectedTemplateId = '{{ template.id }}';
-        selectedTemplateImage = '{{ template.preview_image }}';
-        console.log('📋 ✅ Found template from URL:', selectedTemplateId, selectedTemplateImage);
+        {% if template.preview_image %}
+        {% set template_img = template.preview_image %}
+        {% if template_img and not template_img.startswith('http') %}
+        {%- if template_img.startswith('/images/') -%}
+        {%- set template_img = template_img -%}
+        {%- elif template_img.startswith('/static/images/') -%}
+        {%- set template_img = template_img.replace('/static/images/', '/images/') -%}
+        {%- elif 'templatesimages' in template_img -%}
+        {%-  if not template_img.startswith('/') -%}
+        {%-  set template_img = '/images/' + template_img -%}
+        {%-  endif -%}
+        {%- elif not template_img.startswith('/') -%}
+        {%- set template_img = '/images/templatesimages/' + template_img -%}
+        {%- endif %}
+        {% endif %}
+        selectedTemplateImage = {{ template_img|tojson|safe }};
+        {% else %}
+        selectedTemplateImage = '';
+        {% endif %}
+        
+        console.log('✅ Template from URL:', {id: selectedTemplateId, image: selectedTemplateImage});
+        
+        // Set form inputs
+        const templateIdInput = document.getElementById('templateIdInput');
+        const templateImageUrlInput = document.getElementById('templateImageUrlInput');
+        if (templateIdInput && selectedTemplateId) {
+            templateIdInput.value = selectedTemplateId;
+        }
+        if (templateImageUrlInput && selectedTemplateImage) {
+            templateImageUrlInput.value = selectedTemplateImage;
+        }
+        
+        // Apply template immediately with retries
+        if (selectedTemplateImage) {
+            setTimeout(() => applyTemplateBackground(), 100);
+            setTimeout(() => applyTemplateBackground(), 500);
+        }
     }
     {% endfor %}
-    
-    // If we found a template from URL, log it
-    if (selectedTemplateId) {
-        console.log('✅ Template loaded from URL:', {
-            id: selectedTemplateId,
-            image: selectedTemplateImage
-        });
-    }
     {% endif %}
     
-    // Apply stored template background from sessionStorage
+    // Check sessionStorage
     const storedId = sessionStorage.getItem('selectedTemplateId');
     const storedImage = sessionStorage.getItem('selectedTemplateImage');
     
     if (storedId && storedImage) {
         selectedTemplateId = storedId;
-        selectedTemplateImage = storedImage;
-        console.log('📋 Template from sessionStorage:', selectedTemplateId, selectedTemplateImage);
-        
-        // Clear storage
+        let imagePath = storedImage;
+        if (imagePath && !imagePath.startsWith('http')) {
+            if (imagePath.startsWith('/static/images/')) {
+                imagePath = imagePath.replace('/static/images/', '/images/');
+            }
+        }
+        selectedTemplateImage = imagePath;
         sessionStorage.removeItem('selectedTemplateId');
         sessionStorage.removeItem('selectedTemplateImage');
-    }
-    
-    // Apply template background if we have one
-    if (selectedTemplateImage) {
-        console.log('🎨 Applying template background...');
-        console.log('🎨 Image URL:', selectedTemplateImage);
-        applyTemplateBackground();
         
-        // Retry application after delays to ensure it sticks
-        setTimeout(() => {
-            console.log('🎨 Reapplying template background (100ms)...');
+        console.log('✅ Template from storage:', {id: selectedTemplateId, image: selectedTemplateImage});
+        
+        if (selectedTemplateImage) {
             applyTemplateBackground();
-        }, 100);
-        
-        setTimeout(() => {
-            console.log('🎨 Reapplying template background (500ms)...');
-            applyTemplateBackground();
-        }, 500);
-        
-        setTimeout(() => {
-            console.log('🎨 Final reapplication (1000ms)...');
-            applyTemplateBackground();
-        }, 1000);
-    } else {
-        console.warn('⚠️ No template image to apply on page load');
-        console.log('📋 Current state:', {
-            selectedTemplateId,
-            selectedTemplateImage,
-            storedId,
-            storedImage
-        });
-    }
-    
-    // Add debug helper to window
-    window.debugPreview = function() {
-        console.log('=== PREVIEW DEBUG INFO ===');
-        console.log('Selected Template ID:', selectedTemplateId);
-        console.log('Selected Template Image:', selectedTemplateImage);
-        console.log('Preview Element:', document.getElementById('invitationPreview'));
-        
-        const bgImage = document.getElementById('templateBackgroundImage');
-        console.log('Background Image Element:', bgImage);
-        
-        if (bgImage) {
-            console.log('Image src:', bgImage.src);
-            console.log('Image display:', bgImage.style.display);
-            console.log('Image visibility:', bgImage.style.visibility);
-            console.log('Image opacity:', bgImage.style.opacity);
-            console.log('Image dimensions:', bgImage.naturalWidth, 'x', bgImage.naturalHeight);
-            console.log('Computed style:', window.getComputedStyle(bgImage).display);
         }
-        
-        console.log('=========================');
-    };
+    }
     
-    console.log('💡 Tip: Type window.debugPreview() in console to check template status');
-    
-    // Attach event listeners for live preview
+    // Attach event listeners
     const inputs = ['eventName', 'eventDate', 'eventTime', 'venueAddress', 'hostedBy', 'personalMessage', 'fontStyle', 'language', 'brideName', 'groomName'];
     inputs.forEach(id => {
         const input = document.getElementById(id);
@@ -1634,6 +1086,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initial preview update
     updatePreview();
+    
+    console.log('✅ Initialization complete');
 });
 </script>
 {% endblock %}

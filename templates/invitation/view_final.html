@@ -380,7 +380,7 @@
         display: inline-block;
         margin: 8px 0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        backdrop-filter: blur(10px);
+        /* backdrop-filter removed - no blur */
         border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
@@ -1279,11 +1279,10 @@ function showBlessingPopup() {
                 Though you can't join us in person, your blessings mean the world to us.
             </p>
             
-            <div style="background: rgba(255,255,255,0.15); 
+            <div style="background: rgba(255,255,255,0.95); 
                         padding: 20px; 
                         border-radius: 15px; 
-                        margin-bottom: 25px;
-                        backdrop-filter: blur(10px);">
+                        margin-bottom: 25px;">
                 <p style="color: white; font-size: 20px; font-weight: 600; margin: 0; font-style: italic;">
                     "Bless us with your wishes"
                 </p>

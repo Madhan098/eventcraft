@@ -440,8 +440,7 @@
         /* 🌸 Enhanced Glassmorphism Card Styles */
         .card {
             background: var(--glass-bg-light);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
+            /* backdrop-filter removed - no blur */
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             box-shadow: var(--shadow-glass);
@@ -541,9 +540,8 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 12px;
             padding: 0.875rem 1.25rem;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            /* backdrop-filter removed - no blur */
             color: var(--text-primary);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px rgba(160, 120, 120, 0.05);
@@ -577,20 +575,43 @@
 
         /* 🌸 Enhanced Glassmorphism Navbar */
         .navbar {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+            /* backdrop-filter removed - no blur */
             border-bottom: 1px solid rgba(224, 225, 233, 0.5);
             box-shadow: var(--shadow-sm);
             transition: all 0.3s ease;
             position: relative;
             z-index: 1000;
         }
+        
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            position: relative;
+        }
+        
+        /* Ensure mobile controls are always visible on mobile */
+        @media (max-width: 991.98px) {
+            .navbar .container {
+                flex-wrap: nowrap;
+            }
+            
+            .navbar-brand {
+                flex-shrink: 0;
+                margin-right: auto;
+            }
+            
+            .mobile-nav-controls {
+                flex-shrink: 0;
+                margin-left: auto;
+            }
+        }
 
         .navbar.scrolled {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
+            background: rgba(255, 255, 255, 0.98);
+            /* backdrop-filter removed - no blur */
             box-shadow: var(--shadow-md);
             border-bottom-color: rgba(160, 120, 120, 0.1);
         }
@@ -1101,28 +1122,59 @@
             width: 100%;
             height: 100%;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            /* backdrop-filter removed - no blur */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.3s ease;
+            z-index: 99999;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
         
         .loading-overlay.hidden {
             opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
         
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary-color);
+        .loading-content {
+            text-align: center;
+            max-width: 400px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .loading-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .loading-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(111, 78, 55, 0.1);
+            border-top: 4px solid #6F4E37;
+            border-right: 4px solid #D4AF37;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 24px;
         }
         
         @keyframes spin {
@@ -1130,11 +1182,81 @@
             100% { transform: rotate(360deg); }
         }
         
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        
         .loading-text {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 10px;
+            color: #3E2723;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .loading-subtext {
+            font-size: 0.95rem;
+            color: #6F4E37;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+        
+        /* Responsive loading overlay */
+        @media (max-width: 768px) {
+            .loading-content {
+                max-width: 90%;
+                padding: 30px 20px;
+                margin: 0 20px;
+            }
+            
+            .loading-image {
+                width: 100px;
+                height: 100px;
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+            
+            .loading-spinner {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 20px;
+            }
+            
+            .loading-text {
+                font-size: 1.1rem;
+            }
+            
+            .loading-subtext {
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .loading-content {
+                padding: 24px 16px;
+            }
+            
+            .loading-image {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+                margin-bottom: 16px;
+            }
+            
+            .loading-spinner {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 16px;
+            }
+            
+            .loading-text {
+                font-size: 1rem;
+            }
+            
+            .loading-subtext {
+                font-size: 0.8rem;
+            }
         }
         
         .loading-progress {
@@ -1371,8 +1493,8 @@
 
         /* 🎨 PREMIUM NAVIGATION STYLES */
         .premium-navbar {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.98) !important;
+            /* backdrop-filter removed - no blur */
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
             transition: all var(--transition-normal);
@@ -1515,21 +1637,22 @@
         }
 
         .btn-primary-custom {
-            background: var(--gradient-primary);
+            background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
             border: none;
-            color: white;
+            color: white !important;
             padding: 0.75rem 1.5rem;
             border-radius: 1rem;
             font-weight: 600;
             font-size: 0.9rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             position: relative;
             overflow: hidden;
+            white-space: nowrap;
         }
 
         .btn-primary-custom::before {
@@ -1553,7 +1676,7 @@
         /* Enhanced Header Styling */
         .navbar {
             background: rgba(255, 255, 255, 0.98) !important;
-            backdrop-filter: blur(20px);
+            /* backdrop-filter removed - no blur */
             border-bottom: 2px solid var(--primary-teal);
             padding: 1rem 0;
             transition: all 0.3s ease;
@@ -1714,8 +1837,8 @@
             box-shadow: var(--shadow-xl);
             padding: 0.5rem;
             margin-top: 0.5rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.98);
+            /* backdrop-filter removed - no blur */
         }
 
         .dropdown-item {
@@ -1907,7 +2030,8 @@
         /* Hide hamburger menu on desktop - ALWAYS hidden on large screens */
         @media (min-width: 992px) {
             .mobile-nav-toggle,
-            .mobile-nav-controls {
+            .mobile-nav-controls,
+            .mobile-nav-buttons {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
@@ -2005,8 +2129,7 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
             will-change: opacity, visibility;
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+            /* backdrop-filter removed - no blur */
         }
 
         .mobile-nav-overlay.show {
@@ -2059,8 +2182,85 @@
             
             .mobile-nav-controls {
                 display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
                 align-items: center;
                 gap: 0.5rem;
+                position: relative;
+                z-index: 1001;
+                flex-shrink: 0;
+            }
+            
+            /* Mobile Navbar Buttons - Always Visible */
+            .mobile-nav-buttons {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                align-items: center;
+                gap: 0.5rem;
+                position: relative;
+                z-index: 1001;
+                flex-shrink: 0;
+            }
+            
+            .mobile-nav-btn {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                align-items: center;
+                justify-content: center;
+                gap: 0.25rem;
+                padding: 0.5rem 0.75rem;
+                border-radius: 8px;
+                text-decoration: none;
+                font-size: 0.85rem;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                white-space: nowrap;
+                min-height: 40px;
+                min-width: auto;
+                position: relative;
+                z-index: 1001;
+                flex-shrink: 0;
+            }
+            
+            .mobile-nav-home {
+                background: rgba(0, 0, 0, 0.05);
+                color: var(--text-primary);
+                border: 1px solid rgba(0, 0, 0, 0.1);
+            }
+            
+            .mobile-nav-home:hover {
+                background: rgba(0, 0, 0, 0.1);
+                color: var(--text-primary);
+                transform: translateY(-1px);
+            }
+            
+            .mobile-nav-get-started {
+                background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%) !important;
+                color: white !important;
+                border: none !important;
+                box-shadow: 0 2px 8px rgba(111, 78, 55, 0.4) !important;
+                font-weight: 700 !important;
+            }
+            
+            .mobile-nav-get-started:hover {
+                background: linear-gradient(135deg, #5A3E2A 0%, #C9A961 100%) !important;
+                color: white !important;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(111, 78, 55, 0.5) !important;
+            }
+            
+            .mobile-nav-get-started:active {
+                transform: translateY(0);
+            }
+            
+            .mobile-btn-text {
+                display: inline;
+            }
+            
+            .mobile-nav-btn i {
+                font-size: 0.9rem;
             }
             
             .mobile-nav-toggle:hover {
@@ -2157,6 +2357,21 @@
                 font-size: 1.1rem;
                 width: 22px;
             }
+            
+            /* Mobile Navbar Buttons - Smaller screens */
+            .mobile-nav-btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+                min-height: 36px;
+            }
+            
+            .mobile-btn-text {
+                display: inline;
+            }
+            
+            .mobile-nav-btn i {
+                font-size: 0.85rem;
+            }
         }
 
         @media (max-width: 575.98px) {
@@ -2180,6 +2395,38 @@
                 margin-right: 0.75rem;
             }
             
+            /* Mobile Navbar Buttons - Very small screens */
+            .navbar-brand {
+                font-size: 1.1rem !important;
+            }
+            
+            .mobile-nav-buttons {
+                gap: 0.4rem !important;
+            }
+            
+            .mobile-nav-btn {
+                padding: 0.35rem 0.5rem;
+                font-size: 0.75rem;
+                min-height: 34px;
+            }
+            
+            .mobile-btn-text {
+                display: inline;
+            }
+            
+            .mobile-nav-btn i {
+                font-size: 0.8rem;
+            }
+            
+            .mobile-nav-toggle {
+                width: 40px !important;
+                height: 40px !important;
+                min-width: 40px !important;
+                min-height: 40px !important;
+                max-width: 40px !important;
+                max-height: 40px !important;
+            }
+            
             .mobile-nav-header {
                 padding: 1rem;
             }
@@ -2194,7 +2441,7 @@
             /* Fix navbar visibility on mobile */
             .navbar {
                 background: rgba(10, 14, 39, 0.98) !important;
-                backdrop-filter: blur(20px);
+                /* backdrop-filter removed - no blur */
             }
 
             /* Ensure templates button is visible on mobile */
@@ -2662,8 +2909,7 @@
             
             /* Mobile navbar optimization */
             .navbar {
-                backdrop-filter: blur(15px);
-                -webkit-backdrop-filter: blur(15px);
+                /* backdrop-filter removed - no blur */
             }
             
             /* Optimize container padding for mobile */
@@ -2826,82 +3072,9 @@
            LUCESPOSA-INSPIRED ANIMATIONS
            ======================================== */
 
-        /* Scroll-triggered Reveal Animations - Fixed for visibility */
-        .reveal-on-scroll {
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        /* All scroll animations removed - Simple and clean */
 
-        .reveal-on-scroll:not(.revealed) {
-            opacity: 0;
-            transform: translateY(60px);
-        }
-
-        .reveal-on-scroll.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal-left {
-            opacity: 1;
-            transform: translateX(0);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .reveal-left:not(.revealed) {
-            opacity: 0;
-            transform: translateX(-60px);
-        }
-
-        .reveal-left.revealed {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .reveal-right {
-            opacity: 1;
-            transform: translateX(0);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .reveal-right:not(.revealed) {
-            opacity: 0;
-            transform: translateX(60px);
-        }
-
-        .reveal-right.revealed {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .reveal-scale {
-            opacity: 1;
-            transform: scale(1);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .reveal-scale:not(.revealed) {
-            opacity: 0;
-            transform: scale(0.8);
-        }
-
-        .reveal-scale.revealed {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* Staggered Animation Delays */
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-        .reveal-delay-4 { transition-delay: 0.4s; }
-        .reveal-delay-5 { transition-delay: 0.5s; }
-
-        /* Smooth Parallax Effects */
-        .parallax-element {
-            transition: transform 0.1s ease-out;
-        }
+        /* All animation CSS removed - Simple and clean */
 
         /* Enhanced Card Animations */
         .card-lucesposa {
@@ -2942,156 +3115,9 @@
             z-index: 2;
         }
 
-        /* Floating Elements Animation */
-        .floating-element {
-            animation: floatGentle 6s ease-in-out infinite;
-        }
+        /* All animations removed - Simple and clean */
 
-        .floating-element:nth-child(2) {
-            animation-delay: -2s;
-        }
-
-        .floating-element:nth-child(3) {
-            animation-delay: -4s;
-        }
-
-        @keyframes floatGentle {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-            33% {
-                transform: translateY(-10px) rotate(1deg);
-            }
-            66% {
-                transform: translateY(-5px) rotate(-1deg);
-            }
-        }
-
-        /* Hero Title - Always Visible */
-        .hero-title {
-            opacity: 1 !important;
-            visibility: visible !important;
-            color: var(--text-primary) !important;
-        }
-
-        .hero-title.text-reveal {
-            overflow: visible;
-        }
-
-        .hero-title.text-reveal .text-line {
-            display: inline-block;
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            visibility: visible !important;
-            color: var(--text-primary) !important;
-        }
-
-        /* Hero Subtitle - Always Visible */
-        .hero-subtitle {
-            opacity: 1 !important;
-            visibility: visible !important;
-            color: var(--text-secondary) !important;
-        }
-
-        .hero-subtitle.reveal-on-scroll {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            visibility: visible !important;
-        }
-
-        /* Hero CTA - Always Visible */
-        .hero-cta {
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-
-        .hero-cta.reveal-on-scroll {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            visibility: visible !important;
-        }
-
-        /* Trust Indicators - Always Visible */
-        .trust-indicators {
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-
-        .trust-indicators.reveal-on-scroll {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            visibility: visible !important;
-        }
-
-        /* Section Titles - Always Visible */
-        .section-title {
-            opacity: 1 !important;
-            visibility: visible !important;
-            color: var(--text-primary) !important;
-        }
-
-        .section-title.text-reveal {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            visibility: visible !important;
-        }
-
-        .section-subtitle {
-            opacity: 1 !important;
-            visibility: visible !important;
-            color: var(--text-secondary) !important;
-        }
-
-        .section-subtitle.reveal-on-scroll {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            visibility: visible !important;
-        }
-
-        /* Fallback for text visibility - ensures text is always visible */
-        .text-reveal {
-            overflow: visible;
-        }
-
-        .text-reveal .text-line {
-            display: inline-block;
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Ensure text is visible by default, hide only when animation is ready */
-        .text-reveal:not(.animation-ready) .text-line {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-
-        .text-reveal.animation-ready:not(.revealed) .text-line {
-            opacity: 0;
-            transform: translateY(100%);
-        }
-
-        .text-reveal.animation-ready.revealed .text-line {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Smooth Image Animations - Fixed for visibility */
-        .image-reveal {
-            opacity: 1;
-            transform: scale(1);
-            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .image-reveal:not(.revealed) {
-            opacity: 0;
-            transform: scale(1.1);
-        }
-
-        .image-reveal.revealed {
-            opacity: 1;
-            transform: scale(1);
-        }
+        /* All animations removed - Simple and clean - All elements always visible */
 
         /* Button Micro-interactions */
         .btn-lucesposa {
@@ -3120,61 +3146,43 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
-        /* Section Background Animations */
-        .section-bg-animated {
-            position: relative;
-            overflow: hidden;
-        }
+        /* All animations removed - Simple and clean */
 
-        .section-bg-animated::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 70%);
-            animation: rotateBackground 20s linear infinite;
-            z-index: -1;
-        }
-
-        @keyframes rotateBackground {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Loading Animation */
-        .loading-animation {
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Smooth Scroll Behavior */
+        /* Smooth Scroll Behavior - Simple */
         html {
             scroll-behavior: smooth;
         }
-
-        /* Intersection Observer Styles */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        /* Ensure all elements are visible - No animations */
+        * {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+        }
+        
+        section, .card, .team-card, .value-card, .category-card, .testimonial-card, .invitation-card, .service-card {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+        }
+        
+        img {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
         }
 
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* All animations removed - Elements always visible */
+        .fade-in-section {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
         }
 
         /* LuceSposa-Style Particle Effects */
@@ -3386,71 +3394,24 @@
             background: var(--primary-dark);
         }
 
-        /* Animation Classes */
-        .fade-in {
-            animation: fadeIn 0.6s ease-in;
+        /* All animations removed - Simple and clean */
+        .fade-in, .slide-up {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
         }
 
-        .slide-up {
-            animation: slideUp 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* 🌸 Floral Animations - Replaced Electric Animations */
-        
-        /* Animation Classes - Compatible with electric classes but using floral theme */
-        .animate-electric-fade-in {
-            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .animate-electric-slide-in {
-            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .animate-electric-scale {
-            animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
+        /* All animations removed - Simple and clean */
+        .animate-electric-fade-in,
+        .animate-electric-slide-in,
+        .animate-electric-scale,
         .animate-electric-glow,
         .animate-electric-bounce,
         .animate-electric-rotate,
         .animate-electric-wave {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        /* Staggered Animation Delays */
-        .animate-delay-1 { animation-delay: 0.1s; }
-        .animate-delay-2 { animation-delay: 0.2s; }
-        .animate-delay-3 { animation-delay: 0.3s; }
-        .animate-delay-4 { animation-delay: 0.4s; }
-        .animate-delay-5 { animation-delay: 0.5s; }
-        .animate-delay-6 { animation-delay: 0.6s; }
-
-        /* Hover Effects - Floral Theme */
-        .hover-electric-glow:hover,
-        .hover-electric-bounce:hover {
-            transform: translateY(-2px);
-            transition: transform var(--transition-bounce);
-        }
-
-        .hover-electric-scale:hover {
-            transform: scale(1.05);
-            transition: transform var(--transition-bounce);
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
         }
 
         /* Floral Text Effects - Replaced Electric Text */
@@ -3671,6 +3632,24 @@
             </a>
             
             <div class="mobile-nav-controls">
+                <!-- Mobile Navbar Buttons - Always Visible -->
+                <div class="mobile-nav-buttons">
+                    <a href="{{ url_for('index') }}" class="mobile-nav-btn mobile-nav-home" aria-label="Home">
+                        <i class="fas fa-home"></i>
+                        <span class="mobile-btn-text">Home</span>
+                    </a>
+                    {% if not session.user_id %}
+                    <a href="{{ url_for('auth') }}" class="mobile-nav-btn mobile-nav-get-started" aria-label="Get Started">
+                        <i class="fas fa-rocket"></i>
+                        <span class="mobile-btn-text">Get Started</span>
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('templates') }}" class="mobile-nav-btn mobile-nav-get-started" aria-label="Create Invitation">
+                        <i class="fas fa-plus"></i>
+                        <span class="mobile-btn-text">Create</span>
+                    </a>
+                    {% endif %}
+                </div>
                 <button class="mobile-nav-toggle" type="button" id="mobileNavToggle" aria-label="Toggle mobile navigation" onclick="window.toggleMobileNav && window.toggleMobileNav()">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -4045,10 +4024,7 @@
                 this.setupScrollProgress();
                 this.setupBackToTop();
                 this.setupNavbarScroll();
-                this.setupScrollAnimations();
-                this.setupParallaxEffects();
-                this.setupTextAnimations();
-                this.setupIntersectionObserver();
+                // All scroll animations removed - Simple and clean
                 this.setupCardAnimations();
                 this.setupFloralParticles();
                 this.setupGlassParticles();
@@ -4175,107 +4151,7 @@
                 cards.forEach(card => observer.observe(card));
             }
 
-            setupScrollAnimations() {
-                // Reveal animations on scroll
-                const revealElements = document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale');
-                
-                // Initially hide elements that should animate (except hero elements)
-                revealElements.forEach(element => {
-                    // Skip hero elements to keep them always visible
-                    if (element.classList.contains('hero-title') || 
-                        element.classList.contains('hero-subtitle') || 
-                        element.classList.contains('hero-cta') || 
-                        element.classList.contains('trust-indicators')) {
-                        element.classList.add('revealed');
-                        return;
-                    }
-                    element.classList.remove('revealed');
-                });
-                
-                const revealOnScroll = () => {
-                    revealElements.forEach(element => {
-                        const elementTop = element.getBoundingClientRect().top;
-                        const elementVisible = 150;
-                        
-                        if (elementTop < window.innerHeight - elementVisible) {
-                            element.classList.add('revealed');
-                        }
-                    });
-                };
-
-                window.addEventListener('scroll', revealOnScroll);
-                revealOnScroll(); // Run once on load
-            }
-
-            setupParallaxEffects() {
-                const parallaxElements = document.querySelectorAll('.parallax-element');
-                
-                const updateParallax = () => {
-                    const scrolled = window.pageYOffset;
-                    
-                    parallaxElements.forEach(element => {
-                        const speed = element.dataset.speed || 0.5;
-                        const yPos = -(scrolled * speed);
-                        element.style.transform = `translateY(${yPos}px)`;
-                    });
-                };
-
-                window.addEventListener('scroll', updateParallax);
-            }
-
-            setupTextAnimations() {
-                // Animate text lines
-                const textElements = document.querySelectorAll('.text-reveal');
-                
-                textElements.forEach(element => {
-                    // Skip hero title to keep it always visible
-                    if (element.classList.contains('hero-title')) {
-                        return;
-                    }
-                    
-                    const text = element.textContent;
-                    element.innerHTML = '';
-                    
-                    text.split(' ').forEach((word, index) => {
-                        const span = document.createElement('span');
-                        span.textContent = word + ' ';
-                        span.classList.add('text-line');
-                        span.style.transitionDelay = `${index * 0.1}s`;
-                        element.appendChild(span);
-                    });
-                    
-                    // Initially hide text lines for animation
-                    element.classList.remove('revealed');
-                });
-
-                // Trigger text animation when visible
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('revealed');
-                        }
-                    });
-                });
-
-                textElements.forEach(element => observer.observe(element));
-            }
-
-            setupIntersectionObserver() {
-                const fadeElements = document.querySelectorAll('.fade-in-section');
-                
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                        }
-                    });
-                }, {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -50px 0px'
-                });
-
-                fadeElements.forEach(element => observer.observe(element));
-            }
+            // All scroll animations removed - Simple and clean
         }
 
         // Initialize animations when DOM is loaded
@@ -4654,20 +4530,46 @@
 
         // Loading States and Skeleton Screens
         document.addEventListener('DOMContentLoaded', function() {
-            // Global loading overlay
-            window.showLoading = function(message = 'Loading...', showProgress = false) {
+            // Global loading overlay with icon and message
+            window.showLoadingWithIcon = function(message = 'Loading...', subtext = 'Please wait', icon = '🎉', imageUrl = null) {
+                // Remove existing overlay if any
+                const existing = document.getElementById('globalLoadingOverlay');
+                if (existing) {
+                    existing.remove();
+                }
+                
                 const overlay = document.createElement('div');
                 overlay.className = 'loading-overlay';
                 overlay.id = 'globalLoadingOverlay';
                 
+                const iconHtml = imageUrl 
+                    ? `<img src="${imageUrl}" alt="Loading" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`
+                    : `<div style="font-size: 64px;">${icon}</div>`;
+                
                 overlay.innerHTML = `
-                    <div class="loading-spinner"></div>
-                    <div class="loading-text">${message}</div>
-                    ${showProgress ? '<div class="loading-progress"><div class="loading-progress-bar"></div></div>' : ''}
+                    <div class="loading-content">
+                        <div class="loading-image">
+                            ${iconHtml}
+                        </div>
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">${message}</div>
+                        <div class="loading-subtext">${subtext}</div>
+                    </div>
                 `;
                 
                 document.body.appendChild(overlay);
                 document.body.style.overflow = 'hidden';
+                
+                // Prevent navigation while loading
+                overlay.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+            };
+            
+            // Legacy function for backward compatibility
+            window.showLoading = function(message = 'Loading...', showProgress = false) {
+                showLoadingWithIcon(message, 'Please wait', '🎉');
             };
             
             window.hideLoading = function() {
@@ -4679,7 +4581,7 @@
                             overlay.parentNode.removeChild(overlay);
                         }
                         document.body.style.overflow = '';
-                    }, 300);
+                    }, 400);
                 }
             };
             
@@ -4789,21 +4691,60 @@
                 imageObserver.observe(img);
             });
             
-            // Page transition loading
+            // Page transition loading with page-specific messages
             const links = document.querySelectorAll('a[href^="/"], a[href^="./"], a[href^="../"]');
             links.forEach(link => {
                 link.addEventListener('click', function(e) {
                     // Only show loading for internal links
-                    if (this.hostname === window.location.hostname) {
-                        showLoading('Navigating...');
+                    if (this.hostname === window.location.hostname || !this.hostname) {
+                        const href = this.getAttribute('href');
+                        let message = 'Loading...';
+                        let subtext = 'Please wait';
+                        let icon = '🎉';
+                        
+                        // Determine page-specific message
+                        if (href.includes('templates') || href.includes('create')) {
+                            message = 'Your beautiful invitation is loading';
+                            subtext = 'Please wait while we prepare your design';
+                            icon = '✨';
+                        } else if (href.includes('dashboard') || href.includes('manage')) {
+                            message = 'Loading your invitations';
+                            subtext = 'Please wait';
+                            icon = '📋';
+                        } else if (href.includes('view') || href.includes('invitation')) {
+                            message = 'Your beautiful invitation is loading';
+                            subtext = 'Please wait while we prepare your design';
+                            icon = '💌';
+                        } else if (href.includes('edit')) {
+                            message = 'Loading editor';
+                            subtext = 'Please wait';
+                            icon = '✏️';
+                        } else if (href.includes('login') || href.includes('auth')) {
+                            message = 'Loading';
+                            subtext = 'Please wait';
+                            icon = '🔐';
+                        } else if (href === '/' || href.includes('index')) {
+                            message = 'Loading home';
+                            subtext = 'Please wait';
+                            icon = '🏠';
+                        }
+                        
+                        showLoadingWithIcon(message, subtext, icon);
                     }
                 });
             });
             
-            // Hide loading on page load
+            // Hide loading on page load complete (in case it was shown during navigation)
             window.addEventListener('load', function() {
-                hideLoading();
+                setTimeout(() => {
+                    hideLoading();
+                }, 300);
             });
+            
+            // Also hide loading when DOM is ready (for faster pages)
+            if (document.readyState === 'complete') {
+                hideLoading();
+            }
 
 
             // Performance optimization - Lazy loading
@@ -5004,107 +4945,7 @@
             }
         }
         
-        // 🎨 Professional Scroll Animations - Sitewide
-        document.addEventListener('DOMContentLoaded', function() {
-            // Enhanced Intersection Observer with multiple animation types
-            const animationObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        const element = entry.target;
-                        const delay = index * 50; // Stagger animation
-                        
-                        setTimeout(() => {
-                            // Remove animation classes and apply visible
-                            element.classList.remove('animate-on-scroll');
-                            element.classList.add('animate-visible');
-                            
-                            // Apply CSS transforms for smooth animation
-                            if (element.style) {
-                                element.style.opacity = '1';
-                                element.style.transform = 'translateY(0) scale(1)';
-                                element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                            }
-                        }, delay);
-                    }
-                });
-            }, {
-                threshold: 0.1,
-                rootMargin: '0px 0px -80px 0px'
-            });
-            
-            // Animate all sections
-            document.querySelectorAll('section').forEach((section, index) => {
-                section.classList.add('animate-on-scroll');
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(40px)';
-                section.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-                animationObserver.observe(section);
-            });
-            
-            // Animate all cards
-            document.querySelectorAll('.card, .team-card, .value-card, .category-card, .testimonial-card, .invitation-card, .service-card').forEach((card, index) => {
-                card.classList.add('animate-on-scroll');
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px) scale(0.95)';
-                card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                animationObserver.observe(card);
-            });
-            
-            // Animate headings (h2, h3, h4)
-            document.querySelectorAll('h2, h3, h4.section-title, h3.section-title').forEach((heading, index) => {
-                heading.classList.add('animate-on-scroll');
-                heading.style.opacity = '0';
-                heading.style.transform = 'translateY(20px)';
-                heading.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                animationObserver.observe(heading);
-            });
-            
-            // Animate buttons
-            document.querySelectorAll('.btn-primary, .btn-secondary, .btn-lg, .btn-primary-custom').forEach((btn, index) => {
-                btn.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-                
-                // Add hover effects
-                btn.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-3px) scale(1.02)';
-                    this.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
-                });
-                
-                btn.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                    this.style.boxShadow = '';
-                });
-            });
-            
-            // Animate images with fade-in and scale
-            document.querySelectorAll('img').forEach((img, index) => {
-                if (!img.closest('.invitation-card-stack')) { // Skip stacked cards images
-                    img.classList.add('animate-on-scroll');
-                    img.style.opacity = '0';
-                    img.style.transform = 'scale(0.9)';
-                    img.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-                    animationObserver.observe(img);
-                }
-            });
-            
-            // Animate list items with stagger
-            document.querySelectorAll('ul li, ol li').forEach((li, index) => {
-                li.classList.add('animate-on-scroll');
-                li.style.opacity = '0';
-                li.style.transform = 'translateX(-20px)';
-                li.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                animationObserver.observe(li);
-            });
-            
-            // Smooth parallax effect for hero sections
-            window.addEventListener('scroll', function() {
-                const scrolled = window.pageYOffset;
-                const heroSections = document.querySelectorAll('.hero-section');
-                
-                heroSections.forEach(hero => {
-                    const rate = scrolled * 0.3;
-                    hero.style.transform = `translateY(${rate}px)`;
-                });
-            });
+        // No scroll animations - Simple and clean
             
             // Number counter animation for stats
             const animateCounter = (element, target, duration = 2000) => {
@@ -5464,32 +5305,7 @@
                 });
             });
             
-            // Enhanced scroll animations with better mobile support
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const animationObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        const delay = Math.min(index * 100, 500);
-                        setTimeout(() => {
-                            entry.target.style.opacity = '1';
-                            entry.target.style.transform = 'translateY(0) scale(1)';
-                            entry.target.classList.add('animate-visible');
-                        }, delay);
-                    }
-                });
-            }, observerOptions);
-            
-            // Apply animations to elements
-            document.querySelectorAll('section, .card, .team-card, .value-card').forEach((el) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px) scale(0.95)';
-                el.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-                animationObserver.observe(el);
-            });
+            // No scroll animations - Simple and clean
         });
     </script>
     
