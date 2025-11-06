@@ -577,19 +577,44 @@ body {
 
 @media (max-width: 768px) {
     .container-custom {
-        padding: 0 24px;
+        padding: 0 20px;
     }
     
     .hero-section {
-        padding: 80px 0 60px;
+        padding: 60px 0 40px;
+        min-height: auto;
+    }
+    
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
     }
     
     .hero-title {
-        font-size: 38px;
+        font-size: 32px;
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: 16px;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-professional {
+        width: 100%;
+        justify-content: center;
     }
     
     .section-title-pro {
-        font-size: 32px;
+        font-size: 28px;
+    }
+    
+    .section-description {
+        font-size: 15px;
     }
     
     .categories-grid-pro,
@@ -597,28 +622,77 @@ body {
     .steps-grid,
     .testimonials-grid {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
     }
     
     .hero-visual {
-        height: 400px;
+        height: 350px;
     }
     
     .showcase-card {
-        width: 300px;
-        height: 380px;
+        width: 280px;
+        height: 360px;
     }
     
     .showcase-card:nth-child(1) {
-        right: 20px;
+        right: 10px;
     }
     
     .showcase-card:nth-child(2) {
-        right: 0;
+        right: -10px;
     }
     
     .showcase-card:nth-child(3) {
         display: none;
+    }
+    
+    .category-card-pro,
+    .feature-card-pro,
+    .step-card-pro,
+    .testimonial-card-pro {
+        padding: 24px;
+    }
+    
+    .faq-item {
+        padding: 20px !important;
+    }
+    
+    .faq-question h4 {
+        font-size: 16px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-custom {
+        padding: 0 16px;
+    }
+    
+    .hero-title {
+        font-size: 26px;
+    }
+    
+    .hero-subtitle {
+        font-size: 14px;
+    }
+    
+    .section-title-pro {
+        font-size: 24px;
+    }
+    
+    .hero-visual {
+        height: 300px;
+    }
+    
+    .showcase-card {
+        width: 240px;
+        height: 300px;
+    }
+    
+    .category-card-pro,
+    .feature-card-pro,
+    .step-card-pro,
+    .testimonial-card-pro {
+        padding: 20px;
     }
 }
 </style>
@@ -754,19 +828,6 @@ body {
                 </div>
             </div>
             
-            <div class="category-card-pro">
-                <div class="category-image" style="background-image: url('{{ category_images.get("custom", "/static/images/home1/customevents.jpg") }}');">
-                    <div class="category-overlay"></div>
-                </div>
-                <div class="category-body">
-                    <div class="category-icon-pro">✨</div>
-                    <h3 class="category-title-pro">Custom Events</h3>
-                    <p class="category-desc">Any occasion worth celebrating</p>
-                    <a href="{{ url_for('templates') }}" class="category-link-pro">
-                        Browse Templates <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 </section>
@@ -906,6 +967,79 @@ body {
     </div>
 </section>
 
+<!-- FAQ Section -->
+<section class="section-professional" style="background: #FAFAFA;">
+    <div class="container-custom">
+        <div class="section-header-pro">
+            <div class="section-subtitle-small">FAQ</div>
+            <h2 class="section-title-pro">Frequently Asked Questions</h2>
+            <p class="section-description">Everything you need to know about creating beautiful invitations</p>
+        </div>
+        
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
+                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">How do I create an invitation?</h4>
+                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
+                </div>
+                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
+                    Simply choose a template, customize it with your event details, add photos, and share it with your guests. It takes less than 5 minutes!
+                </div>
+            </div>
+            
+            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
+                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">Is it free to use?</h4>
+                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
+                </div>
+                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
+                    Yes! Creating and sharing invitations is completely free. No credit card required.
+                </div>
+            </div>
+            
+            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
+                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">Can I customize the invitation design?</h4>
+                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
+                </div>
+                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
+                    Absolutely! You can customize colors, fonts, add photos, and personalize every detail to match your event style.
+                </div>
+            </div>
+            
+            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
+                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">How do guests RSVP?</h4>
+                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
+                </div>
+                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
+                    Guests can RSVP directly from the invitation link. They can respond via mobile number or email, and you'll receive all responses in your dashboard.
+                </div>
+            </div>
+            
+            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
+                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">Can I track who viewed my invitation?</h4>
+                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
+                </div>
+                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
+                    Yes! Our analytics dashboard shows you how many people viewed your invitation, RSVP responses, and more insights.
+                </div>
+            </div>
+            
+            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
+                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">Do invitations work on mobile devices?</h4>
+                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
+                </div>
+                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
+                    Yes! All invitations are fully responsive and look beautiful on phones, tablets, and desktops.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- CTA Section -->
 <section class="cta-section">
     <div class="container-custom">
@@ -945,6 +1079,63 @@ document.addEventListener('DOMContentLoaded', function() {
             currentIndex++;
         }, 3000);
     }
+    
+    // FAQ Accordion Functionality
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question.querySelector('i');
+        
+        question.addEventListener('click', function() {
+            const isOpen = answer.style.display === 'block';
+            
+            // Close all other FAQs
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    const otherIcon = otherItem.querySelector('.faq-question i');
+                    otherAnswer.style.display = 'none';
+                    otherIcon.style.transform = 'rotate(0deg)';
+                    otherItem.style.borderColor = '#F0F0F0';
+                }
+            });
+            
+            // Toggle current FAQ
+            if (isOpen) {
+                answer.style.display = 'none';
+                icon.style.transform = 'rotate(0deg)';
+                item.style.borderColor = '#F0F0F0';
+            } else {
+                answer.style.display = 'block';
+                icon.style.transform = 'rotate(180deg)';
+                item.style.borderColor = 'var(--primary-gold)';
+            }
+        });
+    });
+    
+    // Smooth scroll animations for elements
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Animate cards on scroll
+    document.querySelectorAll('.category-card-pro, .feature-card-pro, .step-card-pro, .testimonial-card-pro').forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'all 0.6s ease ' + (index * 0.1) + 's';
+        observer.observe(card);
+    });
 });
 </script>
 {% endblock %}

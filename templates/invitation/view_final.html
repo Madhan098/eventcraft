@@ -4,6 +4,7 @@
 
 {% block head %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -839,10 +840,17 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id="shareUrlInput" 
                                value="{{ request.url_root }}invitation/{{ invitation.share_url }}" readonly>
-                        <button class="btn btn-outline-primary" onclick="copyShareUrl()">
-                            <i class="fas fa-copy"></i>
+                        <button class="btn btn-outline-primary" onclick="copyShareUrl(event)">
+                            <i class="fas fa-copy"></i> Copy Link
                         </button>
                     </div>
+                </div>
+                
+                <!-- Download Button -->
+                <div class="mb-4">
+                    <button class="btn btn-primary w-100" onclick="downloadInvitation()" style="background: linear-gradient(135deg, #C9A961 0%, #B39750 100%); border: none; padding: 12px; font-weight: 600;">
+                        <i class="fas fa-download me-2"></i> Download Invitation as PDF
+                    </button>
                 </div>
 
                 <!-- Social Share Buttons -->
@@ -956,14 +964,45 @@ function openShareModal() {
     }
 }
 
-function copyShareUrl() {
+function copyShareUrl(event) {
     const input = document.getElementById('shareUrlInput');
     const btn = event.target.closest('button');
     
-    navigator.clipboard.writeText(input.value)
-        .then(() => {
+    // Try modern clipboard API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(input.value)
+            .then(() => {
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.classList.add('btn-success');
+                
+                showToast('Link copied to clipboard!', 'success');
+                trackShare('copy');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('btn-success');
+                }, 2000);
+            })
+            .catch(() => {
+                // Fallback to old method
+                fallbackCopyText(input, btn);
+            });
+    } else {
+        // Fallback for older browsers
+        fallbackCopyText(input, btn);
+    }
+}
+
+function fallbackCopyText(input, btn) {
+    input.select();
+    input.setSelectionRange(0, 99999); // For mobile devices
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i>';
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
             btn.classList.add('btn-success');
             
             showToast('Link copied to clipboard!', 'success');
@@ -973,8 +1012,48 @@ function copyShareUrl() {
                 btn.innerHTML = originalHTML;
                 btn.classList.remove('btn-success');
             }, 2000);
-        })
-        .catch(() => showToast('Failed to copy link', 'error'));
+        } else {
+            showToast('Failed to copy link. Please copy manually.', 'error');
+        }
+    } catch (err) {
+        showToast('Failed to copy link. Please copy manually.', 'error');
+    }
+}
+
+function downloadInvitation() {
+    // Create a canvas and capture the invitation card
+    const invitationCard = document.querySelector('.template-container') || document.querySelector('.invitation-card');
+    
+    if (!invitationCard) {
+        showToast('Unable to find invitation content. Please try again.', 'error');
+        return;
+    }
+    
+    // Use html2canvas library if available, otherwise use print
+    if (typeof html2canvas !== 'undefined') {
+        html2canvas(invitationCard, {
+            backgroundColor: '#ffffff',
+            scale: 2,
+            useCORS: true,
+            logging: false
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = '{{ invitation.title|default("invitation")|replace(" ", "_") }}.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast('Invitation downloaded successfully!', 'success');
+            trackShare('download');
+        }).catch(err => {
+            console.error('Download failed:', err);
+            // Fallback to print
+            window.print();
+        });
+    } else {
+        // Fallback: Open print dialog
+        window.print();
+        showToast('Opening print dialog. You can save as PDF.', 'info');
+        trackShare('download');
+    }
 }
 
 function trackShare(method) {

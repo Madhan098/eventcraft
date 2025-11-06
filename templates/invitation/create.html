@@ -562,6 +562,10 @@
         .theme-grid {
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         }
+        
+        .rsvp-contact-fields {
+            grid-template-columns: 1fr !important;
+        }
     }
 </style>
 {% endblock %}
@@ -676,9 +680,20 @@
 
                     <div class="form-group">
                         <label class="form-label" for="rsvpContact">RSVP Contact</label>
-                        <input type="text" class="form-input" id="rsvpContact" name="contactEmail" 
-                               placeholder="email@example.com"
-                               value="{{ current_user.email if current_user else '' }}">
+                        <div class="rsvp-contact-fields" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div>
+                                <label class="form-label" style="font-size: 13px; margin-bottom: 6px; color: #666;">Mobile Number</label>
+                                <input type="tel" class="form-input" id="rsvpMobile" name="contactMobile" 
+                                       placeholder="+1 (555) 123-4567"
+                                       pattern="[+]?[0-9\s\-\(\)]+">
+                            </div>
+                            <div>
+                                <label class="form-label" style="font-size: 13px; margin-bottom: 6px; color: #666;">Email Address</label>
+                                <input type="email" class="form-input" id="rsvpContact" name="contactEmail" 
+                                       placeholder="email@example.com"
+                                       value="{{ current_user.email if current_user else '' }}">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -909,7 +924,145 @@ const eventIcons = {
     'retirement': '🎉'
 };
 
-// Image preview function
+// Auto color theme extraction from image
+function extractColorsFromImage(imageSrc, callback) {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        
+        try {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            const colorCounts = {};
+            
+            // Sample pixels (every 10th pixel for performance)
+            for (let i = 0; i < data.length; i += 40) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const a = data[i + 3];
+                
+                // Skip transparent pixels
+                if (a < 128) continue;
+                
+                // Quantize colors to reduce noise
+                const qr = Math.floor(r / 32) * 32;
+                const qg = Math.floor(g / 32) * 32;
+                const qb = Math.floor(b / 32) * 32;
+                const colorKey = `${qr},${qg},${qb}`;
+                
+                colorCounts[colorKey] = (colorCounts[colorKey] || 0) + 1;
+            }
+            
+            // Get top 3 dominant colors
+            const sortedColors = Object.entries(colorCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3)
+                .map(entry => entry[0].split(',').map(Number));
+            
+            if (sortedColors.length > 0) {
+                const primaryColor = sortedColors[0];
+                const secondaryColor = sortedColors[1] || primaryColor;
+                
+                // Convert to hex
+                const primaryHex = '#' + primaryColor.map(c => c.toString(16).padStart(2, '0')).join('');
+                const secondaryHex = '#' + secondaryColor.map(c => c.toString(16).padStart(2, '0')).join('');
+                
+                // Adjust colors for better contrast (make them more vibrant)
+                const adjustedPrimaryHex = adjustColorForTheme(primaryColor);
+                const adjustedSecondaryHex = adjustColorForTheme(secondaryColor);
+                
+                callback({
+                    primary: adjustedPrimaryHex,
+                    secondary: adjustedSecondaryHex,
+                    primaryHex: adjustedPrimaryHex,
+                    secondaryHex: adjustedSecondaryHex
+                });
+            }
+        } catch (err) {
+            console.error('Color extraction failed:', err);
+        }
+    };
+    img.src = imageSrc;
+}
+
+// Adjust color to make it more suitable for theme
+function adjustColorForTheme(rgb) {
+    const [r, g, b] = rgb;
+    
+    // Increase saturation and adjust brightness
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const delta = max - min;
+    const lightness = (max + min) / 2;
+    
+    // Make colors more vibrant
+    let newR = r, newG = g, newB = b;
+    
+    if (delta > 0) {
+        const saturation = delta / (255 - Math.abs(2 * lightness - 255));
+        const newSaturation = Math.min(1, saturation * 1.2);
+        
+        // Convert back to RGB with increased saturation
+        const c = (1 - Math.abs(2 * lightness / 255 - 1)) * newSaturation * 255;
+        const x = c * (1 - Math.abs(((max / 255) / (delta / 255)) % 2) - 1));
+        const m = (lightness / 255) * 255 - c / 2;
+        
+        if (max === r) {
+            newR = c + m;
+            newG = x + m;
+            newB = m;
+        } else if (max === g) {
+            newR = x + m;
+            newG = c + m;
+            newB = m;
+        } else {
+            newR = m;
+            newG = x + m;
+            newB = c + m;
+        }
+    }
+    
+    // Ensure values are in valid range
+    newR = Math.max(0, Math.min(255, Math.round(newR)));
+    newG = Math.max(0, Math.min(255, Math.round(newG)));
+    newB = Math.max(0, Math.min(255, Math.round(newB)));
+    
+    return '#' + [newR, newG, newB].map(c => c.toString(16).padStart(2, '0')).join('');
+}
+
+// Apply auto color theme to invitation
+function applyAutoColorTheme(primaryColor, secondaryColor) {
+    // Update CSS variables for the invitation theme
+    const root = document.documentElement;
+    root.style.setProperty('--auto-primary-color', primaryColor);
+    root.style.setProperty('--auto-secondary-color', secondaryColor);
+    
+    // Apply to template container
+    const templateContainer = document.querySelector('.template-container');
+    if (templateContainer) {
+        templateContainer.style.setProperty('--theme-primary', primaryColor);
+        templateContainer.style.setProperty('--theme-secondary', secondaryColor);
+    }
+    
+    // Update preview styling
+    const previewCard = document.querySelector('.live-preview-card');
+    if (previewCard) {
+        previewCard.style.borderColor = primaryColor;
+    }
+    
+    // Show notification
+    if (typeof showToast === 'function') {
+        showToast('Color theme automatically selected from your image!', 'success');
+    }
+}
+
+// Image preview function with auto color theme
 window.previewImage = function(input, previewId) {
     const preview = document.getElementById(previewId);
     if (!preview) return;
@@ -922,6 +1075,27 @@ window.previewImage = function(input, previewId) {
             
             // Also update live preview
             updateLivePreviewImages(input.id, e.target.result);
+            
+            // Auto extract colors from main image and apply theme
+            if (input.id === 'mainImage') {
+                extractColorsFromImage(e.target.result, function(colors) {
+                    applyAutoColorTheme(colors.primaryHex, colors.secondaryHex);
+                    
+                    // Store colors for form submission
+                    const colorThemeInput = document.getElementById('autoColorTheme');
+                    if (!colorThemeInput) {
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.id = 'autoColorTheme';
+                        hiddenInput.name = 'autoColorTheme';
+                        document.querySelector('form').appendChild(hiddenInput);
+                    }
+                    document.getElementById('autoColorTheme').value = JSON.stringify({
+                        primary: colors.primaryHex,
+                        secondary: colors.secondaryHex
+                    });
+                });
+            }
         };
         reader.readAsDataURL(input.files[0]);
     } else {

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Account Policy - EventCraft Pro{% endblock %}
+
+{% block extra_head %}
+<style>
+.policy-hero {
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+    padding: 80px 0;
+    color: white;
+}
+
+.policy-content {
+    padding: 60px 0;
+}
+
+.policy-card {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.policy-card h2 {
+    color: #2C2C2C;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 40px 0 20px 0;
+}
+
+.policy-card h2:first-child {
+    margin-top: 0;
+}
+
+.policy-card h3 {
+    color: #B39090;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 30px 0 15px 0;
+}
+
+.policy-card p, .policy-card li {
+    color: #666;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.policy-card ul {
+    margin: 15px 0;
+    padding-left: 25px;
+}
+
+@media (max-width: 768px) {
+    .policy-card {
+        padding: 30px 20px;
+    }
+    
+    .policy-card h2 {
+        font-size: 24px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="policy-hero">
+    <div class="container text-center">
+        <h1 style="font-size: 48px; font-weight: 700; margin-bottom: 20px;">Account Policy</h1>
+        <p style="font-size: 18px; opacity: 0.95;">Your rights and responsibilities</p>
+    </div>
+</div>
+
+<div class="policy-content">
+    <div class="container">
+        <div class="policy-card">
+            <h2>Account Creation and Management</h2>
+            <p>By creating an account with EventCraft Pro, you agree to provide accurate, current, and complete information. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.</p>
+            
+            <h3>Account Requirements</h3>
+            <ul>
+                <li>You must be at least 13 years old to create an account</li>
+                <li>You must provide a valid email address</li>
+                <li>You are responsible for keeping your account information up to date</li>
+                <li>You must not share your account credentials with others</li>
+            </ul>
+            
+            <h2>Account Security</h2>
+            <p>We take account security seriously. We use industry-standard encryption and security measures to protect your account information. However, you are also responsible for:</p>
+            <ul>
+                <li>Using a strong, unique password</li>
+                <li>Not sharing your login credentials</li>
+                <li>Logging out when using shared devices</li>
+                <li>Reporting any unauthorized access immediately</li>
+            </ul>
+            
+            <h2>Account Termination</h2>
+            <p>You may delete your account at any time through your account settings. Upon account deletion:</p>
+            <ul>
+                <li>All your personal data will be permanently deleted within 30 days</li>
+                <li>Your invitations will be removed from our servers</li>
+                <li>You will lose access to all your created invitations</li>
+                <li>This action cannot be undone</li>
+            </ul>
+            
+            <h2>Content Ownership</h2>
+            <p>You retain full ownership of all content you create, including invitations, images, and text. By using our service, you grant us a limited license to:</p>
+            <ul>
+                <li>Store and display your content on our platform</li>
+                <li>Process your content to provide our services</li>
+                <li>Create backups of your content</li>
+            </ul>
+            
+            <h2>Account Restrictions</h2>
+            <p>You agree not to:</p>
+            <ul>
+                <li>Create multiple accounts to circumvent restrictions</li>
+                <li>Use automated tools to access our services</li>
+                <li>Share or sell your account to others</li>
+                <li>Use your account for illegal or unauthorized purposes</li>
+                <li>Violate any applicable laws or regulations</li>
+            </ul>
+            
+            <h2>Data and Privacy</h2>
+            <p>Your account data is handled according to our Privacy Policy. We collect and process only the information necessary to provide our services. You can access, update, or delete your personal information at any time through your account settings.</p>
+            
+            <h2>Service Availability</h2>
+            <p>We strive to maintain 99.9% uptime, but we do not guarantee uninterrupted access to our services. We reserve the right to:</p>
+            <ul>
+                <li>Perform scheduled maintenance</li>
+                <li>Suspend accounts that violate our terms</li>
+                <li>Modify or discontinue features with notice</li>
+            </ul>
+            
+            <h2>Changes to This Policy</h2>
+            <p>We may update this Account Policy from time to time. We will notify you of any material changes via email or through our platform. Continued use of your account after changes constitutes acceptance of the updated policy.</p>
+            
+            <h2>Contact Us</h2>
+            <p>If you have questions about this Account Policy, please contact us at:</p>
+            <p><strong>Email:</strong> support@eventcraftpro.com<br>
+            <strong>Support Hours:</strong> Monday - Friday, 9 AM - 6 PM EST</p>
+            
+            <p style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #E8E8E8; color: #999; font-size: 13px;">
+                Last updated: {{ moment().format('MMMM D, YYYY') if moment else 'November 6, 2025' }}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

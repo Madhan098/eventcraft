@@ -1733,6 +1733,10 @@ def register_routes(app):
     @app.route('/terms')
     def terms():
         return render_template('terms.html')
+    
+    @app.route('/account-policy')
+    def account_policy():
+        return render_template('account_policy.html')
 
     @app.route('/forgot-password', methods=['POST'])
     def forgot_password():
