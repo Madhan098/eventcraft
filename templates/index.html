@@ -3,133 +3,20 @@
 {% block title %}EventCraft Pro - Create Beautiful Digital Invitations{% endblock %}
 
 {% block extra_head %}
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- Lottie Animation Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* 🎨 Exact Momento Design - Matching Reference Images */
-
-/* Professional Scroll Animations - Keyframes */
-@keyframes fadeInUp {
-    from {
-    opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes slideInLeft {
-    from {
-    opacity: 0;
-        transform: translateX(-30px);
-}
-    to {
-    opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(160, 120, 120, 0.4); }
-    50% { box-shadow: 0 0 0 10px rgba(160, 120, 120, 0); }
-}
-
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-.animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-}
-
-.animate-visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* Smooth scroll behavior */
-html {
-    scroll-behavior: smooth;
-}
-
-/* Enhanced hover effects */
-.card:hover, .team-card:hover, .value-card:hover, .category-card:hover, .feature-card:hover, .step-card:hover {
-    transform: translateY(-8px) scale(1.02) !important;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.15) !important;
-}
-
-.btn-primary:hover {
-    animation: pulse 2s infinite;
-}
-
-/* New section styles */
-.feature-card, .step-card {
-    cursor: pointer;
-}
-
-.stat-item {
-    animation: fadeInScale 0.8s ease forwards;
-}
-
+/* Professional Modern Design */
 :root {
-    /* Perfectly Balanced Color Palette - Just Right */
-    --reddish-brown: #B39090;        /* Balanced medium brown-pink */
-    --reddish-brown-dark: #A17E7E;   /* Balanced medium-dark brown */
-    --golden-yellow: #DCBE85;        /* Balanced warm gold */
-    --golden-yellow-bright: #E8CE92; /* Balanced bright gold */
-    --golden-yellow-light: #F0DBAA;  /* Balanced light gold */
-    
-    /* Background Colors */
-    --bg-cream: #FAFAFA;
-    --bg-pink-beige: #FFF5F0;
-    --bg-white: #FFFFFF;
-    --bg-gradient: linear-gradient(135deg, #FFF5F0 0%, #FAFAFA 100%);
-    
-    /* Text Colors */
-    --text-dark: #2C2C2C;            /* Softer black for better readability */
-    --text-gray: #666666;
-    --text-light-gray: #999999;
-    
-    /* Shadows - Softer */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-    
-    /* Transitions */
-    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --primary-gold: #C9A961;
+    --primary-brown: #8B7355;
+    --dark-brown: #5D4E37;
+    --light-cream: #FAF8F5;
+    --off-white: #FFFFFF;
+    --text-primary: #2C2416;
+    --text-secondary: #6B6B6B;
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --shadow-strong: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 * {
@@ -138,1380 +25,925 @@ html {
     box-sizing: border-box;
 }
 
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6;
-    color: var(--text-dark);
-    background: linear-gradient(-45deg, #F5E6D3, #FFF9F5, #F0DFA8, #E6D5C3);
-    background-size: 400% 400%;
-    animation: gradientFlow 15s ease infinite;
+    color: var(--text-primary);
+    /* Background inherited from base.html */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
     position: relative;
 }
 
-@keyframes gradientFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    background-image: 
-        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(111, 78, 55, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(230, 195, 79, 0.06) 0%, transparent 50%),
-        url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='laceFloral' x='0' y='0' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.15'%3E%3Cpath d='M200 60 Q190 80 200 100 Q210 80 200 60 M200 60 Q180 70 160 80 Q180 90 200 100 Q220 90 240 80 Q220 70 200 60' stroke='%236F4E37' stroke-width='1' fill='none'/%3E%3Cpath d='M140 100 Q130 120 140 140 Q150 120 140 100' stroke='%23D4AF37' stroke-width='1' fill='none'/%3E%3Cpath d='M260 100 Q250 120 260 140 Q270 120 260 100' stroke='%236F4E37' stroke-width='1' fill='none'/%3E%3Cpath d='M200 180 Q190 200 200 220 Q210 200 200 180' stroke='%23D4AF37' stroke-width='0.8' fill='none'/%3E%3Ccircle cx='120' cy='120' r='3' fill='%23E6C34F' opacity='0.25'/%3E%3Ccircle cx='280' cy='280' r='2' fill='%236F4E37' opacity='0.25'/%3E%3Ccircle cx='200' cy='200' r='2.5' fill='%23D4AF37' opacity='0.25'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23laceFloral)'/%3E%3C/svg%3E");
-    background-size: 600px 600px;
-    background-position: 0 0;
-    background-repeat: repeat;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 1;
-    animation: patternShift 30s linear infinite;
-}
-
-@keyframes patternShift {
-    0% { background-position: 0 0; }
-    100% { background-position: 600px 600px; }
-}
-
-/* Hero Section - Pinkish-Beige Gradient Background */
-.hero-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 80px 0;
-    background: var(--bg-gradient);
+/* Ensure content appears above the overlay */
+.hero-section,
+.section-professional,
+.cta-section {
     position: relative;
-    overflow: hidden;
     z-index: 1;
 }
 
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='heroLace' x='0' y='0' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.11'%3E%3Cpath d='M200 60 Q190 80 200 100 Q210 80 200 60 M200 60 Q180 70 160 80 Q180 90 200 100 Q220 90 240 80 Q220 70 200 60' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M140 100 Q130 120 140 140 Q150 120 140 100 M140 100 Q120 110 100 120 Q120 130 140 140 Q160 130 180 120 Q160 110 140 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M260 100 Q250 120 260 140 Q270 120 260 100 M260 100 Q240 110 220 120 Q240 130 260 140 Q280 130 300 120 Q280 110 260 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M200 180 Q190 200 200 220 Q210 200 200 180' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M140 220 Q130 240 140 260 Q150 240 140 220' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M260 220 Q250 240 260 260 Q270 240 260 220' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M100 80 Q90 90 100 100 Q110 90 100 80 M300 80 Q290 90 300 100 Q310 90 300 80' stroke='%23888' stroke-width='0.5' fill='none'/%3E%3Cpath d='M200 140 L160 160 M200 140 L240 160' stroke='%23888' stroke-width='0.3' fill='none'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23heroLace)'/%3E%3C/svg%3E");
-    background-size: 600px 600px;
-    background-position: 0 0;
-    background-repeat: repeat;
-    opacity: 1;
-    z-index: 0;
-    pointer-events: none;
+/* Hardware acceleration for smooth scrolling */
+.hero-visual,
+.showcase-card,
+.category-card-pro,
+.feature-card-pro,
+.step-card-pro,
+.testimonial-card-pro {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
-.hero-container {
-    max-width: 1200px;
+/* Smooth scroll on all elements */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Professional Hero Section */
+.hero-section {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 0 80px;
+    position: relative;
+    background: #FFFFFF;
+}
+
+.container-custom {
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 60px;
+}
+
+.hero-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 80px;
     align-items: center;
-    position: relative;
-    z-index: 1;
 }
 
-
-/* Hero Content Left */
+/* Hero Content */
 .hero-content {
-    max-width: 580px;
+    max-width: 600px;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #C9A961 0%, #D4B574 100%);
+    color: white;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
 }
 
 .hero-title {
-    font-size: 64px;
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
     font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--text-primary);
     margin-bottom: 24px;
+    letter-spacing: -0.02em;
 }
 
-.hero-title .title-normal {
-    color: var(--text-dark);
-}
-
-.hero-title .title-spark {
-    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--reddish-brown) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.hero-title .title-joy {
-    background: linear-gradient(135deg, var(--golden-yellow) 0%, var(--golden-yellow-light) 100%);
+.hero-title .highlight {
+    background: linear-gradient(135deg, #C9A961 0%, #8B7355 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .hero-subtitle {
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--text-gray);
-    line-height: 1.6;
+    font-size: 18px;
+    color: var(--text-secondary);
+    line-height: 1.7;
     margin-bottom: 40px;
+    font-weight: 400;
 }
 
-.hero-cta {
+/* Professional Buttons */
+.hero-buttons {
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
 }
 
-.btn {
+.btn-professional {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 32px;
-    font-size: 16px;
+    padding: 16px 32px;
+    font-size: 15px;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    text-decoration: none;
-    transition: all var(--transition);
-    font-family: inherit;
     gap: 8px;
 }
 
-.btn-primary {
-    background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-    color: #FFFFFF;
-    box-shadow: var(--shadow-md);
+.btn-primary-pro {
+    background: linear-gradient(135deg, #C9A961 0%, #B39750 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3);
 }
 
-.btn-primary:hover {
+.btn-primary-pro:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 6px 20px rgba(201, 169, 97, 0.4);
+    color: white;
 }
 
-.btn-secondary {
-    background: var(--bg-white);
-    color: var(--reddish-brown-dark);
-    border: 2px solid var(--reddish-brown-dark);
+.btn-secondary-pro {
+    background: white;
+    color: var(--primary-brown);
+    border: 2px solid #E8E8E8;
 }
 
-.btn-secondary:hover {
-    background: var(--reddish-brown-dark);
-    color: #FFFFFF;
+.btn-secondary-pro:hover {
+    border-color: var(--primary-gold);
+    color: var(--primary-brown);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
 }
 
-/* Hero Cards Right - Stacked Effect */
-.hero-cards {
+/* Hero Visual */
+.hero-visual {
     position: relative;
-    height: 700px;
-    width: 100%;
+    height: 600px;
 }
 
-.invitation-card-stack {
+.card-showcase {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-/* Lottie Animation Container */
-.lottie-animation {
+.showcase-card {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.6;
-}
-
-.lottie-animation-back {
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 400px;
-    height: 400px;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-}
-
-.lottie-animation-front {
-    position: absolute;
-    bottom: -30px;
-    left: -30px;
-    width: 300px;
-    height: 300px;
-    pointer-events: none;
-    z-index: 4;
-    opacity: 0.5;
-}
-
-.invitation-card {
-    position: absolute;
-    width: 420px;
-    height: 520px;
-    background: var(--bg-white);
-    border-radius: 20px;
-    padding: 0;
-    box-shadow: var(--shadow-lg);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    z-index: 2;
+    width: 380px;
+    height: 480px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: var(--shadow-medium);
     overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.invitation-card:hover {
-    transform: translateY(-8px) rotate(2deg) scale(1.05);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    z-index: 10;
-}
-
-.invitation-card img {
+.showcase-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
 }
 
-/* Image cards will be positioned dynamically via JavaScript */
-.invitation-card.image-card {
-    display: block !important;
-    visibility: visible !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
+.showcase-card:nth-child(1) {
+    top: 0;
+    right: 40px;
+    z-index: 3;
 }
 
-.card-icon {
+.showcase-card:nth-child(2) {
+    top: 60px;
+    right: 0;
+    z-index: 2;
+    opacity: 0.9;
+}
+
+.showcase-card:nth-child(3) {
+    top: 120px;
+    right: -40px;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+.showcase-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow-strong);
+    z-index: 10;
+}
+
+/* Professional Section Styling */
+.section-professional {
+    padding: 100px 0;
+    background: #FFFFFF;
+}
+
+.section-header-pro {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+}
+
+.section-subtitle-small {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+}
+
+.section-title-pro {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.section-description {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* Category Cards - Professional */
+.categories-grid-pro {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.category-card-pro {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #F0F0F0;
+    cursor: pointer;
+}
+
+.category-card-pro:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--primary-gold);
+}
+
+.category-image {
+    width: 100%;
+    height: 240px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.category-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%);
+}
+
+.category-body {
+    padding: 32px;
+}
+
+.category-icon-pro {
     font-size: 32px;
     margin-bottom: 16px;
 }
 
-.card-title {
-    font-size: 24px;
+.category-title-pro {
+    font-size: 22px;
     font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.card-content {
-    font-size: 14px;
-    color: var(--text-gray);
-    line-height: 1.5;
-}
-
-.invitation-card:nth-child(2) .card-content {
-    color: #CCCCCC;
-}
-
-/* Event Categories Section - Glassmorphism Cards */
-.event-categories {
-    padding: 100px 0;
-    background: var(--bg-white);
-    position: relative;
-    z-index: 1;
-}
-
-.event-categories::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='categoryLace' x='0' y='0' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.12'%3E%3Cpath d='M200 60 Q190 80 200 100 Q210 80 200 60 M200 60 Q180 70 160 80 Q180 90 200 100 Q220 90 240 80 Q220 70 200 60' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M140 100 Q130 120 140 140 Q150 120 140 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M260 100 Q250 120 260 140 Q270 120 260 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M200 180 Q190 200 200 220 Q210 200 200 180' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M100 80 Q90 90 100 100 Q110 90 100 80 M300 80 Q290 90 300 100 Q310 90 300 80' stroke='%23888' stroke-width='0.5' fill='none'/%3E%3Cpath d='M200 140 L160 160 M200 140 L240 160' stroke='%23888' stroke-width='0.3' fill='none'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23categoryLace)'/%3E%3C/svg%3E");
-    background-size: 600px 600px;
-    background-position: 0 0;
-    background-repeat: repeat;
-    opacity: 1;
-    z-index: 0;
-    pointer-events: none;
-}
-
-.section-header {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 80px;
-}
-
-.section-title {
-    font-size: 52px;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
-}
-
-.section-title .title-normal {
-    color: var(--text-dark);
-}
-
-.section-title .title-magic {
-    background: linear-gradient(135deg, var(--golden-yellow) 0%, var(--golden-yellow-light) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.section-subtitle {
-    font-size: 18px;
-    color: var(--text-gray);
-    line-height: 1.6;
-}
-
-.categories-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
-}
-
-.category-card {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all var(--transition);
-    background: var(--bg-white);
-    display: flex;
-    flex-direction: column;
-    box-shadow: var(--shadow-md);
-}
-
-.category-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-}
-
-.category-card-image {
-    width: 100%;
-    height: 250px;
-    background-image: var(--category-bg-image);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    flex-shrink: 0;
-}
-
-.category-card:not([style*="--category-bg-image"]) .category-card-image {
-    background-image: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-}
-
-.category-content {
-    position: relative;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
-    background: var(--bg-white);
-}
-
-.category-icon {
-    font-size: 40px;
-    color: var(--reddish-brown-dark);
+    color: var(--text-primary);
     margin-bottom: 12px;
 }
 
-.category-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 8px;
-}
-
-.category-description {
-    font-size: 16px;
-    color: var(--text-gray);
-    line-height: 1.5;
+.category-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
     margin-bottom: 20px;
 }
 
-.category-link {
-    color: var(--reddish-brown-dark);
-    font-weight: 600;
-    padding: 8px 0;
-    display: inline-block;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    text-decoration: none;
+.category-link-pro {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    transition: all var(--transition);
-}
-
-.category-link:hover {
     gap: 8px;
-    color: var(--reddish-brown-dark);
+    color: var(--primary-brown);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-/* Background Images for Categories - Use gradient fallbacks */
-/* Category-specific background images are now set via inline styles using --category-bg-image */
-
-/* Testimonials Section */
-.testimonials-section {
-    padding: 100px 0;
-    background: var(--bg-cream);
-    position: relative;
-    z-index: 1;
+.category-link-pro:hover {
+    color: var(--primary-gold);
+    gap: 12px;
 }
 
-.testimonials-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='testimonialLace' x='0' y='0' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg opacity='0.12'%3E%3Cpath d='M200 60 Q190 80 200 100 Q210 80 200 60 M200 60 Q180 70 160 80 Q180 90 200 100 Q220 90 240 80 Q220 70 200 60' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M140 100 Q130 120 140 140 Q150 120 140 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M260 100 Q250 120 260 140 Q270 120 260 100' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M200 180 Q190 200 200 220 Q210 200 200 180' stroke='%23888' stroke-width='0.8' fill='none'/%3E%3Cpath d='M100 80 Q90 90 100 100 Q110 90 100 80 M300 80 Q290 90 300 100 Q310 90 300 80' stroke='%23888' stroke-width='0.5' fill='none'/%3E%3Cpath d='M200 140 L160 160 M200 140 L240 160' stroke='%23888' stroke-width='0.3' fill='none'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23testimonialLace)'/%3E%3C/svg%3E");
-    background-size: 600px 600px;
-    background-position: 0 0;
-    background-repeat: repeat;
-    opacity: 1;
-    z-index: 0;
-    pointer-events: none;
+/* Feature Cards */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
 }
 
-.testimonials-header {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 80px;
+.feature-card-pro {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    border: 1px solid #F0F0F0;
+    transition: all 0.3s ease;
 }
 
-.testimonials-title {
-    font-size: 52px;
+.feature-card-pro:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft);
+    border-color: var(--primary-gold);
+}
+
+.feature-icon {
+    width: 56px;
+    height: 56px;
+    background: #F5F5F5;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 24px;
+}
+
+.feature-title {
+    font-size: 20px;
     font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
+    color: var(--text-primary);
+    margin-bottom: 12px;
 }
 
-.testimonials-title .title-loved {
-    color: var(--text-dark);
+.feature-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
 }
 
-.testimonials-title .title-happy {
-    background: linear-gradient(135deg, var(--reddish-brown) 0%, var(--reddish-brown-dark) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+/* Steps Section */
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
 }
 
-.testimonials-title .title-hosts {
-    background: linear-gradient(135deg, var(--golden-yellow) 0%, var(--golden-yellow-light) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.step-card-pro {
+    text-align: center;
+    padding: 40px 24px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #F0F0F0;
+    transition: all 0.3s ease;
 }
 
-.testimonials-subtitle {
-    font-size: 18px;
-    color: var(--text-gray);
-    line-height: 1.6;
+.step-card-pro:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft);
 }
 
+.step-number {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #C9A961 0%, #B39750 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    margin: 0 auto 24px;
+    box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3);
+}
+
+.step-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.step-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* Testimonials */
 .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 32px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 40px;
 }
 
-.testimonial-card {
-    background: var(--bg-white);
-    border-radius: 16px;
+.testimonial-card-pro {
+    background: white;
     padding: 40px;
-    box-shadow: var(--shadow-sm);
-    transition: all var(--transition);
+    border-radius: 16px;
+    border: 1px solid #F0F0F0;
+    transition: all 0.3s ease;
 }
 
-.testimonial-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+.testimonial-card-pro:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft);
 }
 
 .testimonial-stars {
-    font-size: 24px;
-    color: var(--golden-yellow-bright);
-    margin-bottom: 24px;
-    letter-spacing: 2px;
+    color: #FFB800;
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
 .testimonial-text {
-    font-size: 16px;
-    font-style: italic;
-    color: var(--text-dark);
+    font-size: 15px;
+    color: var(--text-primary);
     line-height: 1.7;
     margin-bottom: 24px;
+    font-style: italic;
 }
 
-.testimonial-author {
+.testimonial-author-pro {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
 }
 
-.author-avatar {
+.author-avatar-pro {
     width: 48px;
     height: 48px;
+    background: linear-gradient(135deg, #C9A961 0%, #B39750 100%);
     border-radius: 50%;
-    background: var(--reddish-brown);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFFFFF;
+    color: white;
     font-weight: 600;
     font-size: 18px;
 }
 
-.author-info {
-    display: flex;
-        flex-direction: column;
-    }
-    
-.author-name {
+.author-info-pro {
+    flex: 1;
+}
+
+.author-name-pro {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.author-role-pro {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #C9A961 0%, #8B7355 100%);
+    text-align: center;
+    color: white;
+}
+
+.cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
     font-weight: 700;
-    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.cta-text {
+    font-size: 18px;
+    margin-bottom: 32px;
+    opacity: 0.95;
+}
+
+.btn-cta {
+    background: white;
+    color: var(--primary-brown);
+    padding: 18px 40px;
     font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
 }
 
-.author-role {
-    font-size: 14px;
-    color: var(--text-gray);
+.btn-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    color: var(--primary-brown);
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 1024px) {
-    .hero-container {
+    .hero-grid {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 60px;
     }
     
-    .hero-cards {
+    .hero-visual {
         height: 500px;
     }
     
-    .invitation-card {
-        width: 360px;
-        height: 450px;
-    }
-    
-    .categories-grid,
+    .categories-grid-pro,
+    .features-grid,
     .testimonials-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .hero-section {
-        padding: 60px 0;
-        min-height: auto;
-        overflow: hidden;
+    .container-custom {
+        padding: 0 24px;
     }
     
-    .hero-container {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        padding: 0 20px;
+    .hero-section {
+        padding: 80px 0 60px;
     }
     
     .hero-title {
-        font-size: 36px;
-        line-height: 1.2;
-        word-wrap: break-word;
+        font-size: 38px;
     }
     
-    .hero-subtitle {
-        font-size: 16px;
-        line-height: 1.5;
-    }
-    
-    .section-title,
-    .testimonials-title {
+    .section-title-pro {
         font-size: 32px;
-        line-height: 1.2;
     }
     
-    .section-header,
-    .testimonials-header {
-        padding: 0 20px;
-        margin-bottom: 40px;
-    }
-    
-    .categories-grid,
+    .categories-grid-pro,
+    .features-grid,
+    .steps-grid,
     .testimonials-grid {
         grid-template-columns: 1fr;
         gap: 24px;
-        padding: 0 20px;
     }
     
-    .hero-cards {
+    .hero-visual {
         height: 400px;
-        margin: 0 auto;
-        /* Hardware acceleration for smooth animations */
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        backface-visibility: hidden;
     }
     
-    .invitation-card {
+    .showcase-card {
         width: 300px;
         height: 380px;
-        /* Hardware acceleration */
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        will-change: transform;
     }
     
-    .btn-primary,
-    .btn-secondary {
-        width: 100%;
-        justify-content: center;
-        min-height: 50px;
-        font-size: 16px;
-        touch-action: manipulation;
+    .showcase-card:nth-child(1) {
+        right: 20px;
     }
     
-    /* Optimize hero CTA buttons */
-    .hero-cta {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
+    .showcase-card:nth-child(2) {
+        right: 0;
     }
     
-    .hero-cta .btn {
-        width: 100%;
+    .showcase-card:nth-child(3) {
+        display: none;
     }
-    
-    /* Improve mobile card performance */
-    .category-card,
-    .testimonial-card {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-    }
-    
-}
-
-@media (max-width: 480px) {
-    .hero-section {
-        padding: 40px 0;
-    }
-    
-    .hero-title {
-        font-size: 28px;
-        line-height: 1.2;
-    }
-    
-    .hero-subtitle {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-    
-    .section-title,
-    .testimonials-title {
-        font-size: 24px;
-        line-height: 1.2;
-    }
-    
-    .section-subtitle,
-    .testimonials-subtitle {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-    
-    /* Smaller buttons for very small screens */
-    .btn-primary,
-    .btn-secondary {
-        min-height: 48px;
-        font-size: 15px;
-        padding: 12px 16px;
-    }
-    
-    .hero-cards {
-        height: 350px;
-    }
-    
-    .invitation-card {
-        width: 260px;
-        padding: 24px;
-    }
-    
-    .category-card,
-    .testimonial-card {
-        padding: 24px;
-    }
-    
 }
 </style>
 {% endblock %}
 
 {% block content %}
-    <!-- Hero Section -->
+<!-- Professional Hero Section -->
 <section class="hero-section">
-    <div class="hero-container">
-        <div class="hero-content">
-                        <h1 class="hero-title">
-                <span class="title-normal">Invitations That </span>
-                <span class="title-spark">Spark </span>
-                <span class="title-joy">Joy</span>
-                        </h1>
-            <p class="hero-subtitle">Where every celebration begins with a beautifully crafted invitation that tells your unique story. From your heart to their hands.</p>
-            
-            <div class="hero-cta">
-                <a href="{{ url_for('templates') }}" class="btn btn-primary">
-                    Create Your Invite
-                </a>
-                <a href="#categories" class="btn btn-secondary">Explore Themes</a>
-                            </div>
-                        </div>
-                        
-        <div class="hero-cards">
-            <div class="invitation-card-stack" id="imageCardStack">
-                <!-- Lottie Animation Background -->
-                <div id="lottie-animation-back" class="lottie-animation-back"></div>
-                
-                <!-- Lottie Animation Front -->
-                <div id="lottie-animation-front" class="lottie-animation-front"></div>
-                
-                {% if home_images and home_images|length > 0 %}
-                    {% for image in home_images[:10] %}
-                    <div class="invitation-card image-card" data-image-index="{{ loop.index0 }}" data-image-path="{{ image.path }}" style="background-image: url('{{ image.path }}'); background-size: cover; background-position: center; background-repeat: no-repeat; position: absolute; width: 420px; height: 520px; border-radius: 20px; overflow: hidden; display: block; visibility: visible; opacity: 1;">
-                        <!-- Fallback img tag for debugging -->
-                        <img src="{{ image.path }}" alt="Invitation {{ loop.index }}" style="display: none;" onload="console.log('Image loaded successfully: {{ image.path }}');" onerror="console.error('Image failed to load: {{ image.path }}');">
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <!-- Fallback cards if no images -->
-                <div class="invitation-card">
-                    <div class="card-icon">💍</div>
-                    <div class="card-title">Sarah & James</div>
-                    <div class="card-content">REQUEST THE HONOUR OF YOUR<br>2025<br>Napa Valley</div>
-                            </div>
-                <div class="invitation-card">
-                    <div class="card-icon">🏆</div>
-                    <div class="card-title">Annual Gala</div>
-                    <div class="card-content">You're invited to our celebration of excellence<br><br>December 20, 2025<br>Grand Ballroom</div>
-                        </div>
-                <div class="invitation-card">
-                    <div class="card-icon">🎂</div>
-                    <div class="card-title">Sweet Six</div>
-                    <div class="card-content">Join us for an unforgettable<br>celebration<br><br>Emma's Birthday Bash<br>Saturday, 8 PM</div>
-                    </div>
-                {% endif %}
-                    </div>
-        </div>
-    </div>
-</section>
-
-<!-- Event Categories Section -->
-<section class="event-categories" id="categories">
-    <div class="section-header">
-        <h2 class="section-title">
-            <span class="title-normal">Every Occasion </span>
-            <span class="title-magic">Deserves Magic</span>
-        </h2>
-        <p class="section-subtitle">From intimate gatherings to grand celebrations, create invitations that capture the essence of your special moment</p>
-        </div>
-        
-    <div class="categories-grid">
-        <div class="category-card" data-category="wedding" {% if category_images and category_images.get('wedding') %}style="--category-bg-image: url('{{ category_images['wedding'] }}');"{% endif %}>
-            <div class="category-card-image"></div>
-            <div class="category-content">
-                <div>
-                    <div class="category-icon">💖</div>
-                    <h3 class="category-title">Weddings</h3>
-                    <p class="category-description">Elegant invites for your forever moment</p>
+    <div class="container-custom">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">✨ Trusted by 10,000+ Event Creators</div>
+                <h1 class="hero-title">
+                    Create <span class="highlight">Beautiful</span> Invitations in Minutes
+                </h1>
+                <p class="hero-subtitle">
+                    Professional digital invitations for weddings, birthdays, corporate events, and every special moment. No design skills required.
+                </p>
+                <div class="hero-buttons">
+                    <a href="{{ url_for('templates') }}" class="btn-professional btn-primary-pro">
+                        <i class="fas fa-magic"></i>
+                        Start Creating Free
+                    </a>
+                    <a href="#how-it-works" class="btn-professional btn-secondary-pro">
+                        <i class="fas fa-play-circle"></i>
+                        See How It Works
+                    </a>
                 </div>
-                <a href="{{ url_for('templates') }}" class="category-link">
-                    Explore Themes
-                </a>
-                </div>
-                </div>
-                
-        <div class="category-card" data-category="birthday" {% if category_images and category_images.get('birthday') %}style="--category-bg-image: url('{{ category_images['birthday'] }}');"{% endif %}>
-            <div class="category-card-image"></div>
-            <div class="category-content">
-                <div>
-                    <div class="category-icon">🎂</div>
-                    <h3 class="category-title">Birthdays</h3>
-                    <p class="category-description">Celebrate another trip around the sun</p>
-                </div>
-                <a href="{{ url_for('templates') }}" class="category-link">
-                    Explore Themes
-                </a>
-            </div>
             </div>
             
-        <div class="category-card" data-category="corporate" {% if category_images and category_images.get('corporate') %}style="--category-bg-image: url('{{ category_images['corporate'] }}');"{% endif %}>
-            <div class="category-card-image"></div>
-            <div class="category-content">
-                <div>
-                    <div class="category-icon">💼</div>
-                    <h3 class="category-title">Corporate</h3>
-                    <p class="category-description">Professional events with sophistication</p>
-        </div>
-                <a href="{{ url_for('templates') }}" class="category-link">
-                    Explore Themes
-                </a>
-    </div>
-        </div>
-        
-        <div class="category-card" data-category="babyshower" {% if category_images and category_images.get('babyshower') %}style="--category-bg-image: url('{{ category_images['babyshower'] }}');"{% endif %}>
-            <div class="category-card-image"></div>
-            <div class="category-content">
-                <div>
-                    <div class="category-icon">👶</div>
-                    <h3 class="category-title">Baby Showers</h3>
-                    <p class="category-description">Welcome the newest bundle of joy</p>
-            </div>
-                <a href="{{ url_for('templates') }}" class="category-link">
-                    Explore Themes
-                </a>
-            </div>
-            </div>
-        
-        <div class="category-card" data-category="anniversary" {% if category_images and category_images.get('anniversary') %}style="--category-bg-image: url('{{ category_images['anniversary'] }}');"{% endif %}>
-            <div class="category-card-image"></div>
-            <div class="category-content">
-                <div>
-                    <div class="category-icon">🎁</div>
-                    <h3 class="category-title">Anniversaries</h3>
-                    <p class="category-description">Honor years of love and memories</p>
-        </div>
-                <a href="{{ url_for('templates') }}" class="category-link">
-                    Explore Themes
-                </a>
-                    </div>
+            <div class="hero-visual">
+                <div class="card-showcase">
+                    {% if home_images and home_images|length > 0 %}
+                        {% for image in home_images[:3] %}
+                        <div class="showcase-card">
+                            <img src="{{ image.path }}" alt="Invitation {{ loop.index }}" loading="lazy">
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="showcase-card">
+                            <img src="/static/images/home1/wedding.jpg" alt="Wedding Invitation" loading="lazy">
+                        </div>
+                        <div class="showcase-card">
+                            <img src="/static/images/home1/birthday.jpg" alt="Birthday Invitation" loading="lazy">
+                        </div>
+                        <div class="showcase-card">
+                            <img src="/static/images/home1/corporate.jpg" alt="Corporate Event" loading="lazy">
+                        </div>
+                    {% endif %}
                 </div>
-                
-        <div class="category-card" data-category="custom" {% if category_images and category_images.get('custom') %}style="--category-bg-image: url('{{ category_images['custom'] }}');"{% endif %}>
-            <div class="category-card-image"></div>
-            <div class="category-content">
-                <div>
-                    <div class="category-icon">✨</div>
-                    <h3 class="category-title">Custom Events</h3>
-                    <p class="category-description">Any occasion worth celebrating</p>
-                                </div>
-                <a href="{{ url_for('templates') }}" class="category-link">
-                    Explore Themes
-                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Features Section - Why Choose Us -->
-<section class="features-section" style="padding: 100px 0; background: rgba(255, 255, 255, 0.7); position: relative; z-index: 1;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 40px;">
-        <div class="section-header" style="text-align: center; margin-bottom: 60px;">
-            <h2 class="section-title">
-                <span class="title-normal">Why </span>
-                <span class="title-magic">EventCraft Pro</span>
-                <span class="title-normal">?</span>
-            </h2>
-            <p class="section-subtitle">Everything you need to create stunning invitations in minutes</p>
+<!-- Categories Section -->
+<section class="section-professional" id="categories">
+    <div class="container-custom">
+        <div class="section-header-pro">
+            <div class="section-subtitle-small">Event Categories</div>
+            <h2 class="section-title-pro">Perfect for Every Occasion</h2>
+            <p class="section-description">From intimate gatherings to grand celebrations, we have the perfect template for your special moment.</p>
         </div>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
-            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
-                <div style="font-size: 48px; margin-bottom: 20px;">⚡</div>
-                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Lightning Fast</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Create beautiful invitations in under 5 minutes with our intuitive drag-and-drop interface</p>
+        <div class="categories-grid-pro">
+            <div class="category-card-pro">
+                <div class="category-image" style="background-image: url('{{ category_images.get("wedding", "/static/images/home1/wedding.jpg") }}');">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-body">
+                    <div class="category-icon-pro">💍</div>
+                    <h3 class="category-title-pro">Weddings</h3>
+                    <p class="category-desc">Elegant invitations for your special day</p>
+                    <a href="{{ url_for('templates') }}" class="category-link-pro">
+                        Browse Templates <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
             
-            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
-                <div style="font-size: 48px; margin-bottom: 20px;">🎨</div>
-                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Designer Templates</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Choose from 100+ professionally designed templates for every occasion</p>
+            <div class="category-card-pro">
+                <div class="category-image" style="background-image: url('{{ category_images.get("birthday", "/static/images/home1/birthday.jpg") }}');">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-body">
+                    <div class="category-icon-pro">🎂</div>
+                    <h3 class="category-title-pro">Birthdays</h3>
+                    <p class="category-desc">Celebrate another year with style</p>
+                    <a href="{{ url_for('templates') }}" class="category-link-pro">
+                        Browse Templates <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
             
-            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
-                <div style="font-size: 48px; margin-bottom: 20px;">📱</div>
-                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Mobile Optimized</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Perfect viewing experience on any device - phone, tablet, or desktop</p>
+            <div class="category-card-pro">
+                <div class="category-image" style="background-image: url('{{ category_images.get("corporate", "/static/images/home1/corporate.jpg") }}');">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-body">
+                    <div class="category-icon-pro">💼</div>
+                    <h3 class="category-title-pro">Corporate Events</h3>
+                    <p class="category-desc">Professional invites for business</p>
+                    <a href="{{ url_for('templates') }}" class="category-link-pro">
+                        Browse Templates <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
             
-            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
-                <div style="font-size: 48px; margin-bottom: 20px;">✉️</div>
-                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Easy Sharing</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Share via WhatsApp, email, or social media with a single click</p>
+            <div class="category-card-pro">
+                <div class="category-image" style="background-image: url('{{ category_images.get("babyshower", "/static/images/home1/babyshower.jpg") }}');">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-body">
+                    <div class="category-icon-pro">👶</div>
+                    <h3 class="category-title-pro">Baby Showers</h3>
+                    <p class="category-desc">Welcome the newest arrival</p>
+                    <a href="{{ url_for('templates') }}" class="category-link-pro">
+                        Browse Templates <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
             
-            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
-                <div style="font-size: 48px; margin-bottom: 20px;">🌍</div>
-                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Multi-Language</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Support for English, Hindi, Telugu, Kannada and more languages</p>
+            <div class="category-card-pro">
+                <div class="category-image" style="background-image: url('{{ category_images.get("anniversary", "/static/images/home1/anniversary.jpg") }}');">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-body">
+                    <div class="category-icon-pro">💖</div>
+                    <h3 class="category-title-pro">Anniversaries</h3>
+                    <p class="category-desc">Celebrate love and milestones</p>
+                    <a href="{{ url_for('templates') }}" class="category-link-pro">
+                        Browse Templates <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
             
-            <div class="feature-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: all 0.3s ease;">
-                <div style="font-size: 48px; margin-bottom: 20px;">📊</div>
-                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Track RSVPs</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Know who's coming with built-in RSVP tracking and guest management</p>
+            <div class="category-card-pro">
+                <div class="category-image" style="background-image: url('{{ category_images.get("custom", "/static/images/home1/customevents.jpg") }}');">
+                    <div class="category-overlay"></div>
+                </div>
+                <div class="category-body">
+                    <div class="category-icon-pro">✨</div>
+                    <h3 class="category-title-pro">Custom Events</h3>
+                    <p class="category-desc">Any occasion worth celebrating</p>
+                    <a href="{{ url_for('templates') }}" class="category-link-pro">
+                        Browse Templates <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section-professional" style="background: #FFFFFF;">
+    <div class="container-custom">
+        <div class="section-header-pro">
+            <div class="section-subtitle-small">Why Choose Us</div>
+            <h2 class="section-title-pro">Everything You Need</h2>
+            <p class="section-description">Professional tools and features to create stunning invitations effortlessly.</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card-pro">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">Lightning Fast</h3>
+                <p class="feature-desc">Create beautiful invitations in under 5 minutes with our intuitive editor.</p>
+            </div>
+            
+            <div class="feature-card-pro">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">100+ Templates</h3>
+                <p class="feature-desc">Professionally designed templates for every type of event and occasion.</p>
+            </div>
+            
+            <div class="feature-card-pro">
+                <div class="feature-icon">📱</div>
+                <h3 class="feature-title">Mobile Perfect</h3>
+                <p class="feature-desc">Your invitations look stunning on any device, anywhere.</p>
+            </div>
+            
+            <div class="feature-card-pro">
+                <div class="feature-icon">✉️</div>
+                <h3 class="feature-title">Easy Sharing</h3>
+                <p class="feature-desc">Share via WhatsApp, email, or social media with one click.</p>
+            </div>
+            
+            <div class="feature-card-pro">
+                <div class="feature-icon">🌍</div>
+                <h3 class="feature-title">Multi-Language</h3>
+                <p class="feature-desc">Support for English, Hindi, Telugu, Tamil, Kannada and more.</p>
+            </div>
+            
+            <div class="feature-card-pro">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">RSVP Tracking</h3>
+                <p class="feature-desc">Built-in RSVP management and guest tracking system.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- How It Works Section -->
-<section class="how-it-works-section" style="padding: 100px 0; background: rgba(255, 255, 255, 0.8); position: relative; z-index: 1;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 40px;">
-        <div class="section-header" style="text-align: center; margin-bottom: 60px;">
-            <h2 class="section-title">
-                <span class="title-normal">Create Your Perfect </span>
-                <span class="title-magic">Invitation</span>
-            </h2>
-            <p class="section-subtitle">Just 3 simple steps to wow your guests</p>
+<section class="section-professional" id="how-it-works">
+    <div class="container-custom">
+        <div class="section-header-pro">
+            <div class="section-subtitle-small">Simple Process</div>
+            <h2 class="section-title-pro">How It Works</h2>
+            <p class="section-description">Create your perfect invitation in just 3 simple steps.</p>
         </div>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
-            <div class="step-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; position: relative;">
-                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--reddish-brown), var(--golden-yellow)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">1</div>
-                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Choose a Template</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Browse through our stunning collection and pick your favorite design</p>
+        <div class="steps-grid">
+            <div class="step-card-pro">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Choose Template</h3>
+                <p class="step-desc">Browse our collection and select your favorite design from 100+ options.</p>
             </div>
             
-            <div class="step-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; position: relative;">
-                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--golden-yellow), var(--golden-yellow-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">2</div>
-                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Customize Details</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Add your event details, photos, and personal touch with our easy editor</p>
+            <div class="step-card-pro">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Customize</h3>
+                <p class="step-desc">Add your details, photos, and personalize every element easily.</p>
             </div>
             
-            <div class="step-card animate-on-scroll" style="background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; position: relative;">
-                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--reddish-brown-dark), var(--reddish-brown)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; font-weight: 700; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">3</div>
-                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 12px; color: var(--text-dark);">Share & Celebrate</h3>
-                <p style="color: var(--text-gray); line-height: 1.6;">Send your beautiful invitation to guests via link, email, or social media</p>
+            <div class="step-card-pro">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Share</h3>
+                <p class="step-desc">Send your beautiful invitation to guests instantly via link or social media.</p>
             </div>
         </div>
         
-        <div style="text-align: center; margin-top: 50px;">
-            <a href="{{ url_for('templates') }}" class="btn btn-primary" style="font-size: 18px; padding: 16px 40px;">
-                Start Creating Now →
+        <div style="text-align: center; margin-top: 48px;">
+            <a href="{{ url_for('templates') }}" class="btn-professional btn-primary-pro" style="padding: 18px 40px; font-size: 16px;">
+                Start Creating Now <i class="fas fa-arrow-right"></i>
             </a>
         </div>
     </div>
 </section>
 
 <!-- Testimonials Section -->
-<section class="testimonials-section">
-    <div class="testimonials-header">
-        <h2 class="testimonials-title">
-            <span class="title-loved">Loved by </span>
-            <span class="title-happy">Happy </span>
-            <span class="title-hosts">Hosts</span>
-        </h2>
-        <p class="testimonials-subtitle">Join thousands who've created unforgettable invitations</p>
+<section class="section-professional" style="background: #FFFFFF;">
+    <div class="container-custom">
+        <div class="section-header-pro">
+            <div class="section-subtitle-small">Testimonials</div>
+            <h2 class="section-title-pro">Loved by Thousands</h2>
+            <p class="section-description">See what our happy customers have to say about their experience.</p>
         </div>
         
-    <div class="testimonials-grid">
-        <div class="testimonial-card">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">"Made my wedding invites absolutely magical! Everyone was asking where I got them designed."</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">SC</div>
-                <div class="author-info">
-                    <div class="author-name">Sophia Chen</div>
-                    <div class="author-role">Bride</div>
-                </div>
-                </div>
-            </div>
-            
-        <div class="testimonial-card">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">"The easiest invitation tool I've ever used. My clients love the professional results."</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">MW</div>
-                <div class="author-info">
-                    <div class="author-name">Marcus Williams</div>
-                    <div class="author-role">Event Planner</div>
-                </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card-pro">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Absolutely stunning! Made my wedding invitations in minutes. Everyone loved the design and how easy it was to RSVP."</p>
+                <div class="testimonial-author-pro">
+                    <div class="author-avatar-pro">SC</div>
+                    <div class="author-info-pro">
+                        <div class="author-name-pro">Sarah Chen</div>
+                        <div class="author-role-pro">Bride</div>
+                    </div>
                 </div>
             </div>
             
-        <div class="testimonial-card">
-            <div class="testimonial-stars">★★★★★</div>
-            <p class="testimonial-text">"Created the perfect baby shower invites in minutes. The themes are so beautiful and elegant!"</p>
-            <div class="testimonial-author">
-                <div class="author-avatar">PP</div>
-                <div class="author-info">
-                    <div class="author-name">Priya Patel</div>
-                    <div class="author-role">Mother-to-be</div>
+            <div class="testimonial-card-pro">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"The easiest invitation platform I've used. My clients are always impressed with the professional results."</p>
+                <div class="testimonial-author-pro">
+                    <div class="author-avatar-pro">MW</div>
+                    <div class="author-info-pro">
+                        <div class="author-name-pro">Marcus Williams</div>
+                        <div class="author-role-pro">Event Planner</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card-pro">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Created perfect baby shower invites that looked like they cost hundreds. The templates are gorgeous!"</p>
+                <div class="testimonial-author-pro">
+                    <div class="author-avatar-pro">PP</div>
+                    <div class="author-info-pro">
+                        <div class="author-name-pro">Priya Patel</div>
+                        <div class="author-role-pro">Mother-to-be</div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container-custom">
+        <h2 class="cta-title">Ready to Create Your Perfect Invitation?</h2>
+        <p class="cta-text">Join thousands of happy event creators. Start for free, no credit card required.</p>
+        <a href="{{ url_for('templates') }}" class="btn-cta">
+            Get Started Free <i class="fas fa-arrow-right"></i>
+        </a>
     </div>
 </section>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
-// Smooth scroll animations
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Lottie Animations
-    if (typeof lottie !== 'undefined') {
-        const backContainer = document.getElementById('lottie-animation-back');
-        const frontContainer = document.getElementById('lottie-animation-front');
-        
-        // Background Animation - Floating particles (reliable public animation)
-        try {
-            const backAnimation = lottie.loadAnimation({
-                container: backContainer,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                path: 'https://assets1.lottiefiles.com/packages/lf20_jcikwtux.json' // Floating particles
-            });
-            
-            if (backAnimation) {
-                backAnimation.setSpeed(0.7);
-            }
-        } catch (error) {
-            console.log('Lottie back animation failed:', error);
-            if (backContainer) backContainer.style.display = 'none';
-        }
-        
-        // Front Animation - Sparkles/celebration (reliable public animation)
-        try {
-            const frontAnimation = lottie.loadAnimation({
-                container: frontContainer,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                path: 'https://assets5.lottiefiles.com/packages/lf20_ufdxj4lk.json' // Sparkles
-            });
-            
-            if (frontAnimation) {
-                frontAnimation.setSpeed(1.0);
-            }
-        } catch (error) {
-            console.log('Lottie front animation failed:', error);
-            if (frontContainer) frontContainer.style.display = 'none';
-        }
-        } else {
-        // Hide animation containers if Lottie library fails to load
-        const backContainer = document.getElementById('lottie-animation-back');
-        const frontContainer = document.getElementById('lottie-animation-front');
-        if (backContainer) backContainer.style.display = 'none';
-        if (frontContainer) frontContainer.style.display = 'none';
-    }
+    // Simple showcase card rotation on hover
+    const showcaseCards = document.querySelectorAll('.showcase-card');
+    let currentIndex = 0;
     
-    // Enhanced Intersection Observer for fade-in animations with stagger
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -80px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                const delay = index * 100; // Stagger effect
-                setTimeout(() => {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0) scale(1)';
-                    entry.target.classList.add('animate-visible');
-                }, delay);
-            }
-        });
-    }, observerOptions);
-    
-    // Observe all cards with enhanced animations
-    document.querySelectorAll('.category-card, .testimonial-card, .section-header, .feature-card, .step-card, .stat-item').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px) scale(0.95)';
-        card.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-        observer.observe(card);
-    });
-    
-    // Animate all sections
-    document.querySelectorAll('section').forEach((section, index) => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(40px)';
-        section.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-        observer.observe(section);
-    });
-    
-    // Animate hero content with delay
-    document.querySelectorAll('.hero-title, .hero-subtitle').forEach((el, index) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = `all 0.8s cubic-bezier(0.4, 0, 0.2, 1)`;
-            setTimeout(() => {
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
-        }, 300 + index * 200);
-    });
-    
-    // Interactive stacked image card carousel
-    const imageCards = document.querySelectorAll('.invitation-card.image-card');
-    const cardStack = document.getElementById('imageCardStack');
-    let currentImageIndex = 0;
-    let isDragging = false;
-    let dragStartX = 0;
-    let lastCycleTime = 0;
-    const cycleDelay = 600; // Minimum time between cycles (ms)
-    
-    console.log('Image cards found:', imageCards.length);
-    
-    if (imageCards.length > 0) {
-        // Initialize: Show first few cards, hide others
-        imageCards.forEach((card, index) => {
-            const cardIndex = parseInt(card.getAttribute('data-image-index')) || index;
-            
-            // Ensure card has proper positioning
-            if (!card.style.position || card.style.position === '') {
-                card.style.position = 'absolute';
-            }
-            
-            // Position cards in a stacked effect
-            if (index < 3) {
-                // Show first 3 cards with different positions and rotations
-                const zIndex = 3 - index;
-                card.style.zIndex = zIndex.toString();
-                card.style.opacity = '1';
-                card.style.visibility = 'visible';
-                card.style.display = 'block';
-                
-                // Different positions for each visible card
-                if (index === 0) {
-                    card.style.top = '0px';
-                    card.style.right = '0px';
-                    card.style.transform = 'rotate(-5deg)';
-                } else if (index === 1) {
-                    card.style.top = '80px';
-                    card.style.right = '40px';
-                    card.style.transform = 'rotate(3deg)';
-                } else if (index === 2) {
-                    card.style.top = '160px';
-                    card.style.right = '80px';
-                    card.style.transform = 'rotate(-2deg)';
-                }
-                
-                console.log(`Card ${index} initialized at z-index ${zIndex}, position: top=${card.style.top}, right=${card.style.right}`);
-            } else {
-                // Hide cards beyond the first 3
-                card.style.zIndex = '0';
-                card.style.opacity = '0';
-                card.style.visibility = 'hidden';
-                card.style.display = 'none';
-                card.style.transform = 'scale(0.8) translateX(-100px)';
-            }
-        });
-        
-        console.log('Image cards initialized successfully');
-        
-        // Function to cycle to next image
-        function cycleToNextImage() {
-            const now = Date.now();
-            if (now - lastCycleTime < cycleDelay) {
-                return; // Prevent too frequent cycling
-            }
-            lastCycleTime = now;
-            
-            if (imageCards.length === 0) return;
-            
-            // Find and hide current top card
-            const currentTopCard = Array.from(imageCards).find(card => {
-                const zIndex = parseInt(card.style.zIndex) || 0;
-                return zIndex === 3;
-            });
-            
-            if (currentTopCard) {
-                // Animate current top card out
-                currentTopCard.style.zIndex = '0';
-                currentTopCard.style.opacity = '0';
-                currentTopCard.style.visibility = 'hidden';
-                currentTopCard.style.transform = 'translateX(-150px) rotate(-15deg) scale(0.7)';
-                currentTopCard.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            }
-            
-            // Move all visible cards up one level
-            imageCards.forEach(card => {
-                const currentZ = parseInt(card.style.zIndex) || 0;
-                if (currentZ > 0 && currentZ < 3) {
-                    const newZ = currentZ + 1;
-                    card.style.zIndex = newZ.toString();
-                    
-                    // Update position based on new z-index
-                    if (newZ === 2) {
-                        card.style.top = '0px';
-                        card.style.right = '0px';
-                        card.style.transform = 'rotate(-5deg)';
-                        card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                    } else if (newZ === 3) {
-                        card.style.top = '80px';
-                        card.style.right = '40px';
-                        card.style.transform = 'rotate(3deg)';
-                        card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                    }
+    if (showcaseCards.length > 3) {
+        setInterval(() => {
+            showcaseCards.forEach((card, index) => {
+                if (index === currentIndex % showcaseCards.length) {
+                    card.style.zIndex = '3';
+                    card.style.opacity = '1';
+                } else if (index === (currentIndex + 1) % showcaseCards.length) {
+                    card.style.zIndex = '2';
+                    card.style.opacity = '0.9';
+                } else if (index === (currentIndex + 2) % showcaseCards.length) {
+                    card.style.zIndex = '1';
+                    card.style.opacity = '0.7';
+                } else {
+                    card.style.zIndex = '0';
+                    card.style.opacity = '0';
                 }
             });
-            
-            // Show next card from the back (find the one with z-index 0)
-            currentImageIndex = (currentImageIndex + 1) % imageCards.length;
-            const nextCard = imageCards[currentImageIndex];
-            
-            // Reset and show next card
-            setTimeout(() => {
-                nextCard.style.zIndex = '1';
-                nextCard.style.opacity = '1';
-                nextCard.style.visibility = 'visible';
-                nextCard.style.top = '160px';
-                nextCard.style.right = '80px';
-                nextCard.style.transform = 'rotate(-2deg)';
-                nextCard.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            }, 100);
-        }
-        
-        // Hover effect: Show next image on hover
-        if (cardStack) {
-            let hoverTimeout;
-            cardStack.addEventListener('mouseenter', function() {
-                hoverTimeout = setTimeout(() => {
-                    cycleToNextImage();
-                }, 800); // Cycle after 800ms of hover
-            });
-            
-            cardStack.addEventListener('mouseleave', function() {
-                if (hoverTimeout) {
-                    clearTimeout(hoverTimeout);
-                }
-            });
-        }
-        
-        // Drag effect: Cycle through images while dragging
-        if (cardStack) {
-            cardStack.addEventListener('mousedown', function(e) {
-                isDragging = true;
-                dragStartX = e.clientX;
-            });
-            
-            let dragCycleTimeout;
-            cardStack.addEventListener('mousemove', function(e) {
-                if (isDragging) {
-                    const dragDistance = Math.abs(e.clientX - dragStartX);
-                    if (dragDistance > 80 && !dragCycleTimeout) {
-                        cycleToNextImage();
-                        dragStartX = e.clientX; // Reset to prevent continuous cycling
-                        dragCycleTimeout = setTimeout(() => {
-                            dragCycleTimeout = null;
-                        }, cycleDelay);
-                    }
-                }
-            });
-            
-            cardStack.addEventListener('mouseup', function() {
-                isDragging = false;
-                if (dragCycleTimeout) {
-                    clearTimeout(dragCycleTimeout);
-                    dragCycleTimeout = null;
-                }
-            });
-            
-            cardStack.addEventListener('mouseleave', function() {
-                isDragging = false;
-                if (dragCycleTimeout) {
-                    clearTimeout(dragCycleTimeout);
-                    dragCycleTimeout = null;
-                }
-            });
-        }
-        
-        // Card hover tilt effect for individual cards (only on top card)
-        imageCards.forEach(card => {
-            card.addEventListener('mousemove', function(e) {
-                if (!isDragging) {
-                    const currentZ = parseInt(card.style.zIndex) || 0;
-                    // Only apply tilt if this is the top card
-                    if (currentZ === 3) {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        const rotateX = (y - centerY) / 15;
-                        const rotateY = (centerX - x) / 15;
-                        
-                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px) scale(1.05)`;
-                    }
-                }
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                // Reset to default position for this card's z-index
-                const currentZ = parseInt(card.style.zIndex) || 0;
-                if (currentZ === 3) {
-                    card.style.transform = 'rotate(3deg) translateY(0) scale(1)';
-                } else if (currentZ === 2) {
-                    card.style.transform = 'rotate(-5deg) translateY(0) scale(1)';
-                } else if (currentZ === 1) {
-                    card.style.transform = 'rotate(-2deg) translateY(0) scale(1)';
-                }
-            });
-        });
-        
-        // Auto-cycle every 5 seconds - continuous rotation
-        let autoCycleInterval;
-        if (document.hasFocus()) {
-            autoCycleInterval = setInterval(() => {
-                if (document.hasFocus() && !isDragging) {
-                    const hovered = cardStack && cardStack.matches(':hover');
-                    if (!hovered) {
-                        cycleToNextImage();
-                    }
-                }
-            }, 5000); // Changed to 5 seconds as requested
-        }
-        
-        // Pause auto-cycle when page loses focus
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) {
-                if (autoCycleInterval) {
-                    clearInterval(autoCycleInterval);
-                }
-            } else {
-                autoCycleInterval = setInterval(() => {
-                    if (document.hasFocus() && !isDragging) {
-                        const hovered = cardStack && cardStack.matches(':hover');
-                        if (!hovered) {
-                            cycleToNextImage();
-                        }
-                    }
-                }, 5000); // Changed to 5 seconds as requested
-            }
-        });
-    } else {
-        // Fallback: Original card hover tilt effect for non-image cards
-    document.querySelectorAll('.invitation-card').forEach(card => {
-        card.addEventListener('mousemove', function(e) {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            card.style.transform = '';
-        });
-    });
+            currentIndex++;
+        }, 3000);
     }
 });
 </script>
