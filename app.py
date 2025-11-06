@@ -33,18 +33,21 @@ app.permanent_session_lifetime = timedelta(days=7)  # Sessions last 7 days
 
 # Configure the database
 database_url = os.environ.get("DATABASE_URL")
-if not database_url:
-    # For Render, we need a PostgreSQL database
-    # Fallback to SQLite only for local development
-    if os.environ.get("FLASK_ENV") != "production":
+
+# If DATABASE_URL is not set OR is set to placeholder, use SQLite for local development
+if not database_url or "placeholder" in database_url:
+    # Check if we're on Render (production)
+    if os.environ.get("RENDER"):
+        # Production on Render - require proper DATABASE_URL
+        raise ValueError("DATABASE_URL must be set in production on Render")
+    else:
+        # Local development - use SQLite
+        print("Using SQLite for local development")
         db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'database'))
         os.makedirs(db_dir, exist_ok=True)
         db_file = os.path.join(db_dir, 'eventcraft.db')
         database_url = f'sqlite:///{db_file}'
-    else:
-        # In production, try to use a default database or give helpful error
-        # Don't crash the app, just use a placeholder that will fail gracefully
-        database_url = "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+        print(f"Database: {db_file}")
 
 # Fix for Render PostgreSQL (convert postgres:// to postgresql://)
 if database_url and database_url.startswith('postgres://'):
