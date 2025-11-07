@@ -1419,71 +1419,85 @@ def register_routes(app):
 
     @app.route('/create-invitation')
     def create_invitation():
-        if not is_authenticated():
-            flash('Please login to create an invitation', 'error')
-            return redirect(url_for('auth'))
-        
-        # Get template and event_type parameters
-        selected_template = request.args.get('template')
-        template_id = request.args.get('template_id')  # Template ID from database
-        event_type = request.args.get('event_type', 'birthday')  # Default to birthday
-        
-        # If no template is selected, redirect to templates page to select event and template first
-        if not selected_template and not template_id:
-            return redirect(url_for('templates'))
-        
-        # Get current user information
         try:
-            current_user = User.query.get(session['user_id'])
-            if not current_user:
-                app.logger.error(f"User not found for session user_id: {session['user_id']}")
-                flash('User not found. Please login again.', 'error')
-                session.clear()
+            if not is_authenticated():
+                flash('Please login to create an invitation', 'error')
                 return redirect(url_for('auth'))
             
-        except Exception as e:
-            app.logger.error(f"Error getting user: {str(e)}")
-            flash('Error retrieving user information', 'error')
-            return redirect(url_for('auth'))
-        
-        # If template_id is provided, fetch the template from database
-        selected_template_obj = None
-        if template_id:
+            # Import form
+            from forms import InvitationForm
+            form = InvitationForm()
+            
+            # Get template and event_type parameters
+            selected_template = request.args.get('template')
+            template_id = request.args.get('template_id')  # Template ID from database
+            event_type = request.args.get('event_type', 'birthday')  # Default to birthday
+            
+            # If no template is selected, redirect to templates page to select event and template first
+            if not selected_template and not template_id:
+                return redirect(url_for('templates'))
+            
+            # Get current user information
             try:
-                selected_template_obj = Template.query.get(int(template_id))
-                if selected_template_obj:
-                    selected_template = selected_template_obj.name
-                    event_type = selected_template_obj.event_type  # Use template's event type
-            except (ValueError, TypeError):
-                pass
+                current_user = User.query.get(session['user_id'])
+                if not current_user:
+                    app.logger.error(f"User not found for session user_id: {session['user_id']}")
+                    flash('User not found. Please login again.', 'error')
+                    session.clear()
+                    return redirect(url_for('auth'))
+                
+            except Exception as e:
+                app.logger.error(f"Error getting user: {str(e)}")
+                flash('Error retrieving user information', 'error')
+                return redirect(url_for('auth'))
+            
+            # If template_id is provided, fetch the template from database
+            selected_template_obj = None
+            if template_id:
+                try:
+                    selected_template_obj = Template.query.get(int(template_id))
+                    if selected_template_obj:
+                        selected_template = selected_template_obj.name
+                        event_type = selected_template_obj.event_type  # Use template's event type
+                except (ValueError, TypeError) as e:
+                    app.logger.error(f"Error fetching template: {str(e)}")
+                    pass
+            
+            # Fetch templates for the selected event type - Only templates with images from templatesimages/
+            templates = Template.query.filter_by(event_type=event_type, is_active=True)\
+                .filter(Template.preview_image.like('/images/templatesimages/%'))\
+                .order_by(Template.name.asc()).all()
+            
+            # Also fetch all active templates for theme selection page - Only with templatesimages/
+            all_templates = Template.query.filter_by(is_active=True)\
+                .filter(Template.preview_image.like('/images/templatesimages/%'))\
+                .order_by(Template.event_type.asc(), Template.name.asc()).all()
+            
+            # Optimize: Only fetch active event types
+            event_types = EventType.query.filter_by(is_active=True).order_by(EventType.sort_order.asc()).limit(10).all()
+            
+            # Determine which step to show
+            # If template is selected, go directly to details form, otherwise show theme selection
+            show_details = bool(selected_template or template_id)
+            
+            return render_template('invitation/create.html', 
+                                 form=form,
+                                 event_types=event_types, 
+                                 selected_template=selected_template,
+                                 selected_template_obj=selected_template_obj,
+                                 template_id=template_id if 'template_id' in locals() else None,
+                                 templates=templates,
+                                 all_templates=all_templates,
+                                 event_type=event_type,
+                                 current_user=current_user,
+                                 show_details=show_details)
         
-        # Fetch templates for the selected event type - Only templates with images from templatesimages/
-        templates = Template.query.filter_by(event_type=event_type, is_active=True)\
-            .filter(Template.preview_image.like('/images/templatesimages/%'))\
-            .order_by(Template.name.asc()).all()
-        
-        # Also fetch all active templates for theme selection page - Only with templatesimages/
-        all_templates = Template.query.filter_by(is_active=True)\
-            .filter(Template.preview_image.like('/images/templatesimages/%'))\
-            .order_by(Template.event_type.asc(), Template.name.asc()).all()
-        
-        # Optimize: Only fetch active event types
-        event_types = EventType.query.filter_by(is_active=True).order_by(EventType.sort_order.asc()).limit(10).all()
-        
-        # Determine which step to show
-        # If template is selected, go directly to details form, otherwise show theme selection
-        show_details = bool(selected_template or template_id)
-        
-        return render_template('invitation/create.html', 
-                             event_types=event_types, 
-                             selected_template=selected_template,
-                             selected_template_obj=selected_template_obj,
-                             template_id=template_id if 'template_id' in locals() else None,
-                             templates=templates,
-                             all_templates=all_templates,
-                             event_type=event_type,
-                             current_user=current_user,
-                             show_details=show_details)
+        except Exception as e:
+            app.logger.error(f"CRITICAL ERROR in create_invitation: {str(e)}")
+            import traceback
+            app.logger.error(traceback.format_exc())
+            flash('An error occurred while loading the invitation creator. Please try again or contact support.', 'error')
+            return redirect(url_for('index'))
 
     @app.route('/create-invitation', methods=['POST'])
     def create_invitation_post():
