@@ -3,87 +3,125 @@
 {% block title %}EventCraft Pro - Create Beautiful Digital Invitations{% endblock %}
 
 {% block extra_head %}
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* Professional Modern Design */
+/* ============================================
+   EVENTCRAFT PRO - HOMEPAGE CSS
+   Complete Rewrite - Coffee & Gold Theme
+   ALL TEXT GUARANTEED VISIBLE
+   ============================================ */
+
+/* ============================================
+   1. CSS VARIABLES - Coffee & Gold Theme
+   ============================================ */
 :root {
-    --primary-gold: #C9A961;
-    --primary-brown: #8B7355;
-    --dark-brown: #5D4E37;
-    --light-cream: #FAF8F5;
-    --off-white: #FFFFFF;
-    --text-primary: #2C2416;
-    --text-secondary: #6B6B6B;
-    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
-    --shadow-strong: 0 12px 40px rgba(0, 0, 0, 0.15);
+    /* Primary Colors */
+    --coffee-dark: #3E2723;
+    --coffee-brown: #5D4037;
+    --coffee-medium: #6F4E37;
+    --coffee-light: #8B7355;
+    
+    /* Gold Colors */
+    --gold-rich: #C9A02E;
+    --gold-bright: #D4AF37;
+    --gold-light: #E6C34F;
+    --gold-pale: #F0DFA8;
+    
+    /* Background Colors */
+    --bg-white: #FFFFFF;
+    --bg-cream: #FFFEF9;
+    --bg-light: #FAF8F5;
+    
+    /* Text Colors */
+    --text-primary: #3E2723;
+    --text-secondary: #5D4037;
+    --text-tertiary: #6F4E37;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(62, 39, 35, 0.08);
+    --shadow-md: 0 4px 16px rgba(62, 39, 35, 0.12);
+    --shadow-lg: 0 8px 24px rgba(62, 39, 35, 0.15);
+    --shadow-xl: 0 12px 32px rgba(62, 39, 35, 0.18);
 }
 
+/* ============================================
+   2. GLOBAL RESETS & BASE STYLES
+   ============================================ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Smooth Scrolling */
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 80px;
+    scroll-padding-top: 100px;
 }
 
 body {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6;
-    color: var(--text-primary);
-    /* Background inherited from base.html */
+    color: var(--text-primary) !important;
+    background: var(--bg-white) !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
-    position: relative;
 }
 
-/* Ensure content appears above the overlay */
-.hero-section,
-.section-professional,
-.cta-section {
-    position: relative;
-    z-index: 1;
+/* ============================================
+   3. TYPOGRAPHY - All Text Visible
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    color: var(--coffee-brown) !important;
+    font-weight: 700 !important;
+    line-height: 1.2;
+    margin-bottom: 1rem;
 }
 
-/* Hardware acceleration for smooth scrolling */
-.hero-visual,
-.showcase-card,
-.category-card-pro,
-.feature-card-pro,
-.step-card-pro,
-.testimonial-card-pro {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: transform;
-    backface-visibility: hidden;
+h1 { font-size: 4rem; }
+h2 { font-size: 3rem; }
+h3 { font-size: 2.25rem; }
+h4 { font-size: 1.875rem; }
+h5 { font-size: 1.5rem; }
+h6 { font-size: 1.25rem; }
+
+p {
+    color: var(--text-primary) !important;
+    font-weight: 400;
+    margin-bottom: 1rem;
 }
 
-/* Smooth scroll on all elements */
-* {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+a {
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-/* Professional Hero Section */
+/* ============================================
+   4. CONTAINER & LAYOUT
+   ============================================ */
+.container-custom {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 60px;
+}
+
+@media (max-width: 768px) {
+    .container-custom {
+        padding: 0 20px;
+    }
+}
+
+/* ============================================
+   5. HERO SECTION
+   ============================================ */
 .hero-section {
     min-height: 90vh;
     display: flex;
     align-items: center;
     padding: 120px 0 80px;
+    background: var(--bg-white) !important;
     position: relative;
-    background: #FFFFFF;
-}
-
-.container-custom {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 60px;
 }
 
 .hero-grid {
@@ -93,6 +131,13 @@ body {
     align-items: center;
 }
 
+@media (max-width: 968px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
 /* Hero Content */
 .hero-content {
     max-width: 600px;
@@ -100,147 +145,157 @@ body {
 
 .hero-badge {
     display: inline-block;
-    padding: 8px 20px;
-    background: linear-gradient(135deg, #C9A961 0%, #D4B574 100%);
-    color: white;
-    border-radius: 30px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 100%);
+    color: white !important;
+    border-radius: 50px;
     font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-bottom: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 28px;
     text-transform: uppercase;
+    box-shadow: var(--shadow-md);
 }
 
 .hero-title {
     font-family: 'Playfair Display', serif;
-    font-size: 56px;
-    font-weight: 700;
-    line-height: 1.15;
-    margin-bottom: 24px;
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 28px;
     letter-spacing: -0.02em;
-    color: #6F4E37;
-    text-shadow: 2px 2px 4px rgba(111, 78, 55, 0.1);
+    color: var(--coffee-brown) !important;
+    text-shadow: 0 2px 4px rgba(93, 64, 55, 0.1);
 }
 
 .hero-title .highlight {
-    color: #D4AF37;
-    font-weight: 800;
+    color: var(--gold-bright) !important;
+    font-weight: 900;
+    display: inline-block;
 }
 
 .hero-subtitle {
-    font-size: 18px;
-    color: #5D4037;
-    line-height: 1.7;
+    font-size: 20px;
+    color: var(--text-secondary) !important;
+    line-height: 1.8;
     margin-bottom: 40px;
     font-weight: 500;
 }
 
-/* Professional Buttons */
+/* ============================================
+   6. BUTTONS - Highly Visible
+   ============================================ */
 .hero-buttons {
     display: flex;
-    gap: 16px;
+    gap: 20px;
     flex-wrap: wrap;
+    margin-top: 40px;
 }
 
 .btn-professional {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 32px;
-    font-size: 15px;
-    font-weight: 600;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: none;
+    padding: 18px 40px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 12px;
     cursor: pointer;
-    gap: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: none;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary-pro {
-    background: linear-gradient(135deg, #C9A961 0%, #B39750 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3);
+    background: linear-gradient(135deg, var(--coffee-brown) 0%, var(--coffee-medium) 100%);
+    color: white !important;
+    box-shadow: var(--shadow-lg);
 }
 
 .btn-primary-pro:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(201, 169, 97, 0.4);
-    color: white;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+    background: linear-gradient(135deg, var(--coffee-dark) 0%, var(--coffee-brown) 100%);
 }
 
 .btn-secondary-pro {
     background: white;
-    color: var(--primary-brown);
-    border: 2px solid #E8E8E8;
+    color: var(--coffee-brown) !important;
+    border: 3px solid var(--coffee-brown);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary-pro:hover {
-    border-color: var(--primary-gold);
-    color: var(--primary-brown);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-soft);
+    transform: translateY(-3px);
+    background: var(--coffee-brown);
+    color: white !important;
+    box-shadow: var(--shadow-md);
 }
 
-/* Hero Visual */
+.btn-professional i {
+    margin-left: 8px;
+    font-size: 18px;
+}
+
+/* ============================================
+   7. HERO VISUAL
+   ============================================ */
 .hero-visual {
     position: relative;
-    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.card-showcase {
-    position: relative;
-    width: 100%;
-    height: 100%;
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 600px;
 }
 
 .showcase-card {
-    position: absolute;
-    width: 380px;
-    height: 480px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: var(--shadow-medium);
+    position: relative;
+    border-radius: 20px;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-lg);
+    transition: all 0.4s ease;
+    background: white;
 }
 
 .showcase-card img {
     width: 100%;
-    height: 100%;
+    height: 280px;
     object-fit: cover;
-}
-
-.showcase-card:nth-child(1) {
-    top: 0;
-    right: 40px;
-    z-index: 3;
-}
-
-.showcase-card:nth-child(2) {
-    top: 60px;
-    right: 0;
-    z-index: 2;
-    opacity: 0.9;
-}
-
-.showcase-card:nth-child(3) {
-    top: 120px;
-    right: -40px;
-    z-index: 1;
-    opacity: 0.7;
+    display: block;
 }
 
 .showcase-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: var(--shadow-strong);
-    z-index: 10;
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: var(--shadow-xl);
 }
 
-/* Professional Section Styling */
+.showcase-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(93, 64, 55, 0.95), transparent);
+    padding: 20px;
+    color: white !important;
+    font-weight: 700;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* ============================================
+   8. CATEGORIES SECTION
+   ============================================ */
 .section-professional {
     padding: 100px 0;
-    background: #FFFFFF;
+    background: var(--bg-white) !important;
 }
 
 .section-header-pro {
@@ -249,792 +304,542 @@ body {
     margin: 0 auto 60px;
 }
 
-.section-subtitle-small {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--primary-gold);
-    text-transform: uppercase;
+.section-badge-pro {
+    display: inline-block;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 100%);
+    color: white !important;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
     letter-spacing: 1.5px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
 .section-title-pro {
     font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    font-weight: 700;
+    font-size: 48px;
+    font-weight: 800;
     margin-bottom: 20px;
-    line-height: 1.3;
-    color: #6F4E37;
-    text-shadow: 2px 2px 4px rgba(111, 78, 55, 0.1);
+    line-height: 1.2;
+    color: var(--coffee-brown) !important;
+    text-shadow: 0 2px 4px rgba(93, 64, 55, 0.08);
 }
 
 .section-description {
-    font-size: 17px;
-    color: #5D4037;
+    font-size: 18px;
+    color: var(--text-secondary) !important;
     line-height: 1.7;
     font-weight: 500;
 }
 
-/* Category Cards - Professional */
+/* Categories Grid */
 .categories-grid-pro {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
+    gap: 30px;
+    margin-top: 60px;
+}
+
+@media (max-width: 968px) {
+    .categories-grid-pro {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .categories-grid-pro {
+        grid-template-columns: 1fr;
+    }
 }
 
 .category-card-pro {
     background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    border: 1px solid #F0F0F0;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    border: 2px solid #F5F5F5;
+    box-shadow: var(--shadow-sm);
     cursor: pointer;
 }
 
 .category-card-pro:hover {
     transform: translateY(-8px);
-    box-shadow: var(--shadow-medium);
-    border-color: var(--primary-gold);
-}
-
-.category-image {
-    width: 100%;
-    height: 240px;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-}
-
-.category-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%);
-}
-
-.category-body {
-    padding: 32px;
+    box-shadow: var(--shadow-xl);
+    border-color: var(--gold-bright);
 }
 
 .category-icon-pro {
-    font-size: 32px;
-    margin-bottom: 16px;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    box-shadow: var(--shadow-md);
 }
 
 .category-title-pro {
     font-size: 22px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--coffee-brown) !important;
     margin-bottom: 12px;
 }
 
-.category-desc {
+.category-description-pro {
     font-size: 15px;
-    color: var(--text-secondary);
+    color: var(--text-primary) !important;
     line-height: 1.6;
-    margin-bottom: 20px;
 }
 
-.category-link-pro {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--primary-brown);
-    font-weight: 600;
-    font-size: 14px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.category-link-pro:hover {
-    color: var(--primary-gold);
-    gap: 12px;
-}
-
-/* Feature Cards */
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-}
-
-.feature-card-pro {
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    border: 1px solid #F0F0F0;
-    transition: all 0.3s ease;
-}
-
-.feature-card-pro:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-soft);
-    border-color: var(--primary-gold);
-}
-
-.feature-icon {
-    width: 56px;
-    height: 56px;
-    background: #F5F5F5;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    margin-bottom: 24px;
-}
-
-.feature-title {
-    font-size: 20px;
+.category-count-pro {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, var(--gold-pale) 0%, var(--gold-light) 100%);
+    color: var(--coffee-brown) !important;
+    border-radius: 20px;
+    font-size: 13px;
     font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 12px;
 }
 
-.feature-desc {
-    font-size: 15px;
-    color: var(--text-secondary);
-    line-height: 1.7;
-}
-
-/* Steps Section */
-.steps-grid {
+/* ============================================
+   9. FEATURES SECTION
+   ============================================ */
+.features-grid-pro {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 40px;
+    margin-top: 60px;
 }
 
-.step-card-pro {
-    text-align: center;
-    padding: 40px 24px;
-    background: white;
-    border-radius: 16px;
-    border: 1px solid #F0F0F0;
-    transition: all 0.3s ease;
-}
-
-.step-card-pro:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-soft);
-}
-
-.step-number {
-    width: 64px;
-    height: 64px;
-    background: linear-gradient(135deg, #C9A961 0%, #B39750 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    font-weight: 700;
-    color: white;
-    margin: 0 auto 24px;
-    box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3);
-}
-
-.step-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 12px;
-}
-
-.step-desc {
-    font-size: 15px;
-    color: var(--text-secondary);
-    line-height: 1.7;
-}
-
-/* Testimonials */
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-}
-
-.testimonial-card-pro {
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    border: 1px solid #F0F0F0;
-    transition: all 0.3s ease;
-}
-
-.testimonial-card-pro:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-soft);
-}
-
-.testimonial-stars {
-    color: #FFB800;
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.testimonial-text {
-    font-size: 15px;
-    color: var(--text-primary);
-    line-height: 1.7;
-    margin-bottom: 24px;
-    font-style: italic;
-}
-
-.testimonial-author-pro {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.author-avatar-pro {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #C9A961 0%, #B39750 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    font-size: 18px;
-}
-
-.author-info-pro {
-    flex: 1;
-    }
-    
-.author-name-pro {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 15px;
-    margin-bottom: 4px;
-}
-
-.author-role-pro {
-    font-size: 13px;
-    color: var(--text-secondary);
-}
-
-/* CTA Section */
-.cta-section {
-    padding: 80px 0;
-    background: linear-gradient(135deg, #C9A961 0%, #8B7355 100%);
-    text-align: center;
-    color: white;
-}
-
-.cta-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.cta-text {
-    font-size: 18px;
-    margin-bottom: 32px;
-    opacity: 0.95;
-}
-
-.btn-cta {
-    background: white;
-    color: var(--primary-brown);
-    padding: 18px 40px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 8px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-}
-
-.btn-cta:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    color: var(--primary-brown);
-}
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 60px;
-    }
-    
-    .hero-visual {
-        height: 500px;
-    }
-    
-    .categories-grid-pro,
-    .features-grid,
-    .testimonials-grid {
+@media (max-width: 968px) {
+    .features-grid-pro {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 768px) {
-    .container-custom {
-        padding: 0 20px;
-    }
-    
-    .hero-section {
-        padding: 60px 0 40px;
-        min-height: auto;
-    }
-    
-    .hero-grid {
+@media (max-width: 576px) {
+    .features-grid-pro {
         grid-template-columns: 1fr;
-        gap: 40px;
     }
-    
+}
+
+.feature-card-pro {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    border: 2px solid #F5F5F5;
+    box-shadow: var(--shadow-sm);
+}
+
+.feature-card-pro:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--coffee-brown);
+}
+
+.feature-icon-pro {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, var(--coffee-brown) 0%, var(--coffee-medium) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white !important;
+    box-shadow: var(--shadow-md);
+}
+
+.feature-title-pro {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--coffee-brown) !important;
+    margin-bottom: 12px;
+}
+
+.feature-description-pro {
+    font-size: 15px;
+    color: var(--text-primary) !important;
+    line-height: 1.7;
+}
+
+/* ============================================
+   10. HOW IT WORKS SECTION
+   ============================================ */
+.steps-grid-pro {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+    position: relative;
+}
+
+@media (max-width: 968px) {
+    .steps-grid-pro {
+        grid-template-columns: 1fr;
+    }
+}
+
+.step-card-pro {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+    border: 2px solid #F5F5F5;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s ease;
+}
+
+.step-card-pro:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--gold-bright);
+}
+
+.step-number-pro {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 900;
+    color: white !important;
+    box-shadow: var(--shadow-md);
+}
+
+.step-title-pro {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--coffee-brown) !important;
+    margin-bottom: 12px;
+}
+
+.step-description-pro {
+    font-size: 15px;
+    color: var(--text-primary) !important;
+    line-height: 1.7;
+}
+
+/* ============================================
+   11. CTA SECTION
+   ============================================ */
+.cta-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, var(--coffee-brown) 0%, var(--coffee-medium) 50%, var(--gold-bright) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-content-pro {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.cta-title-pro {
+    font-size: 48px;
+    font-weight: 800;
+    color: white !important;
+    margin-bottom: 24px;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cta-description-pro {
+    font-size: 20px;
+    color: white !important;
+    margin-bottom: 40px;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+.cta-buttons-pro {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-cta-white {
+    background: white;
+    color: var(--coffee-brown) !important;
+    padding: 18px 40px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+}
+
+.btn-cta-white:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+    background: var(--gold-light);
+}
+
+/* ============================================
+   12. RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 968px) {
     .hero-title {
-        font-size: 32px;
-        line-height: 1.2;
+        font-size: 48px;
     }
     
-    .hero-subtitle {
-        font-size: 16px;
+    .section-title-pro {
+        font-size: 36px;
     }
     
-    .hero-buttons {
-        flex-direction: column;
-        width: 100%;
+    .cta-title-pro {
+        font-size: 36px;
     }
-    
-    .btn-professional {
-        width: 100%;
-        justify-content: center;
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 36px;
     }
     
     .section-title-pro {
         font-size: 28px;
     }
     
-    .section-description {
-        font-size: 15px;
+    .cta-title-pro {
+        font-size: 28px;
     }
     
-    .categories-grid-pro,
-    .features-grid,
-    .steps-grid,
-    .testimonials-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .hero-buttons {
+        flex-direction: column;
     }
     
-    .hero-visual {
-        height: 350px;
-    }
-    
-    .showcase-card {
-        width: 280px;
-        height: 360px;
-    }
-    
-    .showcase-card:nth-child(1) {
-        right: 10px;
-    }
-    
-    .showcase-card:nth-child(2) {
-        right: -10px;
-    }
-    
-    .showcase-card:nth-child(3) {
-        display: none;
-    }
-    
-    .category-card-pro,
-    .feature-card-pro,
-    .step-card-pro,
-    .testimonial-card-pro {
-        padding: 24px;
-    }
-    
-    .faq-item {
-        padding: 20px !important;
-    }
-    
-    .faq-question h4 {
-        font-size: 16px !important;
+    .btn-professional {
+        width: 100%;
     }
 }
 
-@media (max-width: 480px) {
-    .container-custom {
-        padding: 0 16px;
-    }
-    
-    .hero-title {
-        font-size: 26px;
-    }
-    
-    .hero-subtitle {
-        font-size: 14px;
-    }
-    
-    .section-title-pro {
-        font-size: 24px;
-    }
-    
-    .hero-visual {
-        height: 300px;
-    }
-    
-    .showcase-card {
-        width: 240px;
-        height: 300px;
-    }
-    
-    .category-card-pro,
-    .feature-card-pro,
-    .step-card-pro,
-    .testimonial-card-pro {
-        padding: 20px;
+/* ============================================
+   13. ACCESSIBILITY & PRINT
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
     }
 }
+
+/* Focus states for accessibility */
+.btn-professional:focus,
+a:focus {
+    outline: 3px solid var(--gold-bright);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   END OF CSS
+   ============================================ */
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- Professional Hero Section -->
+<!-- Hero Section -->
 <section class="hero-section">
     <div class="container-custom">
         <div class="hero-grid">
-        <div class="hero-content">
-                <div class="hero-badge">✨ Trusted by 10,000+ Event Creators</div>
-                        <h1 class="hero-title">
+            <!-- Left: Content -->
+            <div class="hero-content">
+                <span class="hero-badge">✨ Professional Invitations</span>
+                <h1 class="hero-title">
                     Create <span class="highlight">Beautiful</span> Invitations in Minutes
-                        </h1>
+                </h1>
                 <p class="hero-subtitle">
                     Professional digital invitations for weddings, birthdays, corporate events, and every special moment. No design skills required.
                 </p>
                 <div class="hero-buttons">
                     <a href="{{ url_for('templates') }}" class="btn-professional btn-primary-pro">
-                        <i class="fas fa-magic"></i>
-                        Start Creating Free
-                </a>
-                    <a href="#how-it-works" class="btn-professional btn-secondary-pro">
-                        <i class="fas fa-play-circle"></i>
-                                            </a>
-                            </div>
-                        </div>
-                        
-            <div class="hero-visual">
-                <div class="card-showcase">
-                {% if home_images and home_images|length > 0 %}
-                        {% for image in home_images[:3] %}
-                        <div class="showcase-card">
-                            <img src="{{ image.path }}" alt="Invitation {{ loop.index }}" loading="lazy">
-                    </div>
-                    {% endfor %}
-                {% else %}
-                        <div class="showcase-card">
-                            <img src="/images/home1/weddings.jpg" alt="Wedding Invitation" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #6F4E37, #C9A961)'; this.alt='Wedding Template';">
-                            </div>
-                        <div class="showcase-card">
-                            <img src="/images/home1/birthdays.jpg" alt="Birthday Invitation" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #FF6B9D, #FEC163)'; this.alt='Birthday Template';">
-                        </div>
-                        <div class="showcase-card">
-                            <img src="/images/home1/corporateevents.jpg" alt="Corporate Event" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #4A90E2, #357ABD)'; this.alt='Corporate Template';">
-                    </div>
-                {% endif %}
+                        Get Started <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{{ url_for('templates') }}" class="btn-professional btn-secondary-pro">
+                        Browse Templates <i class="fas fa-images"></i>
+                    </a>
                 </div>
+            </div>
+            
+            <!-- Right: Visual -->
+            <div class="hero-visual">
+                <div class="showcase-grid">
+                    <div class="showcase-card">
+                        <img src="/static/images/templatesimages/wedding.png" alt="Wedding Invitation">
+                        <div class="showcase-overlay">Wedding</div>
                     </div>
+                    <div class="showcase-card">
+                        <img src="/static/images/templatesimages/birthdaycolourful.jpg" alt="Birthday Invitation">
+                        <div class="showcase-overlay">Birthday</div>
+                    </div>
+                    <div class="showcase-card">
+                        <img src="/static/images/templatesimages/naming.jpg" alt="Baby Shower">
+                        <div class="showcase-overlay">Baby Shower</div>
+                    </div>
+                    <div class="showcase-card">
+                        <img src="/static/images/templatesimages/retirement.jpg" alt="Retirement Party">
+                        <div class="showcase-overlay">Retirement</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Categories Section -->
-<section class="section-professional" id="categories">
+<section class="section-professional">
     <div class="container-custom">
         <div class="section-header-pro">
-            <div class="section-subtitle-small">Event Categories</div>
+            <span class="section-badge-pro">EVENT TYPES</span>
             <h2 class="section-title-pro">Perfect for Every Occasion</h2>
-            <p class="section-description">From intimate gatherings to grand celebrations, we have the perfect template for your special moment.</p>
+            <p class="section-description">
+                Choose from our professionally designed templates for any event
+            </p>
         </div>
         
         <div class="categories-grid-pro">
             <div class="category-card-pro">
-                <div class="category-image" style="background-image: url('{{ category_images.get("wedding", "/static/images/home1/wedding.jpg") }}');">
-                    <div class="category-overlay"></div>
-                </div>
-                <div class="category-body">
-                    <div class="category-icon-pro">💍</div>
-                    <h3 class="category-title-pro">Weddings</h3>
-                    <p class="category-desc">Elegant invitations for your special day</p>
-                    <a href="{{ url_for('templates') }}" class="category-link-pro">
-                        Browse Templates <i class="fas fa-arrow-right"></i>
-                </a>
-                </div>
-                </div>
-                
-            <div class="category-card-pro">
-                <div class="category-image" style="background-image: url('{{ category_images.get("birthday", "/static/images/home1/birthday.jpg") }}');">
-                    <div class="category-overlay"></div>
-                </div>
-                <div class="category-body">
-                    <div class="category-icon-pro">🎂</div>
-                    <h3 class="category-title-pro">Birthdays</h3>
-                    <p class="category-desc">Celebrate another year with style</p>
-                    <a href="{{ url_for('templates') }}" class="category-link-pro">
-                        Browse Templates <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
+                <div class="category-icon-pro">💒</div>
+                <h3 class="category-title-pro">Weddings</h3>
+                <p class="category-description-pro">Elegant and romantic designs for your special day</p>
+                <span class="category-count-pro">4 Templates</span>
             </div>
             
             <div class="category-card-pro">
-                <div class="category-image" style="background-image: url('{{ category_images.get("corporate", "/static/images/home1/corporate.jpg") }}');">
-                    <div class="category-overlay"></div>
+                <div class="category-icon-pro">🎂</div>
+                <h3 class="category-title-pro">Birthdays</h3>
+                <p class="category-description-pro">Fun and festive invitations for all ages</p>
+                <span class="category-count-pro">2 Templates</span>
+            </div>
+            
+            <div class="category-card-pro">
+                <div class="category-icon-pro">👶</div>
+                <h3 class="category-title-pro">Baby Showers</h3>
+                <p class="category-description-pro">Adorable designs for welcoming new life</p>
+                <span class="category-count-pro">20 Templates</span>
+            </div>
+            
+            <div class="category-card-pro">
+                <div class="category-icon-pro">🎓</div>
+                <h3 class="category-title-pro">Graduation</h3>
+                <p class="category-description-pro">Celebrate academic achievements in style</p>
+                <span class="category-count-pro">1 Template</span>
+            </div>
+            
+            <div class="category-card-pro">
+                <div class="category-icon-pro">🌴</div>
+                <h3 class="category-title-pro">Retirement</h3>
+                <p class="category-description-pro">Honor a career well done</p>
+                <span class="category-count-pro">2 Templates</span>
+            </div>
+            
+            <div class="category-card-pro">
+                <div class="category-icon-pro">🎉</div>
+                <h3 class="category-title-pro">More Events</h3>
+                <p class="category-description-pro">Corporate, anniversaries, and more</p>
+                <span class="category-count-pro">Coming Soon</span>
+            </div>
         </div>
-                <div class="category-body">
-                    <div class="category-icon-pro">💼</div>
-                    <h3 class="category-title-pro">Corporate Events</h3>
-                    <p class="category-desc">Professional invites for business</p>
-                    <a href="{{ url_for('templates') }}" class="category-link-pro">
-                        Browse Templates <i class="fas fa-arrow-right"></i>
-                </a>
     </div>
-        </div>
-        
-            <div class="category-card-pro">
-                <div class="category-image" style="background-image: url('{{ category_images.get("babyshower", "/static/images/home1/babyshower.jpg") }}');">
-                    <div class="category-overlay"></div>
-            </div>
-                <div class="category-body">
-                    <div class="category-icon-pro">👶</div>
-                    <h3 class="category-title-pro">Baby Showers</h3>
-                    <p class="category-desc">Welcome the newest arrival</p>
-                    <a href="{{ url_for('templates') }}" class="category-link-pro">
-                        Browse Templates <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            </div>
-        
-            <div class="category-card-pro">
-                <div class="category-image" style="background-image: url('{{ category_images.get("anniversary", "/static/images/home1/anniversary.jpg") }}');">
-                    <div class="category-overlay"></div>
-        </div>
-                <div class="category-body">
-                    <div class="category-icon-pro">💖</div>
-                    <h3 class="category-title-pro">Anniversaries</h3>
-                    <p class="category-desc">Celebrate love and milestones</p>
-                    <a href="{{ url_for('templates') }}" class="category-link-pro">
-                        Browse Templates <i class="fas fa-arrow-right"></i>
-                </a>
-                    </div>
-                </div>
-                
-                                </div>
-            </div>
 </section>
 
 <!-- Features Section -->
-<section class="section-professional" style="background: #FFFFFF;">
+<section class="section-professional" style="background: #FFFEF9;">
     <div class="container-custom">
         <div class="section-header-pro">
-            <div class="section-subtitle-small">Why Choose Us</div>
+            <span class="section-badge-pro">FEATURES</span>
             <h2 class="section-title-pro">Everything You Need</h2>
-            <p class="section-description">Professional tools and features to create stunning invitations effortlessly.</p>
+            <p class="section-description">
+                Powerful features to create stunning invitations effortlessly
+            </p>
         </div>
         
-        <div class="features-grid">
+        <div class="features-grid-pro">
             <div class="feature-card-pro">
-                <div class="feature-icon">⚡</div>
-                <h3 class="feature-title">Lightning Fast</h3>
-                <p class="feature-desc">Create beautiful invitations in under 5 minutes with our intuitive editor.</p>
+                <div class="feature-icon-pro"><i class="fas fa-palette"></i></div>
+                <h3 class="feature-title-pro">Beautiful Templates</h3>
+                <p class="feature-description-pro">Choose from dozens of professionally designed templates</p>
             </div>
             
             <div class="feature-card-pro">
-                <div class="feature-icon">🎨</div>
-                <h3 class="feature-title">100+ Templates</h3>
-                <p class="feature-desc">Professionally designed templates for every type of event and occasion.</p>
+                <div class="feature-icon-pro"><i class="fas fa-edit"></i></div>
+                <h3 class="feature-title-pro">Easy Customization</h3>
+                <p class="feature-description-pro">Edit colors, text, and images with simple clicks</p>
             </div>
             
             <div class="feature-card-pro">
-                <div class="feature-icon">📱</div>
-                <h3 class="feature-title">Mobile Perfect</h3>
-                <p class="feature-desc">Your invitations look stunning on any device, anywhere.</p>
+                <div class="feature-icon-pro"><i class="fas fa-mobile-alt"></i></div>
+                <h3 class="feature-title-pro">Mobile Friendly</h3>
+                <p class="feature-description-pro">Perfect viewing experience on all devices</p>
             </div>
             
             <div class="feature-card-pro">
-                <div class="feature-icon">✉️</div>
-                <h3 class="feature-title">Easy Sharing</h3>
-                <p class="feature-desc">Share via WhatsApp, email, or social media with one click.</p>
+                <div class="feature-icon-pro"><i class="fas fa-share-alt"></i></div>
+                <h3 class="feature-title-pro">Easy Sharing</h3>
+                <p class="feature-description-pro">Share via WhatsApp, email, or social media</p>
             </div>
             
             <div class="feature-card-pro">
-                <div class="feature-icon">🌍</div>
-                <h3 class="feature-title">Multi-Language</h3>
-                <p class="feature-desc">Support for English, Hindi, Telugu, Tamil, Kannada and more.</p>
+                <div class="feature-icon-pro"><i class="fas fa-users"></i></div>
+                <h3 class="feature-title-pro">Guest Management</h3>
+                <p class="feature-description-pro">Track RSVPs and manage your guest list</p>
             </div>
             
             <div class="feature-card-pro">
-                <div class="feature-icon">📊</div>
-                <h3 class="feature-title">RSVP Tracking</h3>
-                <p class="feature-desc">Built-in RSVP management and guest tracking system.</p>
+                <div class="feature-icon-pro"><i class="fas fa-download"></i></div>
+                <h3 class="feature-title-pro">Download & Print</h3>
+                <p class="feature-description-pro">Download high-quality PDFs for printing</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- How It Works Section -->
-<section class="section-professional" id="how-it-works">
+<section class="section-professional">
     <div class="container-custom">
         <div class="section-header-pro">
-            <div class="section-subtitle-small">Simple Process</div>
-            <h2 class="section-title-pro">How It Works</h2>
-            <p class="section-description">Create your perfect invitation in just 3 simple steps.</p>
+            <span class="section-badge-pro">HOW IT WORKS</span>
+            <h2 class="section-title-pro">Create in 3 Simple Steps</h2>
+            <p class="section-description">
+                Get your invitation ready in minutes, not hours
+            </p>
         </div>
         
-        <div class="steps-grid">
+        <div class="steps-grid-pro">
             <div class="step-card-pro">
-                <div class="step-number">1</div>
-                <h3 class="step-title">Choose Template</h3>
-                <p class="step-desc">Browse our collection and select your favorite design from 100+ options.</p>
-            </div>
-            
-            <div class="step-card-pro">
-                <div class="step-number">2</div>
-                <h3 class="step-title">Customize</h3>
-                <p class="step-desc">Add your details, photos, and personalize every element easily.</p>
+                <div class="step-number-pro">1</div>
+                <h3 class="step-title-pro">Choose Template</h3>
+                <p class="step-description-pro">Browse our collection and select the perfect design for your event</p>
             </div>
             
             <div class="step-card-pro">
-                <div class="step-number">3</div>
-                <h3 class="step-title">Share</h3>
-                <p class="step-desc">Send your beautiful invitation to guests instantly via link or social media.</p>
-            </div>
-        </div>
-        
-        <div style="text-align: center; margin-top: 48px;">
-            <a href="{{ url_for('templates') }}" class="btn-professional btn-primary-pro" style="padding: 18px 40px; font-size: 16px;">
-                Start Creating Now <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Testimonials Section -->
-<section class="section-professional" style="background: #FFFFFF;">
-    <div class="container-custom">
-        <div class="section-header-pro">
-            <div class="section-subtitle-small">Testimonials</div>
-            <h2 class="section-title-pro">Loved by Thousands</h2>
-            <p class="section-description">See what our happy customers have to say about their experience.</p>
-        </div>
-        
-    <div class="testimonials-grid">
-            <div class="testimonial-card-pro">
-            <div class="testimonial-stars">★★★★★</div>
-                <p class="testimonial-text">"Absolutely stunning! Made my wedding invitations in minutes. Everyone loved the design and how easy it was to RSVP."</p>
-                <div class="testimonial-author-pro">
-                    <div class="author-avatar-pro">SC</div>
-                    <div class="author-info-pro">
-                        <div class="author-name-pro">Sarah Chen</div>
-                        <div class="author-role-pro">Bride</div>
-                </div>
-                </div>
+                <div class="step-number-pro">2</div>
+                <h3 class="step-title-pro">Customize Details</h3>
+                <p class="step-description-pro">Add your event information, photos, and personalize colors</p>
             </div>
             
-            <div class="testimonial-card-pro">
-            <div class="testimonial-stars">★★★★★</div>
-                <p class="testimonial-text">"The easiest invitation platform I've used. My clients are always impressed with the professional results."</p>
-                <div class="testimonial-author-pro">
-                    <div class="author-avatar-pro">MW</div>
-                    <div class="author-info-pro">
-                        <div class="author-name-pro">Marcus Williams</div>
-                        <div class="author-role-pro">Event Planner</div>
-                </div>
-                </div>
-            </div>
-            
-            <div class="testimonial-card-pro">
-            <div class="testimonial-stars">★★★★★</div>
-                <p class="testimonial-text">"Created perfect baby shower invites that looked like they cost hundreds. The templates are gorgeous!"</p>
-                <div class="testimonial-author-pro">
-                    <div class="author-avatar-pro">PP</div>
-                    <div class="author-info-pro">
-                        <div class="author-name-pro">Priya Patel</div>
-                        <div class="author-role-pro">Mother-to-be</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ Section -->
-<section class="section-professional" style="background: #FAFAFA;">
-    <div class="container-custom">
-        <div class="section-header-pro">
-            <div class="section-subtitle-small">FAQ</div>
-            <h2 class="section-title-pro">Frequently Asked Questions</h2>
-            <p class="section-description">Everything you need to know about creating beautiful invitations</p>
-        </div>
-        
-        <div style="max-width: 800px; margin: 0 auto;">
-            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
-                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">How do I create an invitation?</h4>
-                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
-                </div>
-                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
-                    Simply choose a template, customize it with your event details, add photos, and share it with your guests. It takes less than 5 minutes!
-                </div>
-            </div>
-            
-            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
-                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">Is it free to use?</h4>
-                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
-                </div>
-                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
-                    Yes! Creating and sharing invitations is completely free. No credit card required.
-                </div>
-            </div>
-            
-            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
-                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">Can I customize the invitation design?</h4>
-                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
-                </div>
-                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
-                    Absolutely! You can customize colors, fonts, add photos, and personalize every detail to match your event style.
-                </div>
-            </div>
-            
-            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
-                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">How do guests RSVP?</h4>
-                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
-                </div>
-                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
-                    Guests can RSVP directly from the invitation link. They can respond via mobile number or email, and you'll receive all responses in your dashboard.
-                </div>
-            </div>
-            
-            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
-                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">Can I track who viewed my invitation?</h4>
-                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
-                </div>
-                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
-                    Yes! Our analytics dashboard shows you how many people viewed your invitation, RSVP responses, and more insights.
-                </div>
-            </div>
-            
-            <div class="faq-item" style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #F0F0F0; cursor: pointer; transition: all 0.3s ease;">
-                <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h4 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin: 0;">Do invitations work on mobile devices?</h4>
-                    <i class="fas fa-chevron-down" style="color: var(--primary-gold); transition: transform 0.3s ease;"></i>
-                </div>
-                <div class="faq-answer" style="margin-top: 16px; color: var(--text-secondary); line-height: 1.7; display: none;">
-                    Yes! All invitations are fully responsive and look beautiful on phones, tablets, and desktops.
-                </div>
+            <div class="step-card-pro">
+                <div class="step-number-pro">3</div>
+                <h3 class="step-title-pro">Share & Send</h3>
+                <p class="step-description-pro">Share digitally or download to print - it's that simple!</p>
             </div>
         </div>
     </div>
@@ -1043,78 +848,18 @@ body {
 <!-- CTA Section -->
 <section class="cta-section">
     <div class="container-custom">
-        <h2 class="cta-title">Ready to Create Your Perfect Invitation?</h2>
-        <p class="cta-text">Join thousands of happy event creators. Start for free, no credit card required.</p>
-        <a href="{{ url_for('templates') }}" class="btn-cta">
-            Get Started Free <i class="fas fa-arrow-right"></i>
-        </a>
+        <div class="cta-content-pro">
+            <h2 class="cta-title-pro">Ready to Create Something Amazing?</h2>
+            <p class="cta-description-pro">
+                Join thousands of users creating beautiful invitations with EventCraft Pro
+            </p>
+            <div class="cta-buttons-pro">
+                <a href="{{ url_for('templates') }}" class="btn-professional btn-cta-white">
+                    Start Creating Now <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}
 
-{% block extra_scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Simple showcase card rotation on hover
-    const showcaseCards = document.querySelectorAll('.showcase-card');
-    let currentIndex = 0;
-    
-    if (showcaseCards.length > 3) {
-        setInterval(() => {
-            showcaseCards.forEach((card, index) => {
-                if (index === currentIndex % showcaseCards.length) {
-                    card.style.zIndex = '3';
-                card.style.opacity = '1';
-                } else if (index === (currentIndex + 1) % showcaseCards.length) {
-                    card.style.zIndex = '2';
-                    card.style.opacity = '0.9';
-                } else if (index === (currentIndex + 2) % showcaseCards.length) {
-                    card.style.zIndex = '1';
-                    card.style.opacity = '0.7';
-            } else {
-                card.style.zIndex = '0';
-                card.style.opacity = '0';
-                }
-            });
-            currentIndex++;
-        }, 3000);
-            }
-    
-    // FAQ Accordion Functionality
-    const faqItems = document.querySelectorAll('.faq-item');
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        const answer = item.querySelector('.faq-answer');
-        const icon = question.querySelector('i');
-        
-        question.addEventListener('click', function() {
-            const isOpen = answer.style.display === 'block';
-            
-            // Close all other FAQs
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    const otherAnswer = otherItem.querySelector('.faq-answer');
-                    const otherIcon = otherItem.querySelector('.faq-question i');
-                    otherAnswer.style.display = 'none';
-                    otherIcon.style.transform = 'rotate(0deg)';
-                    otherItem.style.borderColor = '#F0F0F0';
-                }
-        });
-        
-            // Toggle current FAQ
-            if (isOpen) {
-                answer.style.display = 'none';
-                icon.style.transform = 'rotate(0deg)';
-                item.style.borderColor = '#F0F0F0';
-            } else {
-                answer.style.display = 'block';
-                icon.style.transform = 'rotate(180deg)';
-                item.style.borderColor = 'var(--primary-gold)';
-                    }
-        });
-        });
-        
-    // No scroll animations - Simple and clean
-});
-</script>
-{% endblock %}
