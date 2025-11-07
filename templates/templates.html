@@ -67,10 +67,8 @@ body {
 
 .title-icon {
     font-size: 48px;
-    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #D4AF37;
+    text-shadow: 2px 2px 4px rgba(212, 175, 55, 0.3);
 }
 
 .title-text {
@@ -79,33 +77,24 @@ body {
 }
 
 .title-theme {
-    background: linear-gradient(135deg, #6F4E37 0%, #C9A961 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #6F4E37;
     font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(111, 78, 55, 0.2);
 }
 
 .title-gallery {
-    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #FFA500 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #D4AF37;
     font-weight: 800;
-    animation: shimmer-gold 3s ease-in-out infinite;
-}
-
-@keyframes shimmer-gold {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.2); }
+    text-shadow: 2px 2px 4px rgba(212, 175, 55, 0.3);
 }
 
 .theme-gallery-subtitle {
     font-size: 18px;
-    color: var(--text-gray);
+    color: #5D4037;
     line-height: 1.6;
     max-width: 700px;
     margin: 0 auto;
+    font-weight: 500;
 }
 
 /* Filter Buttons */
@@ -257,24 +246,18 @@ body {
     flex: 1;
 }
 
-/* Template Name - Bold & Prominent with Gradient */
+/* Template Name - Bold & Prominent with Solid Coffee Color */
 .card-title {
     font-size: 22px;
     font-weight: 700;
     margin: 0;
     line-height: 1.3;
-    /* Coffee & Gold gradient */
-    background: linear-gradient(135deg, #6F4E37 0%, #C9A961 80%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #6F4E37;
+    transition: color 0.3s ease;
 }
 
 .theme-card:hover .card-title {
-    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #D4AF37;
 }
 
 /* Event Type Badge */
@@ -295,10 +278,11 @@ body {
 /* Description */
 .card-description {
     font-size: 15px;
-    color: var(--text-gray);
+    color: #5D4037;
     line-height: 1.6;
     margin: 0;
     flex: 1;
+    font-weight: 500;
 }
 
 /* Use Template Button */
