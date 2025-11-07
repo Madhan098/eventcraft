@@ -6,11 +6,47 @@
 <style>
 /* NOTE: The linter will show errors for Jinja2 template syntax */
 
+/* ======================================== 
+   TEXT VISIBILITY - COFFEE & GOLD THEME
+   ======================================== */
+* {
+    color: #3E2723 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #5D4037 !important;
+    font-weight: 700 !important;
+}
+
+.page-title, .section-title, .form-section-title {
+    color: #5D4037 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 2px rgba(93, 64, 55, 0.1);
+}
+
+label, .form-label {
+    color: #5D4037 !important;
+    font-weight: 600 !important;
+}
+
+p, span, div {
+    color: #3E2723 !important;
+}
+
+.form-control, .form-select, input, textarea, select {
+    color: #3E2723 !important;
+}
+
+.btn {
+    color: white !important;
+}
+
 /* Create Page Layout */
 .create-container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 40px 20px 80px;
+    background: #FFFFFF !important;
 }
 
 /* 3-Step Progress Bar */
@@ -78,13 +114,14 @@
 
 .progress-step-label {
         font-size: 14px;
-    color: #999;
+    color: #5D4037 !important;
     font-weight: 600;
         text-align: center;
     }
 
 .progress-step.active .progress-step-label {
-        color: var(--reddish-brown-dark);
+        color: #3E2723 !important;
+    font-weight: 700;
 }
 
 /* Content Grid */
@@ -128,7 +165,7 @@
 .themes-header h3 {
     font-size: 24px;
     font-weight: 700;
-        color: var(--reddish-brown-dark);
+        color: #5D4037 !important;
     margin: 0;
 }
 
@@ -222,7 +259,7 @@
 .form-group label {
         display: block;
         font-weight: 600;
-    color: var(--reddish-brown-dark);
+    color: #5D4037 !important;
         margin-bottom: 8px;
     font-size: 14px;
 }
@@ -314,6 +351,7 @@ textarea.form-control {
 .preview-header h3 {
     font-size: 22px;
     font-weight: 700;
+    color: #5D4037 !important;
     color: var(--reddish-brown-dark);
     margin: 0;
 }
