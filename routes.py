@@ -1420,18 +1420,23 @@ def register_routes(app):
     @app.route('/create-invitation')
     def create_invitation():
         try:
+            print("=== CREATE INVITATION ROUTE CALLED ===")
             if not is_authenticated():
+                print("User not authenticated, redirecting to auth")
                 flash('Please login to create an invitation', 'error')
                 return redirect(url_for('auth'))
             
+            print("User authenticated, importing form")
             # Import form
             from forms import InvitationForm
             form = InvitationForm()
+            print(f"Form created successfully: {form}")
             
             # Get template and event_type parameters
             selected_template = request.args.get('template')
             template_id = request.args.get('template_id')  # Template ID from database
             event_type = request.args.get('event_type', 'birthday')  # Default to birthday
+            print(f"Parameters - template: {selected_template}, template_id: {template_id}, event_type: {event_type}")
             
             # If no template is selected, redirect to templates page to select event and template first
             if not selected_template and not template_id:
@@ -1495,8 +1500,11 @@ def register_routes(app):
         except Exception as e:
             app.logger.error(f"CRITICAL ERROR in create_invitation: {str(e)}")
             import traceback
-            app.logger.error(traceback.format_exc())
-            flash('An error occurred while loading the invitation creator. Please try again or contact support.', 'error')
+            error_traceback = traceback.format_exc()
+            app.logger.error(error_traceback)
+            print(f"ERROR in create_invitation: {str(e)}")
+            print(error_traceback)
+            flash(f'ERROR: {str(e)} - Please check the console for details.', 'error')
             return redirect(url_for('index'))
 
     @app.route('/create-invitation', methods=['POST'])
