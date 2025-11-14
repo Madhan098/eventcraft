@@ -454,7 +454,18 @@
     }
 
     .details-form-page.active {
-        display: block;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Ensure preview is always visible when details page is active */
+    .details-form-page.active .live-preview-card,
+    .details-form-page.active .preview-content,
+    .details-form-page.active .invitation-preview {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .form-preview-container {
@@ -558,33 +569,44 @@
         pointer-events: none;
     }
 
-    /* Live Preview Section */
+    /* Live Preview Section - Enhanced Visibility - Always Visible */
     .live-preview-card {
-        background: white;
+        background: rgba(255, 255, 255, 0.98) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
         border-radius: 20px;
         padding: 32px;
-        display: flex;
+        display: flex !important;
         flex-direction: column;
         max-height: 80vh;
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        border: 1px solid #F0F0F0;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+        border: 2px solid rgba(111, 78, 55, 0.2) !important;
         position: sticky;
         top: 20px;
         height: fit-content;
         max-height: calc(100vh - 40px);
         overflow-y: auto;
+        z-index: 10;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .preview-title {
         font-size: 20px;
         font-weight: 700;
-        color: var(--text-dark);
+        color: var(--text-dark) !important;
         margin-bottom: 24px;
         text-align: center;
         padding-bottom: 16px;
-        border-bottom: 2px solid #E5E5E5;
+        border-bottom: 2px solid rgba(111, 78, 55, 0.3);
         letter-spacing: -0.02em;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
     }
 
     .preview-content {
@@ -600,6 +622,8 @@
         overflow-y: auto !important;
         max-height: calc(80vh - 100px) !important;
         padding-right: 10px;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 12px;
     }
 
     .invitation-preview {
@@ -617,12 +641,14 @@
         border: 2px solid rgba(160, 120, 120, 0.1);
         position: relative;
         min-height: 600px;
-        display: flex;
+        display: flex !important;
         flex-direction: column;
         justify-content: flex-start;
         overflow: visible;
         /* Ensure template background is visible */
         z-index: 0;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     /* Template background - CRITICAL: Override the background shorthand from .invitation-preview */
@@ -1011,9 +1037,16 @@
 
     .preview-placeholder {
         font-size: 14px;
-        color: var(--text-gray);
+        color: var(--text-gray) !important;
         line-height: 1.6;
         padding: 40px 20px;
+        text-align: center;
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        border: 2px dashed rgba(111, 78, 55, 0.3);
     }
 
     /* Event-Specific Fields */
@@ -1792,12 +1825,13 @@
                 </form>
                         </div>
 
-            <!-- Live Preview Section -->
-            <div class="live-preview-card">
-                <div class="preview-title">Live Preview</div>
-                <div class="preview-content">
+            <!-- Live Preview Section - Always Visible -->
+            <div class="live-preview-card" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+                <div class="preview-title" style="display: block !important; visibility: visible !important; opacity: 1 !important;">Live Preview</div>
+                <div class="preview-content" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
                     <div class="invitation-preview {% if template_id and selected_template_obj and selected_template_obj.preview_image %}template-bg{% endif %}" 
-                         id="invitationPreviewCard" 
+                         id="invitationPreviewCard"
+                         style="display: flex !important; visibility: visible !important; opacity: 1 !important;" 
                          {% if template_id and selected_template_obj and selected_template_obj.preview_image %}data-template-image="{{ selected_template_obj.preview_image|e }}"{% endif %}
                          data-selected-template="{{ selected_template|default('')|e }}"
                          data-template-id="{% if template_id %}{{ template_id|int }}{% else %}null{% endif %}"
@@ -1872,8 +1906,10 @@
                             <div class="preview-gallery-grid" id="previewGalleryGrid" style="display: grid !important; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important; gap: 15px !important; position: relative; z-index: 25 !important; visibility: visible !important; opacity: 1 !important; width: 100%; padding: 10px 0;"></div>
                         </div>
                         
-                        <div class="preview-placeholder" id="previewPlaceholder">
-                            Start filling the form to see your invitation preview
+                        <div class="preview-placeholder" id="previewPlaceholder" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
+                            <i class="fas fa-magic" style="font-size: 32px; color: #6F4E37; margin-bottom: 10px; display: block;"></i>
+                            <p style="margin: 0; font-weight: 500; color: #6F4E37;">Start filling the form to see your invitation preview</p>
+                            <p style="margin: 10px 0 0 0; font-size: 12px; color: #8B7355;">Your changes will appear here in real-time</p>
                         </div>
                     </div>
                 </div>
@@ -3199,10 +3235,24 @@
             const previewCardElement = document.getElementById('invitationPreviewCard');
             const hasTemplate = previewCardElement && (previewCardElement.classList.contains('template-bg') || previewCardElement.classList.contains('wedding-bg') || (previewCardElement.style.backgroundImage && previewCardElement.style.backgroundImage !== 'none'));
             
+            // Always ensure preview card is visible
+            if (previewCardElement) {
+                previewCardElement.style.display = 'flex';
+                previewCardElement.style.visibility = 'visible';
+                previewCardElement.style.opacity = '1';
+            }
+            
+            // Show placeholder only when there's no content and no template
             if (!hasContent && !hasTemplate) {
-                previewPlaceholder.style.display = 'block';
+                if (previewPlaceholder) {
+                    previewPlaceholder.style.display = 'block';
+                    previewPlaceholder.style.visibility = 'visible';
+                    previewPlaceholder.style.opacity = '1';
+                }
             } else {
-                previewPlaceholder.style.display = 'none';
+                if (previewPlaceholder) {
+                    previewPlaceholder.style.display = 'none';
+                }
             }
         };
         
@@ -3924,6 +3974,56 @@
             const progressBar = document.querySelector('.progress-bar');
             if (progressBar) {
                 progressBar.style.background = 'transparent';
+            }
+            
+            // CRITICAL: Ensure preview card is always visible from the start
+            const previewCard = document.getElementById('invitationPreviewCard');
+            const livePreviewCard = document.querySelector('.live-preview-card');
+            const previewContent = document.querySelector('.preview-content');
+            const previewTitle = document.querySelector('.preview-title');
+            const previewPlaceholder = document.getElementById('previewPlaceholder');
+            
+            // Force preview card to be visible
+            if (previewCard) {
+                previewCard.style.setProperty('display', 'flex', 'important');
+                previewCard.style.setProperty('visibility', 'visible', 'important');
+                previewCard.style.setProperty('opacity', '1', 'important');
+            }
+            
+            // Force live preview card to be visible
+            if (livePreviewCard) {
+                livePreviewCard.style.setProperty('display', 'flex', 'important');
+                livePreviewCard.style.setProperty('visibility', 'visible', 'important');
+                livePreviewCard.style.setProperty('opacity', '1', 'important');
+            }
+            
+            // Force preview content to be visible
+            if (previewContent) {
+                previewContent.style.setProperty('display', 'flex', 'important');
+                previewContent.style.setProperty('visibility', 'visible', 'important');
+                previewContent.style.setProperty('opacity', '1', 'important');
+            }
+            
+            // Force preview title to be visible
+            if (previewTitle) {
+                previewTitle.style.setProperty('display', 'block', 'important');
+                previewTitle.style.setProperty('visibility', 'visible', 'important');
+                previewTitle.style.setProperty('opacity', '1', 'important');
+            }
+            
+            // Show placeholder if no content yet (but keep preview card visible)
+            if (previewPlaceholder) {
+                const hasContent = previewCard && (
+                    previewCard.querySelector('#previewEventName')?.textContent?.trim() ||
+                    previewCard.querySelector('#previewDate')?.style.display !== 'none' ||
+                    previewCard.classList.contains('template-bg')
+                );
+                
+                if (!hasContent) {
+                    previewPlaceholder.style.setProperty('display', 'block', 'important');
+                    previewPlaceholder.style.setProperty('visibility', 'visible', 'important');
+                    previewPlaceholder.style.setProperty('opacity', '1', 'important');
+                }
             }
             
             // Ensure Preview button text is always visible

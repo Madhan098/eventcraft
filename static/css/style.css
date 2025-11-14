@@ -105,10 +105,10 @@ body {
     color: var(--text-primary);
     /* EXACT Floral Damask Pattern Background - Using Uploaded Image */
     background-color: #f5f5f0 !important;
-    background-image: url('/static/images/Peach & Green Floral Parisian Theme Thank You Card (1).png') !important;
-    background-repeat: repeat !important;
-    background-position: 0 0 !important;
-    background-size: auto !important;
+    background-image: url('/static/images/Pink & Blue Watercolor Floral Paris Theme Event Invitation.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
     background-attachment: fixed !important;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -4493,20 +4493,20 @@ select {
 /* EXACT Floral Damask Pattern Background - Using Uploaded Image */
 html {
     background-color: #f5f5f0 !important;
-    background-image: url('/static/images/Peach & Green Floral Parisian Theme Thank You Card (1).png') !important;
-    background-repeat: repeat !important;
-    background-position: 0 0 !important;
-    background-size: auto !important;
+    background-image: url('/static/images/Pink & Blue Watercolor Floral Paris Theme Event Invitation.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
     background-attachment: fixed !important;
     min-height: 100% !important;
 }
 
 body {
     background-color: transparent !important;
-    background-image: url('/static/images/Peach & Green Floral Parisian Theme Thank You Card (1).png') !important;
-    background-repeat: repeat !important;
-    background-position: 0 0 !important;
-    background-size: auto !important;
+    background-image: url('/static/images/Pink & Blue Watercolor Floral Paris Theme Event Invitation.png') !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
     background-attachment: fixed !important;
     min-height: 100vh !important;
 }

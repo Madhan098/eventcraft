@@ -2,6 +2,52 @@
 
 {% block title %}{{ invitation.title }} - EventCraft Pro{% endblock %}
 
+{% block extra_head %}
+<style>
+    /* Confetti Animation Styles */
+    .confetti-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        overflow: hidden;
+    }
+    
+    .confetti-piece {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #D4AF37;
+        top: -10px;
+        animation: confettiFall linear forwards;
+    }
+    
+    @keyframes confettiFall {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+    
+    /* Confetti shapes */
+    .confetti-piece:nth-child(odd) {
+        border-radius: 50%;
+    }
+    
+    .confetti-piece:nth-child(even) {
+        border-radius: 0;
+        transform: rotate(45deg);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Language Translation Support Macro -->
 {% macro translate_text(key) %}
@@ -92,9 +138,14 @@
     /* Enhanced Invitation Styling - Match Live Preview Exactly */
     .template-container {
         min-height: 100vh;
-        /* Clean background - no template background on container, only on card */
+        /* Apply template background to whole container - like live preview */
         background: var(--bg-cream, #FAFAFA) !important;
         background-color: var(--bg-cream, #FAFAFA) !important;
+        background-image: {% if template_image_url %}url('{{ template_image_url }}'){% else %}none{% endif %} !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
         position: relative;
         overflow-x: hidden;
         padding: 40px 20px;
@@ -1596,7 +1647,7 @@
     }
 </style>
 
-<div class="template-container">
+<div class="template-container" {% if template_image_url %}style="background-image: url('{{ template_image_url }}') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; background-attachment: fixed !important;"{% endif %}>
     <!-- Floating Hearts Animation - Removed for clean design matching live preview -->
     
     {% if invitation.template_name %}
@@ -3016,7 +3067,63 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.transform = 'scale(1)';
             });
         });
+        
+        // Check for success message and trigger confetti
+        const successAlert = document.querySelector('.alert-success');
+        const successMessage = successAlert ? successAlert.textContent.toLowerCase() : '';
+        
+        if (successAlert && (successMessage.includes('created successfully') || successMessage.includes('success'))) {
+            // Trigger confetti animation
+            createConfettiCelebration();
+        }
     });
+    
+    // Confetti celebration function
+    function createConfettiCelebration() {
+        const confettiContainer = document.createElement('div');
+        confettiContainer.className = 'confetti-container';
+        document.body.appendChild(confettiContainer);
+        
+        const colors = ['#D4AF37', '#E6C34F', '#F0DFA8', '#6F4E37', '#8B7355', '#FFD700', '#FFA500', '#FF6B6B', '#4ECDC4', '#95E1D3'];
+        const shapes = ['circle', 'square', 'triangle'];
+        
+        // Create 100 confetti pieces
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti-piece';
+            
+            // Random properties
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const left = Math.random() * 100;
+            const delay = Math.random() * 2;
+            const duration = 3 + Math.random() * 2;
+            const size = 8 + Math.random() * 8;
+            
+            confetti.style.left = left + '%';
+            confetti.style.backgroundColor = color;
+            confetti.style.width = size + 'px';
+            confetti.style.height = size + 'px';
+            confetti.style.animationDelay = delay + 's';
+            confetti.style.animationDuration = duration + 's';
+            
+            // Random shape
+            if (Math.random() > 0.5) {
+                confetti.style.borderRadius = '50%';
+            } else {
+                confetti.style.borderRadius = '0';
+                confetti.style.transform = 'rotate(45deg)';
+            }
+            
+            confettiContainer.appendChild(confetti);
+        }
+        
+        // Remove confetti after animation
+        setTimeout(() => {
+            if (confettiContainer.parentNode) {
+                confettiContainer.remove();
+            }
+        }, 5000);
+    }
 });
 </script>
 
