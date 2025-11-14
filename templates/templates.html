@@ -802,18 +802,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.transition = 'all 0.3s ease';
             }, 50);
             
-            const filter = this.dataset.filter;
+            const filter = this.dataset.filter.toLowerCase().trim();
             
             // Filter cards with smooth animations
             let visibleCount = 0;
             themeCards.forEach((card, index) => {
-                const eventType = card.dataset.eventType || '';
-                const categories = card.dataset.category ? card.dataset.category.split(' ') : [];
+                // Get event type from data attribute (case-insensitive)
+                const eventType = (card.dataset.eventType || card.getAttribute('data-event-type') || '').toLowerCase().trim();
+                const category = (card.dataset.category || card.getAttribute('data-category') || '').toLowerCase().trim();
                 
-                // Check both event-type and category for compatibility
-                const matches = filter === 'all' || 
-                               eventType === filter || 
-                               categories.includes(filter);
+                // Debug logging for troubleshooting
+                // console.log('Filter:', filter, 'EventType:', eventType, 'Category:', category, 'Card:', card);
+                
+                // Normalize filter and event type (remove spaces, handle variations)
+                const filterNormalized = filter.replace(/\s+/g, '').replace('-', '');
+                const eventTypeNormalized = eventType.replace(/\s+/g, '').replace('-', '');
+                
+                // Create array of possible matches
+                const possibleMatches = [eventType, eventTypeNormalized, category];
+                if (category) {
+                    possibleMatches.push(...category.split(' ').map(c => c.trim().toLowerCase()));
+                }
+                
+                // Check for exact match or partial match
+                let matches = false;
+                if (filter === 'all') {
+                    matches = true;
+                } else {
+                    // Check exact matches
+                    matches = possibleMatches.some(match => {
+                        const matchNormalized = match.replace(/\s+/g, '').replace('-', '');
+                        return match === filter || 
+                               matchNormalized === filterNormalized ||
+                               match.includes(filter) ||
+                               filter.includes(match);
+                    });
+                }
                 
                 if (matches) {
                     // Show card with fade-in animation

@@ -1368,8 +1368,33 @@ def register_routes(app):
 
     @app.route('/create-invitation')
     def create_invitation():
+        # Improved authentication check - verify user exists in database
         if not is_authenticated():
             flash('Please login to create an invitation', 'error')
+            return redirect(url_for('auth'))
+        
+        # Verify user still exists in database
+        try:
+            user_id = session.get('user_id')
+            if not user_id:
+                flash('Please login to create an invitation', 'error')
+                session.clear()
+                return redirect(url_for('auth'))
+            
+            current_user = User.query.get(user_id)
+            if not current_user:
+                app.logger.error(f"User not found for session user_id: {user_id}")
+                flash('User not found. Please login again.', 'error')
+                session.clear()
+                return redirect(url_for('auth'))
+        except KeyError:
+            flash('Please login to create an invitation', 'error')
+            session.clear()
+            return redirect(url_for('auth'))
+        except Exception as e:
+            app.logger.error(f"Error getting user: {str(e)}")
+            flash('Error retrieving user information. Please login again.', 'error')
+            session.clear()
             return redirect(url_for('auth'))
         
         # Get template and event_type parameters
@@ -1380,20 +1405,6 @@ def register_routes(app):
         # If no template is selected, redirect to templates page to select event and template first
         if not selected_template and not template_id:
             return redirect(url_for('templates'))
-        
-        # Get current user information
-        try:
-            current_user = User.query.get(session['user_id'])
-            if not current_user:
-                app.logger.error(f"User not found for session user_id: {session['user_id']}")
-                flash('User not found. Please login again.', 'error')
-                session.clear()
-                return redirect(url_for('auth'))
-            
-        except Exception as e:
-            app.logger.error(f"Error getting user: {str(e)}")
-            flash('Error retrieving user information', 'error')
-            return redirect(url_for('auth'))
         
         # If template_id is provided, fetch the template from database
         selected_template_obj = None

@@ -901,13 +901,16 @@
 
     /* Auto-scrolling wishes styles */
     .wishes-auto-scroll {
-        display: flex;
+        display: flex !important;
         overflow-x: auto;
         overflow-y: hidden;
         gap: 1rem;
         padding: 1rem 0;
         white-space: nowrap;
         scroll-behavior: smooth;
+        visibility: visible !important;
+        opacity: 1 !important;
+        min-height: 150px;
     }
 
     .wishes-auto-scroll:hover {
@@ -919,6 +922,9 @@
         white-space: normal;
         min-width: 300px;
         max-width: 300px;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .wishes-scroll-container {
@@ -929,6 +935,9 @@
         background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
         scroll-behavior: smooth;
+        min-height: 150px;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .wishes-scroll-container::-webkit-scrollbar {
@@ -2049,48 +2058,54 @@
                         </div>
 
                         <!-- Wishes Display -->
-                        <div class="wishes-display">
+                        <div class="wishes-display" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="mb-0">
+                                <h5 class="mb-0" style="color: #6F4E37 !important; visibility: visible !important; opacity: 1 !important;">
                                     <i class="fas fa-gift me-2"></i>{{ translate_text('wishes_from_loved_ones') }}
                                 </h5>
                                 <button class="btn btn-outline-primary btn-sm" id="viewAllWishesBtn" onclick="toggleWishesView()">
                                     <i class="fas fa-expand-arrows-alt me-1"></i>{{ translate_text('view_all') }}
                                 </button>
                             </div>
-                            <div class="wishes-scroll-container">
-                                <div id="wishesContainer" class="wishes-auto-scroll">
-                                    {% for wish in wishes %}
-                                    <div class="wish-item">
-                                        <div class="wish-card border rounded p-3 h-100">
-                                            <div class="d-flex align-items-start">
-                                                <div class="wish-avatar me-3">
-                                                    <i class="fas fa-user-circle fa-2x text-primary"></i>
-                                                </div>
-                                                <div class="wish-content flex-grow-1">
-                                                    <h6 class="wish-name mb-1">{{ wish.name }}</h6>
-                                                    <p class="wish-message mb-2">{{ wish.message }}</p>
-                                                    <small class="text-muted">
-                                                        {% if wish.created_at %}
-                                                            {% if wish.created_at is string %}
-                                                                {{ wish.created_at }}
+                            <div class="wishes-scroll-container" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
+                                <div id="wishesContainer" class="wishes-auto-scroll" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+                                    {% if wishes %}
+                                        {% for wish in wishes %}
+                                        <div class="wish-item" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
+                                            <div class="wish-card border rounded p-3 h-100" style="background: rgba(255, 255, 255, 0.95) !important; visibility: visible !important; opacity: 1 !important;">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="wish-avatar me-3">
+                                                        <i class="fas fa-user-circle fa-2x text-primary"></i>
+                                                    </div>
+                                                    <div class="wish-content flex-grow-1">
+                                                        <h6 class="wish-name mb-1" style="color: #6F4E37 !important; visibility: visible !important; opacity: 1 !important;">{{ wish.name if wish.name is string else wish.get('name', 'Guest') }}</h6>
+                                                        <p class="wish-message mb-2" style="color: #3E2723 !important; visibility: visible !important; opacity: 1 !important;">{{ wish.message if wish.message is string else wish.get('message', '') }}</p>
+                                                        <small class="text-muted" style="color: #8B7355 !important; visibility: visible !important; opacity: 1 !important;">
+                                                            {% if wish.created_at %}
+                                                                {% if wish.created_at is string %}
+                                                                    {{ wish.created_at }}
+                                                                {% elif wish.created_at is mapping %}
+                                                                    {{ wish.created_at.get('created_at', 'Recently') }}
+                                                                {% else %}
+                                                                    {{ wish.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                                                {% endif %}
+                                                            {% elif wish.get('created_at') %}
+                                                                {{ wish.get('created_at') }}
                                                             {% else %}
-                                                                {{ wish.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                                                Recently
                                                             {% endif %}
-                                                        {% else %}
-                                                            Recently
-                                                        {% endif %}
-                                                    </small>
+                                                        </small>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    {% endfor %}
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div id="noWishes" class="text-center text-muted py-4" {% if wishes %}style="display: none;"{% endif %}>
+                            <div id="noWishes" class="text-center text-muted py-4" {% if wishes and wishes|length > 0 %}style="display: none !important;"{% else %}style="display: block !important; visibility: visible !important; opacity: 1 !important;"{% endif %}>
                                 <i class="fas fa-heart-broken fa-2x mb-2"></i>
-                                <p>{{ translate_text('no_wishes_yet') }}</p>
+                                <p style="color: #8B7355 !important; visibility: visible !important; opacity: 1 !important;">{{ translate_text('no_wishes_yet') }}</p>
                             </div>
                         </div>
                     </div>

@@ -54,18 +54,19 @@
         transform: none;
     }
 
+    /* Base connecting line - always visible */
     .progress-step::after {
         content: '';
         position: absolute;
         top: 20px;
         left: calc(50% + 20px);
-        width: 0;
+        width: calc(100% - 40px);
         height: 3px;
         background: #E5E5E5;
         z-index: 1;
         visibility: visible !important;
         opacity: 1 !important;
-        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease;
+        transition: background 0.6s ease;
         transform-origin: left center;
     }
 
@@ -73,16 +74,22 @@
         display: none;
     }
 
+    /* Colored line for completed steps */
     .progress-step.completed::after {
         background: linear-gradient(90deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-        width: calc(100% - 40px) !important;
         animation: progressLinePulse 2s ease-in-out infinite;
     }
 
+    /* Colored line for active step */
     .progress-step.active::after {
         background: linear-gradient(90deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-        width: calc(100% - 40px) !important;
         animation: progressLinePulse 2s ease-in-out infinite 0.8s;
+    }
+    
+    /* Ensure pending steps show gray line */
+    .progress-step.pending::after {
+        background: #E5E5E5;
+        width: calc(100% - 40px) !important;
     }
     
     /* Progress line fill animation - animates from 0 to full width */
@@ -1434,7 +1441,7 @@
 
         .progress-step::after {
             left: calc(50% + 15px);
-            width: calc(100% - 30px);
+            width: calc(100% - 30px) !important;
         }
 
         .page-title h1 {
@@ -1479,87 +1486,67 @@
             <p>Select a design that speaks to your style</p>
     </div>
 
-        <div class="theme-grid">
-            {% if templates %}
-                {% for template in templates %}
-                {# Only show templates that have preview images #}
-                {% if template.preview_image %}
-                {% set template_name_slug = template.name|replace(' ', '_')|lower %}
-                {% set template_img_raw = template.preview_image if template.preview_image else '/images/templatesimages/wedding.png' %}
-                {% set template_img = template_img_raw if 'placeholder.com' not in template_img_raw and 'via.placeholder' not in template_img_raw else '/images/templatesimages/wedding.png' %}
-                {% if template_img and not template_img.startswith('http') %}
-                    {% if template_img.startswith('/images/') %}
-                        {% set template_img = template_img %}
-                    {% elif template_img.startswith('/static/images/') and 'templatesimages' in template_img %}
-                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
-                    {% elif 'templatesimages' in template_img %}
-                        {% if not template_img.startswith('/') %}
-                            {% set template_img = '/images/' + template_img %}
-    {% else %}
-                            {% set template_img = template_img %}
+        <div class="theme-dropdown-container" style="max-width: 600px; margin: 40px auto; padding: 0 20px;">
+            <div class="form-group">
+                <label class="form-label" for="themeSelect" style="font-size: 18px; font-weight: 600; margin-bottom: 16px; display: block;">Select Theme</label>
+                <select class="form-input" id="themeSelect" name="themeSelect" style="width: 100%; padding: 14px 16px; font-size: 16px; border: 2px solid #e0e0e0; border-radius: 8px; background: white; cursor: pointer;" onchange="handleThemeSelection(this)">
+                    <option value="">-- Choose a theme --</option>
+                    {% if all_templates %}
+                        {% set current_event_type = '' %}
+                        {% for template in all_templates %}
+                            {% if template.preview_image %}
+                                {% if template.event_type != current_event_type %}
+                                    {% if current_event_type != '' %}
+                                        </optgroup>
+                                    {% endif %}
+                                    {% set current_event_type = template.event_type %}
+                                    <optgroup label="{{ template.event_type|title }}">
+                                {% endif %}
+                                {% set template_name_slug = template.name|replace(' ', '_')|lower %}
+                                {% set template_img_raw = template.preview_image if template.preview_image else '/images/templatesimages/wedding.png' %}
+                                {% set template_img = template_img_raw if 'placeholder.com' not in template_img_raw and 'via.placeholder' not in template_img_raw else '/images/templatesimages/wedding.png' %}
+                                {% if template_img and not template_img.startswith('http') %}
+                                    {% if template_img.startswith('/images/') %}
+                                        {% set template_img = template_img %}
+                                    {% elif template_img.startswith('/static/images/') and 'templatesimages' in template_img %}
+                                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
+                                    {% elif 'templatesimages' in template_img %}
+                                        {% if not template_img.startswith('/') %}
+                                            {% set template_img = '/images/' + template_img %}
+                                        {% else %}
+                                            {% set template_img = template_img %}
+                                        {% endif %}
+                                    {% elif template_img.endswith(('.jpg', '.jpeg', '.png', '.gif')) and not '/' in template_img %}
+                                        {% set template_img = '/images/templatesimages/' + template_img %}
+                                    {% elif not template_img.startswith('/') %}
+                                        {% set template_img = '/images/templatesimages/' + template_img %}
+                                    {% endif %}
+                                    {% if template_img.startswith('/static/images/') %}
+                                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
+                                    {% endif %}
+                                {% endif %}
+                                {% set safe_template_img = template_img if 'placeholder.com' not in template_img and 'via.placeholder' not in template_img else '/images/templatesimages/wedding.png' %}
+                                <option value="{{ template.id }}" 
+                                        data-template-image="{{ safe_template_img|e }}" 
+                                        data-template-name="{{ template.name|e }}"
+                                        data-event-type="{{ template.event_type|e }}">
+                                    {{ template.name|e }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                        {% if current_event_type != '' %}
+                            </optgroup>
                         {% endif %}
-                    {% elif template_img.endswith(('.jpg', '.jpeg', '.png', '.gif')) and not '/' in template_img %}
-                        {# Just filename like "wed.jpg" or "birthday.jpg" - always use templatesimages #}
-                        {% set template_img = '/images/templatesimages/' + template_img %}
-                    {% elif not template_img.startswith('/') %}
-                        {# Any relative path should go to templatesimages #}
-                        {% set template_img = '/images/templatesimages/' + template_img %}
                     {% endif %}
-                    
-                    {# ALWAYS convert /static/images/ to /images/ - final normalization #}
-                    {% if template_img.startswith('/static/images/') %}
-                        {% set template_img = template_img.replace('/static/images/', '/images/') %}
-                    {% endif %}
-                {% endif %}
-                {% set template_color = template.color_scheme if template.color_scheme else 'A07878' %}
-                {% set template_name_encoded = template.name|replace(' ', '+') %}
-                {% set safe_template_img = template_img if 'placeholder.com' not in template_img and 'via.placeholder' not in template_img else '/images/templatesimages/wedding.png' %}
-                <div class="theme-card" data-theme="{{ template_name_slug|e }}" data-template-id="{{ template.id }}" data-template-image="{{ safe_template_img|e }}" data-template-name="{{ template.name|e }}" style="cursor: pointer;">
-                    <img src="{{ safe_template_img|e }}" 
-                         alt="{{ template.name|e }}" 
-                         class="theme-image" 
-                         data-src="{{ safe_template_img|e }}"
-                         loading="lazy"
-                         decoding="async"
-                         onerror="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onerror, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; return; } this.onerror=null; this.style.display='block'; this.style.background='#{{ template_color|e }}'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover'; this.alt='{{ template.name|e }}';"
-                         onload="if(this.src && (this.src.includes('placeholder.com') || this.src.includes('via.placeholder'))) { console.warn('🚫 Placeholder URL in onload, replacing:', this.src); this.src='/images/templatesimages/wedding.png'; }">
-                    <div class="theme-title">{{ template.name|e }}</div>
-    </div>
-    {% endif %}
-                {% endfor %}
-    {% else %}
-                <!-- Default Theme Options if no templates in database -->
-                <div class="theme-card" data-theme="modern_minimal" data-template-id="" style="cursor: pointer;">
-                    <img src="/static/images/templateselection/naming cermony.jpg" alt="Modern Minimal" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
-                    <div class="theme-title">Modern Minimal</div>
-    </div>
-
-                <div class="theme-card" data-theme="floral_luxury" data-template-id="" style="cursor: pointer;">
-                    <img src="/static/images/templateselection/partytemplates.jpg" alt="Floral Luxury" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
-                    <div class="theme-title">Floral Luxury</div>
-        </div>
-
-                <div class="theme-card" data-theme="royal_gold" data-template-id="" style="cursor: pointer;">
-                    <img src="/static/images/templateselection/traditionalgettogether.jpg" alt="Royal Gold" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
-                    <div class="theme-title">Royal Gold</div>
+                </select>
             </div>
-
-                <div class="theme-card" data-theme="watercolor_dreams" data-template-id="" style="cursor: pointer;">
-                    <img src="/static/images/templateselection/naming cermony.jpg" alt="Watercolor Dreams" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
-                    <div class="theme-title">Watercolor Dreams</div>
+            <div id="selectedThemePreview" style="margin-top: 20px; display: none; text-align: center;">
+                <div style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <img id="themePreviewImage" src="" alt="Theme Preview" style="max-width: 100%; max-height: 300px; border-radius: 8px; margin-bottom: 12px;">
+                    <p id="themePreviewName" style="font-weight: 600; color: #6F4E37; margin: 0;"></p>
+                </div>
             </div>
-
-                <div class="theme-card" data-theme="dark_chic" data-template-id="" style="cursor: pointer;">
-                    <img src="/static/images/templateselection/partytemplates.jpg" alt="Dark Chic" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
-                    <div class="theme-title">Dark Chic</div>
         </div>
-        
-                <div class="theme-card" data-theme="festive_traditional" data-template-id="" style="cursor: pointer;">
-                    <img src="/static/images/templateselection/traditionalgettogether.jpg" alt="Festive Traditional" class="theme-image" onerror="this.onerror=null; this.style.display='block'; this.style.background='#A07878'; this.style.color='#FFFFFF'; this.style.width='100%'; this.style.height='100%'; this.style.objectFit='cover';">
-                    <div class="theme-title">Festive Traditional</div>
-        </div>
-                {% endif %}
-    </div>
 
         <div class="form-navigation">
             <a href="{{ url_for('templates') }}" class="btn-back">
@@ -1659,16 +1646,19 @@
 
                     <div class="form-group">
                         <label class="form-label" for="fontStyle">Font Style</label>
-                        <select class="form-input" id="fontStyle" name="fontStyle" autocomplete="off">
-                            <option value="Inter, sans-serif">Inter (Modern)</option>
-                            <option value="Playfair Display, serif">Playfair Display (Elegant)</option>
-                            <option value="Georgia, serif">Georgia (Classic)</option>
-                            <option value="Brush Script MT, cursive">Brush Script (Fun)</option>
-                            <option value="Montserrat, sans-serif">Montserrat (Clean)</option>
-                            <option value="Amiri, serif">Amiri (Traditional)</option>
-                            <option value="Lora, serif">Lora (Sophisticated)</option>
-                            <option value="Times New Roman, serif">Times New Roman (Formal)</option>
+                        <select class="form-input" id="fontStyle" name="fontStyle" autocomplete="off" onchange="updateFontPreview(this)">
+                            <option value="Inter, sans-serif" style="font-family: Inter, sans-serif;">Inter (Modern)</option>
+                            <option value="Playfair Display, serif" style="font-family: 'Playfair Display', serif;">Playfair Display (Elegant)</option>
+                            <option value="Georgia, serif" style="font-family: Georgia, serif;">Georgia (Classic)</option>
+                            <option value="Brush Script MT, cursive" style="font-family: 'Brush Script MT', cursive;">Brush Script (Fun)</option>
+                            <option value="Montserrat, sans-serif" style="font-family: Montserrat, sans-serif;">Montserrat (Clean)</option>
+                            <option value="Amiri, serif" style="font-family: Amiri, serif;">Amiri (Traditional)</option>
+                            <option value="Lora, serif" style="font-family: Lora, serif;">Lora (Sophisticated)</option>
+                            <option value="Times New Roman, serif" style="font-family: 'Times New Roman', serif;">Times New Roman (Formal)</option>
                         </select>
+                        <div id="fontPreview" style="margin-top: 8px; padding: 12px; background: #f8f9fa; border-radius: 6px; font-size: 18px; min-height: 40px; display: flex; align-items: center; border: 1px solid #e0e0e0;">
+                            <span style="font-family: Inter, sans-serif;">Preview: The quick brown fox jumps over the lazy dog</span>
+                        </div>
             </div>
 
                     <!-- Main Image Upload -->
@@ -3462,6 +3452,68 @@
             }, 100);
         }
         
+        // Font preview function
+        window.updateFontPreview = function(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const fontFamily = selectedOption.value;
+            const previewDiv = document.getElementById('fontPreview');
+            if (previewDiv) {
+                const previewSpan = previewDiv.querySelector('span');
+                if (previewSpan) {
+                    previewSpan.style.fontFamily = fontFamily;
+                }
+            }
+            // Also apply to preview card
+            if (fontFamily) {
+                applyFontStyleToPreview(fontFamily);
+            }
+        };
+        
+        // Theme selection from dropdown
+        window.handleThemeSelection = function(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            if (!selectedOption || !selectedOption.value) {
+                document.getElementById('selectedThemePreview').style.display = 'none';
+                document.getElementById('continueToDetails').disabled = true;
+                return;
+            }
+            
+            const templateId = selectedOption.value;
+            const templateImage = selectedOption.getAttribute('data-template-image');
+            const templateName = selectedOption.getAttribute('data-template-name');
+            
+            // Show preview
+            const previewDiv = document.getElementById('selectedThemePreview');
+            const previewImage = document.getElementById('themePreviewImage');
+            const previewName = document.getElementById('themePreviewName');
+            
+            if (previewDiv && previewImage && previewName) {
+                previewImage.src = templateImage || '';
+                previewName.textContent = templateName || '';
+                previewDiv.style.display = 'block';
+            }
+            
+            // Enable continue button
+            const continueBtn = document.getElementById('continueToDetails');
+            if (continueBtn) {
+                continueBtn.disabled = false;
+            }
+            
+            // Store selected template
+            window.selectedTemplateId = templateId;
+            window.selectedTemplateImage = templateImage;
+            
+            // Update hidden form fields
+            const templateIdInput = document.getElementById('templateIdInput');
+            const templateImageUrlInput = document.getElementById('templateImageUrlInput');
+            if (templateIdInput) {
+                templateIdInput.value = templateId;
+            }
+            if (templateImageUrlInput) {
+                templateImageUrlInput.value = templateImage || '';
+            }
+        };
+        
         // Apply initial language on page load
         if (languageSelect) {
             setTimeout(() => {
@@ -3980,39 +4032,62 @@
 
         // Continue to Details
         window.continueToDetails = function() {
-            if (!selectedThemeValue) {
-                alert('Please select a theme first');
-                return;
+            // Check for dropdown selection first
+            const themeSelect = document.getElementById('themeSelect');
+            let templateId = null;
+            let templateImageUrl = null;
+            let templateName = null;
+            
+            if (themeSelect && themeSelect.value) {
+                const selectedOption = themeSelect.options[themeSelect.selectedIndex];
+                templateId = selectedOption.value;
+                templateImageUrl = selectedOption.getAttribute('data-template-image');
+                templateName = selectedOption.getAttribute('data-template-name');
+                selectedThemeValue = templateId;
+            } else if (!selectedThemeValue) {
+                // Fallback to card selection
+                const selectedCard = document.querySelector('.theme-card.selected');
+                if (selectedCard) {
+                    const templateDataImage = selectedCard.getAttribute('data-template-image');
+                    const templateImg = selectedCard.querySelector('.theme-image');
+                    const templateTitle = selectedCard.querySelector('.theme-title');
+                    
+                    templateImageUrl = templateDataImage || (templateImg ? templateImg.src : null);
+                    templateName = templateTitle ? templateTitle.textContent : (selectedThemeValue || '');
+                    templateId = selectedCard.getAttribute('data-template-id') || selectedThemeValue;
+                } else {
+                    alert('Please select a theme first');
+                    return;
+                }
+            } else {
+                // Use existing selectedThemeValue
+                const selectedCard = document.querySelector('.theme-card.selected');
+                if (selectedCard) {
+                    const templateDataImage = selectedCard.getAttribute('data-template-image');
+                    const templateImg = selectedCard.querySelector('.theme-image');
+                    const templateTitle = selectedCard.querySelector('.theme-title');
+                    
+                    templateImageUrl = templateDataImage || (templateImg ? templateImg.src : null);
+                    templateName = templateTitle ? templateTitle.textContent : (selectedThemeValue || '');
+                }
             }
 
-            // Ensure template background is applied when moving to details page
-            const selectedCard = document.querySelector('.theme-card.selected');
-            if (selectedCard) {
-                const templateDataImage = selectedCard.getAttribute('data-template-image');
-                const templateImg = selectedCard.querySelector('.theme-image');
-                const templateTitle = selectedCard.querySelector('.theme-title');
-                
-                let templateImageUrl = templateDataImage || (templateImg ? templateImg.src : null);
-                // Safely get template name - textContent is already safe, but ensure fallback is properly escaped
-                const templateName = templateTitle ? templateTitle.textContent : (selectedThemeValue || '');
-                
-                // Normalize the URL using the global function (this will filter out placeholder URLs)
-                if (templateImageUrl) {
-                    templateImageUrl = normalizeImagePath(templateImageUrl);
+            // Normalize the URL using the global function (this will filter out placeholder URLs)
+            if (templateImageUrl) {
+                templateImageUrl = normalizeImagePath(templateImageUrl);
+            }
+            
+            // Skip if normalization returned null (placeholder/invalid URL)
+            if (templateImageUrl) {
+                // CRITICAL: Final check before storing in sessionStorage - block placeholder URLs
+                if (templateImageUrl.includes('placeholder.com') || templateImageUrl.includes('via.placeholder') || templateImageUrl.includes('placeholder')) {
+                    console.error('❌ Placeholder URL blocked from sessionStorage in continueToDetails:', templateImageUrl);
+                    templateImageUrl = '/images/templatesimages/wedding.png'; // Default fallback
                 }
                 
-                // Skip if normalization returned null (placeholder/invalid URL)
-                if (templateImageUrl) {
-                    // CRITICAL: Final check before storing in sessionStorage - block placeholder URLs
-                    if (templateImageUrl.includes('placeholder.com') || templateImageUrl.includes('via.placeholder') || templateImageUrl.includes('placeholder')) {
-                        console.error('❌ Placeholder URL blocked from sessionStorage in continueToDetails:', templateImageUrl);
-                        templateImageUrl = '/images/templatesimages/wedding.png'; // Default fallback
-                    }
-                    
-                    // Store in sessionStorage as backup
-                    sessionStorage.setItem('selectedTemplateBackground', templateImageUrl);
-                    sessionStorage.setItem('selectedTemplateId', selectedThemeValue);
-                }
+                // Store in sessionStorage as backup
+                sessionStorage.setItem('selectedTemplateBackground', templateImageUrl);
+                sessionStorage.setItem('selectedTemplateId', templateId || selectedThemeValue);
             }
             
             // Also check sessionStorage for template background (from theme selection)
@@ -4021,6 +4096,7 @@
                 const storedTemplateId = sessionStorage.getItem('selectedTemplateId');
                 if (storedTemplateId) {
                     selectedThemeValue = storedTemplateId;
+                    templateId = storedTemplateId;
                 }
             }
             
@@ -4323,15 +4399,40 @@
         window.submitForm = function() {
             const form = document.getElementById('invitationForm');
             
+            // Show loading overlay
+            if (typeof showLoadingWithIcon === 'function') {
+                showLoadingWithIcon('Generating your invitation...', 'This may take a few moments', '🎉');
+            } else if (typeof showLoading === 'function') {
+                showLoading('Generating your invitation...');
+            }
+            
+            // Disable submit button to prevent double submission
+            const submitButton = document.querySelector('.btn-preview');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.6';
+                submitButton.style.cursor = 'not-allowed';
+            }
+            
             // Capture template background info before submission
             const templateIdInput = document.getElementById('templateIdInput');
             const templateImageUrlInput = document.getElementById('templateImageUrlInput');
             
-            if (selectedTemplateId && templateIdInput) {
+            // Also check dropdown selection
+            const themeSelect = document.getElementById('themeSelect');
+            if (themeSelect && themeSelect.value) {
+                const selectedOption = themeSelect.options[themeSelect.selectedIndex];
+                if (templateIdInput) {
+                    templateIdInput.value = selectedOption.value;
+                }
+                if (templateImageUrlInput) {
+                    templateImageUrlInput.value = selectedOption.getAttribute('data-template-image') || '';
+                }
+            } else if (selectedTemplateId && templateIdInput) {
                 templateIdInput.value = selectedTemplateId;
             }
             
-            if (selectedTemplateImage && templateImageUrlInput) {
+            if (selectedTemplateImage && templateImageUrlInput && !templateImageUrlInput.value) {
                 // Clean the URL
                 let cleanUrl = selectedTemplateImage.split('?')[0].split('#')[0];
                 if (!cleanUrl.startsWith('/images/') && cleanUrl.includes('templatesimages')) {
@@ -4341,10 +4442,11 @@
             }
             
             console.log('Submitting form with template data:', {
-                templateId: selectedTemplateId,
-                templateImage: selectedTemplateImage
+                templateId: templateIdInput ? templateIdInput.value : selectedTemplateId,
+                templateImage: templateImageUrlInput ? templateImageUrlInput.value : selectedTemplateImage
             });
             
+            // Submit form
             form.submit();
         };
 
