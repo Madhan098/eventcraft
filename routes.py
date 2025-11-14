@@ -2595,32 +2595,56 @@ def register_routes(app):
     @app.route('/invitations/<int:invitation_id>/rsvp')
     def rsvp_manage(invitation_id):
         """RSVP management page for invitation hosts"""
-        if not is_authenticated():
-            return redirect(url_for('login'))
-        
-        invitation = Invitation.query.get_or_404(invitation_id)
-        
-        # Check if user owns this invitation
-        if invitation.user_id != session['user_id']:
-            flash('You do not have permission to manage this invitation.', 'error')
+        try:
+            if not is_authenticated():
+                flash('Please login to manage RSVPs', 'error')
+                return redirect(url_for('auth'))
+            
+            invitation = Invitation.query.get_or_404(invitation_id)
+            
+            # Check if user owns this invitation
+            if invitation.user_id != session['user_id']:
+                flash('You do not have permission to manage this invitation.', 'error')
+                return redirect(url_for('dashboard'))
+            
+            # Get guests and RSVP statistics safely
+            try:
+                guests = Guest.query.filter_by(invitation_id=invitation_id).all()
+            except Exception as e:
+                app.logger.error(f"Error fetching guests: {str(e)}")
+                guests = []
+            
+            # Calculate RSVP statistics safely
+            try:
+                total_rsvps = RSVP.query.filter_by(invitation_id=invitation_id).count()
+                attending = RSVP.query.filter_by(invitation_id=invitation_id, status='attending').count()
+                not_attending = RSVP.query.filter_by(invitation_id=invitation_id, status='not_attending').count()
+                maybe = RSVP.query.filter_by(invitation_id=invitation_id, status='maybe').count()
+            except Exception as e:
+                app.logger.error(f"Error calculating RSVP stats: {str(e)}")
+                total_rsvps = 0
+                attending = 0
+                not_attending = 0
+                maybe = 0
+            
+            rsvp_stats = {
+                'attending': attending,
+                'not_attending': not_attending,
+                'maybe': maybe,
+                'pending': max(0, len(guests) - total_rsvps),
+                'total_guests': len(guests)
+            }
+            
+            return render_template('invitation/rsvp_manage.html', 
+                                 invitation=invitation, 
+                                 guests=guests, 
+                                 rsvp_stats=rsvp_stats)
+        except Exception as e:
+            app.logger.error(f"Error in rsvp_manage route: {str(e)}")
+            import traceback
+            app.logger.error(traceback.format_exc())
+            flash('An error occurred while loading RSVP management. Please try again.', 'error')
             return redirect(url_for('dashboard'))
-        
-        # Get guests and RSVP statistics
-        guests = Guest.query.filter_by(invitation_id=invitation_id).all()
-        
-        # Calculate RSVP statistics
-        rsvp_stats = {
-            'attending': RSVP.query.filter_by(invitation_id=invitation_id, status='attending').count(),
-            'not_attending': RSVP.query.filter_by(invitation_id=invitation_id, status='not_attending').count(),
-            'maybe': RSVP.query.filter_by(invitation_id=invitation_id, status='maybe').count(),
-            'pending': len(guests) - RSVP.query.filter_by(invitation_id=invitation_id).count(),
-            'total_guests': len(guests)
-        }
-        
-        return render_template('invitation/rsvp_manage.html', 
-                             invitation=invitation, 
-                             guests=guests, 
-                             rsvp_stats=rsvp_stats)
 
     # API Routes for RSVP Management
     @app.route('/api/invitations/<int:invitation_id>/guests', methods=['POST'])
@@ -2742,41 +2766,70 @@ def register_routes(app):
     @app.route('/analytics')
     def analytics():
         """General analytics dashboard"""
-        if not is_authenticated():
-            flash('Please login to view analytics', 'error')
-            return redirect(url_for('auth'))
-        
-        user_id = session['user_id']
-        
-        # Get user's invitations
-        invitations = Invitation.query.filter_by(user_id=user_id).all()
-        
-        if not invitations:
-            flash('No invitations found. Create your first invitation to see analytics.', 'info')
+        try:
+            if not is_authenticated():
+                flash('Please login to view analytics', 'error')
+                return redirect(url_for('auth'))
+            
+            user_id = session['user_id']
+            
+            # Get user's invitations
+            invitations = Invitation.query.filter_by(user_id=user_id).all()
+            
+            if not invitations:
+                flash('No invitations found. Create your first invitation to see analytics.', 'info')
+                return redirect(url_for('dashboard'))
+            
+            # Calculate overall analytics
+            try:
+                total_views = sum(invitation.view_count or 0 for invitation in invitations)
+                total_guests = sum(len(invitation.guests) if invitation.guests else 0 for invitation in invitations)
+                
+                # Get shares count safely
+                total_shares = 0
+                for invitation in invitations:
+                    try:
+                        total_shares += InvitationShare.query.filter_by(invitation_id=invitation.id).count()
+                    except Exception:
+                        total_shares += len(invitation.shares) if invitation.shares else 0
+                
+                # Get RSVP statistics safely
+                total_rsvps = 0
+                for invitation in invitations:
+                    try:
+                        total_rsvps += RSVP.query.filter_by(invitation_id=invitation.id).count()
+                    except Exception:
+                        total_rsvps += len(invitation.rsvps) if invitation.rsvps else 0
+                
+                rsvp_rate = round((total_rsvps / total_guests * 100) if total_guests > 0 else 0, 1)
+            except Exception as e:
+                app.logger.error(f"Error calculating analytics: {str(e)}")
+                # Set defaults if calculation fails
+                total_views = 0
+                total_guests = 0
+                total_shares = 0
+                total_rsvps = 0
+                rsvp_rate = 0
+            
+            # Prepare analytics data
+            analytics = {
+                'total_invitations': len(invitations),
+                'total_views': total_views,
+                'total_guests': total_guests,
+                'total_rsvps': total_rsvps,
+                'total_shares': total_shares,
+                'rsvp_rate': rsvp_rate
+            }
+            
+            return render_template('analytics/general.html', 
+                                 analytics=analytics, 
+                                 invitations=invitations)
+        except Exception as e:
+            app.logger.error(f"Error in analytics route: {str(e)}")
+            import traceback
+            app.logger.error(traceback.format_exc())
+            flash('An error occurred while loading analytics. Please try again.', 'error')
             return redirect(url_for('dashboard'))
-        
-        # Calculate overall analytics
-        total_views = sum(invitation.view_count for invitation in invitations)
-        total_guests = sum(len(invitation.guests) for invitation in invitations)
-        total_shares = sum(InvitationShare.query.filter_by(invitation_id=invitation.id).count() for invitation in invitations)
-        
-        # Get RSVP statistics
-        total_rsvps = sum(RSVP.query.filter_by(invitation_id=invitation.id).count() for invitation in invitations)
-        rsvp_rate = round((total_rsvps / total_guests * 100) if total_guests > 0 else 0, 1)
-        
-        # Prepare analytics data
-        analytics = {
-            'total_invitations': len(invitations),
-            'total_views': total_views,
-            'total_guests': total_guests,
-            'total_rsvps': total_rsvps,
-            'total_shares': total_shares,
-            'rsvp_rate': rsvp_rate
-        }
-        
-        return render_template('analytics/general.html', 
-                             analytics=analytics, 
-                             invitations=invitations)
 
     # Analytics Dashboard Route
     @app.route('/invitations/<int:invitation_id>/analytics')

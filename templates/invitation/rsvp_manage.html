@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block title %}RSVP Management - {{ invitation.title }} - EventCraft Pro{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="page-title">
+                        <i class="fas fa-list-check me-2"></i>RSVP Management
+                    </h1>
+                    <p class="text-muted mb-0">{{ invitation.title or invitation.event_name or 'Untitled Event' }}</p>
+                </div>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- RSVP Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ rsvp_stats.attending }}</h3>
+                    <p class="stat-label">Attending</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ rsvp_stats.not_attending }}</h3>
+                    <p class="stat-label">Not Attending</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ rsvp_stats.maybe }}</h3>
+                    <p class="stat-label">Maybe</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ rsvp_stats.pending }}</h3>
+                    <p class="stat-label">Pending</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guests and RSVP List -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-users me-2"></i>Guest List ({{ rsvp_stats.total_guests }})
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% if guests %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>RSVP Status</th>
+                                    <th>Response Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for guest in guests %}
+                                {% set rsvp = guest.rsvps|first if guest.rsvps else None %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ guest.name or 'Guest' }}</strong>
+                                    </td>
+                                    <td>{{ guest.email or 'N/A' }}</td>
+                                    <td>{{ guest.phone or 'N/A' }}</td>
+                                    <td>
+                                        {% if rsvp %}
+                                            {% if rsvp.status == 'attending' %}
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>Attending
+                                                </span>
+                                            {% elif rsvp.status == 'not_attending' %}
+                                                <span class="badge bg-danger">
+                                                    <i class="fas fa-times me-1"></i>Not Attending
+                                                </span>
+                                            {% elif rsvp.status == 'maybe' %}
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="fas fa-question me-1"></i>Maybe
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Pending</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="badge bg-secondary">
+                                                <i class="fas fa-clock me-1"></i>Pending
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if rsvp and rsvp.created_at %}
+                                            {{ rsvp.created_at.strftime('%b %d, %Y %I:%M %p') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('view_invitation_final', share_url=invitation.share_url) }}" 
+                                           class="btn btn-sm btn-outline-primary" target="_blank">
+                                            <i class="fas fa-eye"></i> View Invitation
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No guests added yet. Add guests to track RSVPs.</p>
+                        <a href="{{ url_for('edit_invitation', invitation_id=invitation.id) }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Guests
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .page-title {
+        color: var(--text-dark);
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(111, 78, 55, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .stat-content {
+        flex: 1;
+    }
+
+    .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin: 0;
+        line-height: 1;
+    }
+
+    .stat-label {
+        color: var(--text-gray);
+        margin: 8px 0 0 0;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(111, 78, 55, 0.1);
+    }
+
+    .card-header {
+        background: transparent;
+        border-bottom: 2px solid rgba(111, 78, 55, 0.1);
+        padding: 20px;
+    }
+
+    .card-title {
+        color: var(--text-dark);
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background: rgba(111, 78, 55, 0.05);
+        color: var(--text-dark);
+        font-weight: 600;
+        border-bottom: 2px solid rgba(111, 78, 55, 0.1);
+    }
+
+    .table tbody tr:hover {
+        background: rgba(111, 78, 55, 0.05);
+    }
+
+    .badge {
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 8px 16px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(111, 78, 55, 0.3);
+    }
+
+    .btn-outline-primary {
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .btn-outline-primary:hover {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .btn-outline-secondary {
+        border: 2px solid var(--text-secondary);
+        color: var(--text-secondary);
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--text-secondary);
+        color: white;
+    }
+</style>
+{% endblock %}
+

@@ -37,7 +37,7 @@ body {
 }
 
 .theme-gallery-title {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     gap: 16px;
@@ -46,6 +46,8 @@ body {
     line-height: 1.1;
     letter-spacing: -0.02em;
     margin-bottom: 24px;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .title-icon {
@@ -57,15 +59,15 @@ body {
     display: inline-block;
 }
 
-/* Apply gradient only if supported */
+/* Apply gradient only if supported, but keep text visible */
 @supports (-webkit-background-clip: text) or (background-clip: text) {
     .title-icon {
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         background-clip: text;
-        /* Keep fallback color */
-        color: var(--primary-color);
+        /* Keep text visible - use solid color instead of transparent */
+        -webkit-text-fill-color: var(--primary-color) !important;
+        color: var(--primary-color) !important;
     }
 }
 
@@ -79,25 +81,29 @@ body {
     visibility: visible !important;
     opacity: 1 !important;
     display: inline-block !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
 }
 
 .title-gallery {
     /* Base styles - always visible */
-    display: inline-block;
+    display: inline-block !important;
     position: relative;
     visibility: visible !important;
     opacity: 1 !important;
     /* Fallback solid color - ensures text is always visible */
     color: var(--primary-dark) !important;
+    -webkit-text-fill-color: var(--primary-dark) !important;
 }
 
-/* Gradient text effect - only applies when supported */
+/* Gradient text effect - only applies when supported, but keep text visible */
 @supports (-webkit-background-clip: text) or (background-clip: text) {
     .title-gallery {
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
         -webkit-background-clip: text;
         background-clip: text;
-        -webkit-text-fill-color: transparent;
+        /* Keep text visible - use solid color instead of transparent */
+        -webkit-text-fill-color: var(--primary-dark) !important;
+        color: var(--primary-dark) !important;
         /* Keep fallback color for browsers that support clip but gradient fails */
         color: var(--primary-dark);
     }
@@ -154,16 +160,53 @@ body {
 }
 
 .filter-btn.active {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+    border-color: transparent !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 15px rgba(111, 78, 55, 0.4), 0 0 20px rgba(212, 175, 55, 0.3) !important;
+    transform: scale(1.05) !important;
+    animation: filterPulse 2s ease-in-out infinite !important;
+    position: relative !important;
+}
+
+.filter-btn.active::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    border-color: transparent;
-    color: #FFFFFF;
-    box-shadow: var(--shadow-sm);
+    border-radius: 24px;
+    z-index: -1;
+    opacity: 0.5;
+    animation: filterGlow 2s ease-in-out infinite;
+}
+
+@keyframes filterPulse {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(111, 78, 55, 0.4), 0 0 20px rgba(212, 175, 55, 0.3);
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(111, 78, 55, 0.6), 0 0 30px rgba(212, 175, 55, 0.5);
+    }
+}
+
+@keyframes filterGlow {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
 }
 
 .filter-btn.active:hover {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-color) 100%);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-color) 100%) !important;
+    transform: scale(1.08) translateY(-2px) !important;
+    box-shadow: 0 6px 25px rgba(111, 78, 55, 0.5), 0 0 35px rgba(212, 175, 55, 0.4) !important;
 }
 
 /* Theme Cards Grid */
@@ -443,14 +486,14 @@ body {
 <!-- Theme Gallery Header -->
 <section class="theme-gallery-header">
     <div class="header-content">
-        <h1 class="theme-gallery-title">
-            <span class="title-icon">✶</span>
-            <span class="title-text">
-                <span class="title-theme">Theme </span>
-                <span class="title-gallery">Gallery</span>
+        <h1 class="theme-gallery-title" style="visibility: visible !important; opacity: 1 !important; display: flex !important;">
+            <span class="title-icon" style="visibility: visible !important; opacity: 1 !important; color: var(--primary-color) !important; -webkit-text-fill-color: var(--primary-color) !important;">✶</span>
+            <span class="title-text" style="visibility: visible !important; opacity: 1 !important; display: flex !important;">
+                <span class="title-theme" style="visibility: visible !important; opacity: 1 !important; color: var(--text-primary) !important; -webkit-text-fill-color: var(--text-primary) !important;">Theme </span>
+                <span class="title-gallery" style="visibility: visible !important; opacity: 1 !important; color: var(--primary-dark) !important; -webkit-text-fill-color: var(--primary-dark) !important;">Gallery</span>
             </span>
         </h1>
-        <p class="theme-gallery-subtitle">Explore our curated collection of invitation designs. Each theme tells a unique story — find yours.</p>
+        <p class="theme-gallery-subtitle" style="visibility: visible !important; opacity: 1 !important; display: block !important; color: var(--text-secondary) !important;">Explore our curated collection of invitation designs. Each theme tells a unique story — find yours.</p>
             </div>
 </section>
 
@@ -741,15 +784,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
+            // Add click animation to button
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            
+            // Remove active class from all buttons with fade out
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.transition = 'all 0.3s ease';
+            });
+            
+            // Add active class to clicked button with animation
+            setTimeout(() => {
+                this.classList.add('active');
+                this.style.transition = 'all 0.3s ease';
+            }, 50);
             
             const filter = this.dataset.filter;
             
-            // Filter cards
-            themeCards.forEach(card => {
+            // Filter cards with smooth animations
+            let visibleCount = 0;
+            themeCards.forEach((card, index) => {
                 const eventType = card.dataset.eventType || '';
                 const categories = card.dataset.category ? card.dataset.category.split(' ') : [];
                 
@@ -759,10 +816,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                categories.includes(filter);
                 
                 if (matches) {
+                    // Show card with fade-in animation
                     card.style.display = 'flex';
                     card.style.flexDirection = 'column';
                     card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
+                    card.style.transform = 'translateY(20px) scale(0.95)';
+                    card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
                     card.style.visibility = 'visible';
                     
                     // Ensure all text is visible when showing

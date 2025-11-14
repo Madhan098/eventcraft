@@ -193,7 +193,7 @@
             opacity: 1;
         }
     }
-    
+
     .progress-step.active .step-circle {
         background: var(--golden-yellow) !important;
         color: var(--reddish-brown-dark) !important;
@@ -1207,11 +1207,21 @@
 
     /* Navigation Buttons */
         .form-navigation {
-        display: flex;
+        display: flex !important;
         justify-content: space-between;
         max-width: 1200px;
         margin: 40px auto 0;
-        padding: 0 20px;
+        padding: 20px !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+        border: 2px solid rgba(111, 78, 55, 0.2) !important;
+        position: relative !important;
+        z-index: 50 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
     .btn-back,
@@ -1245,12 +1255,16 @@
 
     .btn-continue,
     .btn-preview {
-        background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
+        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%) !important;
         color: #FFFFFF !important;
-        border: none;
-        box-shadow: 0 2px 8px rgba(160, 120, 120, 0.2);
+        border: 3px solid #FFFFFF !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(111, 78, 55, 0.5) !important;
         visibility: visible !important;
         opacity: 1 !important;
+        position: relative !important;
+        z-index: 100 !important;
+        backdrop-filter: blur(5px) !important;
+        -webkit-backdrop-filter: blur(5px) !important;
     }
     
     .btn-preview,
@@ -1258,6 +1272,7 @@
         color: #FFFFFF !important;
         visibility: visible !important;
         opacity: 1 !important;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5) !important;
     }
     
     .btn-preview i {
@@ -1265,12 +1280,14 @@
         visibility: visible !important;
         opacity: 1 !important;
         display: inline-block !important;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5) !important;
     }
 
     .btn-continue:hover,
     .btn-preview:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(160, 120, 120, 0.35);
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5), 0 0 30px rgba(111, 78, 55, 0.6) !important;
+        background: linear-gradient(135deg, #5a3d2a 0%, #B8941F 100%) !important;
     }
 
     .btn-continue:not(:disabled) {
@@ -1354,7 +1371,7 @@
     .form-group:nth-child(6) { animation-delay: 0.35s; }
     .form-group:nth-child(7) { animation-delay: 0.4s; }
     .form-group:nth-child(8) { animation-delay: 0.45s; }
-    
+
     /* Responsive */
     @media (max-width: 1200px) {
         .form-preview-container {
@@ -1892,7 +1909,7 @@
                             <span id="previewVenueText"></span>
                     </div>
                         <div class="preview-hosted" id="previewHosted" style="display: none;">
-                            <i class="fas fa-user"></i> Hosted by <span id="previewHostedText"></span>
+                            <i class="fas fa-user"></i> <span id="previewHostedLabel">Hosted by</span> <span id="previewHostedText"></span>
                     </div>
                         <div class="preview-message" id="previewMessage" style="display: none;">
                             <span id="previewMessageText"></span>
@@ -1901,7 +1918,7 @@
                         <!-- Gallery Images Section - At the bottom of template card -->
                         <div id="previewGallerySection" style="display: none; margin-top: 30px; padding-top: 20px; padding-bottom: 15px; border-top: 2px solid rgba(160, 120, 120, 0.4); position: relative; z-index: 25 !important; width: 100%;">
                             <h3 class="text-center mb-4 preview-gallery-title" style="color: #6F4E37 !important; font-weight: 700; font-size: 1.5rem; position: relative; z-index: 25 !important; visibility: visible !important; opacity: 1 !important; margin-bottom: 20px !important; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9); background: rgba(255, 255, 255, 0.7); padding: 8px 16px; border-radius: 8px; display: inline-block;">
-                                <i class="fas fa-images me-2"></i>Our Memories
+                                <i class="fas fa-images me-2"></i><span id="previewGalleryTitleText">Our Memories</span>
                             </h3>
                             <div class="preview-gallery-grid" id="previewGalleryGrid" style="display: grid !important; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important; gap: 15px !important; position: relative; z-index: 25 !important; visibility: visible !important; opacity: 1 !important; width: 100%; padding: 10px 0;"></div>
                         </div>
@@ -1916,12 +1933,12 @@
             </div>
         </div>
 
-        <div class="form-navigation">
-            <button class="btn-back" onclick="goBack()">
+        <div class="form-navigation" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
+            <button class="btn-back" onclick="goBack()" style="visibility: visible !important; opacity: 1 !important; display: inline-flex !important;">
                 <i class="fas fa-arrow-left"></i> Back
             </button>
-            <button class="btn-preview" onclick="submitForm()">
-                Preview <i class="fas fa-arrow-right"></i>
+            <button class="btn-preview" onclick="submitForm()" style="visibility: visible !important; opacity: 1 !important; display: inline-flex !important; background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%) !important; color: #FFFFFF !important; border: 3px solid #FFFFFF !important; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(111, 78, 55, 0.5) !important; position: relative !important; z-index: 100 !important;">
+                Preview <i class="fas fa-arrow-right" style="color: #FFFFFF !important; visibility: visible !important; opacity: 1 !important;"></i>
                 </button>
             </div>
         </div>
@@ -2134,7 +2151,7 @@
             }
         });
     };
-    
+
     // Live Preview Updates - Optimized with debouncing
         document.addEventListener('DOMContentLoaded', function() {
         const eventNameInput = document.getElementById('eventName');
@@ -3051,11 +3068,26 @@
             
             // Update hosted by
             if (hostedBy) {
+                // Get current language for label
+                const currentLanguage = languageSelect ? languageSelect.value : 'en';
+                const hostedByLabel = translateText('Hosted by', currentLanguage);
+                
+                // Update both label and text
+                const hostedByLabelElement = previewCard.querySelector('#previewHostedLabel');
+                if (hostedByLabelElement) {
+                    hostedByLabelElement.textContent = hostedByLabel;
+                }
+                if (previewHostedText) {
                 previewHostedText.textContent = hostedBy;
+                }
+                if (previewHosted) {
                 previewHosted.style.display = 'block';
+                }
                 hasContent = true;
             } else {
+                if (previewHosted) {
                 previewHosted.style.display = 'none';
+                }
             }
             
             // Update message
@@ -3245,19 +3277,199 @@
             // Show placeholder only when there's no content and no template
             if (!hasContent && !hasTemplate) {
                 if (previewPlaceholder) {
-                    previewPlaceholder.style.display = 'block';
+                previewPlaceholder.style.display = 'block';
                     previewPlaceholder.style.visibility = 'visible';
                     previewPlaceholder.style.opacity = '1';
                 }
             } else {
                 if (previewPlaceholder) {
-                    previewPlaceholder.style.display = 'none';
-                }
+                previewPlaceholder.style.display = 'none';
             }
+            }
+            
+            // Apply current language and font style to preview
+            const currentLanguage = languageSelect ? languageSelect.value : 'en';
+            const currentFontStyle = fontStyleSelect ? fontStyleSelect.value : 'Inter, sans-serif';
+            applyLanguageToPreview(currentLanguage);
+            applyFontStyleToPreview(currentFontStyle);
         };
         
         // Also create a debounced version for less critical updates
         const debouncedUpdatePreview = debounce(instantUpdatePreview, 100);
+
+        // Language translations mapping
+        const translations = {
+            en: {
+                'Hosted by': 'Hosted by',
+                'Our Memories': 'Our Memories',
+                'Date': 'Date',
+                'Time': 'Time',
+                'Venue': 'Venue',
+                'years old': 'years old',
+                'years': 'years'
+            },
+            hi: {
+                'Hosted by': 'आयोजक',
+                'Our Memories': 'हमारी यादें',
+                'Date': 'तारीख',
+                'Time': 'समय',
+                'Venue': 'स्थान',
+                'years old': 'वर्ष की आयु',
+                'years': 'वर्ष'
+            },
+            ar: {
+                'Hosted by': 'استضافه',
+                'Our Memories': 'ذكرياتنا',
+                'Date': 'التاريخ',
+                'Time': 'الوقت',
+                'Venue': 'المكان',
+                'years old': 'سنوات',
+                'years': 'سنوات'
+            },
+            ur: {
+                'Hosted by': 'میزبان',
+                'Our Memories': 'ہماری یادیں',
+                'Date': 'تاریخ',
+                'Time': 'وقت',
+                'Venue': 'مقام',
+                'years old': 'سال کی عمر',
+                'years': 'سال'
+            },
+            te: {
+                'Hosted by': 'ఆతిథ్యం ఇచ్చినవారు',
+                'Our Memories': 'మా జ్ఞాపకాలు',
+                'Date': 'తేదీ',
+                'Time': 'సమయం',
+                'Venue': 'స్థలం',
+                'years old': 'సంవత్సరాల వయస్సు',
+                'years': 'సంవత్సరాలు'
+            },
+            ta: {
+                'Hosted by': 'ஆதரவாளர்',
+                'Our Memories': 'எங்கள் நினைவுகள்',
+                'Date': 'தேதி',
+                'Time': 'நேரம்',
+                'Venue': 'இடம்',
+                'years old': 'வயது',
+                'years': 'ஆண்டுகள்'
+            },
+            kn: {
+                'Hosted by': 'ಆತಿಥ್ಯ ನೀಡಿದವರು',
+                'Our Memories': 'ನಮ್ಮ ನೆನಪುಗಳು',
+                'Date': 'ದಿನಾಂಕ',
+                'Time': 'ಸಮಯ',
+                'Venue': 'ಸ್ಥಳ',
+                'years old': 'ವರ್ಷಗಳ ವಯಸ್ಸು',
+                'years': 'ವರ್ಷಗಳು'
+            },
+            ml: {
+                'Hosted by': 'ആതിഥ്യം നൽകിയത്',
+                'Our Memories': 'ഞങ്ങളുടെ ഓർമ്മകൾ',
+                'Date': 'തീയതി',
+                'Time': 'സമയം',
+                'Venue': 'സ്ഥലം',
+                'years old': 'വയസ്സ്',
+                'years': 'വർഷങ്ങൾ'
+            }
+        };
+
+        // Function to translate text based on selected language
+        function translateText(text, language) {
+            if (!text || !language || language === 'en') return text;
+            const langTranslations = translations[language] || {};
+            return langTranslations[text] || text;
+        }
+
+        // Function to apply language to preview
+        function applyLanguageToPreview(language) {
+            const previewCard = document.getElementById('invitationPreviewCard');
+            if (!previewCard) return;
+
+            // Update "Hosted by" text
+            const hostedByElement = previewCard.querySelector('#previewHosted');
+            if (hostedByElement) {
+                const hostedByText = document.getElementById('hostedBy')?.value || '';
+                const hostedByLabel = translateText('Hosted by', language);
+                hostedByElement.innerHTML = `<i class="fas fa-user"></i> ${hostedByLabel} <span id="previewHostedText">${hostedByText}</span>`;
+            }
+
+            // Update "Our Memories" gallery title
+            const galleryTitleText = previewCard.querySelector('#previewGalleryTitleText');
+            if (galleryTitleText) {
+                const titleText = translateText('Our Memories', language);
+                galleryTitleText.textContent = titleText;
+            }
+
+            // Update date/time/venue labels (these are in icons, but we can update tooltips or aria-labels)
+            // The actual date/time/venue values come from form inputs, so they stay as entered
+        }
+
+        // Function to apply font style to preview
+        function applyFontStyleToPreview(fontStyle) {
+            const previewCard = document.getElementById('invitationPreviewCard');
+            if (!previewCard) return;
+
+            // Apply font family to entire preview card using setProperty for !important
+            previewCard.style.setProperty('font-family', fontStyle, 'important');
+            
+            // Also apply to all text elements within preview (but not icons)
+            const allTextElements = previewCard.querySelectorAll('*:not(i):not(.fas):not(.fa)');
+            allTextElements.forEach(el => {
+                // Skip icon elements
+                if (!el.classList.contains('fas') && !el.classList.contains('fa') && el.tagName !== 'I') {
+                    el.style.setProperty('font-family', fontStyle, 'important');
+                }
+            });
+        }
+
+        // Add event listeners for language and font style
+        const languageSelect = document.getElementById('language');
+        const fontStyleSelect = document.getElementById('fontStyle');
+
+        if (languageSelect) {
+            languageSelect.addEventListener('change', function() {
+                const selectedLanguage = this.value;
+                applyLanguageToPreview(selectedLanguage);
+                // Also update preview content direction for RTL languages
+                const previewCard = document.getElementById('invitationPreviewCard');
+                if (previewCard) {
+                    if (selectedLanguage === 'ar' || selectedLanguage === 'ur') {
+                        previewCard.style.direction = 'rtl';
+                        previewCard.style.textAlign = 'right';
+                    } else {
+                        previewCard.style.direction = 'ltr';
+                        previewCard.style.textAlign = 'center';
+                    }
+                }
+            });
+        }
+
+        if (fontStyleSelect) {
+            fontStyleSelect.addEventListener('change', function() {
+                const selectedFontStyle = this.value;
+                applyFontStyleToPreview(selectedFontStyle);
+                // Also trigger preview update to ensure all text gets the font
+                if (typeof instantUpdatePreview === 'function') {
+                    instantUpdatePreview();
+                }
+            });
+            
+            // Apply initial font style on page load
+            setTimeout(() => {
+                if (fontStyleSelect.value) {
+                    applyFontStyleToPreview(fontStyleSelect.value);
+                }
+            }, 100);
+        }
+        
+        // Apply initial language on page load
+        if (languageSelect) {
+            setTimeout(() => {
+                if (languageSelect.value) {
+                    applyLanguageToPreview(languageSelect.value);
+                }
+            }, 100);
+        }
 
         // Update preview as user types - Event Name (INSTANT updates)
         if (eventNameInput) {
@@ -3855,11 +4067,11 @@
         function updateProgressBar(step) {
             document.querySelectorAll('.progress-step').forEach((stepEl, index) => {
                 const stepNum = index + 1;
-                const circle = stepEl.querySelector('.step-circle');
+                    const circle = stepEl.querySelector('.step-circle');
                 const label = stepEl.querySelector('.step-label');
                 
                 // Ensure circle and label are always visible
-                if (circle) {
+                    if (circle) {
                     circle.style.visibility = 'visible';
                     circle.style.opacity = '1';
                     circle.style.display = 'flex';
@@ -3902,7 +4114,7 @@
                         void circle.offsetWidth;
                         // Animate checkmark appearance
                         setTimeout(() => {
-                            circle.textContent = '✓';
+                        circle.textContent = '✓';
                             circle.style.background = 'var(--reddish-brown-dark)';
                             circle.style.color = '#FFFFFF';
                             circle.style.animation = 'checkmarkAppear 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards';
@@ -3933,7 +4145,7 @@
                             circle.style.animation = 'activeStepAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards, pulseActive 2s ease-in-out infinite 0.5s';
                         }, delay * 100 + 300);
                     }
-                } else {
+            } else {
                     // Set to pending state (no animation)
                     stepEl.classList.remove('active', 'completed');
                     stepEl.classList.add('pending');
@@ -4026,30 +4238,46 @@
                 }
             }
             
-            // Ensure Preview button text is always visible
+            // Ensure Preview button is always visible and clearly visible
             const previewButton = document.querySelector('.btn-preview');
             if (previewButton) {
-                previewButton.style.visibility = 'visible';
-                previewButton.style.opacity = '1';
-                previewButton.style.display = 'inline-flex';
-                previewButton.style.color = '#FFFFFF';
+                previewButton.style.setProperty('visibility', 'visible', 'important');
+                previewButton.style.setProperty('opacity', '1', 'important');
+                previewButton.style.setProperty('display', 'inline-flex', 'important');
+                previewButton.style.setProperty('color', '#FFFFFF', 'important');
+                previewButton.style.setProperty('background', 'linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%)', 'important');
+                previewButton.style.setProperty('border', '3px solid #FFFFFF', 'important');
+                previewButton.style.setProperty('box-shadow', '0 4px 15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(111, 78, 55, 0.5)', 'important');
+                previewButton.style.setProperty('position', 'relative', 'important');
+                previewButton.style.setProperty('z-index', '100', 'important');
+                previewButton.style.setProperty('backdrop-filter', 'blur(5px)', 'important');
                 
                 // Ensure text content is visible
                 const buttonText = previewButton.childNodes;
                 buttonText.forEach(node => {
                     if (node.nodeType === 3) { // Text node
-                        node.parentElement.style.color = '#FFFFFF';
+                        node.parentElement.style.setProperty('color', '#FFFFFF', 'important');
+                        node.parentElement.style.setProperty('text-shadow', '1px 1px 3px rgba(0, 0, 0, 0.5)', 'important');
                     }
                 });
                 
                 // Ensure icon is visible
                 const icon = previewButton.querySelector('i');
                 if (icon) {
-                    icon.style.visibility = 'visible';
-                    icon.style.opacity = '1';
-                    icon.style.display = 'inline-block';
-                    icon.style.color = '#FFFFFF';
+                    icon.style.setProperty('visibility', 'visible', 'important');
+                    icon.style.setProperty('opacity', '1', 'important');
+                    icon.style.setProperty('display', 'inline-block', 'important');
+                    icon.style.setProperty('color', '#FFFFFF', 'important');
+                    icon.style.setProperty('text-shadow', '1px 1px 3px rgba(0, 0, 0, 0.5)', 'important');
                 }
+            }
+            
+            // Ensure form navigation container is visible
+            const formNavigation = document.querySelector('.form-navigation');
+            if (formNavigation) {
+                formNavigation.style.setProperty('display', 'flex', 'important');
+                formNavigation.style.setProperty('visibility', 'visible', 'important');
+                formNavigation.style.setProperty('opacity', '1', 'important');
             }
         });
 

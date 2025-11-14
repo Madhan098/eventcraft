@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard - EventCraft Pro{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="page-title">
+                <i class="fas fa-chart-line me-2"></i>Analytics Dashboard
+            </h1>
+            <p class="text-muted">Track your invitation performance and engagement metrics</p>
+        </div>
+    </div>
+
+    <!-- Analytics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ analytics.total_invitations }}</h3>
+                    <p class="stat-label">Total Invitations</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ analytics.total_views }}</h3>
+                    <p class="stat-label">Total Views</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ analytics.total_guests }}</h3>
+                    <p class="stat-label">Total Guests</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ analytics.total_rsvps }}</h3>
+                    <p class="stat-label">Total RSVPs</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Stats -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ analytics.total_shares }}</h3>
+                    <p class="stat-label">Total Shares</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);">
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ analytics.rsvp_rate }}%</h3>
+                    <p class="stat-label">RSVP Rate</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invitations List -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fas fa-list me-2"></i>Your Invitations
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% if invitations %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Event Type</th>
+                                    <th>Views</th>
+                                    <th>Guests</th>
+                                    <th>RSVPs</th>
+                                    <th>Shares</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for invitation in invitations %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ invitation.event_name or 'Untitled Event' }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ invitation.event_type or 'N/A' }}</span>
+                                    </td>
+                                    <td>{{ invitation.view_count or 0 }}</td>
+                                    <td>{{ invitation.guests|length if invitation.guests else 0 }}</td>
+                                    <td>{{ invitation.rsvps|length if invitation.rsvps else 0 }}</td>
+                                    <td>{{ invitation.shares|length if invitation.shares else 0 }}</td>
+                                    <td>
+                                        <a href="{{ url_for('invitation_analytics', invitation_id=invitation.id) }}" 
+                                           class="btn btn-sm btn-primary">
+                                            <i class="fas fa-chart-bar"></i> View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">No invitations found. Create your first invitation to see analytics.</p>
+                        <a href="{{ url_for('templates') }}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create Invitation
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .page-title {
+        color: var(--text-dark);
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(111, 78, 55, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .stat-content {
+        flex: 1;
+    }
+
+    .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin: 0;
+        line-height: 1;
+    }
+
+    .stat-label {
+        color: var(--text-gray);
+        margin: 8px 0 0 0;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(111, 78, 55, 0.1);
+    }
+
+    .card-header {
+        background: transparent;
+        border-bottom: 2px solid rgba(111, 78, 55, 0.1);
+        padding: 20px;
+    }
+
+    .card-title {
+        color: var(--text-dark);
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background: rgba(111, 78, 55, 0.05);
+        color: var(--text-dark);
+        font-weight: 600;
+        border-bottom: 2px solid rgba(111, 78, 55, 0.1);
+    }
+
+    .table tbody tr:hover {
+        background: rgba(111, 78, 55, 0.05);
+    }
+
+    .badge {
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+        padding: 8px 16px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(111, 78, 55, 0.3);
+    }
+</style>
+{% endblock %}
+
