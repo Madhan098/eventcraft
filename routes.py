@@ -2044,9 +2044,30 @@ def register_routes(app):
             }
         }
         
+        # Get template image URL from customization data
+        template_image_url = None
+        if invitation.customization_data:
+            try:
+                customization = json.loads(invitation.customization_data)
+                template_image_url = customization.get('template_image_url')
+            except:
+                pass
+        
+        # Get gallery images - use first gallery image as background if available
+        gallery_images_list = json.loads(invitation.gallery_images) if invitation.gallery_images else []
+        background_image_url = None
+        if gallery_images_list and len(gallery_images_list) > 0:
+            # Use first gallery image as background (priority over template image)
+            background_image_url = f"/static/uploads/{gallery_images_list[0]}"
+        elif template_image_url:
+            # Fallback to template image if no gallery images
+            background_image_url = template_image_url
+        
         return render_template('invitation/standalone.html', 
                              invitation=invitation, 
-                             event_data=event_data)
+                             event_data=event_data,
+                             background_image_url=background_image_url,
+                             template_image_url=template_image_url)
 
     @app.route('/view-invitation-final/<share_url>')
     def view_invitation_final(share_url):

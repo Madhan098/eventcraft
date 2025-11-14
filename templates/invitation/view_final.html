@@ -2001,7 +2001,8 @@
     </div>
     {% endif %}
 
-    <!-- Wishes Section - Below gallery, centered and professional -->
+    <!-- Wishes Section - Below gallery, centered and professional (Hidden for creator) -->
+    {% if not is_creator %}
     <div class="wishes-section mt-4 mb-4">
         <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
             <div class="row justify-content-center">
@@ -2113,7 +2114,19 @@
             </div>
         </div>
     </div>
-</div>
+    {% endif %}
+
+    <!-- EventCraft Pro Footer - Only show for non-creators -->
+    {% if not is_creator %}
+    <div style="text-align: center; padding: 30px 20px; margin-top: 40px; border-top: 1px solid rgba(111, 78, 55, 0.2); background: rgba(255, 255, 255, 0.9); position: relative; z-index: 15;">
+        <p style="margin: 0; color: #6F4E37; font-size: 14px; font-weight: 500;">
+            <i class="fas fa-heart me-1" style="color: #E91E63;"></i>
+            Made with <a href="{{ url_for('index') }}" target="_blank" style="color: #6F4E37; text-decoration: none; font-weight: 600;">EventCraft Pro</a>
+            <span style="margin: 0 8px; color: #6F4E37;">•</span>
+            <a href="{{ url_for('templates') }}" target="_blank" style="color: #6F4E37; text-decoration: none; font-weight: 600;">Click here to make invitations like this</a>
+        </p>
+    </div>
+    {% endif %}
 
 <!-- Share Button (Floating) - Temporarily Disabled for Debugging -->
 <!--
@@ -2156,7 +2169,7 @@
                     <label class="form-label" style="font-weight: 600; color: #2c3e50;">Share Link:</label>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="shareUrlInput" value="{{ request.url_root }}invitation/{{ invitation.share_url }}" readonly style="background: #f8f9fa; border: 2px solid #e9ecef;">
-                        <button class="btn btn-outline-primary" type="button" onclick="copyShareUrl()">
+                        <button class="btn btn-outline-primary" type="button" id="copyShareBtn" onclick="copyShareUrl(event)">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
@@ -2164,22 +2177,24 @@
                     <div class="social-share-buttons">
                         <h6 style="margin-bottom: 1rem; color: #2c3e50;">Share on Social Media:</h6>
                         <div class="d-flex gap-2 justify-content-center flex-wrap">
-                            <a href="https://wa.me/?text={{ invitation.title or 'Event Invitation' }} - {{ request.url }}" target="_blank" class="btn btn-success btn-sm" onclick="trackShare('whatsapp')">
+                            {% set share_url = request.url_root + 'invitation/' + invitation.share_url %}
+                            {% set share_text = (invitation.title or 'Event Invitation')|urlencode %}
+                            <a href="https://wa.me/?text={{ share_text }} - {{ share_url|urlencode }}" target="_blank" class="btn btn-sm" style="background: #25D366; color: white; border: none;" onclick="trackShare('whatsapp')">
                                 <i class="fab fa-whatsapp me-1"></i> WhatsApp
                             </a>
-                            <a href="https://t.me/share/url?url={{ request.url }}&text={{ invitation.title or 'Event Invitation' }}" target="_blank" class="btn btn-info btn-sm" onclick="trackShare('telegram')">
+                            <a href="https://t.me/share/url?url={{ share_url|urlencode }}&text={{ share_text }}" target="_blank" class="btn btn-sm" style="background: #0088cc; color: white; border: none;" onclick="trackShare('telegram')">
                                 <i class="fab fa-telegram me-1"></i> Telegram
                             </a>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" class="btn btn-primary btn-sm" onclick="trackShare('facebook')">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" target="_blank" class="btn btn-sm" style="background: #1877F2; color: white; border: none;" onclick="trackShare('facebook')">
                                 <i class="fab fa-facebook me-1"></i> Facebook
                             </a>
-                            <a href="https://twitter.com/intent/tweet?text={{ invitation.title or 'Event Invitation' }}&url={{ request.url }}" target="_blank" class="btn btn-dark btn-sm" onclick="trackShare('twitter')">
+                            <a href="https://twitter.com/intent/tweet?text={{ share_text }}&url={{ share_url|urlencode }}" target="_blank" class="btn btn-sm" style="background: #000000; color: white; border: none;" onclick="trackShare('twitter')">
                                 <i class="fab fa-x-twitter me-1"></i> X
                             </a>
-                            <a href="https://www.instagram.com/" target="_blank" class="btn btn-danger btn-sm" onclick="shareToInstagram()">
+                            <a href="https://www.instagram.com/" target="_blank" class="btn btn-sm" style="background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); color: white; border: none;" onclick="shareToInstagram(); trackShare('instagram'); return false;">
                                 <i class="fab fa-instagram me-1"></i> Instagram
                             </a>
-                            <a href="mailto:?subject={{ invitation.title or 'Event Invitation' }}&body=You're invited! {{ request.url }}" class="btn btn-secondary btn-sm" onclick="trackShare('email')">
+                            <a href="mailto:?subject={{ share_text }}&body=You're invited! {{ share_url }}" class="btn btn-sm" style="background: #6c757d; color: white; border: none;" onclick="trackShare('email')">
                                 <i class="fas fa-envelope me-1"></i> Email
                             </a>
                         </div>
@@ -2379,16 +2394,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function copyShareUrl() {
+function copyShareUrl(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
     const shareUrlInput = document.getElementById('shareUrlInput');
     if (!shareUrlInput) {
         console.error('Share URL input not found');
         showToast('Share link not found', 'error');
-        return;
+        return false;
     }
     
     const shareUrl = shareUrlInput.value;
-    const btn = event.target.closest('button');
+    const btn = event.target.closest('button') || document.getElementById('copyShareBtn');
     
     // Try modern clipboard API first
     if (navigator.clipboard && window.isSecureContext) {
@@ -2404,6 +2422,8 @@ function copyShareUrl() {
         // Fallback for older browsers or non-secure contexts
         fallbackCopy(shareUrlInput, btn);
     }
+    
+    return false;
 }
 
 function fallbackCopy(input, btn) {
@@ -2607,23 +2627,38 @@ function handleRSVP(response) {
         document.querySelector('.rsvp-btn.btn-success').classList.add('btn-outline-success');
         
     } else if (response === 'unable') {
-        // Show unable to attend message and scroll to wishes
+        // Show unable to attend message and scroll to wishes section
         rsvpMessage.textContent = 'We understand you can\'t make it. Please share your wishes for the event below.';
         rsvpStatus.style.display = 'block';
         rsvpStatus.querySelector('.alert').className = 'alert alert-warning';
         
         // Scroll to wishes section
         setTimeout(() => {
-            document.querySelector('.wishes-display').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }, 1000);
+            const wishesSection = document.querySelector('.wishes-section');
+            if (wishesSection) {
+                wishesSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                // Fallback to wishes display
+                const wishesDisplay = document.querySelector('.wishes-display');
+                if (wishesDisplay) {
+                    wishesDisplay.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        }, 500);
         
         // Update button state
-        document.querySelector('.rsvp-btn.btn-outline-danger').innerHTML = '<i class="fas fa-times me-2"></i>Not Attending';
-        document.querySelector('.rsvp-btn.btn-outline-danger').classList.remove('btn-outline-danger');
-        document.querySelector('.rsvp-btn.btn-outline-danger').classList.add('btn-danger');
+        const unableBtn = document.querySelector('.rsvp-btn.btn-outline-danger');
+        if (unableBtn) {
+            unableBtn.innerHTML = '<i class="fas fa-times me-2"></i>Not Attending';
+            unableBtn.classList.remove('btn-outline-danger');
+            unableBtn.classList.add('btn-danger');
+        }
     }
     
     // Save RSVP to server

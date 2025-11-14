@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ invitation.title }} - EventCraft Pro</title>
+    <title>{{ invitation.title }}</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,103 +12,118 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- All styles moved to static/css/style.css -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #FAFAFA;
+        }
+        .invitation-container {
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        .invitation-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .invitation-card {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+        .event-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #6F4E37;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        .date-time, .venue-info {
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 10;
+            color: #6F4E37;
+            font-size: 16px;
+        }
+        .event-description {
+            margin-top: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        .event-description p {
+            color: #6F4E37;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
     <div class="invitation-container">
-        <!-- Invitation Header -->
-        <div class="invitation-header">
-            <div class="container">
-                <h1><i class="fas fa-calendar-alt me-2"></i>{{ invitation.title }}</h1>
-            </div>
-        </div>
-
         <!-- Invitation Content -->
-        <div class="invitation-content">
-            <div class="container">
-                <!-- Default Event Information Section -->
-                <div class="event-info-section">
-                    <div class="event-info-item">
+        <div class="invitation-content" {% if background_image_url %}style="background-image: url('{{ background_image_url }}'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; min-height: 100vh; padding: 40px 20px;"{% elif template_image_url %}style="background-image: url('{{ template_image_url }}'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; min-height: 100vh; padding: 40px 20px;"{% endif %}>
+            <div class="container" style="max-width: 600px; margin: 0 auto;">
+                <!-- Invitation Card -->
+                <div class="invitation-card {% if background_image_url or template_image_url %}template-bg{% endif %}" style="{% if background_image_url %}background-image: url('{{ background_image_url }}') !important;{% elif template_image_url %}background-image: url('{{ template_image_url }}') !important;{% endif %}">
+                    <!-- Event Title -->
+                    <h1 class="event-title">{{ invitation.title or 'Event Invitation' }}</h1>
+                    
+                    <!-- Event Date -->
+                    {% if invitation.event_date %}
+                    <div class="date-time">
                         <i class="fas fa-calendar-alt"></i>
-                        <span class="label">Date:</span>
-                        <span class="value">{{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else 'Date TBD' }}</span>
+                        <span>{{ invitation.event_date.strftime('%B %d, %Y') if invitation.event_date else 'Date TBD' }}</span>
                     </div>
-                    <div class="event-info-item">
+                    {% endif %}
+                    
+                    <!-- Event Time -->
+                    {% if event_data.eventTime %}
+                    <div class="date-time">
                         <i class="fas fa-clock"></i>
-                        <span class="label">Time:</span>
-                        <span class="value">
-                            {% if event_data.timeData.muhurthamTime %}
-                                {{ event_data.timeData.muhurthamTime }}
-                            {% elif event_data.timeData.startTime %}
-                                {{ event_data.timeData.startTime }}
-                            {% elif event_data.timeData.anniversaryDinnerTime %}
-                                {{ event_data.timeData.anniversaryDinnerTime }}
-                            {% elif event_data.timeData.babyshowerStartTime %}
-                                {{ event_data.timeData.babyshowerStartTime }}
-                            {% elif event_data.eventTime %}
-                                {{ event_data.eventTime }}
-                            {% else %}
-                                Time TBD
-                            {% endif %}
-                        </span>
+                        <span>{{ event_data.eventTime }}</span>
                     </div>
-                    <div class="event-info-item">
+                    {% endif %}
+                    
+                    <!-- Venue -->
+                    {% if event_data.venueData.venue or event_data.venue %}
+                    <div class="venue-info">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span class="label">Venue:</span>
-                        <span class="value">{{ event_data.venueData.venue or event_data.venue or 'Venue TBD' }}</span>
+                        <span>{{ event_data.venueData.venue or event_data.venue }}</span>
                     </div>
-                    <div class="event-info-item">
-                        <i class="fas fa-user-circle"></i>
-                        <span class="label">Hosted By:</span>
-                        <span class="value">
-                            {% if event_data.hostName %}
-                                {{ event_data.hostName }}
-                            {% elif invitation.user %}
-                                {{ invitation.user.name }}
-                            {% else %}
-                                Host TBD
-                            {% endif %}
-                            {% if event_data.contactEmail or (invitation.user and invitation.user.email) %}
-                                <span style="color: var(--text-secondary); font-size: 0.9rem;">
-                                    ({{ event_data.contactEmail or invitation.user.email }})
-                                </span>
-                            {% endif %}
-                        </span>
+                    {% endif %}
+                    
+                    <!-- Description -->
+                    {% if invitation.description %}
+                    <div class="event-description">
+                        <p>{{ invitation.description }}</p>
                     </div>
+                    {% endif %}
                 </div>
-
-                <!-- Include the invitation template content here -->
-                {% set template_type = invitation.template_name|replace(' ', '_')|lower if invitation.template_name else '' %}
-                {% if 'wedding_elegant' in template_type or template_type == 'wedding_elegant' %}
-                    {% include 'invitation/templates/wedding_elegant.html' %}
-                {% elif 'wedding_hindu_traditional' in template_type or 'hindu' in template_type %}
-                    {% include 'invitation/templates/wedding_hindu_traditional.html' %}
-                {% elif 'wedding_muslim_elegant' in template_type or 'muslim' in template_type %}
-                    {% include 'invitation/templates/wedding_muslim_elegant.html' %}
-                {% elif 'birthday_fun_colorful' in template_type or 'birthday' in template_type %}
-                    {% include 'invitation/templates/birthday_fun_colorful.html' %}
-                {% elif 'babyshower_sweet_pink' in template_type or 'babyshower' in template_type %}
-                    {% include 'invitation/templates/babyshower_sweet_pink.html' %}
-                {% elif 'graduation_success_modern' in template_type or 'graduation' in template_type %}
-                    {% include 'invitation/templates/graduation_success_modern.html' %}
-                {% elif 'retirement_golden_classic' in template_type or 'retirement' in template_type %}
-                    {% include 'invitation/templates/retirement_golden_classic.html' %}
-                {% elif 'anniversary_golden_elegant' in template_type or 'anniversary' in template_type %}
-                    {% include 'invitation/templates/anniversary_golden_elegant.html' %}
-                {% else %}
-                    {% include 'invitation/templates/wedding_elegant.html' %}
-                {% endif %}
             </div>
         </div>
 
-        <!-- Invitation Footer -->
-        <div class="invitation-footer">
-            <div class="container">
-                <p class="mb-0">
-                    <i class="fas fa-heart me-1" style="color: var(--secondary-coral);"></i>
-                    Made with <a href="https://eventcraftpro.com" target="_blank">EventCraft Pro</a>
-                </p>
-            </div>
+        <!-- EventCraft Pro Footer -->
+        <div style="text-align: center; padding: 30px 20px; margin-top: 40px; border-top: 1px solid #e0e0e0; background: rgba(255, 255, 255, 0.95);">
+            <p style="margin: 0; color: #6F4E37; font-size: 14px; font-weight: 500;">
+                <i class="fas fa-heart me-1" style="color: #E91E63;"></i>
+                Made with <a href="{{ url_for('index') }}" target="_blank" style="color: #6F4E37; text-decoration: none; font-weight: 600;">EventCraft Pro</a>
+                <span style="margin: 0 8px; color: #6F4E37;">•</span>
+                <a href="{{ url_for('templates') }}" target="_blank" style="color: #6F4E37; text-decoration: none; font-weight: 600;">Click here to make invitations like this</a>
+            </p>
         </div>
     </div>
 
