@@ -3,179 +3,47 @@
 {% block title %}Login / Register - EventCraft Pro{% endblock %}
 
 {% block content %}
+<!-- All styles moved to static/css/style.css -->
 <style>
-    .btn-google:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
-        border-color: #c8cbd1 !important;
-    }
-    
-    .btn-google:hover div {
-        left: 100%;
-    }
-    
-    .btn-google:active {
-        transform: translateY(0);
-    }
-    
-    /* Mobile Responsiveness */
-    @media (max-width: 768px) {
-        .container {
-            padding: 1rem;
-        }
-        
-        .col-md-8 {
-            padding: 0;
-        }
-        
-        h1 {
-            font-size: 2rem !important;
-        }
-        
-        .logo-container {
-            width: 80px !important;
-            height: 80px !important;
-        }
-        
-        .logo-container i {
-            font-size: 2rem !important;
-        }
-        
-        .card-body {
-            padding: 1.5rem !important;
-        }
-        
-        .nav-pills .nav-link {
-            padding: 15px !important;
-            font-size: 0.9rem;
-        }
-        
-        .input-group-lg .form-control {
-            padding: 12px 15px !important;
-            font-size: 0.9rem;
-        }
-        
-        .input-group-lg .input-group-text {
-            padding: 12px 15px !important;
-        }
-        
-        .btn-lg {
-            padding: 12px 20px !important;
-            font-size: 0.9rem;
-        }
-        
-        .form-text {
-            font-size: 0.8rem;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        h1 {
-            font-size: 1.75rem !important;
-        }
-        
-        .logo-container {
-            width: 70px !important;
-            height: 70px !important;
-        }
-        
-        .logo-container i {
-            font-size: 1.75rem !important;
-        }
-        
-        .card-body {
-            padding: 1rem !important;
-        }
-        
-        .nav-pills .nav-link {
-            padding: 12px !important;
-            font-size: 0.85rem;
-        }
-        
-        .input-group-lg .form-control {
-            padding: 10px 12px !important;
-            font-size: 0.85rem;
-        }
-        
-        .input-group-lg .input-group-text {
-            padding: 10px 12px !important;
-        }
-        
-        .btn-lg {
-            padding: 10px 16px !important;
-            font-size: 0.85rem;
-        }
-        
-        .form-text {
-            font-size: 0.75rem;
-        }
-        
-        .btn-google {
-            padding: 10px 16px !important;
-            font-size: 0.85rem;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        h1 {
-            font-size: 1.5rem !important;
-        }
-        
-        .logo-container {
-            width: 60px !important;
-            height: 60px !important;
-        }
-        
-        .logo-container i {
-            font-size: 1.5rem !important;
-        }
-        
-        .card-body {
-            padding: 0.75rem !important;
-        }
-        
-        .nav-pills .nav-link {
-            padding: 10px !important;
-            font-size: 0.8rem;
-        }
-        
-        .input-group-lg .form-control {
-            padding: 8px 10px !important;
-            font-size: 0.8rem;
-        }
-        
-        .input-group-lg .input-group-text {
-            padding: 8px 10px !important;
-        }
-        
-        .btn-lg {
-            padding: 8px 12px !important;
-            font-size: 0.8rem;
-        }
-        
-        .form-text {
-            font-size: 0.7rem;
-        }
-        
-        .btn-google {
-            padding: 8px 12px !important;
-            font-size: 0.8rem;
-        }
-    }
+/* Override electric-text class to ensure visibility */
+.electric-text,
+h1.electric-text,
+.electric-text h1 {
+    color: #6F4E37 !important;
+    -webkit-text-fill-color: #6F4E37 !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+/* Ensure auth page header text is always visible */
+.auth-container ~ * h1,
+.text-center h1,
+.text-center p {
+    color: #6F4E37 !important;
+    -webkit-text-fill-color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
 </style>
-<section class="py-5" style="background: var(--gradient-bg); min-height: 100vh; display: flex; align-items: center;">
+<section class="py-5" style="background: #ffffff !important; min-height: 100vh; display: flex; align-items: center;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
                 <!-- Header Section -->
-                <div class="text-center mb-5">
-                    <div class="logo-container mb-4 animate-electric-glow" style="width: 100px; height: 100px; background: var(--gradient-primary); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(255, 0, 128, 0.4); border: 2px solid var(--primary);">
-                        <i class="fas fa-sparkles fa-3x" style="color: #ffffff;"></i>
+                <div class="text-center mb-5" style="background: #ffffff !important; padding: 20px; border-radius: 12px;">
+                    <div class="logo-container mb-4 animate-electric-glow" style="width: 100px; height: 100px; background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(111, 78, 55, 0.4); border: 2px solid #6F4E37; position: relative;">
+                        <i class="fas fa-sign-in-alt fa-3x" style="color: #ffffff !important; visibility: visible !important; opacity: 1 !important;"></i>
+                        <!-- Pink glow effect -->
+                        <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 20px; background: radial-gradient(ellipse, rgba(255, 192, 203, 0.6) 0%, transparent 70%); border-radius: 50%; filter: blur(8px);"></div>
                     </div>
-                    <h1 class="fw-bold mb-2 electric-text animate-electric-fade-in" style="font-size: 2.5rem; color: var(--text-primary);">
-                        EventCraft <span style="color: var(--primary);">Pro</span>
+                    <h1 class="fw-bold mb-2 animate-electric-fade-in" style="font-size: 2.5rem; color: #6F4E37 !important; visibility: visible !important; opacity: 1 !important; -webkit-text-fill-color: #6F4E37 !important; background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important; display: block !important;">
+                        EventCraft <span style="color: #8B6F47 !important; -webkit-text-fill-color: #8B6F47 !important;">Pro</span>
                     </h1>
-                    <p class="mb-0 animate-electric-slide-in animate-delay-2" style="font-size: 1.1rem; color: var(--text-secondary);">
+                    <p class="mb-0 animate-electric-slide-in animate-delay-2" style="font-size: 1.1rem; color: #6F4E37 !important; visibility: visible !important; opacity: 1 !important; font-weight: 500; -webkit-text-fill-color: #6F4E37 !important; display: block !important;">
                         Create beautiful digital invitations in minutes
                     </p>
                 </div>
@@ -184,27 +52,27 @@
                 <div class="card shadow-lg border-0 animate-electric-fade-in glass auth-container" style="background: var(--bg-card); border-radius: 25px; overflow: hidden; border: 2px solid var(--border-color); box-shadow: var(--shadow-md);">
                     <div class="card-body p-0">
                         <!-- Navigation Tabs -->
-                        <div class="nav-tabs-container" style="background: var(--gradient-bg); padding: 0; border-bottom: 2px solid var(--primary);">
+                        <div class="nav-tabs-container" style="background: #ffffff; padding: 0; border-bottom: 2px solid #e5e7eb;">
                             <ul class="nav nav-pills nav-fill" id="authTabs" style="margin: 0; border-radius: 0;">
                                 <li class="nav-item" style="flex: 1;">
                                     <button class="nav-link active animate-electric-scale" id="login-tab" data-bs-toggle="pill" data-bs-target="#login" type="button" 
-                                            style="border-radius: 0; border: none; background: transparent; color: var(--text-primary); padding: 20px; font-weight: 700; transition: all var(--transition-bounce); position: relative;">
-                                        <i class="fas fa-sign-in-alt me-2"></i>Login
-                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gradient-primary); transform: scaleX(1); transition: transform var(--transition-normal);"></div>
+                                            style="border-radius: 0; border: none; background: rgba(111, 78, 55, 0.1); color: #6F4E37 !important; padding: 20px; font-weight: 800 !important; transition: all 0.3s ease; position: relative; visibility: visible !important; opacity: 1 !important;">
+                                        <i class="fas fa-sign-in-alt me-2" style="color: #6F4E37 !important; visibility: visible !important;"></i>Login
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%); transform: scaleX(1); transition: transform 0.3s ease;"></div>
                                     </button>
                                 </li>
                                 <li class="nav-item" style="flex: 1;">
                                     <button class="nav-link animate-electric-scale animate-delay-1" id="register-tab" data-bs-toggle="pill" data-bs-target="#register" type="button"
-                                            style="border-radius: 0; border: none; background: transparent; color: var(--text-primary); padding: 20px; font-weight: 700; transition: all var(--transition-bounce); position: relative;">
-                                        <i class="fas fa-user-plus me-2"></i>Register
-                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gradient-secondary); transform: scaleX(0); transition: transform var(--transition-normal);"></div>
+                                            style="border-radius: 0; border: none; background: transparent; color: #6c757d !important; padding: 20px; font-weight: 600 !important; transition: all 0.3s ease; position: relative; visibility: visible !important; opacity: 1 !important;">
+                                        <i class="fas fa-user-plus me-2" style="color: #6c757d !important; visibility: visible !important;"></i>Register
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%); transform: scaleX(0); transition: transform 0.3s ease;"></div>
                                     </button>
                                 </li>
                                 <li class="nav-item" style="flex: 1;">
                                     <button class="nav-link animate-electric-scale animate-delay-2" id="forgot-tab" data-bs-toggle="pill" data-bs-target="#forgot" type="button"
-                                            style="border-radius: 0; border: none; background: transparent; color: var(--text-primary); padding: 20px; font-weight: 700; transition: all var(--transition-bounce); position: relative;">
-                                        <i class="fas fa-key me-2"></i>Forgot Password
-                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gradient-accent); transform: scaleX(0); transition: transform var(--transition-normal);"></div>
+                                            style="border-radius: 0; border: none; background: transparent; color: #6c757d !important; padding: 20px; font-weight: 600 !important; transition: all 0.3s ease; position: relative; visibility: visible !important; opacity: 1 !important;">
+                                        <i class="fas fa-key me-2" style="color: #6c757d !important; visibility: visible !important;"></i>Forgot Password
+                                        <div class="tab-indicator" style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%); transform: scaleX(0); transition: transform 0.3s ease;"></div>
                                     </button>
                                 </li>
                             </ul>
@@ -552,27 +420,68 @@
 {% block extra_scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Tab indicator management
+    // Tab indicator management - Enhanced visibility
     const tabs = document.querySelectorAll('#authTabs .nav-link');
     const tabIndicators = document.querySelectorAll('.tab-indicator');
     
     function updateTabIndicators(activeTab) {
         tabs.forEach((tab, index) => {
             const indicator = tabIndicators[index];
-            if (tab === activeTab) {
-                tab.style.color = '#2c3e50';
-                indicator.style.transform = 'scaleX(1)';
+            const icon = tab.querySelector('i');
+            const isActive = tab === activeTab || tab.classList.contains('active');
+            
+            if (isActive) {
+                // Active tab - highlighted and visible
+                tab.style.setProperty('color', '#6F4E37', 'important');
+                tab.style.setProperty('font-weight', '800', 'important');
+                tab.style.setProperty('background', 'rgba(111, 78, 55, 0.1)', 'important');
+                tab.style.setProperty('visibility', 'visible', 'important');
+                tab.style.setProperty('opacity', '1', 'important');
+                if (icon) {
+                    icon.style.setProperty('color', '#6F4E37', 'important');
+                    icon.style.setProperty('visibility', 'visible', 'important');
+                }
+                if (indicator) {
+                    indicator.style.transform = 'scaleX(1)';
+                    indicator.style.opacity = '1';
+                }
             } else {
-                tab.style.color = '#6c757d';
-                indicator.style.transform = 'scaleX(0)';
+                // Inactive tab - visible but less prominent
+                tab.style.setProperty('color', '#6c757d', 'important');
+                tab.style.setProperty('font-weight', '600', 'important');
+                tab.style.setProperty('background', 'transparent', 'important');
+                tab.style.setProperty('visibility', 'visible', 'important');
+                tab.style.setProperty('opacity', '1', 'important');
+                if (icon) {
+                    icon.style.setProperty('color', '#6c757d', 'important');
+                    icon.style.setProperty('visibility', 'visible', 'important');
+                }
+                if (indicator) {
+                    indicator.style.transform = 'scaleX(0)';
+                }
             }
         });
     }
     
+    // Initialize on page load
+    updateTabIndicators(document.querySelector('#authTabs .nav-link.active'));
+    
     // Add click handlers for tabs
     tabs.forEach(tab => {
         tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            this.classList.add('active');
             updateTabIndicators(this);
+        });
+    });
+    
+    // Listen for Bootstrap tab events
+    const tabElements = document.querySelectorAll('[data-bs-toggle="pill"]');
+    tabElements.forEach(tab => {
+        tab.addEventListener('shown.bs.tab', function(e) {
+            updateTabIndicators(e.target);
         });
     });
 

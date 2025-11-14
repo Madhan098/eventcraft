@@ -3,185 +3,18 @@
 {% block title %}About Us - EventCraft Pro{% endblock %}
 
 {% block extra_head %}
-<style>
-/* Simple & Professional About Page for Startup */
-.about-hero {
-    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
-    padding: 80px 0;
-    color: white;
-}
-
-.about-section {
-    padding: 60px 0;
-}
-
-.founder-section {
-    background: white;
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    margin: -80px auto 60px;
-    max-width: 1000px;
-    position: relative;
-    z-index: 10;
-}
-
-.founder-card {
-    display: flex;
-    gap: 40px;
-    align-items: center;
-}
-
-.founder-img {
-    flex-shrink: 0;
-}
-
-.founder-img img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid #6F4E37;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-}
-
-.founder-content h2 {
-    color: #3E2723;
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.founder-role {
-    color: #6F4E37;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.founder-content p {
-    color: #666;
-    line-height: 1.8;
-    font-size: 16px;
-}
-
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.team-member {
-    background: white;
-    border-radius: 16px;
-    padding: 30px;
-    text-align: center;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    transition: all 0.3s;
-}
-
-.team-member:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-}
-
-.team-member img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 3px solid #D4AF37;
-}
-
-.team-member h4 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #3E2723;
-    margin-bottom: 8px;
-}
-
-.team-member .role {
-    color: #6F4E37;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.team-member p {
-    font-size: 13px;
-    color: #666;
-    line-height: 1.6;
-}
-
-.team-member a {
-    color: #6F4E37;
-    font-size: 18px;
-    transition: color 0.3s;
-}
-
-.team-member a:hover {
-    color: #D4AF37;
-}
-
-.simple-card {
-    background: white;
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    text-align: center;
-}
-
-.simple-card h3 {
-    color: #3E2723;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 16px;
-}
-
-.simple-card p {
-    color: #666;
-    line-height: 1.7;
-    font-size: 15px;
-}
-
-@media (max-width: 768px) {
-    .founder-card {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .founder-section {
-        padding: 30px 20px;
-        margin: -50px 20px 40px;
-    }
-    
-    .founder-img img {
-        width: 150px;
-        height: 150px;
-    }
-    
-    .about-hero {
-        padding: 60px 0;
-}
-
-    .team-grid {
-        grid-template-columns: 1fr;
-}
-}
-</style>
+<!-- All styles moved to static/css/style.css -->
 {% endblock %}
 
 {% block content %}
 <!-- Hero -->
-<section class="about-hero">
+<section class="about-hero" style="background: transparent !important; background-color: transparent !important;">
     <div class="container text-center">
-        <h1 class="display-4 fw-bold mb-3">About EventCraft Pro</h1>
-        <p class="lead" style="max-width: 700px; margin: 0 auto; opacity: 0.95;">
+        <h1 class="display-4 fw-bold mb-3" style="color: var(--text-primary) !important; visibility: visible !important; opacity: 1 !important;">About EventCraft Pro</h1>
+        <p class="lead" style="max-width: 700px; margin: 0 auto; color: var(--text-secondary) !important; opacity: 0.95; visibility: visible !important;">
             Making beautiful event invitations accessible to everyone
-                    </p>
-                </div>
+        </p>
+    </div>
 </section>
         
 <!-- Founder Section - Priority -->
@@ -208,7 +41,7 @@
 </div>
 
 <!-- Our Story -->
-<section class="about-section" style="background: #FAFAFA;">
+<section class="about-section" style="background: transparent !important; background-color: transparent !important;">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto">
@@ -229,11 +62,11 @@
 </section>
 
 <!-- Team -->
-<section class="about-section">
+<section class="about-section" style="background: transparent !important; background-color: transparent !important;">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold" style="color: #2C2C2C; font-size: 36px;">Meet the Team</h2>
-            <p style="color: #666; font-size: 16px;">The people making EventCraft Pro possible</p>
+            <h2 class="fw-bold" style="color: var(--text-primary) !important; font-size: 36px; visibility: visible !important; opacity: 1 !important;">Meet the Team</h2>
+            <p style="color: var(--text-secondary) !important; font-size: 16px; visibility: visible !important; opacity: 1 !important;">The people making EventCraft Pro possible</p>
         </div>
         
         <div class="team-grid">
@@ -281,12 +114,12 @@
 </section>
 
 <!-- Supported By -->
-<section class="about-section" style="background: #FAFAFA;">
+<section class="about-section" style="background: transparent !important; background-color: transparent !important;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-7">
-                <h3 class="fw-bold mb-3" style="color: #2C2C2C;">Supported by Mentorly</h3>
-                <p style="color: #666; line-height: 1.7;">
+                <h3 class="fw-bold mb-3" style="color: var(--text-primary) !important; visibility: visible !important; opacity: 1 !important;">Supported by Mentorly</h3>
+                <p style="color: var(--text-secondary) !important; line-height: 1.7; visibility: visible !important; opacity: 1 !important;">
                     EventCraft Pro is proudly supported by <strong>Mentorly.co.in</strong>, a leading AI education platform. 
                     Mentorly empowers learners worldwide with cutting-edge AI training and real-world applications.
                 </p>
@@ -294,11 +127,11 @@
             <div class="col-lg-5 text-center">
                 <div class="simple-card">
                     <img src="/images/mentorly logo.jpeg" alt="Mentorly" style="width: 100px; height: 100px; border-radius: 12px; margin-bottom: 20px;">
-                    <h4 style="font-size: 22px; font-weight: 700; color: #2C2C2C;">Mentorly</h4>
-                    <p style="color: #B39090; font-size: 14px; margin-bottom: 20px;">Empowering AI Learners</p>
-                    <a href="https://mentorly.co.in/" target="_blank" class="btn" style="background: #B39090; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                    <h4 style="font-size: 22px; font-weight: 700; color: var(--text-primary) !important; visibility: visible !important; opacity: 1 !important;">Mentorly</h4>
+                    <p style="color: var(--primary-color) !important; font-size: 14px; margin-bottom: 20px; visibility: visible !important; opacity: 1 !important;">Empowering AI Learners</p>
+                    <a href="https://mentorly.co.in/" target="_blank" class="btn" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important; color: white !important; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; visibility: visible !important; opacity: 1 !important; display: inline-block !important; box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3); transition: all 0.3s ease;">
                         Visit Mentorly <i class="fas fa-external-link-alt ms-1"></i>
-                        </a>
+                    </a>
                 </div>
             </div>
         </div>
@@ -306,15 +139,15 @@
 </section>
 
 <!-- CTA -->
-<section class="about-section" style="background: linear-gradient(135deg, #B39090 0%, #DCBE85 100%); color: white;">
+<section class="about-section" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important; color: white !important; position: relative; z-index: 1;">
     <div class="container text-center">
-        <h2 class="fw-bold mb-3" style="font-size: 36px;">Ready to Get Started?</h2>
-        <p class="mb-4" style="font-size: 18px; opacity: 0.95;">Join thousands creating beautiful invitations</p>
+        <h2 class="fw-bold mb-3" style="font-size: 36px; color: white !important; visibility: visible !important; opacity: 1 !important;">Ready to Get Started?</h2>
+        <p class="mb-4" style="font-size: 18px; color: white !important; opacity: 0.95; visibility: visible !important;">Join thousands creating beautiful invitations</p>
         <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <a href="{{ url_for('templates') }}" class="btn btn-lg" style="background: white; color: #B39090; padding: 14px 32px; border-radius: 10px; font-weight: 700; text-decoration: none;">
+            <a href="{{ url_for('templates') }}" class="btn btn-lg" style="background: white !important; color: var(--primary-color) !important; padding: 14px 32px; border-radius: 10px; font-weight: 700; text-decoration: none; visibility: visible !important; opacity: 1 !important; display: inline-block !important; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); transition: all 0.3s ease; border: none; cursor: pointer;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0, 0, 0, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(0, 0, 0, 0.2)';">
                 Start Creating <i class="fas fa-arrow-right ms-2"></i>
             </a>
-            <a href="{{ url_for('contact') }}" class="btn btn-lg" style="background: transparent; border: 2px solid white; color: white; padding: 14px 32px; border-radius: 10px; font-weight: 600; text-decoration: none;">
+            <a href="{{ url_for('contact') }}" class="btn btn-lg" style="background: transparent !important; border: 2px solid white !important; color: white !important; padding: 14px 32px; border-radius: 10px; font-weight: 600; text-decoration: none; visibility: visible !important; opacity: 1 !important; display: inline-block !important; transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='transparent'; this.style.transform='translateY(0)';">
                 Contact Us <i class="fas fa-envelope ms-2"></i>
             </a>
         </div>

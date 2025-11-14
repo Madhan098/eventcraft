@@ -3,120 +3,7 @@
 {% block title %}Contact Us - EventCraft Pro{% endblock %}
 
 {% block extra_head %}
-<style>
-.contact-hero {
-    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
-    padding: 80px 0;
-    color: white;
-}
-
-.contact-section {
-    padding: 80px 0;
-}
-
-.contact-card {
-    background: white;
-    border-radius: 20px;
-    padding: 50px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    margin-top: -50px;
-    position: relative;
-    z-index: 10;
-}
-
-.contact-form .form-control {
-    border: 2px solid #E0E0E0;
-    border-radius: 10px;
-    padding: 14px 18px;
-    font-size: 15px;
-    margin-bottom: 20px;
-    transition: all 0.3s;
-}
-
-.contact-form .form-control:focus {
-    border-color: #B39090;
-    box-shadow: 0 0 0 3px rgba(179, 144, 144, 0.1);
-}
-
-.contact-form textarea {
-    min-height: 150px;
-}
-
-.contact-form label {
-    font-weight: 600;
-    color: #2C2C2C;
-    margin-bottom: 8px;
-    font-size: 15px;
-}
-
-.submit-btn {
-    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
-    color: white;
-    border: none;
-    padding: 14px 40px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 16px;
-    transition: all 0.3s;
-}
-
-.submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(179, 144, 144, 0.3);
-}
-
-.contact-info-box {
-    background: #FAFAFA;
-    border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.contact-info-box i {
-    font-size: 32px;
-    color: #B39090;
-    margin-bottom: 15px;
-}
-
-.contact-info-box h4 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #2C2C2C;
-    margin-bottom: 10px;
-}
-
-.contact-info-box p {
-    color: #666;
-    margin: 0;
-    font-size: 15px;
-}
-
-.contact-info-box a {
-    color: #B39090;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.contact-info-box a:hover {
-    color: #DCBE85;
-}
-
-@media (max-width: 768px) {
-    .contact-card {
-        padding: 30px 20px;
-        margin-top: -30px;
-    }
-    
-    .contact-hero {
-        padding: 60px 0;
-    }
-    
-    .contact-section {
-        padding: 50px 0;
-    }
-}
-</style>
+<!-- All styles moved to static/css/style.css -->
 {% endblock %}
 
 {% block content %}
@@ -131,7 +18,7 @@
 </section>
 
 <!-- Contact Section -->
-<section class="contact-section" style="background: #FAFAFA;">
+<section class="contact-section" style="background: var(--bg-primary) !important; background-color: #ffffff !important;">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto">

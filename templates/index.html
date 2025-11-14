@@ -3,863 +3,2643 @@
 {% block title %}EventCraft Pro - Create Beautiful Digital Invitations{% endblock %}
 
 {% block extra_head %}
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ============================================
-   EVENTCRAFT PRO - HOMEPAGE CSS
-   Complete Rewrite - Coffee & Gold Theme
-   ALL TEXT GUARANTEED VISIBLE
-   ============================================ */
+/* 🌸 Floral Theme - Google Arts & Culture Inspired */
 
-/* ============================================
-   1. CSS VARIABLES - Coffee & Gold Theme
-   ============================================ */
-:root {
-    /* Primary Colors */
-    --coffee-dark: #3E2723;
-    --coffee-brown: #5D4037;
-    --coffee-medium: #6F4E37;
-    --coffee-light: #8B7355;
-    
-    /* Gold Colors */
-    --gold-rich: #C9A02E;
-    --gold-bright: #D4AF37;
-    --gold-light: #E6C34F;
-    --gold-pale: #F0DFA8;
-    
-    /* Background Colors */
-    --bg-white: #FFFFFF;
-    --bg-cream: #FFFEF9;
-    --bg-light: #FAF8F5;
-    
-    /* Text Colors */
-    --text-primary: #3E2723;
-    --text-secondary: #5D4037;
-    --text-tertiary: #6F4E37;
-    
-    /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(62, 39, 35, 0.08);
-    --shadow-md: 0 4px 16px rgba(62, 39, 35, 0.12);
-    --shadow-lg: 0 8px 24px rgba(62, 39, 35, 0.15);
-    --shadow-xl: 0 12px 32px rgba(62, 39, 35, 0.18);
-}
-
-/* ============================================
-   2. GLOBAL RESETS & BASE STYLES
-   ============================================ */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 100px;
-}
-
-body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    line-height: 1.6;
-    color: var(--text-primary) !important;
-    background: var(--bg-white) !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-}
-
-/* ============================================
-   3. TYPOGRAPHY - All Text Visible
-   ============================================ */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-    color: var(--coffee-brown) !important;
-    font-weight: 700 !important;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-}
-
-h1 { font-size: 4rem; }
-h2 { font-size: 3rem; }
-h3 { font-size: 2.25rem; }
-h4 { font-size: 1.875rem; }
-h5 { font-size: 1.5rem; }
-h6 { font-size: 1.25rem; }
-
-p {
-    color: var(--text-primary) !important;
-    font-weight: 400;
-    margin-bottom: 1rem;
-}
-
-a {
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-/* ============================================
-   4. CONTAINER & LAYOUT
-   ============================================ */
-.container-custom {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 60px;
-}
-
-@media (max-width: 768px) {
-    .container-custom {
-        padding: 0 20px;
-    }
-}
-
-/* ============================================
-   5. HERO SECTION
-   ============================================ */
+/* 🌸 Hero Section - Floral Theme with Parallax */
 .hero-section {
-    min-height: 90vh;
-    display: flex;
-    align-items: center;
-    padding: 120px 0 80px;
-    background: var(--bg-white) !important;
-    position: relative;
+    background: transparent !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 8rem 0 4rem !important;
 }
 
-.hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
+/* Rotating background images - change every 5 seconds */
+.hero-section {
+    --current-bg-image: url('/images/home/traditionalwedding.jpg');
 }
 
-@media (max-width: 968px) {
-    .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
+.hero-section::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    z-index: 0 !important;
+    animation: backgroundRotate 65s infinite linear !important;
+    animation-fill-mode: both !important;
+    opacity: 1 !important;
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: none !important;
+    transition: opacity 0.8s ease-in-out !important;
+    /* Use CSS variable for dynamic background */
+    background-image: var(--current-bg-image, url('/images/home/traditionalwedding.jpg')) !important;
+}
+
+@keyframes backgroundRotate {
+    /* 13 images, 5 seconds each = 65 seconds total */
+    /* Each image gets exactly 5 seconds (7.6923% of 65s) */
+    /* Using linear timing for smooth transitions */
+    
+    /* Image 1: traditionalwedding.jpg (0s - 5s) */
+    0%, 7.692% { 
+        background-image: url('/images/home/traditionalwedding.jpg') !important;
+    }
+    
+    /* Image 2: birthdays.jpg (5s - 10s) */
+    7.693%, 15.384% { 
+        background-image: url('/images/home/birthdays.jpg') !important;
+    }
+    
+    /* Image 3: babybirthday.jpg (10s - 15s) */
+    15.385%, 23.076% { 
+        background-image: url('/images/home/babybirthday.jpg') !important;
+    }
+    
+    /* Image 4: corporate.jpg (15s - 20s) */
+    23.077%, 30.768% { 
+        background-image: url('/images/home/corporate.jpg') !important;
+    }
+    
+    /* Image 5: babyshower.jpg (20s - 25s) */
+    30.769%, 38.46% { 
+        background-image: url('/images/home/babyshower.jpg') !important;
+    }
+    
+    /* Image 6: aniversary.jpg (25s - 30s) */
+    38.461%, 46.152% { 
+        background-image: url('/images/home/aniversary.jpg') !important;
+    }
+    
+    /* Image 7: graduation.jpg (30s - 35s) */
+    46.153%, 53.844% { 
+        background-image: url('/images/home/graduation.jpg') !important;
+    }
+    
+    /* Image 8: engagement.jpg (35s - 40s) */
+    53.845%, 61.536% { 
+        background-image: url('/images/home/engagement.jpg') !important;
+    }
+    
+    /* Image 9: diwali.jpg (40s - 45s) */
+    61.537%, 69.228% { 
+        background-image: url('/images/home/diwali.jpg') !important;
+    }
+    
+    /* Image 10: housewarming.jpg (45s - 50s) */
+    69.229%, 76.92% { 
+        background-image: url('/images/home/housewarming.jpg') !important;
+    }
+    
+    /* Image 11: nikah.jpg (50s - 55s) */
+    76.921%, 84.612% { 
+        background-image: url('/images/home/nikah.jpg') !important;
+    }
+    
+    /* Image 12: retirement.jpg (55s - 60s) */
+    84.613%, 92.304% { 
+        background-image: url('/images/home/retirement.jpg') !important;
+    }
+    
+    /* Image 13: farewell.jpg (60s - 65s) */
+    92.305%, 100% { 
+        background-image: url('/images/home/farewell.jpg') !important;
     }
 }
 
-/* Hero Content */
-.hero-content {
-    max-width: 600px;
+.hero-section::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(255, 254, 247, 0.15) !important;
+    backdrop-filter: blur(1px) !important;
+    -webkit-backdrop-filter: blur(1px) !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    display: block !important;
 }
 
-.hero-badge {
-    display: inline-block;
-    padding: 10px 24px;
-    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 100%);
-    color: white !important;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-bottom: 28px;
-    text-transform: uppercase;
-    box-shadow: var(--shadow-md);
+.hero-section .glass-particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10 !important;
+    color: #6F4E37 !important;
+}
+
+.hero-content * {
+    color: inherit !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.hero-content .hero-title {
+    color: #6F4E37 !important;
+    z-index: 10 !important;
+    position: relative !important;
+    text-shadow: 3px 3px 6px rgba(255, 255, 255, 1), 0 0 15px rgba(255, 255, 255, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.1) !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    padding: 20px 30px !important;
+    border-radius: 15px !important;
+    display: inline-block !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+.hero-content .hero-subtitle {
+    color: #6F4E37 !important;
+    z-index: 10 !important;
+    position: relative !important;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 1), 0 0 12px rgba(255, 255, 255, 0.8), 1px 1px 3px rgba(0, 0, 0, 0.1) !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    padding: 15px 25px !important;
+    border-radius: 12px !important;
+    display: inline-block !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1) !important;
 }
 
 .hero-title {
     font-family: 'Playfair Display', serif;
-    font-size: 64px;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 28px;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
     letter-spacing: -0.02em;
-    color: var(--coffee-brown) !important;
-    text-shadow: 0 2px 4px rgba(93, 64, 55, 0.1);
+    /* Always visible - no opacity animation */
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    /* Ensure text is visible */
+    color: #6F4E37 !important;
 }
 
-.hero-title .highlight {
-    color: var(--gold-bright) !important;
-    font-weight: 900;
+.hero-title .gradient-word {
     display: inline-block;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+    transition: transform 0.3s ease;
+    /* Always ensure text is visible - use gradient if supported, otherwise use solid color */
+    position: relative;
+}
+
+/* Ensure all gradient words are always visible with fallback colors */
+.hero-title .gradient-word {
+    /* Always have a visible color fallback */
+    color: inherit !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    position: relative;
+    z-index: 3 !important;
+}
+
+/* Apply gradient text effect only if supported and inline color is not set */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .hero-title .gradient-word:not([style*="color"]) {
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        /* Keep fallback color for when gradient doesn't render */
+        color: inherit;
+    }
+}
+
+/* Ensure inline color styles take precedence over transparent fill */
+.hero-title .gradient-word[style*="color"] {
+    -webkit-text-fill-color: inherit !important;
+    color: inherit !important;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 255, 255, 0.5) !important;
+    z-index: 3 !important;
+    position: relative;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Fallback for browsers without gradient text support */
+@supports not (-webkit-background-clip: text) {
+    .hero-title .gradient-word {
+        -webkit-text-fill-color: inherit !important;
+        color: inherit !important;
+    }
+}
+
+.hero-title .gradient-word:hover {
+    transform: scale(1.1) translateY(-2px);
+}
+
+.gradient-1 {
+    background: linear-gradient(135deg, #E91E63 0%, #F06292 50%, #FF4081 100%);
+    color: #E91E63; /* Fallback color */
+}
+
+.gradient-2 {
+    background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 50%, #CE93D8 100%);
+    color: #9C27B0; /* Fallback color */
+}
+
+.gradient-3 {
+    background: linear-gradient(135deg, #2196F3 0%, #64B5F6 50%, #90CAF9 100%);
+    color: #2196F3; /* Fallback color */
+}
+
+.gradient-4 {
+    background: linear-gradient(135deg, #00BCD4 0%, #4DD0E1 50%, #80DEEA 100%);
+    color: #00BCD4; /* Fallback color */
+}
+
+.gradient-5 {
+    background: linear-gradient(135deg, #FF9800 0%, #FFB74D 50%, #FFCC80 100%);
+    color: #FF9800; /* Fallback color */
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .hero-subtitle {
-    font-size: 20px;
-    color: var(--text-secondary) !important;
-    line-height: 1.8;
-    margin-bottom: 40px;
+    font-size: 1.35rem;
     font-weight: 500;
-}
-
-/* ============================================
-   6. BUTTONS - Highly Visible
-   ============================================ */
-.hero-buttons {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 40px;
-}
-
-.btn-professional {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 18px 40px;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    border: none;
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-primary-pro {
-    background: linear-gradient(135deg, var(--coffee-brown) 0%, var(--coffee-medium) 100%);
-    color: white !important;
-    box-shadow: var(--shadow-lg);
-}
-
-.btn-primary-pro:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-xl);
-    background: linear-gradient(135deg, var(--coffee-dark) 0%, var(--coffee-brown) 100%);
-}
-
-.btn-secondary-pro {
-    background: white;
-    color: var(--coffee-brown) !important;
-    border: 3px solid var(--coffee-brown);
-    box-shadow: var(--shadow-sm);
-}
-
-.btn-secondary-pro:hover {
-    transform: translateY(-3px);
-    background: var(--coffee-brown);
-    color: white !important;
-    box-shadow: var(--shadow-md);
-}
-
-.btn-professional i {
-    margin-left: 8px;
-    font-size: 18px;
-}
-
-/* ============================================
-   7. HERO VISUAL
-   ============================================ */
-.hero-visual {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.showcase-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    color: #6F4E37 !important;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    /* Always visible - no opacity animation */
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
     max-width: 600px;
 }
 
-.showcase-card {
+/* 🌸 Floral Feature Cards - 3D Tilt Effect with Glassmorphism */
+.feature-card {
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-glass);
+    border: 1px solid var(--glass-border);
+    opacity: 0;
+    transform: translateY(30px);
     position: relative;
-    border-radius: 20px;
     overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    transition: all 0.4s ease;
-    background: white;
 }
 
-.showcase-card img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-    display: block;
-}
-
-.showcase-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: var(--shadow-xl);
-}
-
-.showcase-overlay {
+.feature-card::before {
+    content: '';
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(93, 64, 55, 0.95), transparent);
-    padding: 20px;
-    color: white !important;
-    font-weight: 700;
-    font-size: 16px;
-    text-align: center;
+    bottom: 0;
+    background: var(--gradient-floral);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
 }
 
-/* ============================================
-   8. CATEGORIES SECTION
-   ============================================ */
-.section-professional {
-    padding: 100px 0;
-    background: var(--bg-white) !important;
+.feature-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.section-header-pro {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 60px;
+.feature-card:hover {
+    transform: translateY(-8px) perspective(1000px) rotateX(2deg) rotateY(-2deg);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--glass-border-hover);
 }
 
-.section-badge-pro {
-    display: inline-block;
-    padding: 8px 20px;
-    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 100%);
-    color: white !important;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
+.feature-card:hover::before {
+    opacity: 0.05;
 }
 
-.section-title-pro {
-    font-family: 'Playfair Display', serif;
-    font-size: 48px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    line-height: 1.2;
-    color: var(--coffee-brown) !important;
-    text-shadow: 0 2px 4px rgba(93, 64, 55, 0.08);
+.feature-card > * {
+    position: relative;
+    z-index: 1;
 }
 
-.section-description {
-    font-size: 18px;
-    color: var(--text-secondary) !important;
-    line-height: 1.7;
-    font-weight: 500;
-}
-
-/* Categories Grid */
-.categories-grid-pro {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
-    margin-top: 60px;
-}
-
-@media (max-width: 968px) {
-    .categories-grid-pro {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 576px) {
-    .categories-grid-pro {
-        grid-template-columns: 1fr;
-    }
-}
-
-.category-card-pro {
-    background: white;
-    border-radius: 20px;
-    padding: 40px 30px;
-    text-align: center;
-    transition: all 0.4s ease;
-    border: 2px solid #F5F5F5;
-    box-shadow: var(--shadow-sm);
-    cursor: pointer;
-}
-
-.category-card-pro:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--gold-bright);
-}
-
-.category-icon-pro {
+.feature-icon {
     width: 80px;
     height: 80px;
-    margin: 0 auto 24px;
-    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 100%);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    box-shadow: var(--shadow-md);
-}
-
-.category-title-pro {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--coffee-brown) !important;
-    margin-bottom: 12px;
-}
-
-.category-description-pro {
-    font-size: 15px;
-    color: var(--text-primary) !important;
-    line-height: 1.6;
-}
-
-.category-count-pro {
-    display: inline-block;
-    margin-top: 16px;
-    padding: 6px 16px;
-    background: linear-gradient(135deg, var(--gold-pale) 0%, var(--gold-light) 100%);
-    color: var(--coffee-brown) !important;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-/* ============================================
-   9. FEATURES SECTION
-   ============================================ */
-.features-grid-pro {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-top: 60px;
-}
-
-@media (max-width: 968px) {
-    .features-grid-pro {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 576px) {
-    .features-grid-pro {
-        grid-template-columns: 1fr;
-    }
-}
-
-.feature-card-pro {
-    background: white;
-    border-radius: 20px;
-    padding: 40px 30px;
-    text-align: center;
-    transition: all 0.4s ease;
-    border: 2px solid #F5F5F5;
-    box-shadow: var(--shadow-sm);
-}
-
-.feature-card-pro:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--coffee-brown);
-}
-
-.feature-icon-pro {
-    width: 70px;
-    height: 70px;
-    margin: 0 auto 24px;
-    background: linear-gradient(135deg, var(--coffee-brown) 0%, var(--coffee-medium) 100%);
+    background: var(--gradient-floral);
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
-    color: white !important;
-    box-shadow: var(--shadow-md);
-}
-
-.feature-title-pro {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--coffee-brown) !important;
-    margin-bottom: 12px;
-}
-
-.feature-description-pro {
-    font-size: 15px;
-    color: var(--text-primary) !important;
-    line-height: 1.7;
-}
-
-/* ============================================
-   10. HOW IT WORKS SECTION
-   ============================================ */
-.steps-grid-pro {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-top: 60px;
-    position: relative;
-}
-
-@media (max-width: 968px) {
-    .steps-grid-pro {
-        grid-template-columns: 1fr;
-    }
-}
-
-.step-card-pro {
-    background: white;
-    border-radius: 20px;
-    padding: 40px 30px;
-    text-align: center;
-    position: relative;
-    border: 2px solid #F5F5F5;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.4s ease;
-}
-
-.step-card-pro:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-    border-color: var(--gold-bright);
-}
-
-.step-number-pro {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 24px;
-    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-light) 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    font-weight: 900;
-    color: white !important;
-    box-shadow: var(--shadow-md);
-}
-
-.step-title-pro {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--coffee-brown) !important;
-    margin-bottom: 12px;
-}
-
-.step-description-pro {
-    font-size: 15px;
-    color: var(--text-primary) !important;
-    line-height: 1.7;
-}
-
-/* ============================================
-   11. CTA SECTION
-   ============================================ */
-.cta-section {
-    padding: 100px 0;
-    background: linear-gradient(135deg, var(--coffee-brown) 0%, var(--coffee-medium) 50%, var(--gold-bright) 100%);
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
 }
 
-.cta-content-pro {
+.feature-icon::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 70%
+    );
+    transform: rotate(45deg);
+    animation: glassShimmer 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+}
+
+.feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.feature-description {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+/* 🌸 Floral Step Cards with Glassmorphism */
+.step-card {
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 16px;
+    padding: 2.5rem;
     text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-glass);
+    border: 1px solid var(--glass-border);
+    opacity: 0;
+    transform: translateY(30px);
     position: relative;
-    z-index: 2;
+    overflow: hidden;
 }
 
-.cta-title-pro {
-    font-size: 48px;
-    font-weight: 800;
-    color: white !important;
-    margin-bottom: 24px;
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.step-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.cta-description-pro {
-    font-size: 20px;
-    color: white !important;
-    margin-bottom: 40px;
-    opacity: 0.95;
+.step-card:hover {
+    transform: translateY(-8px) perspective(1000px) rotateX(2deg);
+    box-shadow: var(--shadow-floral);
+    border-color: rgba(233, 30, 99, 0.2);
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-floral);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 auto 1.5rem;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+    transition: all 0.4s ease;
+}
+
+.step-card:hover .step-number {
+    transform: scale(1.1) rotate(360deg);
+    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+}
+
+.step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.step-description {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* 🌸 Floral Case Cards with Glassmorphism */
+.case-card {
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-glass);
+    border: 1px solid var(--glass-border);
+    opacity: 0;
+    transform: translateY(30px);
+    position: relative;
+}
+
+.case-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.case-card:hover {
+    transform: translateY(-8px) perspective(1000px) rotateX(2deg);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--glass-border-hover);
+}
+
+.case-card:hover .event-icon-circle {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.case-card:hover .event-icon-circle i {
+    transform: scale(1.1);
+}
+
+.case-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: brightness(0.95);
+}
+
+.case-card:hover .case-image {
+    transform: scale(1.08);
+    filter: brightness(1);
+}
+
+.case-content {
+    padding: 2rem;
+}
+
+.case-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+/* 🌸 Floral Accordion with Glassmorphism */
+.accordion-item {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-glass);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-item:hover {
+    box-shadow: var(--shadow-md);
+    border-color: rgba(233, 30, 99, 0.2);
+}
+
+.accordion-button {
+    background: transparent;
+    border: none;
+    padding: 1.5rem;
+    width: 100%;
+    text-align: left;
+    font-weight: 400;
+    font-size: 1.125rem;
+    color: #6F4E37 !important;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8) !important;
+}
+
+.accordion-button:hover {
+    background: var(--bg-secondary);
+}
+
+.accordion-button.active {
+    background: var(--bg-secondary);
     font-weight: 500;
 }
 
-.cta-buttons-pro {
+.accordion-icon {
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: #6F4E37;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+    line-height: 1;
+    font-family: Arial, sans-serif;
+}
+
+.accordion-button.active .accordion-icon {
+    transform: rotate(0deg);
+}
+
+.accordion-content {
+    padding: 0 1.5rem 1.5rem;
+    color: #6F4E37 !important;
+    display: none;
+    font-size: 1rem;
+    line-height: 1.7;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8) !important;
+}
+
+.accordion-content.active {
+    display: block;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+/* 🌸 Floral Trust Badge */
+.trust-badge {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    border: 1px solid rgba(233, 30, 99, 0.1);
+}
+
+/* 🎨 Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes iconShimmer {
+    0%, 100% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    50% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+/* 🌸 Floral Section Titles */
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.75rem;
+    font-weight: 500;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 255, 255, 0.5) !important;
+    text-align: center;
+    letter-spacing: -0.02em;
+}
+
+.section-title.gradient-text {
+    /* Fallback color - always visible */
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Apply gradient only if supported */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+    .section-title.gradient-text {
+        background: var(--gradient-floral);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        /* Keep fallback color */
+        color: #6F4E37;
+    }
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: #6F4E37 !important;
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8) !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 🎨 Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+/* 🎨 Steps Grid */
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+/* 🎨 Cases Grid */
+.cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+/* 🌟 Testimonial Carousel Styles */
+.testimonial-carousel-wrapper {
+    position: relative;
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 0 60px;
+}
+
+.testimonial-carousel {
     display: flex;
-    gap: 20px;
+    overflow: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    gap: 2rem;
+}
+
+.testimonial-carousel .testimonial-card {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-width: 0;
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-glass);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.testimonial-carousel .testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(233, 30, 99, 0.03) 0%,
+        rgba(156, 39, 176, 0.03) 50%,
+        rgba(102, 187, 106, 0.03) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.testimonial-carousel .testimonial-card:hover::before {
+    opacity: 1;
+}
+
+.testimonial-carousel .testimonial-card:hover {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: var(--shadow-glass-hover);
+    transform: translateY(-5px);
+    border-color: var(--glass-border-hover);
+}
+
+.testimonial-carousel .testimonial-rating {
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(212, 175, 55, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-carousel .testimonial-text {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-carousel .testimonial-author {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.testimonial-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: var(--shadow-glass);
+}
+
+.testimonial-nav:hover {
+    background: var(--glass-bg-medium);
+    border-color: var(--glass-border-hover);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: var(--shadow-md);
+}
+
+.testimonial-nav.testimonial-prev {
+    left: 0;
+}
+
+.testimonial-nav.testimonial-next {
+    right: 0;
+}
+
+.testimonial-dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.testimonial-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: var(--glass-bg-dark);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.testimonial-dot:hover {
+    background: var(--glass-bg-medium);
+    transform: scale(1.2);
+}
+
+.testimonial-dot.active {
+    background: var(--gradient-primary);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+    transform: scale(1.3);
+}
+
+@media (max-width: 768px) {
+    .testimonial-carousel-wrapper {
+        padding: 0 50px;
+    }
+    
+    .testimonial-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .testimonial-carousel {
+        gap: 1rem;
+    }
+}
+
+/* 🌟 Glassmorphism Event Tabs */
+.event-tabs-wrapper {
+    margin-top: 3rem;
+}
+
+.glass-tabs {
+    background: var(--glass-bg-medium);
+    backdrop-filter: var(--glass-blur-intense) saturate(180%);
+    -webkit-backdrop-filter: var(--glass-blur-intense) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 0.75rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-glass);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.glass-tabs .nav-item {
+    margin: 0;
+}
+
+.glass-tabs .nav-link {
+    background: var(--glass-bg-dark);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 0.875rem 1.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    margin: 0.25rem;
+}
+
+.glass-tabs .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.glass-tabs .nav-link:hover::before {
+    left: 100%;
+}
+
+.glass-tabs .nav-link:hover {
+    background: var(--glass-bg-light);
+    border-color: var(--glass-border-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.glass-tabs .nav-link.active {
+    background: var(--gradient-primary);
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border-color: var(--glass-border);
+    color: white;
+    box-shadow: var(--shadow-lg),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    transform: translateY(-2px);
+}
+
+.glass-tabs .nav-link.active::before {
+    display: none;
+}
+
+.glass-tabs .nav-link i {
+    transition: transform 0.3s ease;
+}
+
+.glass-tabs .nav-link:hover i,
+.glass-tabs .nav-link.active i {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.glass-tab-content {
+    margin-top: 2rem;
+    min-height: 400px;
+}
+
+.glass-tab-content .tab-pane {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.glass-tab-content .cases-grid {
+    margin-top: 1rem;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ripple Effect for Tabs */
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--glass-bg-light);
+    transform: scale(0);
+    animation: ripple 0.6s ease-out;
+    pointer-events: none;
+    width: 100px;
+    height: 100px;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* 🎨 Step Title */
+.step-title {
+    font-family: 'Roboto Slab', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.step-description {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+/* 🎨 Case Description */
+.case-description {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+/* 🎨 Parallax Effect */
+.parallax-element {
+    transition: transform 0.3s ease-out;
+}
+
+/* 🎨 Enhanced Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-top: 80px; /* Account for fixed navbar */
+}
+
+body {
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Smooth scroll for all scrollable containers */
+* {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Optimize scrolling performance */
+.hero-section,
+.features-section,
+.social-proof,
+.how-it-works,
+.use-cases,
+.faq-section,
+.cta-section {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* GPU acceleration for smooth animations */
+.feature-card,
+.step-card,
+.case-card,
+.testimonial-card,
+.accordion-item {
+    transform: translateZ(0);
+    will-change: transform;
+    -webkit-transform: translateZ(0);
+}
+
+/* Prevent layout shifts */
+img,
+.case-image,
+.feature-icon,
+.step-number {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Optimize font rendering */
+body,
+.hero-title,
+.section-title,
+.feature-title,
+.step-title,
+.case-title {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Smooth transitions for all interactive elements */
+.btn,
+button,
+a,
+.accordion-button,
+.testimonial-nav,
+.case-card,
+.feature-card,
+.step-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent horizontal scroll */
+* {
+    max-width: 100%;
+}
+
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .hero-section::after {
+        animation: none !important;
+    }
+}
+
+/* 🎨 Section Backgrounds with Glassmorphism */
+.features-section {
+    padding: 6rem 0;
+    background: var(--bg-primary);
+}
+
+.features-section .container {
+    position: relative;
+}
+
+.social-proof {
+    padding: 6rem 0;
+    background: var(--bg-secondary);
+}
+
+.how-it-works {
+    padding: 6rem 0;
+    background: var(--bg-primary);
+}
+
+.use-cases {
+    padding: 6rem 0;
+    background: var(--bg-secondary);
+}
+
+.faq-section {
+    padding: 6rem 0;
+    background: var(--bg-primary);
+}
+
+.cta-section {
+    padding: 6rem 0;
+    background: var(--bg-secondary);
+    background-image: url('/static/images/holographic-invitation-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    text-align: center;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 254, 247, 0.85);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 0;
+}
+
+.cta-section .container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 32px;
+    padding: 3rem;
+    box-shadow: var(--shadow-glass-intense);
+    overflow: hidden;
+}
+
+.cta-section .container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle,
+        rgba(233, 30, 99, 0.15) 0%,
+        rgba(156, 39, 176, 0.1) 30%,
+        transparent 70%
+    );
+    animation: glassRotate 20s linear infinite;
+    pointer-events: none;
+}
+
+.cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.cta-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.btn-cta-white {
-    background: white;
-    color: var(--coffee-brown) !important;
-    padding: 18px 40px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    box-shadow: var(--shadow-lg);
-    transition: all 0.3s ease;
-}
-
-.btn-cta-white:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-xl);
-    background: var(--gold-light);
-}
-
 /* ============================================
-   12. RESPONSIVE ADJUSTMENTS
+   COMPREHENSIVE RESPONSIVE DESIGN
    ============================================ */
-@media (max-width: 968px) {
+
+/* Large Desktops (1400px and above) */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+    
     .hero-title {
-        font-size: 48px;
+        font-size: 4rem;
     }
     
-    .section-title-pro {
-        font-size: 36px;
+    .section-title {
+        font-size: 3.25rem;
     }
     
-    .cta-title-pro {
-        font-size: 36px;
+    .cases-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
     }
 }
 
-@media (max-width: 576px) {
+/* Desktops (1200px - 1399px) */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .container {
+        max-width: 1140px;
+    }
+    
     .hero-title {
-        font-size: 36px;
+        font-size: 3.75rem;
     }
     
-    .section-title-pro {
-        font-size: 28px;
+    .section-title {
+        font-size: 3rem;
     }
     
-    .cta-title-pro {
-        font-size: 28px;
+    .cases-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Tablets Landscape (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .hero-title {
+        font-size: 3.25rem;
     }
     
-    .hero-buttons {
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-content .hero-title {
+        padding: 18px 25px !important;
+    }
+    
+    .hero-content .hero-subtitle {
+        padding: 12px 20px !important;
+    }
+    
+    .cases-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.75rem;
+    }
+    
+    .features-grid,
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .testimonial-carousel-wrapper {
+        max-width: 800px;
+    }
+}
+
+/* Tablets Portrait (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .hero-title {
+        font-size: 2.75rem;
+        flex-wrap: wrap;
+    }
+    
+    .hero-content .hero-title {
+        padding: 16px 22px !important;
+        font-size: 2.75rem !important;
+    }
+    
+    .hero-content .hero-subtitle {
+        padding: 12px 18px !important;
+        font-size: 1.15rem !important;
+    }
+    
+    .section-title {
+        font-size: 2.25rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1.05rem;
+    }
+    
+    .hero-section {
+        padding: 5rem 0 3rem !important;
+        min-height: 90vh !important;
+    }
+    
+    .features-section,
+    .social-proof,
+    .how-it-works,
+    .use-cases,
+    .faq-section,
+    .cta-section {
+        padding: 4.5rem 0;
+    }
+    
+    .cases-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .features-grid,
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .feature-card,
+    .step-card,
+    .case-card {
+        padding: 2rem;
+    }
+    
+    .testimonial-carousel-wrapper {
+        max-width: 700px;
+        padding: 0 50px;
+    }
+    
+    .hero-cta .btn {
+        padding: 14px 28px !important;
+        font-size: 1.05rem !important;
+    }
+    
+    .cta-title {
+        font-size: 2.25rem;
+    }
+    
+    .accordion-button {
+        padding: 1.25rem;
+        font-size: 1.05rem;
+    }
+}
+
+/* Mobile Landscape (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .hero-title {
+        font-size: 2.25rem;
         flex-direction: column;
+        gap: 0.3rem;
     }
     
-    .btn-professional {
+    .hero-content .hero-title {
+        padding: 14px 20px !important;
+        font-size: 2.25rem !important;
+    }
+    
+    .hero-content .hero-subtitle {
+        padding: 10px 16px !important;
+        font-size: 1.05rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.9rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+    }
+    
+    .hero-section {
+        padding: 4rem 0 2rem !important;
+        min-height: 85vh !important;
+    }
+    
+    .features-section,
+    .social-proof,
+    .how-it-works,
+    .use-cases,
+    .faq-section,
+    .cta-section {
+        padding: 3.5rem 0;
+    }
+    
+    .features-grid,
+    .steps-grid,
+    .cases-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .feature-card,
+    .step-card,
+    .case-card {
+        padding: 1.75rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .testimonial-carousel-wrapper {
+        padding: 0 45px;
+    }
+    
+    .testimonial-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+        gap: 1rem !important;
+    }
+    
+    .hero-cta .btn {
+        width: 100%;
+        padding: 14px 24px !important;
+        font-size: 1rem !important;
+    }
+    
+    .cta-title {
+        font-size: 2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .cta-buttons .btn {
         width: 100%;
     }
-}
-
-/* ============================================
-   13. ACCESSIBILITY & PRINT
-   ============================================ */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation: none !important;
-        transition: none !important;
+    
+    .accordion-button {
+        padding: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    .accordion-icon {
+        font-size: 1.6rem;
+        width: 28px;
+    }
+    
+    .event-icon-circle {
+        width: 70px !important;
+        height: 70px !important;
+    }
+    
+    .event-icon-circle i {
+        font-size: 1.75rem !important;
     }
 }
 
-/* Focus states for accessibility */
-.btn-professional:focus,
-a:focus {
-    outline: 3px solid var(--gold-bright);
-    outline-offset: 2px;
+/* Mobile Portrait (max-width: 575px) */
+@media (max-width: 575px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .hero-title {
+        font-size: 1.9rem;
+        flex-direction: column;
+        gap: 0.25rem;
+        line-height: 1.3;
+    }
+    
+    .hero-title .gradient-word {
+        display: inline-block;
+        font-size: 1.9rem;
+    }
+    
+    .hero-content .hero-title {
+        padding: 12px 18px !important;
+        font-size: 1.9rem !important;
+        border-radius: 12px !important;
+    }
+    
+    .hero-content .hero-subtitle {
+        padding: 10px 14px !important;
+        font-size: 0.95rem !important;
+        border-radius: 10px !important;
+        line-height: 1.6;
+    }
+    
+    .section-title {
+        font-size: 1.75rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .section-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+    
+    .hero-section {
+        padding: 3.5rem 0 1.5rem !important;
+        min-height: 80vh !important;
+    }
+    
+    .features-section,
+    .social-proof,
+    .how-it-works,
+    .use-cases,
+    .faq-section,
+    .cta-section {
+        padding: 3rem 0;
+    }
+    
+    .features-grid,
+    .steps-grid,
+    .cases-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+    
+    .feature-card,
+    .step-card,
+    .case-card {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-icon,
+    .step-number {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-title,
+    .step-title,
+    .case-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .feature-description,
+    .step-description,
+    .case-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .testimonial-carousel-wrapper {
+        padding: 0 40px;
+        margin: 2rem auto;
+    }
+    
+    .testimonial-nav {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    
+    .testimonial-card {
+        padding: 1.75rem;
+    }
+    
+    .testimonial-text {
+        font-size: 1rem;
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+        gap: 0.75rem !important;
+        width: 100%;
+    }
+    
+    .hero-cta .btn {
+        width: 100%;
+        padding: 12px 20px !important;
+        font-size: 0.95rem !important;
+        display: block !important;
+    }
+    
+    .cta-title {
+        font-size: 1.75rem;
+    }
+    
+    .cta-subtitle {
+        font-size: 1rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+    }
+    
+    .cta-buttons .btn {
+        width: 100%;
+        padding: 12px 20px;
+    }
+    
+    .accordion-button {
+        padding: 1rem;
+        font-size: 0.95rem;
+        flex-wrap: wrap;
+    }
+    
+    .accordion-button span {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .accordion-icon {
+        font-size: 1.5rem;
+        width: 26px;
+        flex-shrink: 0;
+    }
+    
+    .accordion-content {
+        padding: 0 1rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .event-icon-circle {
+        width: 60px !important;
+        height: 60px !important;
+    }
+    
+    .event-icon-circle i {
+        font-size: 1.5rem !important;
+    }
+    
+    .case-image {
+        height: 200px;
+    }
+    
+    .case-content {
+        padding: 1.5rem;
+    }
+    
+    .glass-tabs {
+        padding: 0.5rem;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+    }
+    
+    .glass-tabs .nav-link {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.8rem;
+        margin: 0.125rem;
+    }
+    
+    .glass-tabs .nav-link i {
+        font-size: 0.8rem;
+    }
 }
 
-/* ============================================
-   END OF CSS
-   ============================================ */
+/* Small Mobile (max-width: 375px) */
+@media (max-width: 375px) {
+    .container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    
+    .hero-title {
+        font-size: 1.65rem;
+    }
+    
+    .hero-title .gradient-word {
+        font-size: 1.65rem;
+    }
+    
+    .hero-content .hero-title {
+        padding: 10px 14px !important;
+        font-size: 1.65rem !important;
+    }
+    
+    .hero-content .hero-subtitle {
+        padding: 8px 12px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .feature-card,
+    .step-card,
+    .case-card {
+        padding: 1.25rem;
+    }
+    
+    .hero-cta .btn {
+        padding: 10px 16px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .cta-title {
+        font-size: 1.5rem;
+    }
+    
+    .testimonial-carousel-wrapper {
+        padding: 0 35px;
+    }
+    
+    .testimonial-nav {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Extra Small Mobile (max-width: 320px) */
+@media (max-width: 320px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .hero-title .gradient-word {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.35rem;
+    }
+    
+    .feature-card,
+    .step-card,
+    .case-card {
+        padding: 1rem;
+    }
+    
+    .hero-cta .btn {
+        padding: 10px 14px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .feature-card:hover,
+    .step-card:hover,
+    .case-card:hover {
+        transform: none;
+    }
+    
+    .btn,
+    button,
+    a.btn {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+    }
+    
+    .accordion-button {
+        min-height: 48px;
+    }
+}
+
+/* Landscape Orientation Optimizations */
+@media (orientation: landscape) and (max-height: 600px) {
+    .hero-section {
+        min-height: auto !important;
+        padding: 2rem 0 !important;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-content .hero-title {
+        padding: 10px 18px !important;
+    }
+    
+    .hero-content .hero-subtitle {
+        padding: 8px 14px !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .features-section,
+    .social-proof,
+    .how-it-works,
+    .use-cases,
+    .faq-section,
+    .cta-section {
+        padding: 2.5rem 0;
+    }
+}
+
+/* High DPI / Retina Display Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .case-image,
+    .feature-icon,
+    .testimonial-card {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .hero-section::after,
+    .hero-section::before {
+        display: none !important;
+    }
+    
+    .testimonial-nav,
+    .testimonial-dots {
+        display: none;
+    }
+    
+    .hero-cta,
+    .cta-buttons {
+        display: none;
+    }
+}
 </style>
+
+<!-- Enhanced Intersection Observer for Scroll Animations -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Background Image Auto-Rotation - JavaScript Implementation
+    const backgroundImages = [
+        '/images/home/traditionalwedding.jpg',
+        '/images/home/birthdays.jpg',
+        '/images/home/babybirthday.jpg',
+        '/images/home/corporate.jpg',
+        '/images/home/babyshower.jpg',
+        '/images/home/aniversary.jpg',
+        '/images/home/graduation.jpg',
+        '/images/home/engagement.jpg',
+        '/images/home/diwali.jpg',
+        '/images/home/housewarming.jpg',
+        '/images/home/nikah.jpg',
+        '/images/home/retirement.jpg',
+        '/images/home/farewell.jpg'
+    ];
+    
+    let currentImageIndex = 0;
+    const heroSection = document.querySelector('.hero-section');
+    
+    // Preload all images for smooth transitions
+    backgroundImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+    
+    // Function to update background image with fade effect
+    function updateBackgroundImage() {
+        if (!heroSection) return;
+        
+        // Fade out effect
+        const afterElement = window.getComputedStyle(heroSection, '::after');
+        
+        // Create a style element to update the background
+        let styleElement = document.getElementById('dynamic-hero-bg');
+        if (!styleElement) {
+            styleElement = document.createElement('style');
+            styleElement.id = 'dynamic-hero-bg';
+            document.head.appendChild(styleElement);
+        }
+        
+        // Update background image with smooth transition
+        const imageUrl = backgroundImages[currentImageIndex];
+        styleElement.textContent = `
+            .hero-section::after {
+                background-image: url('${imageUrl}') !important;
+                opacity: 1 !important;
+            }
+        `;
+        
+        // Move to next image for next iteration
+        currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
+    }
+    
+    // Start rotation immediately, then continue every 5 seconds
+    // First image is already set in CSS, so start from second image after 5 seconds
+    setTimeout(() => {
+        currentImageIndex = 1; // Start from second image
+        updateBackgroundImage();
+        
+        // Continue rotating every 5 seconds
+        setInterval(updateBackgroundImage, 5000);
+    }, 5000);
+    
+    // Intersection Observer for scroll animations with stagger effect
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('animate');
+                    observer.unobserve(entry.target);
+                }, index * 100); // Staggered animation (100ms delay between items)
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all elements with animate-on-scroll class
+    document.querySelectorAll('.animate-on-scroll, .feature-card, .step-card, .case-card').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Parallax effect on scroll - Multi-layer depth
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                const scrolled = window.pageYOffset;
+                const parallaxElements = document.querySelectorAll('.parallax-element');
+                parallaxElements.forEach(element => {
+                    const speed = parseFloat(element.dataset.speed) || 0.5;
+                    const yPos = -(scrolled * speed);
+                    element.style.transform = `translateY(${yPos}px)`;
+                });
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+});
+
+// Glass Card Mouse Tracking Effect
+document.addEventListener('DOMContentLoaded', function() {
+    const glassCards = document.querySelectorAll('.glass-card, .glass-hero-content, .glass-testimonial');
+    
+    glassCards.forEach(card => {
+        card.addEventListener('mousemove', function(e) {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            card.style.setProperty('--mouse-x', x + '%');
+            card.style.setProperty('--mouse-y', y + '%');
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            card.style.setProperty('--mouse-x', '50%');
+            card.style.setProperty('--mouse-y', '50%');
+        });
+    });
+    
+    // Enhanced Event Tabs Functionality
+    const eventTabs = document.querySelectorAll('#eventTypeTabs .nav-link');
+    const eventTabPanes = document.querySelectorAll('#eventTypeTabContent .tab-pane');
+    
+    eventTabs.forEach(tab => {
+        tab.addEventListener('shown.bs.tab', function(e) {
+            // Animate cards when tab is shown
+            const targetPane = document.querySelector(e.target.getAttribute('data-bs-target'));
+            const cards = targetPane.querySelectorAll('.case-card');
+            
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                    card.classList.add('animate');
+                }, index * 100);
+            });
+        });
+        
+        // Add ripple effect on click
+        tab.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple-effect');
+            tab.appendChild(ripple);
+            
+            const rect = tab.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+    
+    // Initialize first tab cards
+    const firstPane = document.querySelector('#eventTypeTabContent .tab-pane.active');
+    if (firstPane) {
+        const firstCards = firstPane.querySelectorAll('.case-card');
+        firstCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.classList.add('animate');
+            }, index * 100);
+        });
+    }
+});
+</script>
 {% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section">
-    <div class="container-custom">
-        <div class="hero-grid">
-            <!-- Left: Content -->
-            <div class="hero-content">
-                <span class="hero-badge">✨ Professional Invitations</span>
-                <h1 class="hero-title">
-                    Create <span class="highlight">Beautiful</span> Invitations in Minutes
-                </h1>
-                <p class="hero-subtitle">
-                    Professional digital invitations for weddings, birthdays, corporate events, and every special moment. No design skills required.
-                </p>
-                <div class="hero-buttons">
-                    <a href="{{ url_for('templates') }}" class="btn-professional btn-primary-pro">
-                        Get Started <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="{{ url_for('templates') }}" class="btn-professional btn-secondary-pro">
-                        Browse Templates <i class="fas fa-images"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Right: Visual -->
-            <div class="hero-visual">
-                <div class="showcase-grid">
-                    <div class="showcase-card">
-                        <img src="/static/images/templatesimages/wedding.png" alt="Wedding Invitation">
-                        <div class="showcase-overlay">Wedding</div>
+<section class="hero-section section-bg-animated">
+    <div class="glass-particles-container">
+        <div class="glass-particle-enhanced"></div>
+        <div class="glass-particle-enhanced"></div>
+        <div class="glass-particle-enhanced"></div>
+        <div class="glass-particle-enhanced"></div>
+        <div class="glass-particle-enhanced"></div>
+        <div class="glass-particle-enhanced"></div>
+        <div class="glass-particle-enhanced"></div>
+        <div class="glass-particle-enhanced"></div>
+        <div class="glass-particle-enhanced"></div>
+    </div>
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-8">
+                <div class="hero-content glass-hero-content glass-shimmer text-center">
+                    <h1 class="hero-title">
+                        <span class="gradient-word gradient-1" data-text="Create" style="color: #E91E63;">Create</span> 
+                        <span class="gradient-word gradient-2" data-text="Stunning" style="color: #9C27B0;">Stunning</span> 
+                        <span class="gradient-word gradient-3" data-text="Digital" style="color: #2196F3;">Digital</span> 
+                        <span class="gradient-word gradient-4" data-text="Invitations" style="color: #00BCD4;">Invitations</span> 
+                        <span class="gradient-word gradient-5" data-text="Instantly" style="color: #FF9800;">Instantly</span>
+                    </h1>
+                    <p class="hero-subtitle">Transform your special moments into unforgettable experiences. Professional designs, zero complexity, unlimited creativity — all in your hands.</p>
+                    
+                    <div class="hero-cta" style="opacity: 1 !important; visibility: visible !important; z-index: 10 !important; position: relative !important; display: block !important;">
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a href="{{ url_for('templates') }}" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #C9A961 0%, #B39750 100%) !important; color: white !important; border: none !important; box-shadow: 0 4px 15px rgba(201, 169, 97, 0.5), 0 2px 8px rgba(0, 0, 0, 0.2) !important; z-index: 10 !important; position: relative !important; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2) !important; padding: 15px 30px !important; font-weight: 600 !important; font-size: 1.1rem !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+                                <i class="fas fa-rocket me-2"></i>Create Your Invitation Now
+                            </a>
+                            <a href="#examples" class="btn btn-secondary btn-lg" style="background: rgba(255, 255, 255, 0.95) !important; color: #6F4E37 !important; border: 2px solid rgba(111, 78, 55, 0.3) !important; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important; z-index: 10 !important; position: relative !important; text-shadow: none !important; padding: 15px 30px !important; font-weight: 600 !important; font-size: 1.1rem !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; backdrop-filter: blur(10px) !important; -webkit-backdrop-filter: blur(10px) !important;">
+                                <i class="fas fa-eye me-2"></i>See Examples
+                            </a>
+                        </div>
                     </div>
-                    <div class="showcase-card">
-                        <img src="/static/images/templatesimages/birthdaycolourful.jpg" alt="Birthday Invitation">
-                        <div class="showcase-overlay">Birthday</div>
-                    </div>
-                    <div class="showcase-card">
-                        <img src="/static/images/templatesimages/naming.jpg" alt="Baby Shower">
-                        <div class="showcase-overlay">Baby Shower</div>
-                    </div>
-                    <div class="showcase-card">
-                        <img src="/static/images/templatesimages/retirement.jpg" alt="Retirement Party">
-                        <div class="showcase-overlay">Retirement</div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Categories Section -->
-<section class="section-professional">
-    <div class="container-custom">
-        <div class="section-header-pro">
-            <span class="section-badge-pro">EVENT TYPES</span>
-            <h2 class="section-title-pro">Perfect for Every Occasion</h2>
-            <p class="section-description">
-                Choose from our professionally designed templates for any event
-            </p>
+<!-- Use Cases -->
+<section class="use-cases">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-title">Perfect for Every Occasion</h2>
+            <p class="section-subtitle lead">From intimate gatherings to grand celebrations</p>
         </div>
         
-        <div class="categories-grid-pro">
-            <div class="category-card-pro">
-                <div class="category-icon-pro">💒</div>
-                <h3 class="category-title-pro">Weddings</h3>
-                <p class="category-description-pro">Elegant and romantic designs for your special day</p>
-                <span class="category-count-pro">4 Templates</span>
+        <!-- Event Category Cards Grid -->
+        <div class="cases-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+            <!-- Weddings Card -->
+            <div class="case-card animate-on-scroll glass-shimmer">
+                <img src="/images/home1/weddings.jpg" alt="Wedding Invitations" class="case-image">
+                <div class="case-content">
+                    <div class="event-icon-wrapper" style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="event-icon-circle" style="width: 80px; height: 80px; background: linear-gradient(135deg, #E91E63 0%, #F06292 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fas fa-heart" style="font-size: 2rem; color: white; z-index: 2; position: relative;"></i>
+                            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); transform: rotate(45deg); animation: iconShimmer 3s ease-in-out infinite;"></div>
+                        </div>
+                    </div>
+                    <h3 class="case-title">Weddings</h3>
+                    <p class="case-description">Elegant invitations for your special day</p>
+                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
             </div>
             
-            <div class="category-card-pro">
-                <div class="category-icon-pro">🎂</div>
-                <h3 class="category-title-pro">Birthdays</h3>
-                <p class="category-description-pro">Fun and festive invitations for all ages</p>
-                <span class="category-count-pro">2 Templates</span>
+            <!-- Birthdays Card -->
+            <div class="case-card animate-on-scroll glass-shimmer">
+                <img src="/images/home1/birthdays.jpg" alt="Birthday Parties" class="case-image">
+                <div class="case-content">
+                    <div class="event-icon-wrapper" style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="event-icon-circle" style="width: 80px; height: 80px; background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(255, 152, 0, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fas fa-birthday-cake" style="font-size: 2rem; color: white; z-index: 2; position: relative;"></i>
+                            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); transform: rotate(45deg); animation: iconShimmer 3s ease-in-out infinite;"></div>
+                        </div>
+                    </div>
+                    <h3 class="case-title">Birthdays</h3>
+                    <p class="case-description">Celebrate another year with style</p>
+                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
             </div>
             
-            <div class="category-card-pro">
-                <div class="category-icon-pro">👶</div>
-                <h3 class="category-title-pro">Baby Showers</h3>
-                <p class="category-description-pro">Adorable designs for welcoming new life</p>
-                <span class="category-count-pro">20 Templates</span>
+            <!-- Corporate Events Card -->
+            <div class="case-card animate-on-scroll glass-shimmer">
+                <img src="/images/home1/corporateevents.jpg" alt="Corporate Events" class="case-image">
+                <div class="case-content">
+                    <div class="event-icon-wrapper" style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="event-icon-circle" style="width: 80px; height: 80px; background: linear-gradient(135deg, #2196F3 0%, #64B5F6 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fas fa-briefcase" style="font-size: 2rem; color: white; z-index: 2; position: relative;"></i>
+                            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); transform: rotate(45deg); animation: iconShimmer 3s ease-in-out infinite;"></div>
+                        </div>
+                    </div>
+                    <h3 class="case-title">Corporate Events</h3>
+                    <p class="case-description">Professional invites for business</p>
+                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
             </div>
             
-            <div class="category-card-pro">
-                <div class="category-icon-pro">🎓</div>
-                <h3 class="category-title-pro">Graduation</h3>
-                <p class="category-description-pro">Celebrate academic achievements in style</p>
-                <span class="category-count-pro">1 Template</span>
+            <!-- Baby Showers Card -->
+            <div class="case-card animate-on-scroll glass-shimmer">
+                <img src="/images/home1/babyshowers.jpg" alt="Baby Showers" class="case-image">
+                <div class="case-content">
+                    <div class="event-icon-wrapper" style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="event-icon-circle" style="width: 80px; height: 80px; background: linear-gradient(135deg, #E91E63 0%, #F8BBD0 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fas fa-baby" style="font-size: 2rem; color: white; z-index: 2; position: relative;"></i>
+                            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); transform: rotate(45deg); animation: iconShimmer 3s ease-in-out infinite;"></div>
+                        </div>
+                    </div>
+                    <h3 class="case-title">Baby Showers</h3>
+                    <p class="case-description">Welcome the newest arrival</p>
+                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
             </div>
             
-            <div class="category-card-pro">
-                <div class="category-icon-pro">🌴</div>
-                <h3 class="category-title-pro">Retirement</h3>
-                <p class="category-description-pro">Honor a career well done</p>
-                <span class="category-count-pro">2 Templates</span>
+            <!-- Anniversaries Card -->
+            <div class="case-card animate-on-scroll glass-shimmer">
+                <img src="/images/home1/anniversaries.jpg" alt="Anniversaries" class="case-image">
+                <div class="case-content">
+                    <div class="event-icon-wrapper" style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="event-icon-circle" style="width: 80px; height: 80px; background: linear-gradient(135deg, #9C27B0 0%, #BA68C8 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(156, 39, 176, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fas fa-heart" style="font-size: 2rem; color: white; z-index: 2; position: relative;"></i>
+                            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); transform: rotate(45deg); animation: iconShimmer 3s ease-in-out infinite;"></div>
+                        </div>
+                    </div>
+                    <h3 class="case-title">Anniversaries</h3>
+                    <p class="case-description">Celebrate love and milestones</p>
+                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
             </div>
             
-            <div class="category-card-pro">
-                <div class="category-icon-pro">🎉</div>
-                <h3 class="category-title-pro">More Events</h3>
-                <p class="category-description-pro">Corporate, anniversaries, and more</p>
-                <span class="category-count-pro">Coming Soon</span>
+            <!-- Graduations Card -->
+            <div class="case-card animate-on-scroll glass-shimmer">
+                <img src="/images/home/graduation.jpg" alt="Graduations" class="case-image">
+                <div class="case-content">
+                    <div class="event-icon-wrapper" style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+                        <div class="event-icon-circle" style="width: 80px; height: 80px; background: linear-gradient(135deg, #00BCD4 0%, #4DD0E1 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0, 188, 212, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                            <i class="fas fa-graduation-cap" style="font-size: 2rem; color: white; z-index: 2; position: relative;"></i>
+                            <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); transform: rotate(45deg); animation: iconShimmer 3s ease-in-out infinite;"></div>
+                        </div>
+                    </div>
+                    <h3 class="case-title">Graduations</h3>
+                    <p class="case-description">Celebrate academic achievements</p>
+                    <a href="{{ url_for('templates') }}" class="btn btn-primary">Browse Templates <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Features Section -->
-<section class="section-professional" style="background: #FFFEF9;">
-    <div class="container-custom">
-        <div class="section-header-pro">
-            <span class="section-badge-pro">FEATURES</span>
-            <h2 class="section-title-pro">Everything You Need</h2>
-            <p class="section-description">
-                Powerful features to create stunning invitations effortlessly
-            </p>
+<!-- Social Proof -->
+<section class="social-proof">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-title">Loved by Event Creators Worldwide</h2>
+            <p class="section-subtitle lead">Join thousands of satisfied users creating beautiful invitations</p>
         </div>
         
-        <div class="features-grid-pro">
-            <div class="feature-card-pro">
-                <div class="feature-icon-pro"><i class="fas fa-palette"></i></div>
-                <h3 class="feature-title-pro">Beautiful Templates</h3>
-                <p class="feature-description-pro">Choose from dozens of professionally designed templates</p>
+        <div class="testimonial-carousel-wrapper">
+            <div class="testimonial-carousel" id="testimonialCarousel">
+                <div class="testimonial-card glass-testimonial glass-shimmer">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">"EventCraft Pro saved me hours of work and hundreds of dollars on printing. My wedding invitations looked absolutely stunning!"</p>
+                    <div class="testimonial-author">Sarah Johnson, Wedding Planner</div>
+                </div>
+                
+                <div class="testimonial-card glass-testimonial glass-shimmer">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">"The templates are gorgeous and so easy to customize! I created my daughter's birthday party invitation in just 10 minutes. Highly recommend!"</p>
+                    <div class="testimonial-author">Michael Chen, Parent</div>
+                </div>
+                
+                <div class="testimonial-card glass-testimonial glass-shimmer">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">"As an event coordinator, I use EventCraft Pro for all my clients. The professional designs impress everyone, and RSVP tracking is a game-changer!"</p>
+                    <div class="testimonial-author">Emily Rodriguez, Event Coordinator</div>
+                </div>
+                
+                <div class="testimonial-card glass-testimonial glass-shimmer">
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">"I love how mobile-friendly the invitations are! Our guests can easily view and RSVP from their phones. The analytics feature helps me track engagement too."</p>
+                    <div class="testimonial-author">David Thompson, Marketing Manager</div>
+                </div>
             </div>
             
-            <div class="feature-card-pro">
-                <div class="feature-icon-pro"><i class="fas fa-edit"></i></div>
-                <h3 class="feature-title-pro">Easy Customization</h3>
-                <p class="feature-description-pro">Edit colors, text, and images with simple clicks</p>
+            <!-- Navigation Dots -->
+            <div class="testimonial-dots">
+                <button class="testimonial-dot active" data-slide="0" aria-label="Slide 1"></button>
+                <button class="testimonial-dot" data-slide="1" aria-label="Slide 2"></button>
+                <button class="testimonial-dot" data-slide="2" aria-label="Slide 3"></button>
+                <button class="testimonial-dot" data-slide="3" aria-label="Slide 4"></button>
             </div>
             
-            <div class="feature-card-pro">
-                <div class="feature-icon-pro"><i class="fas fa-mobile-alt"></i></div>
-                <h3 class="feature-title-pro">Mobile Friendly</h3>
-                <p class="feature-description-pro">Perfect viewing experience on all devices</p>
+            <!-- Navigation Arrows -->
+            <button class="testimonial-nav testimonial-prev" aria-label="Previous testimonial">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="testimonial-nav testimonial-next" aria-label="Next testimonial">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-title">Create Beautiful Invitations in 3 Simple Steps</h2>
+            <p class="section-subtitle lead">From idea to invitation in minutes, not hours</p>
+        </div>
+        
+        <div class="steps-grid">
+            <div class="step-card animate-on-scroll">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Choose Your Template</h3>
+                <p class="step-description">Browse our collection of professionally-designed templates and pick the perfect one for your event.</p>
             </div>
             
-            <div class="feature-card-pro">
-                <div class="feature-icon-pro"><i class="fas fa-share-alt"></i></div>
-                <h3 class="feature-title-pro">Easy Sharing</h3>
-                <p class="feature-description-pro">Share via WhatsApp, email, or social media</p>
+            <div class="step-card animate-on-scroll">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Customize Your Design</h3>
+                <p class="step-description">Add your event details, upload photos, and customize colors and fonts to match your style.</p>
             </div>
             
-            <div class="feature-card-pro">
-                <div class="feature-icon-pro"><i class="fas fa-users"></i></div>
-                <h3 class="feature-title-pro">Guest Management</h3>
-                <p class="feature-description-pro">Track RSVPs and manage your guest list</p>
-            </div>
-            
-            <div class="feature-card-pro">
-                <div class="feature-icon-pro"><i class="fas fa-download"></i></div>
-                <h3 class="feature-title-pro">Download & Print</h3>
-                <p class="feature-description-pro">Download high-quality PDFs for printing</p>
+            <div class="step-card animate-on-scroll">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Share & Track</h3>
+                <p class="step-description">Send your invitation via link, email, or social media. Track RSVPs and engagement in real-time.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- How It Works Section -->
-<section class="section-professional">
-    <div class="container-custom">
-        <div class="section-header-pro">
-            <span class="section-badge-pro">HOW IT WORKS</span>
-            <h2 class="section-title-pro">Create in 3 Simple Steps</h2>
-            <p class="section-description">
-                Get your invitation ready in minutes, not hours
-            </p>
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle lead">Everything you need to know about EventCraft Pro</p>
         </div>
         
-        <div class="steps-grid-pro">
-            <div class="step-card-pro">
-                <div class="step-number-pro">1</div>
-                <h3 class="step-title-pro">Choose Template</h3>
-                <p class="step-description-pro">Browse our collection and select the perfect design for your event</p>
+        <div class="faq-accordion">
+            <div class="accordion-item">
+                <button class="accordion-button">
+                    <span>Is EventCraft Pro really free?</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>Yes! EventCraft Pro is completely free to use. You can create unlimited invitations without any hidden costs or subscription fees. A quick sign-up is required to get started.</p>
+                </div>
             </div>
             
-            <div class="step-card-pro">
-                <div class="step-number-pro">2</div>
-                <h3 class="step-title-pro">Customize Details</h3>
-                <p class="step-description-pro">Add your event information, photos, and personalize colors</p>
+            <div class="accordion-item">
+                <button class="accordion-button">
+                    <span>Do I need to create an account?</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>Yes, creating an account is required to create and manage your invitations. It only takes a minute to sign up, and you'll be able to save, manage, and track all your invitations in one place.</p>
+                </div>
             </div>
             
-            <div class="step-card-pro">
-                <div class="step-number-pro">3</div>
-                <h3 class="step-title-pro">Share & Send</h3>
-                <p class="step-description-pro">Share digitally or download to print - it's that simple!</p>
+            <div class="accordion-item">
+                <button class="accordion-button">
+                    <span>Can I customize everything?</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>Absolutely! You can customize colors, fonts, text, images, and layout. Our drag-and-drop editor gives you complete creative control.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <button class="accordion-button">
+                    <span>How do guests RSVP?</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>Guests can RSVP directly through your invitation link. You'll receive real-time notifications and can track all responses in your dashboard.</p>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <button class="accordion-button">
+                    <span>Is it mobile-friendly?</span>
+                    <span class="accordion-icon">+</span>
+                </button>
+                <div class="accordion-content">
+                    <p>Yes! All invitations are fully responsive and look beautiful on desktop, tablet, and mobile devices.</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- CTA Section -->
-<section class="cta-section">
-    <div class="container-custom">
-        <div class="cta-content-pro">
-            <h2 class="cta-title-pro">Ready to Create Something Amazing?</h2>
-            <p class="cta-description-pro">
-                Join thousands of users creating beautiful invitations with EventCraft Pro
-            </p>
-            <div class="cta-buttons-pro">
-                <a href="{{ url_for('templates') }}" class="btn-professional btn-cta-white">
-                    Start Creating Now <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
+<section class="cta-section section-bg-animated">
+    <div class="container">
+        <h2 class="cta-title">Ready to Wow Your Guests?</h2>
+        <p class="cta-subtitle reveal-on-scroll reveal-delay-1">Create your stunning invitation in minutes - completely free</p>
+        
+        <div class="cta-buttons reveal-on-scroll reveal-delay-2">
+            <a href="{{ url_for('templates') }}" class="btn btn-secondary btn-xl btn-lucesposa">
+                <i class="fas fa-rocket me-2"></i>Start Creating Now
+            </a>
+            <a href="{{ url_for('about') }}" class="btn btn-secondary btn-xl btn-lucesposa">
+                <i class="fas fa-info-circle me-2"></i>Learn More
+            </a>
         </div>
+        
+        <p class="mt-3 opacity-75 reveal-on-scroll reveal-delay-3">Quick sign-up required. Start creating now.</p>
     </div>
 </section>
 {% endblock %}
 
+{% block extra_scripts %}
+<script>
+// Template Gallery Filtering - Removed (section deleted)
+
+// FAQ Accordion
+document.addEventListener('DOMContentLoaded', function() {
+    const accordionButtons = document.querySelectorAll('.accordion-button');
+    
+    accordionButtons.forEach(button => {
+        const icon = button.querySelector('.accordion-icon');
+        if (icon) {
+            icon.textContent = '+';
+        }
+        
+        button.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            const isActive = this.classList.contains('active');
+            const icon = this.querySelector('.accordion-icon');
+            
+            // Close all accordions
+            accordionButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.nextElementSibling.classList.remove('active');
+                const btnIcon = btn.querySelector('.accordion-icon');
+                if (btnIcon) {
+                    btnIcon.textContent = '+';
+                }
+            });
+            
+            // Open clicked accordion if it wasn't active
+            if (!isActive) {
+                this.classList.add('active');
+                content.classList.add('active');
+                if (icon) {
+                    icon.textContent = '−';
+                }
+            }
+        });
+    });
+});
+
+// Enhanced smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href === '#' || href === '#!') {
+            e.preventDefault();
+            return;
+        }
+        
+        const target = document.querySelector(href);
+        if (target) {
+            e.preventDefault();
+            
+            // Calculate offset for fixed navbar
+            const navbar = document.querySelector('.navbar');
+            const navbarHeight = navbar ? navbar.offsetHeight : 80;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+            
+            // Smooth scroll with offset
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+            
+            // Update URL without jumping
+            if (history.pushState) {
+                history.pushState(null, null, href);
+            }
+        }
+    });
+});
+
+// Optimize scroll performance
+let ticking = false;
+function optimizeScroll() {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            // Any scroll-based animations or effects
+            ticking = false;
+        });
+        ticking = true;
+    }
+}
+
+// Throttled scroll listener for better performance
+window.addEventListener('scroll', optimizeScroll, { passive: true });
+
+// Touch-friendly interactions
+if ('ontouchstart' in window) {
+    document.body.classList.add('touch-device');
+    
+    // Improve touch target sizes
+    document.querySelectorAll('.btn, button, a.btn, .accordion-button').forEach(el => {
+        if (el.offsetHeight < 44 || el.offsetWidth < 44) {
+            el.style.minHeight = '44px';
+            el.style.minWidth = '44px';
+        }
+    });
+}
+
+// Testimonial Carousel Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.getElementById('testimonialCarousel');
+    const prevBtn = document.querySelector('.testimonial-prev');
+    const nextBtn = document.querySelector('.testimonial-next');
+    const dots = document.querySelectorAll('.testimonial-dot');
+    const cards = carousel.querySelectorAll('.testimonial-card');
+    
+    let currentIndex = 0;
+    const totalSlides = cards.length;
+    
+    // Update active dot
+    function updateDots() {
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    // Scroll to slide
+    function goToSlide(index) {
+        if (index < 0) {
+            currentIndex = totalSlides - 1;
+        } else if (index >= totalSlides) {
+            currentIndex = 0;
+        } else {
+            currentIndex = index;
+        }
+        
+        const cardWidth = cards[0].offsetWidth;
+        const gap = parseInt(getComputedStyle(carousel).gap) || 32;
+        const scrollPosition = currentIndex * (cardWidth + gap);
+        carousel.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+        
+        updateDots();
+    }
+    
+    // Previous button
+    prevBtn.addEventListener('click', () => {
+        goToSlide(currentIndex - 1);
+    });
+    
+    // Next button
+    nextBtn.addEventListener('click', () => {
+        goToSlide(currentIndex + 1);
+    });
+    
+    // Dot navigation
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            goToSlide(index);
+        });
+    });
+    
+    // Auto-scroll functionality
+    let autoScrollInterval = setInterval(() => {
+        goToSlide(currentIndex + 1);
+    }, 4000);
+    
+    // Pause auto-scroll on hover
+    carousel.addEventListener('mouseenter', () => {
+        clearInterval(autoScrollInterval);
+    });
+    
+    // Resume auto-scroll on mouse leave
+    carousel.addEventListener('mouseleave', () => {
+        autoScrollInterval = setInterval(() => {
+            goToSlide(currentIndex + 1);
+        }, 4000);
+    });
+    
+    // Pause auto-scroll when user interacts with navigation
+    [prevBtn, nextBtn, ...dots].forEach(element => {
+        element.addEventListener('click', () => {
+            clearInterval(autoScrollInterval);
+            // Resume after 8 seconds
+            setTimeout(() => {
+                autoScrollInterval = setInterval(() => {
+                    goToSlide(currentIndex + 1);
+                }, 4000);
+            }, 8000);
+        });
+    });
+    
+    // Handle scroll snap to update active dot
+    let scrollTimeout;
+    carousel.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const cardWidth = cards[0].offsetWidth;
+            const gap = parseInt(getComputedStyle(carousel).gap) || 32;
+            const newIndex = Math.round(carousel.scrollLeft / (cardWidth + gap));
+            if (newIndex !== currentIndex && newIndex < totalSlides) {
+                currentIndex = newIndex;
+                updateDots();
+            }
+        }, 150);
+    });
+    
+    // Touch/swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    carousel.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    carousel.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe left - go to next
+                goToSlide(currentIndex + 1);
+            } else {
+                // Swipe right - go to previous
+                goToSlide(currentIndex - 1);
+            }
+        }
+    }
+    
+    // Initialize
+    updateDots();
+});
+
+</script>
+{% endblock %}

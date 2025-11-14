@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <!-- Performance optimization: Enable caching -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme-color" content="#FFFFFF">
@@ -22,15 +22,18 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     
-    <!-- Font Awesome - Async load for better performance -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <!-- Font Awesome - Load directly for visibility -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
     
     <!-- Google Fonts - Optimized loading -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS - Optimized -->
     <link rel="stylesheet" href="/static/css/floral-animations.css">
-    <link rel="stylesheet" href="/static/css/style.css?v=9.0">
+    <link rel="stylesheet" href="/static/css/style.css?v=12.0">
     
     {% block extra_head %}{% endblock %}
     
@@ -72,18 +75,18 @@
             --gold-light: #F0DFA8;
             --copper: #8B7355;
             
-            /* Background Colors - PURE WHITE EVERYWHERE */
-            --bg-main: #FFFFFF !important;
-            --bg-white: #FFFFFF !important;
-            --bg-primary: #FFFFFF !important;
-            --bg-secondary: #FFFFFF !important;
-            --bg-tertiary: #FFFFFF !important;
-            --bg-accent: #FFFFFF !important;
-            --bg-card: #FFFFFF !important;
+            /* Background Colors - Floral Damask Pattern Theme */
+            --bg-main: transparent !important;
+            --bg-white: transparent !important;
+            --bg-primary: transparent !important;
+            --bg-secondary: transparent !important;
+            --bg-tertiary: transparent !important;
+            --bg-accent: transparent !important;
+            --bg-card: rgba(255, 255, 255, 0.85) !important;
             --bg-dark: #F5F5F5;
-            --bg-cream: #FFFFFF !important;
-            --bg-pink-beige: #FFFFFF !important;
-            --bg-hover: #f9fafb !important;
+            --bg-cream: transparent !important;
+            --bg-pink-beige: transparent !important;
+            --bg-hover: rgba(255, 255, 255, 0.1) !important;
             
             /* Text Colors - Coffee & Gold Theme */
     --text-primary: #3E2723;
@@ -203,13 +206,28 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             height: 100%;
+            /* EXACT Floral Damask Pattern Background - Using Uploaded Image */
+            background-color: #f5f5f0 !important;
+            background-image: url('/static/images/Peach & Green Floral Parisian Theme Thank You Card (1).png') !important;
+            background-repeat: repeat !important;
+            background-position: 0 0 !important;
+            background-size: auto !important;
+            background-attachment: fixed !important;
+            min-height: 100% !important;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #3E2723 !important;
-            background: #FFFFFF;
+            /* EXACT Floral Damask Pattern Background - Using Uploaded Image */
+            background-color: transparent !important;
+            background-image: url('/static/images/Peach & Green Floral Parisian Theme Thank You Card (1).png') !important;
+            background-repeat: repeat !important;
+            background-position: 0 0 !important;
+            background-size: auto !important;
+            background-attachment: fixed !important;
+            min-height: 100vh !important;
             overflow-x: hidden;
             font-size: 16px;
             font-weight: 400;
@@ -352,13 +370,34 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%);
-            color: white;
-            border: none;
+            background: linear-gradient(135deg, var(--reddish-brown-dark) 0%, var(--golden-yellow) 100%) !important;
+            color: white !important;
+            border: none !important;
             box-shadow: var(--shadow-md);
             transition: all var(--transition);
             position: relative;
             overflow: hidden;
+            visibility: visible !important;
+            opacity: 1 !important;
+            display: inline-block !important;
+        }
+        
+        /* Ensure all buttons and links are visible */
+        .btn, button, a.btn, .nav-link, .navbar-brand {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Ensure all text elements are visible */
+        h1, h2, h3, h4, h5, h6, p, span, a, li, td, th {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Fix gradient text visibility - ensure fallback colors */
+        *[style*="background-clip"]:not([style*="color"]),
+        *[class*="gradient"]:not([style*="color"]) {
+            color: inherit !important;
         }
 
         .btn-primary::before {
@@ -573,9 +612,10 @@
 
         /* 🌸 Enhanced Glassmorphism Navbar */
         .navbar {
-            background: rgba(255, 255, 255, 0.95);
+            background: #87CEEB !important; /* Light blue */
+            background-color: #87CEEB !important; /* Light blue */
             /* backdrop-filter removed - no blur */
-            border-bottom: 1px solid rgba(224, 225, 233, 0.5);
+            border-bottom: 1px solid rgba(135, 206, 235, 0.5);
             box-shadow: var(--shadow-sm);
             transition: all 0.3s ease;
             position: relative;
@@ -608,10 +648,11 @@
         }
 
         .navbar.scrolled {
-            background: rgba(255, 255, 255, 0.98);
+            background: #87CEEB !important; /* Light blue */
+            background-color: #87CEEB !important; /* Light blue */
             /* backdrop-filter removed - no blur */
             box-shadow: var(--shadow-md);
-            border-bottom-color: rgba(160, 120, 120, 0.1);
+            border-bottom-color: rgba(135, 206, 235, 0.5);
         }
         
         .navbar::before {
@@ -634,30 +675,58 @@
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             font-size: 1.5rem;
-            background: var(--gradient-floral);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            /* Fallback color - always visible */
+            color: #6F4E37 !important;
             text-decoration: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             letter-spacing: -0.02em;
+            visibility: visible !important;
+            opacity: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+        }
+        
+        /* Gradient text - only if supported */
+        @supports (-webkit-background-clip: text) {
+            .navbar-brand {
+                background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                /* Keep fallback color */
+                color: #6F4E37;
+            }
         }
 
         .navbar-brand:hover {
             transform: scale(1.05);
             filter: drop-shadow(0 2px 8px rgba(160, 120, 120, 0.3));
         }
+        
+        .navbar-brand i {
+            color: #6F4E37 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            display: inline-block !important;
+            font-size: 1.8rem !important;
+            margin-right: 0.5rem !important;
+        }
 
         .navbar-nav .nav-link {
             font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            color: var(--text-primary) !important;
+            font-weight: 600 !important;
+            color: #6F4E37 !important;
             padding: 0.75rem 1.25rem;
             border-radius: 8px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             font-size: 0.9375rem;
             overflow: hidden;
+            visibility: visible !important;
+            opacity: 1 !important;
+            display: flex !important;
+            align-items: center !important;
         }
 
         .navbar-nav .nav-link::before {
@@ -1635,22 +1704,24 @@
         }
 
         .btn-primary-custom {
-            background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
-            border: none;
+            background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%) !important;
+            border: none !important;
             color: white !important;
-            padding: 0.75rem 1.5rem;
-            border-radius: 1rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
+            padding: 0.75rem 1.5rem !important;
+            border-radius: 1rem !important;
+            font-weight: 600 !important;
+            font-size: 0.95rem !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3) !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 0.5rem !important;
+            position: relative !important;
+            overflow: hidden !important;
+            white-space: nowrap !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         .btn-primary-custom::before {
@@ -2481,72 +2552,108 @@
             }
         }
             
-        /* 🌸 Floral Footer Background */
+        /* 🌸 Floral Footer Background - Black and Blue Mix */
         footer.footer-modern {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
             background-color: #1a1a2e !important;
-            border-top: 2px solid var(--primary);
-            color: white !important;
+            border-top: 1px solid rgba(33, 150, 243, 0.3) !important;
+            color: #ffffff !important;
         }
         
         footer.footer-modern .footer-header {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
             background-color: #1a1a2e !important;
-            color: white !important;
+            color: #ffffff !important;
         }
         
         footer.footer-modern .footer-content {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
             background-color: #1a1a2e !important;
-            color: white !important;
+            color: #ffffff !important;
+        }
+        
+        footer.footer-modern * {
+            color: #ffffff !important;
+        }
+        
+        footer.footer-modern a {
+            color: #64B5F6 !important;
+        }
+        
+        footer.footer-modern a:hover {
+            color: #90CAF9 !important;
         }
 
-        /* Ensure all footer text is visible */
+        /* Ensure all footer text is visible - WHITE TEXT ON DARK BACKGROUND */
         footer.footer-modern h2,
         footer.footer-modern h5,
         footer.footer-modern h6,
         footer.footer-modern p,
         footer.footer-modern span,
         footer.footer-modern div {
-            color: white !important;
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         footer.footer-modern .footer-title {
-            color: white !important;
-            text-shadow: 0 2px 4px rgba(111, 78, 55, 0.15);
+            color: #ffffff !important;
+            font-size: 2.5rem !important;
+            font-weight: 700 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+            -webkit-text-fill-color: #ffffff !important;
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
         }
 
         footer.footer-modern .footer-subtitle {
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: #ffffff !important;
+            font-size: 1.2rem !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
         }
 
         footer.footer-modern .text-light {
-            color: rgba(255, 255, 255, 0.8) !important;
+            color: #e0e0e0 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        footer.footer-modern .text-white {
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         footer.footer-modern .footer-link {
-            color: rgba(255, 255, 255, 0.8) !important;
+            color: #b0bec5 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         footer.footer-modern .footer-link:hover {
-            color: white !important;
+            color: #ffffff !important;
         }
 
-        /* Newsletter input styling for dark footer */
+        /* Newsletter input styling for white footer */
         footer.footer-modern .newsletter-input {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            color: white !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid rgba(224, 225, 233, 0.5) !important;
+            color: var(--text-primary) !important;
         }
 
         footer.footer-modern .newsletter-input::placeholder {
-            color: rgba(255, 255, 255, 0.6) !important;
+            color: var(--text-secondary) !important;
         }
 
         footer.footer-modern .newsletter-input:focus {
-            background: rgba(255, 255, 255, 0.15) !important;
+            background: #ffffff !important;
             border-color: var(--primary) !important;
-            color: white !important;
+            color: var(--text-primary) !important;
         }
 
         footer.footer-modern .newsletter-btn {
@@ -2591,21 +2698,25 @@
         }
 
         .footer-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 4px rgba(111, 78, 55, 0.06);
-            background: var(--gradient-floral);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 2.5rem !important;
+            font-weight: 700 !important;
+            margin-bottom: 1rem !important;
+            color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+            -webkit-text-fill-color: #ffffff !important;
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
         }
 
         .footer-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            color: var(--text-secondary);
+            font-size: 1.2rem !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+            color: #ffffff !important;
         }
 
         .footer-content {
@@ -3817,8 +3928,8 @@
         {% if messages %}
             <div class="container mt-4">
                 {% for category, message in messages %}
-                    <div class="alert alert-{% if category == 'error' %}danger{% elif category == 'success' %}success{% elif category == 'info' %}info{% else %}warning{% endif %} alert-dismissible fade show fade-in" role="alert">
-                        <div class="d-flex align-items-center">
+                    <div class="alert alert-{% if category == 'error' %}danger{% elif category == 'success' %}success{% elif category == 'info' %}info{% else %}warning{% endif %} alert-dismissible fade show fade-in" role="alert" style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+                        <div class="d-flex align-items-center flex-grow-1">
                             {% if category == 'success' %}
                                 <i class="fas fa-check-circle me-2" style="color: var(--accent-color);"></i>
                             {% elif category == 'error' %}
@@ -3830,7 +3941,9 @@
                             {% endif %}
                             <span>{{ message }}</span>
                         </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="visibility: visible !important; opacity: 1 !important; display: block !important; width: 1.5rem !important; height: 1.5rem !important; padding: 0.25rem !important; margin-left: 1rem !important; background: transparent !important; border: 2px solid #6F4E37 !important; border-radius: 50% !important; position: relative !important; cursor: pointer !important; flex-shrink: 0 !important; z-index: 10 !important; background-image: none !important;">
+                            <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 700; color: #6F4E37; line-height: 1; visibility: visible !important; opacity: 1 !important;">×</span>
+                        </button>
                     </div>
                 {% endfor %}
             </div>
@@ -3897,7 +4010,7 @@
                             <li><a href="{{ url_for('about') }}" class="footer-link">About Us</a></li>
                             <li><a href="{{ url_for('contact') }}" class="footer-link">Contact Us</a></li>
                             <li><a href="{{ url_for('privacy') }}" class="footer-link">Privacy Policy</a></li>
-                            <li><a href="{{ url_for('account_policy') }}" class="footer-link">Account Policy</a></li>
+                            <li><a href="{{ url_for('terms') }}" class="footer-link">Terms of Service</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-12">
@@ -4825,15 +4938,40 @@
             // Register service worker for caching
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/static/sw.js')
+                    // Unregister any old service workers first
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                        for(let registration of registrations) {
+                            if (registration.scope && !registration.scope.includes('/static/sw.js')) {
+                                registration.unregister().then(function(boolean) {
+                                    console.log('Old service worker unregistered:', boolean);
+                                });
+                            }
+                        }
+                    });
+                    
+                    // Register new service worker
+                    navigator.serviceWorker.register('/static/sw.js?v=3')
                         .then(registration => {
                             console.log('SW registered: ', registration);
+                            // Update service worker if a new one is available
+                            registration.update();
                         })
                         .catch(registrationError => {
                             console.log('SW registration failed: ', registrationError);
                         });
                 });
             }
+            
+            // Suppress 403 errors from external Lottie files
+            window.addEventListener('error', function(e) {
+                if (e.target && e.target.src && 
+                    (e.target.src.includes('lottiefiles.com') || 
+                     e.target.src.includes('assets5.lottiefiles.com'))) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+            }, true);
 
             // Confetti effect function
             window.createConfetti = function() {
@@ -4927,12 +5065,15 @@
         function showNotification(message, type = 'info') {
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type} alert-dismissible fade show fade-in`;
+            alertDiv.style.cssText = 'display: flex; align-items: center; justify-content: space-between; position: relative;';
             alertDiv.innerHTML = `
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center flex-grow-1">
                     <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
                     <span>${message}</span>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="visibility: visible !important; opacity: 1 !important; display: block !important; width: 1.5rem !important; height: 1.5rem !important; padding: 0.25rem !important; margin-left: 1rem !important; background: transparent !important; border: 2px solid #6F4E37 !important; border-radius: 50% !important; position: relative !important; cursor: pointer !important; flex-shrink: 0 !important; z-index: 10 !important; background-image: none !important;">
+                    <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 700; color: #6F4E37; line-height: 1; visibility: visible !important; opacity: 1 !important;">×</span>
+                </button>
             `;
             
             const container = document.querySelector('.container');
@@ -4941,7 +5082,9 @@
                 
                 // Auto-remove after 5 seconds
                 setTimeout(() => {
-                    alertDiv.remove();
+                    if (alertDiv.parentNode) {
+                        alertDiv.remove();
+                    }
                 }, 5000);
             }
         }
@@ -5310,6 +5453,90 @@
     </script>
     
     {% block extra_scripts %}{% endblock %}
+    
+    <!-- Font Awesome Icon Visibility Script -->
+    <script>
+    (function() {
+        // Ensure Font Awesome is loaded
+        function checkFontAwesome() {
+            const testIcon = document.createElement('i');
+            testIcon.className = 'fas fa-check';
+            testIcon.style.position = 'absolute';
+            testIcon.style.visibility = 'hidden';
+            document.body.appendChild(testIcon);
+            
+            const computedStyle = window.getComputedStyle(testIcon, ':before');
+            const fontFamily = computedStyle.getPropertyValue('font-family');
+            
+            if (!fontFamily.includes('Font Awesome')) {
+                // Font Awesome not loaded, reload it
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+                link.crossOrigin = 'anonymous';
+                document.head.appendChild(link);
+            }
+            
+            document.body.removeChild(testIcon);
+        }
+        
+        // Check when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkFontAwesome);
+        } else {
+            checkFontAwesome();
+        }
+        
+        // Ensure all icons are visible
+        function ensureIconsVisible() {
+            const icons = document.querySelectorAll('i[class*="fa-"], .fa, [class*="fa-"]');
+            icons.forEach(function(icon) {
+                // Ensure icon is visible
+                icon.style.visibility = 'visible';
+                icon.style.opacity = '1';
+                icon.style.display = 'inline-block';
+                
+                // Ensure icon has proper font family
+                if (!icon.style.fontFamily || !icon.style.fontFamily.includes('Font Awesome')) {
+                    const classes = icon.className;
+                    if (classes.includes('fab')) {
+                        icon.style.fontFamily = '"Font Awesome 6 Brands"';
+                    } else {
+                        icon.style.fontFamily = '"Font Awesome 6 Free"';
+                    }
+                }
+                
+                // Ensure icon has color if not set
+                if (!icon.style.color || icon.style.color === 'inherit') {
+                    const parent = icon.closest('.btn, button, a.btn');
+                    if (!parent) {
+                        icon.style.color = '#6F4E37';
+                    }
+                }
+            });
+        }
+        
+        // Run on load
+        window.addEventListener('load', ensureIconsVisible);
+        
+        // Run after a short delay to catch dynamically added icons
+        setTimeout(ensureIconsVisible, 1000);
+        
+        // Observe for new icons added dynamically
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    ensureIconsVisible();
+                }
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    })();
+    </script>
 </body>
 </html>
 

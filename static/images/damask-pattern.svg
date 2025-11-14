@@ -1,0 +1,56 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="damask-floral" x="0" y="0" width="400" height="400" patternUnits="userSpaceOnUse">
+      <!-- Base background - very pale cream -->
+      <rect width="400" height="400" fill="#FAF9F7"/>
+      
+      <!-- Damask floral pattern in soft sage green at 35% opacity -->
+      <g fill="#E5EDE5" opacity="0.35">
+        <!-- Large central rose with detailed petals -->
+        <path d="M200,80 C220,60 250,60 270,80 C290,100 290,130 270,150 C250,170 220,170 200,150 C180,170 150,170 130,150 C110,130 110,100 130,80 C150,60 180,60 200,80 Z"/>
+        <path d="M200,80 C210,70 225,70 235,80 C245,90 245,105 235,115 C225,125 210,125 200,115 C190,125 175,125 165,115 C155,105 155,90 165,80 C175,70 190,70 200,80 Z"/>
+        <path d="M200,80 C205,75 215,75 220,80 C225,85 225,95 220,100 C215,105 205,105 200,100 C195,105 185,105 180,100 C175,95 175,85 180,80 C185,75 195,75 200,80 Z"/>
+        
+        <!-- Acanthus leaves - top corners -->
+        <path d="M60,60 C70,50 85,50 95,60 C105,70 105,85 95,95 C85,105 70,105 60,95 C50,85 50,70 60,60 Z"/>
+        <path d="M340,60 C350,50 365,50 375,60 C385,70 385,85 375,95 C365,105 350,105 340,95 C330,85 330,70 340,60 Z"/>
+        
+        <!-- Ornate scrolling vines and tendrils -->
+        <path d="M80,200 Q100,180 120,200 T160,200" stroke="#E5EDE5" stroke-width="2" fill="none" opacity="0.35"/>
+        <path d="M240,200 Q260,180 280,200 T320,200" stroke="#E5EDE5" stroke-width="2" fill="none" opacity="0.35"/>
+        <path d="M200,120 Q220,140 200,160 Q180,180 200,200" stroke="#E5EDE5" stroke-width="1.5" fill="none" opacity="0.35"/>
+        
+        <!-- Decorative medallions -->
+        <circle cx="100" cy="320" r="30" fill="none" stroke="#E5EDE5" stroke-width="2" opacity="0.35"/>
+        <circle cx="300" cy="320" r="30" fill="none" stroke="#E5EDE5" stroke-width="2" opacity="0.35"/>
+        <circle cx="100" cy="320" r="15" fill="none" stroke="#E5EDE5" stroke-width="1.5" opacity="0.35"/>
+        <circle cx="300" cy="320" r="15" fill="none" stroke="#E5EDE5" stroke-width="1.5" opacity="0.35"/>
+        
+        <!-- Floral flourishes and smaller roses -->
+        <path d="M120,250 C130,240 145,240 155,250 C165,260 165,275 155,285 C145,295 130,295 120,285 C110,275 110,260 120,250 Z"/>
+        <path d="M280,250 C290,240 305,240 315,250 C325,260 325,275 315,285 C305,295 290,295 280,285 C270,275 270,260 280,250 Z"/>
+        
+        <!-- Bottom large rose -->
+        <path d="M200,300 C220,280 250,280 270,300 C290,320 290,350 270,370 C250,390 220,390 200,370 C180,390 150,390 130,370 C110,350 110,320 130,300 C150,280 180,280 200,300 Z"/>
+        <path d="M200,300 C210,290 225,290 235,300 C245,310 245,325 235,335 C225,345 210,345 200,335 C190,345 175,345 165,335 C155,325 155,310 165,300 C175,290 190,290 200,300 Z"/>
+        
+        <!-- Swirling tendrils and botanical elements -->
+        <path d="M40,200 Q60,220 40,240 Q20,260 40,280" stroke="#E5EDE5" stroke-width="2" fill="none" opacity="0.35"/>
+        <path d="M360,200 Q380,220 360,240 Q340,260 360,280" stroke="#E5EDE5" stroke-width="2" fill="none" opacity="0.35"/>
+        <path d="M200,40 Q220,50 200,60 Q180,70 200,80" stroke="#E5EDE5" stroke-width="1.5" fill="none" opacity="0.35"/>
+        <path d="M200,320 Q220,330 200,340 Q180,350 200,360" stroke="#E5EDE5" stroke-width="1.5" fill="none" opacity="0.35"/>
+        
+        <!-- Additional decorative elements - side panels -->
+        <path d="M50,150 C60,140 75,140 85,150 C95,160 95,175 85,185 C75,195 60,195 50,185 C40,175 40,160 50,150 Z"/>
+        <path d="M350,150 C360,140 375,140 385,150 C395,160 395,175 385,185 C375,195 360,195 350,185 C340,175 340,160 350,150 Z"/>
+        
+        <!-- Classical ornamental swirls -->
+        <path d="M150,100 Q170,110 150,120 Q130,130 150,140" stroke="#E5EDE5" stroke-width="1.5" fill="none" opacity="0.35"/>
+        <path d="M250,100 Q270,110 250,120 Q230,130 250,140" stroke="#E5EDE5" stroke-width="1.5" fill="none" opacity="0.35"/>
+        <path d="M150,260 Q170,270 150,280 Q130,290 150,300" stroke="#E5EDE5" stroke-width="1.5" fill="none" opacity="0.35"/>
+        <path d="M250,260 Q270,270 250,280 Q230,290 250,300" stroke="#E5EDE5" stroke-width="1.5" fill="none" opacity="0.35"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="400" height="400" fill="url(#damask-floral)"/>
+</svg>

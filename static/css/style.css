@@ -20,12 +20,12 @@
     --text-light: #8B7355;           /* Medium coffee */
     --text-muted: #A1887F;           /* Light coffee/taupe */
     
-    /* 🎨 Background Colors - PURE WHITE EVERYWHERE */
-    --bg-primary: #ffffff !important;      /* Pure white */
-    --bg-secondary: #ffffff !important;    /* Pure white */
-    --bg-accent: #ffffff !important;       /* Pure white */
-    --bg-light: #ffffff !important;        /* Pure white */
-    --bg-hover: #f9fafb !important;        /* Very light gray for hover only */
+    /* 🎨 Background Colors - Floral Damask Pattern Theme */
+    --bg-primary: transparent !important;      /* Transparent to show pattern */
+    --bg-secondary: transparent !important;    /* Transparent to show pattern */
+    --bg-accent: transparent !important;       /* Transparent to show pattern */
+    --bg-light: transparent !important;        /* Transparent to show pattern */
+    --bg-hover: rgba(255, 255, 255, 0.1) !important;        /* Slight white overlay for hover */
     --bg-dark: #1a1a1a;                    /* Dark sections (exceptions) */
     
     /* 🔲 Border & Shadow - More Depth */
@@ -103,8 +103,13 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    /* EXACT Floral Damask Pattern Background - Using Uploaded Image */
+    background-color: #f5f5f0 !important;
+    background-image: url('/static/images/Peach & Green Floral Parisian Theme Thank You Card (1).png') !important;
+    background-repeat: repeat !important;
+    background-position: 0 0 !important;
+    background-size: auto !important;
+    background-attachment: fixed !important;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -408,6 +413,76 @@ p {
     font-weight: 500;
     box-shadow: var(--shadow-sm);
     border-left: 4px solid;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Alert Close Button - Always Visible */
+.alert .btn-close,
+.alert-dismissible .btn-close,
+button.btn-close,
+.btn-close {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    padding: 0.25rem !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 2px solid #6F4E37 !important;
+    border-radius: 50% !important;
+    position: relative !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    z-index: 10 !important;
+}
+
+.alert .btn-close::before,
+.alert-dismissible .btn-close::before,
+button.btn-close::before,
+.btn-close::before {
+    content: '×' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    line-height: 1 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+.alert .btn-close:hover,
+.alert-dismissible .btn-close:hover,
+button.btn-close:hover,
+.btn-close:hover {
+    background: #6F4E37 !important;
+    border-color: #6F4E37 !important;
+    transform: scale(1.1) !important;
+}
+
+.alert .btn-close:hover::before,
+.alert-dismissible .btn-close:hover::before,
+button.btn-close:hover::before,
+.btn-close:hover::before {
+    color: #ffffff !important;
+}
+
+/* Remove Bootstrap's default close button background image */
+.alert .btn-close,
+.alert-dismissible .btn-close,
+button.btn-close,
+.btn-close {
+    background-image: none !important;
+    background-size: auto !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
 }
 
 .alert-success {
@@ -1176,10 +1251,12 @@ p {
     background: var(--primary-dark);
 }
 
-/* Footer Styles */
+/* Footer Styles - Semi-transparent to show floral pattern */
 footer {
-    background: #ffffff !important;
-    border-top: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border-top: 1px solid rgba(229, 231, 235, 0.5);
     margin-top: 5rem;
     position: relative;
     z-index: 10;
@@ -1287,30 +1364,41 @@ footer .text-muted {
     color: var(--text-secondary) !important;
 }
 
-/* Dashboard Specific Styles */
+/* Dashboard Specific Styles - Semi-transparent to show floral pattern */
 .dashboard-hero {
-    background: var(--bg-secondary);
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+    padding: 3rem 0;
 }
 
-.hero-title {
+.dashboard-hero .hero-title {
     font-family: 'Inter', sans-serif;
     font-size: 2.5rem;
-    font-weight: 600;
-    color: var(--text-primary);
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
     line-height: 1.3;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-bottom: 1rem;
 }
 
-.text-gradient {
-    color: var(--text-primary);
+.dashboard-hero .text-gradient {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-.hero-subtitle {
+.dashboard-hero .hero-subtitle {
     font-size: 1.1rem;
-    color: var(--text-secondary);
+    color: #5D4037 !important;
     line-height: 1.6;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-bottom: 2rem;
 }
 
 .hero-illustration {
@@ -1341,20 +1429,30 @@ footer .text-muted {
 }
 
 /* Statistics Section Styles */
+.dashboard-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
 .stat-card {
-    background: white;
+    background: #ffffff !important;
     padding: 2rem;
-    border-radius: 0.5rem;
+    border-radius: 12px;
     text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
     height: 100%;
-    border: 1px solid var(--border-color);
+    border: 2px solid #e5e7eb;
+    flex: 1;
+    min-width: 150px;
 }
 
 .stat-card:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--text-primary);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: #6F4E37;
+    transform: translateY(-2px);
 }
 
 .stat-icon {
@@ -1366,115 +1464,241 @@ footer .text-muted {
     justify-content: center;
     margin: 0 auto 1.5rem;
     font-size: 2rem;
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
+    background: #f9fafb;
+    color: #6F4E37 !important;
+    border: 2px solid #e5e7eb;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .stat-number {
     font-size: 2.5rem;
     font-weight: 800;
     margin-bottom: 0.5rem;
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block;
 }
 
 .stat-label {
-    color: var(--text-secondary);
+    color: #5D4037 !important;
     font-weight: 600;
     margin: 0;
+    font-size: 1rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Quick Actions Styles */
+.action-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
 .action-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 0.5rem;
+    background: #ffffff !important;
+    padding: 2.5rem;
+    border-radius: 16px;
     text-align: center;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
     height: 100%;
-    border: 1px solid var(--border-color);
+    border: 2px solid #e5e7eb;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
 .action-card:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--text-primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: #6F4E37;
+    transform: translateY(-4px);
 }
 
 .action-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.5rem;
-    font-size: 2rem;
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    color: #6F4E37 !important;
+    border: 2px solid #e5e7eb;
+    visibility: visible !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .action-title {
-    font-weight: 700;
-    color: var(--text-primary);
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
     margin-bottom: 1rem;
+    font-size: 1.5rem;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .action-description {
-    color: var(--text-secondary);
+    color: #5D4037 !important;
     margin-bottom: 1.5rem;
     line-height: 1.6;
     flex-grow: 1;
+    font-size: 1rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Dashboard Section Styles */
+.dashboard-section {
+    margin-bottom: 3rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.section-title {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.section-actions {
+    display: flex;
+    gap: 1rem;
 }
 
 /* Invitations Section Styles */
+.invitation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
 .invitation-card {
-    background: white;
-    border-radius: 0.5rem;
+    background: #ffffff !important;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
     height: 100%;
-    border: 1px solid var(--border-color);
+    border: 2px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
 }
 
 .invitation-card:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--text-primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: #6F4E37;
+    transform: translateY(-4px);
 }
 
-.invitation-card .card-header {
-    background: var(--bg-secondary);
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+.invitation-preview {
+    height: 200px;
+    background: #f9fafb;
+    position: relative;
+    overflow: hidden;
 }
 
-.invitation-card .card-body {
+.invitation-content {
     padding: 1.5rem;
-}
-
-.invitation-card .card-footer {
-    background: var(--bg-secondary);
-    padding: 1.5rem;
-    border-top: 1px solid var(--border-color);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .invitation-title {
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-.invitation-description {
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .invitation-meta {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    color: #5D4037 !important;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.invitation-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #5D4037 !important;
+}
+
+.invitation-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.invitation-actions .btn {
+    flex: 1;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+}
+
+/* Empty State Styles */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 2px dashed #e5e7eb;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    color: #6F4E37 !important;
+    margin-bottom: 1.5rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.empty-state-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.empty-state-description {
+    color: #5D4037 !important;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .meta-item {
@@ -2658,17 +2882,19 @@ footer .text-muted {
 }
 
 /* Background overlay REMOVED - Site is now BRIGHT */
-.hero-section::after {
+/* NOTE: .hero-section::after is used for rotating background images on homepage */
+/* This rule is overridden in templates/index.html for the homepage */
+/* Commented out to allow background images to display */
+/* .hero-section::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: transparent !important;  /* REMOVED DARK GRADIENT */
+    background: transparent !important;
     z-index: 1;
-    display: none;  /* COMPLETELY DISABLED */
-}
+} */
 
 /* Ensure content is above background */
 .hero-content {
@@ -4129,6 +4355,21 @@ main,
     filter: none !important;
 }
 
+/* EXCEPTION: Allow hero section ::after for background images */
+.hero-section::after {
+    background: transparent !important; /* Will be overridden by animation */
+    backdrop-filter: none !important;
+    filter: none !important;
+}
+
+/* EXCEPTION: Allow hero section background images to display */
+/* NOTE: This rule is overridden in templates/index.html for rotating background images */
+/* .hero-section::after {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+} */
+
 /* EXCEPTION: Keep theme card overlays visible */
 .theme-card-overlay {
     background: linear-gradient(to top, rgba(93, 64, 55, 0.95), transparent) !important;
@@ -4154,16 +4395,23 @@ h1, h2, h3, h4, h5, h6, p, span, div {
     text-shadow: none !important;
 }
 
-/* Ensure all cards are bright white */
+/* Cards with semi-transparent white background for readability over floral pattern */
 .card,
 .template-card,
 .feature-card,
 .action-card,
 .invitation-card,
-.stat-card {
-    background: #ffffff !important;
+.stat-card,
+.simple-card,
+.founder-card,
+.team-member {
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
     filter: brightness(1) !important;
     opacity: 1 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+    border-radius: 12px !important;
 }
 
 /* Remove any dark filters on images */
@@ -4189,9 +4437,11 @@ img,
     display: none !important;
 }
 
-/* Ensure footer is bright */
+/* Footer - Semi-transparent to show floral pattern */
 .footer {
-    background: #f9fafb !important;
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
     filter: none !important;
 }
 
@@ -4240,18 +4490,28 @@ select {
    Version 1.0 - Complete Enforcement
    ======================================== */
 
-/* Force white background on HTML and body */
+/* EXACT Floral Damask Pattern Background - Using Uploaded Image */
 html {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background-color: #f5f5f0 !important;
+    background-image: url('/static/images/Peach & Green Floral Parisian Theme Thank You Card (1).png') !important;
+    background-repeat: repeat !important;
+    background-position: 0 0 !important;
+    background-size: auto !important;
+    background-attachment: fixed !important;
+    min-height: 100% !important;
 }
 
 body {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background-color: transparent !important;
+    background-image: url('/static/images/Peach & Green Floral Parisian Theme Thank You Card (1).png') !important;
+    background-repeat: repeat !important;
+    background-position: 0 0 !important;
+    background-size: auto !important;
+    background-attachment: fixed !important;
+    min-height: 100vh !important;
 }
 
-/* ALL SECTIONS PURE WHITE */
+/* ALL SECTIONS - Transparent to show damask pattern */
 section,
 .section,
 main,
@@ -4259,12 +4519,12 @@ main,
 .content,
 .content-wrapper,
 .main-wrapper,
-div[class*="section"]:not(.dashboard-hero):not(.dark-section) {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+div[class*="section"]:not(.dashboard-hero):not(.dark-section):not(.card):not(.invitation-card) {
+    background: transparent !important;
+    background-color: transparent !important;
 }
 
-/* Specific hero sections - ALL WHITE except dashboard hero */
+/* Specific hero sections - Transparent to show damask pattern */
 .hero-section:not(.dashboard-hero),
 .template-selection,
 .process-section,
@@ -4276,16 +4536,1050 @@ div[class*="section"]:not(.dashboard-hero):not(.dark-section) {
 .analytics-section,
 .ai-hero,
 .help-hero {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
+    background: transparent !important;
+    background-color: transparent !important;
 }
 
-/* Dashboard content WHITE */
+/* Dashboard content - Transparent to show damask pattern */
 .dashboard-content,
 .dashboard-wrapper,
 .dashboard-main {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* ========================================
+   📝 PROFESSIONAL TEXT VISIBILITY
+   Ensure all text is clearly visible
+   ======================================== */
+
+/* Global text visibility - Professional */
+h1, h2, h3, h4, h5, h6, p, span, div, a, li, td, th, label, input, textarea, select {
+    color: inherit !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Dashboard specific text visibility */
+.dashboard-hero h1,
+.dashboard-hero .hero-title {
+    color: #6F4E37 !important;
+    font-weight: 700 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.dashboard-hero p,
+.dashboard-hero .hero-subtitle {
+    color: #5D4037 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Section titles - Professional */
+.section-title,
+.dashboard-section .section-title {
+    color: #6F4E37 !important;
+    font-weight: 700 !important;
+    font-size: 2rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Action card text */
+.action-card h3,
+.action-card .action-title {
+    color: #6F4E37 !important;
+    font-weight: 700 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.action-card p,
+.action-card .action-description {
+    color: #5D4037 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Stat card text */
+.stat-card .stat-number {
+    color: #6F4E37 !important;
+    font-weight: 800 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.stat-card .stat-label {
+    color: #5D4037 !important;
+    font-weight: 600 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Invitation card text */
+.invitation-card .invitation-title {
+    color: #6F4E37 !important;
+    font-weight: 700 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.invitation-card .invitation-meta {
+    color: #5D4037 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Buttons - Professional visibility */
+.btn,
+button,
+a.btn {
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%) !important;
+    color: white !important;
+    border: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3) !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #8B6F47 0%, #6F4E37 100%) !important;
+    color: white !important;
+    box-shadow: 0 6px 16px rgba(111, 78, 55, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+.btn-light {
     background: #ffffff !important;
-    background-color: #ffffff !important;
+    color: #6F4E37 !important;
+    border: 2px solid #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn-light:hover {
+    background: #6F4E37 !important;
+    color: white !important;
+    border-color: #6F4E37 !important;
+    box-shadow: 0 6px 16px rgba(111, 78, 55, 0.3) !important;
+    transform: translateY(-2px) !important;
+}
+
+.btn-outline-primary {
+    border: 2px solid #6F4E37 !important;
+    color: #6F4E37 !important;
+    background: transparent !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    box-shadow: 0 2px 8px rgba(111, 78, 55, 0.1) !important;
+}
+
+.btn-outline-primary:hover {
+    background: #6F4E37 !important;
+    color: white !important;
+    border-color: #6F4E37 !important;
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3) !important;
+    transform: translateY(-2px) !important;
+}
+
+.btn-outline-secondary {
+    border: 2px solid #9CA3AF !important;
+    color: #6F4E37 !important;
+    background: transparent !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.btn-outline-secondary:hover {
+    background: #6F4E37 !important;
+    color: white !important;
+    border-color: #6F4E37 !important;
+}
+
+.btn-outline-success {
+    border: 2px solid #10B981 !important;
+    color: #10B981 !important;
+    background: transparent !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.btn-outline-success:hover {
+    background: #10B981 !important;
+    color: white !important;
+    border-color: #10B981 !important;
+}
+
+/* Empty state text */
+.empty-state h3,
+.empty-state .empty-state-title {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.empty-state p,
+.empty-state .empty-state-description {
+    color: #5D4037 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.empty-state .empty-state-icon {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* ========================================
+   📄 POLICY & LEGAL PAGES - PROFESSIONAL
+   Privacy, Terms, About, Contact, Help
+   ======================================== */
+
+/* Policy Hero Sections */
+.policy-hero,
+.terms-hero,
+.about-hero,
+.contact-hero,
+.help-hero {
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%) !important;
+    padding: 4rem 0 3rem 0 !important;
+    border-bottom: 2px solid #e5e7eb;
+    text-align: center;
+}
+
+.policy-hero h1,
+.terms-hero h1,
+.about-hero h1,
+.contact-hero h1,
+.help-hero h1 {
+    font-size: 3rem !important;
+    font-weight: 800 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.policy-hero .lead,
+.terms-hero .lead,
+.about-hero .lead,
+.contact-hero .lead,
+.help-hero .lead {
+    font-size: 1.25rem !important;
+    color: #5D4037 !important;
+    font-weight: 500 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Policy Content Sections */
+.policy-content,
+.terms-content,
+.about-section,
+.contact-section,
+.help-section {
+    padding: 4rem 0 !important;
+    background: #ffffff !important;
+}
+
+.policy-card,
+.terms-card {
+    background: #ffffff !important;
+    padding: 3rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+.policy-card h2,
+.terms-card h2 {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-top: 2.5rem !important;
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 2px solid #e5e7eb !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.policy-card h3,
+.terms-card h3 {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    color: #5D4037 !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.policy-card p,
+.terms-card p {
+    font-size: 1.0625rem !important;
+    color: #5D4037 !important;
+    line-height: 1.8 !important;
+    margin-bottom: 1.25rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.policy-card ul,
+.terms-card ul {
+    margin-bottom: 1.5rem !important;
+    padding-left: 1.5rem !important;
+}
+
+.policy-card li,
+.terms-card li {
+    font-size: 1.0625rem !important;
+    color: #5D4037 !important;
+    line-height: 1.8 !important;
+    margin-bottom: 0.75rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.policy-card strong,
+.terms-card strong {
+    color: #6F4E37 !important;
+    font-weight: 700 !important;
+}
+
+.policy-card a,
+.terms-card a {
+    color: #6F4E37 !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    border-bottom: 2px solid transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+.policy-card a:hover,
+.terms-card a:hover {
+    color: #D4AF37 !important;
+    border-bottom-color: #D4AF37 !important;
+}
+
+.last-updated {
+    background: #f9fafb !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 8px !important;
+    border-left: 4px solid #6F4E37 !important;
+    margin-bottom: 2rem !important;
+    color: #5D4037 !important;
+    font-weight: 500 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* About Page Styles */
+.founder-section {
+    padding: 4rem 0 !important;
+    background: #ffffff !important;
+}
+
+.founder-card {
+    background: #ffffff !important;
+    padding: 3rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.founder-img {
+    flex-shrink: 0;
+}
+
+.founder-img img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e5e7eb;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.founder-content h2 {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 0.5rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.founder-role {
+    font-size: 1.125rem !important;
+    color: #D4AF37 !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.founder-content p {
+    font-size: 1.0625rem !important;
+    color: #5D4037 !important;
+    line-height: 1.8 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.simple-card {
+    background: #ffffff !important;
+    padding: 2.5rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+.simple-card h3 {
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1.5rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.simple-card p {
+    font-size: 1.0625rem !important;
+    color: #5D4037 !important;
+    line-height: 1.8 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.team-member {
+    background: #ffffff !important;
+    padding: 2rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.team-member:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+.team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e5e7eb;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.team-member h4 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 0.5rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.team-member .role {
+    font-size: 1rem !important;
+    color: #D4AF37 !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.team-member p {
+    font-size: 1rem !important;
+    color: #5D4037 !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.5rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.team-member a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: #f9fafb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6F4E37 !important;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+    border: 2px solid #e5e7eb;
+}
+
+.team-member a:hover {
+    background: #6F4E37;
+    color: white !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
+}
+
+/* Contact Page Styles */
+.contact-card {
+    background: #ffffff !important;
+    padding: 3rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+.contact-form label {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 0.75rem !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.contact-form .form-control {
+    border: 2px solid #e5e7eb !important;
+    border-radius: 12px !important;
+    padding: 0.875rem 1.25rem !important;
+    font-size: 1rem !important;
+    color: #5D4037 !important;
+    transition: all 0.3s ease !important;
+    background: #ffffff !important;
+}
+
+.contact-form .form-control:focus {
+    border-color: #6F4E37 !important;
+    box-shadow: 0 0 0 0.2rem rgba(111, 78, 55, 0.15) !important;
+    outline: none !important;
+}
+
+.contact-form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 1rem 2rem !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 1.125rem !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 16px rgba(111, 78, 55, 0.3) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100%;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(111, 78, 55, 0.4) !important;
+}
+
+.contact-info-box {
+    background: #ffffff !important;
+    padding: 2rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.contact-info-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+.contact-info-box i {
+    font-size: 2.5rem;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.contact-info-box h4 {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.contact-info-box p {
+    font-size: 1rem !important;
+    color: #5D4037 !important;
+    margin: 0 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.contact-info-box a {
+    color: #6F4E37 !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+}
+
+.contact-info-box a:hover {
+    color: #D4AF37 !important;
+}
+
+/* Help Page Styles */
+.help-category {
+    background: #ffffff !important;
+    padding: 2.5rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.help-category:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+.help-category i {
+    font-size: 3rem;
+    color: #6F4E37 !important;
+    margin-bottom: 1.5rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.help-category h3 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.help-category p {
+    font-size: 1.0625rem !important;
+    color: #5D4037 !important;
+    line-height: 1.7 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.faq-item {
+    background: #ffffff !important;
+    padding: 2rem !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid #e5e7eb !important;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+    border-color: #6F4E37 !important;
+}
+
+.faq-question {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem !important;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.faq-question i {
+    color: #D4AF37 !important;
+    font-size: 1.5rem;
+}
+
+.faq-answer {
+    font-size: 1.0625rem !important;
+    color: #5D4037 !important;
+    line-height: 1.7 !important;
+    padding-left: 2.25rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.contact-box {
+    background: #ffffff !important;
+    padding: 3rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+    text-align: center;
+}
+
+.contact-box h3 {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.contact-box p {
+    font-size: 1.125rem !important;
+    color: #5D4037 !important;
+    margin-bottom: 2rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Error Pages - Professional */
+.error-hero {
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%) !important;
+    padding: 6rem 0 4rem 0 !important;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.error-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.error-number {
+    font-size: 8rem !important;
+    font-weight: 900 !important;
+    color: #6F4E37 !important;
+    line-height: 1;
+    margin-bottom: 1rem;
+    visibility: visible !important;
+    opacity: 1 !important;
+    text-shadow: 0 4px 20px rgba(111, 78, 55, 0.2);
+}
+
+.error-title {
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1.5rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.error-description {
+    font-size: 1.25rem !important;
+    color: #5D4037 !important;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+}
+
+.error-btn {
+    padding: 1rem 2rem !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    font-size: 1.125rem !important;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.error-btn-primary {
+    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 16px rgba(111, 78, 55, 0.3) !important;
+}
+
+.error-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(111, 78, 55, 0.4) !important;
+    color: white !important;
+}
+
+.error-btn-secondary {
+    background: #ffffff !important;
+    color: #6F4E37 !important;
+    border: 2px solid #6F4E37 !important;
+}
+
+.error-btn-secondary:hover {
+    background: #6F4E37 !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.search-suggestions {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 2px solid #e5e7eb;
+}
+
+.search-suggestions h3 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1.5rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.suggestion-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.suggestion-link {
+    background: #ffffff !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 12px !important;
+    border: 2px solid #e5e7eb !important;
+    text-decoration: none !important;
+    color: #6F4E37 !important;
+    font-weight: 600 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.suggestion-link:hover {
+    border-color: #6F4E37 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+    color: #6F4E37 !important;
+}
+
+.suggestion-link i {
+    color: #D4AF37 !important;
+}
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-element {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0.1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.floating-element:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-element:nth-child(2) {
+    top: 20%;
+    right: 15%;
+    animation-delay: 1.5s;
+}
+
+.floating-element:nth-child(3) {
+    bottom: 20%;
+    left: 15%;
+    animation-delay: 3s;
+}
+
+.floating-element:nth-child(4) {
+    bottom: 10%;
+    right: 10%;
+    animation-delay: 4.5s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+/* Verify OTP Page */
+.py-5 .card {
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+.py-5 .card-body {
+    padding: 3rem !important;
+}
+
+.py-5 .card-body h3 {
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 1rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.py-5 .card-body p {
+    font-size: 1.0625rem !important;
+    color: #5D4037 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.py-5 .card-body .text-primary {
+    color: #6F4E37 !important;
+}
+
+.py-5 .form-label {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #6F4E37 !important;
+    margin-bottom: 0.75rem !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.py-5 .form-control {
+    border: 2px solid #e5e7eb !important;
+    border-radius: 12px !important;
+    padding: 0.875rem 1.25rem !important;
+    font-size: 1rem !important;
+    color: #5D4037 !important;
+    transition: all 0.3s ease !important;
+}
+
+.py-5 .form-control:focus {
+    border-color: #6F4E37 !important;
+    box-shadow: 0 0 0 0.2rem rgba(111, 78, 55, 0.15) !important;
+    outline: none !important;
+}
+
+/* Responsive Design for Policy Pages */
+@media (max-width: 768px) {
+    .policy-hero h1,
+    .terms-hero h1,
+    .about-hero h1,
+    .contact-hero h1,
+    .help-hero h1 {
+        font-size: 2rem !important;
+    }
+    
+    .policy-card,
+    .terms-card,
+    .contact-card {
+        padding: 2rem !important;
+    }
+    
+    .founder-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .founder-img img {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .error-number {
+        font-size: 5rem !important;
+    }
+    
+    .error-title {
+        font-size: 1.75rem !important;
+    }
+    
+    .error-description {
+        font-size: 1rem !important;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .error-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .suggestion-links {
+        flex-direction: column;
+    }
+    
+    .suggestion-link {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* Containers - transparent to show white background */
@@ -4318,12 +5612,12 @@ div[class*="col-"] {
     border-color: #e5e7eb !important;
 }
 
-/* Footer WHITE with border */
+/* Footer WHITE with border - matching navbar */
 footer,
 .footer {
     background: #ffffff !important;
     background-color: #ffffff !important;
-    border-top: 1px solid #e5e7eb !important;
+    border-top: 1px solid rgba(224, 225, 233, 0.5) !important;
 }
 
 /* Remove ALL gradient backgrounds from sections */
@@ -4351,9 +5645,9 @@ div[style*="background: linear-gradient"],
     background: #f9fafb !important;
 }
 
-/* Navbar - white/transparent */
+/* Navbar - white - matching footer */
 .navbar {
-    background: rgba(255, 255, 255, 0.98) !important;
+    background: #ffffff !important;
 }
 
 /* Tables */
@@ -4422,10 +5716,511 @@ div[style*="background: linear-gradient"],
     background-image: var(--gradient-primary) !important;
 }
 
-/* Exception: Keep dashboard hero dark if it exists */
+/* Dashboard Hero - Professional with visible buttons */
 .dashboard-hero {
     background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%) !important;
     color: white !important;
 }
 
+/* Ensure buttons are visible in dashboard hero */
+.dashboard-hero .btn,
+.dashboard-hero .btn-light,
+.dashboard-hero .btn-primary,
+.dashboard-hero .hero-actions .btn {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #6F4E37 !important;
+    background: #ffffff !important;
+    border: 2px solid #ffffff !important;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
+}
+
+.dashboard-hero .btn:hover,
+.dashboard-hero .btn-light:hover {
+    background: #6F4E37 !important;
+    color: white !important;
+    border-color: #6F4E37 !important;
+    box-shadow: 0 6px 16px rgba(111, 78, 55, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+.dashboard-hero .btn i,
+.dashboard-hero .btn-light i {
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: inherit !important;
+}
+
 /* END PURE WHITE BACKGROUND ENFORCEMENT */
+
+/* ========================================
+   🎯 FONT AWESOME ICONS - VISIBILITY
+   Ensure all icons are visible everywhere
+   ======================================== */
+
+/* Font Awesome Icons - Global Visibility */
+i[class*="fa-"],
+i[class*="fas"],
+i[class*="far"],
+i[class*="fab"],
+i[class*="fal"],
+i[class*="fad"],
+.fa,
+.fas,
+.far,
+.fab,
+.fal,
+.fad,
+[class*="fa-"] {
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 6 Pro" !important;
+    font-weight: 900 !important;
+    font-style: normal !important;
+    font-variant: normal !important;
+    text-rendering: auto !important;
+    line-height: 1 !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* Ensure icons have proper color */
+i[class*="fa-"],
+.fa,
+.fas,
+.far,
+.fab {
+    color: #6F4E37 !important;
+}
+
+/* Icons in buttons */
+.btn i,
+button i,
+a.btn i {
+    color: inherit !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in navigation */
+.navbar i,
+.nav-link i,
+.navbar-brand i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    margin-right: 0.5rem;
+}
+
+/* ========================================
+   🎯 NAVBAR/HEADER - VISIBILITY FIXES
+   Ensure logo, title, and all buttons are visible
+   ======================================== */
+
+/* Navbar Brand (Logo + Title) - Always Visible */
+.navbar-brand,
+a.navbar-brand {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    color: #6F4E37 !important;
+    font-weight: 700 !important;
+    font-size: 1.5rem !important;
+    text-decoration: none !important;
+    /* Fallback color if gradient fails */
+    -webkit-text-fill-color: #6F4E37 !important;
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+}
+
+/* Gradient text for navbar brand - only if supported */
+@supports (-webkit-background-clip: text) {
+    .navbar-brand {
+        background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        /* Keep fallback */
+        color: #6F4E37;
+    }
+}
+
+.navbar-brand:hover {
+    color: #8B6F47 !important;
+    -webkit-text-fill-color: #8B6F47 !important;
+}
+
+.navbar-brand i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    font-size: 1.8rem !important;
+    margin-right: 0.5rem !important;
+}
+
+/* Nav Links - Always Visible */
+.navbar-nav .nav-link,
+.nav-link,
+a.nav-link {
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #6F4E37 !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0.75rem 1.25rem !important;
+    text-decoration: none !important;
+}
+
+.navbar-nav .nav-link:hover,
+.nav-link:hover {
+    color: #8B6F47 !important;
+    background: rgba(111, 78, 55, 0.1) !important;
+}
+
+.navbar-nav .nav-link i,
+.nav-link i {
+    color: inherit !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-right: 0.5rem !important;
+}
+
+/* Create Invitation Button (btn-primary-custom) - Always Visible */
+.btn-primary-custom,
+a.btn-primary-custom {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #6F4E37 0%, #8B6F47 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 1rem !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3) !important;
+    transition: all 0.3s ease !important;
+    gap: 0.5rem !important;
+}
+
+.btn-primary-custom:hover,
+a.btn-primary-custom:hover {
+    background: linear-gradient(135deg, #8B6F47 0%, #6F4E37 100%) !important;
+    color: white !important;
+    box-shadow: 0 6px 16px rgba(111, 78, 55, 0.4) !important;
+    transform: translateY(-2px) !important;
+    text-decoration: none !important;
+}
+
+.btn-primary-custom i,
+a.btn-primary-custom i {
+    color: white !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    margin-right: 0.5rem !important;
+}
+
+/* Dashboard Link in Navbar - Special Styling */
+.navbar-nav .nav-link[href*="dashboard"],
+.nav-link[href*="dashboard"] {
+    background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%) !important;
+    color: white !important;
+    border: 2px solid transparent !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4) !important;
+}
+
+.navbar-nav .nav-link[href*="dashboard"]:hover,
+.nav-link[href*="dashboard"]:hover {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%) !important;
+    color: white !important;
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6) !important;
+}
+
+.navbar-nav .nav-link[href*="dashboard"] i,
+.nav-link[href*="dashboard"] i {
+    color: white !important;
+}
+
+/* Dropdown Toggle - Always Visible */
+.navbar-nav .dropdown-toggle,
+.dropdown-toggle {
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: white !important;
+    background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%) !important;
+    border: 2px solid transparent !important;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4) !important;
+}
+
+.navbar-nav .dropdown-toggle:hover,
+.dropdown-toggle:hover {
+    background: linear-gradient(135deg, #7C3AED 0%, #DB2777 100%) !important;
+    color: white !important;
+}
+
+/* Navbar Container - Semi-transparent to show floral pattern */
+.navbar {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-bottom: 2px solid rgba(229, 231, 235, 0.5) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+}
+
+.navbar .container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+/* Mobile Nav Toggle Button */
+.mobile-nav-toggle,
+button.mobile-nav-toggle {
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #6F4E37 !important;
+    background: transparent !important;
+    border: 2px solid #6F4E37 !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 0.5rem !important;
+}
+
+.mobile-nav-toggle i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Icons in cards */
+.card i,
+.stat-card i,
+.action-card i,
+.team-member i,
+.contact-info-box i,
+.help-category i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in forms */
+.form-label i,
+.contact-form i,
+label i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    margin-right: 0.5rem;
+}
+
+/* Icons in alerts */
+.alert i {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    margin-right: 0.5rem;
+}
+
+/* Icons in footer */
+footer i,
+.footer i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in error pages */
+.error-btn i,
+.suggestion-link i {
+    color: inherit !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in policy pages */
+.policy-card i,
+.terms-card i,
+.last-updated i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in FAQ */
+.faq-question i {
+    color: #D4AF37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in dashboard */
+.dashboard-hero i,
+.stat-card i,
+.action-card i,
+.invitation-card i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in about page */
+.founder-card i,
+.team-member i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in help page */
+.help-category i,
+.contact-box i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in contact page */
+.contact-info-box i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    font-size: 2.5rem !important;
+}
+
+/* Icons in login/auth pages */
+.auth-container i,
+.py-5 .card i {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Icons in empty states */
+.empty-state-icon {
+    color: #6F4E37 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+    font-size: 4rem !important;
+}
+
+/* Social media icons */
+.fab,
+[class*="fab"] {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+}
+
+/* Ensure Font Awesome font is loaded */
+@font-face {
+    font-family: "Font Awesome 6 Free";
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Font Awesome 6 Brands";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2") format("woff2");
+}
+
+/* Icon sizes - ensure they're visible */
+i.fa-lg,
+.fa-lg {
+    font-size: 1.33333em !important;
+    line-height: 0.75em !important;
+    vertical-align: -0.0667em !important;
+}
+
+i.fa-2x,
+.fa-2x {
+    font-size: 2em !important;
+}
+
+i.fa-3x,
+.fa-3x {
+    font-size: 3em !important;
+}
+
+i.fa-4x,
+.fa-4x {
+    font-size: 4em !important;
+}
+
+/* Icon spacing */
+i.me-1,
+.fa.me-1 {
+    margin-right: 0.25rem !important;
+}
+
+i.me-2,
+.fa.me-2 {
+    margin-right: 0.5rem !important;
+}
+
+i.ms-1,
+.fa.ms-1 {
+    margin-left: 0.25rem !important;
+}
+
+i.ms-2,
+.fa.ms-2 {
+    margin-left: 0.5rem !important;
+}
+
+/* Ensure icons don't get hidden by any CSS */
+* i,
+* .fa,
+* [class*="fa-"] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: inline-block !important;
+}
+
+/* Fix for icons that might be hidden */
+.hidden i,
+[hidden] i,
+.d-none i {
+    display: none !important;
+}
+
+/* But ensure visible icons stay visible */
+i:not(.hidden):not([hidden]):not(.d-none) {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

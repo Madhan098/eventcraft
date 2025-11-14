@@ -3,120 +3,7 @@
 {% block title %}Help Center - EventCraft Pro{% endblock %}
 
 {% block extra_head %}
-<style>
-.help-hero {
-    background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
-    padding: 80px 0;
-    color: white;
-}
-
-.help-section {
-    padding: 60px 0;
-}
-
-.faq-item {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    transition: all 0.3s;
-}
-
-.faq-item:hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
-}
-
-.faq-question {
-    color: #2C2C2C;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-}
-
-.faq-question i {
-    color: #B39090;
-    margin-right: 12px;
-    font-size: 16px;
-}
-
-.faq-answer {
-    color: #666;
-    line-height: 1.7;
-    font-size: 15px;
-}
-
-.help-category {
-    background: white;
-    border-radius: 16px;
-    padding: 30px;
-    text-align: center;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    height: 100%;
-    transition: all 0.3s;
-}
-
-.help-category:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-}
-
-.help-category i {
-    font-size: 40px;
-    color: #B39090;
-    margin-bottom: 20px;
-}
-
-.help-category h3 {
-    color: #2C2C2C;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-
-.help-category p {
-    color: #666;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.contact-box {
-    background: #FAFAFA;
-    border-radius: 16px;
-    padding: 40px;
-    text-align: center;
-    border: 2px solid #E0E0E0;
-}
-
-.contact-box h3 {
-    color: #2C2C2C;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-.contact-box p {
-    color: #666;
-    margin-bottom: 25px;
-}
-
-@media (max-width: 768px) {
-    .help-hero {
-        padding: 60px 0;
-    }
-    
-    .help-section {
-        padding: 40px 0;
-    }
-    
-    .faq-item {
-        padding: 20px;
-    }
-}
-</style>
+<!-- All styles moved to static/css/style.css -->
 {% endblock %}
 
 {% block content %}
@@ -131,7 +18,7 @@
 </section>
 
 <!-- Quick Start -->
-<section class="help-section" style="background: white;">
+<section class="help-section" style="background: var(--bg-primary) !important; background-color: #ffffff !important;">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold" style="color: #2C2C2C; font-size: 32px;">Getting Started</h2>
@@ -164,7 +51,7 @@
 </section>
 
 <!-- FAQs -->
-<section class="help-section" style="background: #FAFAFA;">
+<section class="help-section" style="background: var(--bg-primary) !important; background-color: #ffffff !important;">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold" style="color: #2C2C2C; font-size: 32px;">Frequently Asked Questions</h2>
@@ -277,7 +164,7 @@
 </section>
 
 <!-- Still Need Help -->
-<section class="help-section" style="background: white;">
+<section class="help-section" style="background: var(--bg-primary) !important; background-color: #ffffff !important;">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto">

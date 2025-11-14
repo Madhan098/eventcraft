@@ -2,1127 +2,2724 @@
 
 {% block title %}{{ invitation.title }} - EventCraft Pro{% endblock %}
 
-{% block head %}
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-{% endblock %}
-
 {% block content %}
-
-{# ========================================
-   TRANSLATION MACRO
-   ======================================== #}
+<!-- Language Translation Support Macro -->
 {% macro translate_text(key) %}
-    {% set lang = 'english' %}
     {% if invitation.customization_data %}
         {% set customization = invitation.customization_data|from_json %}
-        {% set lang = customization.language|default('english') %}
+        {% if customization.language == 'hindi' %}
+            {% if key == 'convey_your_wishes' %}अपनी शुभकामनाएं व्यक्त करें
+            {% elif key == 'your_name' %}आपका नाम
+            {% elif key == 'send_wish' %}शुभकामना भेजें
+            {% elif key == 'wish_them_with_love' %}अपने प्यार से उन्हें शुभकामनाएं दें...
+            {% elif key == 'rsvp' %}आरएसवीपी
+            {% elif key == 'im_attending' %}मैं आ रहा हूं
+            {% elif key == 'unable_to_attend' %}शामिल नहीं हो सकते
+            {% elif key == 'wishes_from_loved_ones' %}प्रियजनों से शुभकामनाएं
+            {% elif key == 'view_all' %}सभी देखें
+            {% elif key == 'no_wishes_yet' %}अभी तक कोई शुभकामना नहीं। पहली शुभकामना भेजें!
+            {% elif key == 'our_memories' %}हमारी यादें
+            {% elif key == 'wedding_gallery' %}विवाह गैलरी
+            {% else %}{{ key }}{% endif %}
+        {% elif customization.language == 'telugu' %}
+            {% if key == 'convey_your_wishes' %}మీ ఆశీస్సులను తెలియజేయండి
+            {% elif key == 'your_name' %}మీ పేరు
+            {% elif key == 'send_wish' %}ఆశీస్సు పంపండి
+            {% elif key == 'wish_them_with_love' %}మీ ప్రేమతో వారికి ఆశీస్సులు తెలియజేయండి...
+            {% elif key == 'rsvp' %}ఆర్ఎస్వీపీ
+            {% elif key == 'im_attending' %}నేను వస్తున్నాను
+            {% elif key == 'unable_to_attend' %}వెళ్లలేను
+            {% elif key == 'wishes_from_loved_ones' %}ప్రియమైన వారి ఆశీస్సులు
+            {% elif key == 'view_all' %}అన్నీ చూడండి
+            {% elif key == 'no_wishes_yet' %}ఇంకా ఆశీస్సులు లేవు. మొదటి ఆశీస్సు పంపండి!
+            {% elif key == 'our_memories' %}మా జ్ఞాపకాలు
+            {% elif key == 'wedding_gallery' %}వెడ్డింగ్ గ్యాలరీ
+            {% else %}{{ key }}{% endif %}
+        {% elif customization.language == 'kannada' %}
+            {% if key == 'convey_your_wishes' %}ನಿಮ್ಮ ಆಶೀರ್ವಾದಗಳನ್ನು ತಿಳಿಸಿ
+            {% elif key == 'your_name' %}ನಿಮ್ಮ ಹೆಸರು
+            {% elif key == 'send_wish' %}ಆಶೀರ್ವಾದ ಕಳುಹಿಸಿ
+            {% elif key == 'wish_them_with_love' %}ನಿಮ್ಮ ಪ್ರೀತಿಯಿಂದ ಅವರಿಗೆ ಆಶೀರ್ವಾದಗಳನ್ನು ತಿಳಿಸಿ...
+            {% elif key == 'rsvp' %}ಆರ್ಎಸ್ವಿಪಿ
+            {% elif key == 'im_attending' %}ನಾನು ಬರುತ್ತಿದ್ದೇನೆ
+            {% elif key == 'unable_to_attend' %}ಬರಲು ಸಾಧ್ಯವಿಲ್ಲ
+            {% elif key == 'wishes_from_loved_ones' %}ಪ್ರಿಯರ ಆಶೀರ್ವಾದಗಳು
+            {% elif key == 'view_all' %}ಎಲ್ಲವನ್ನೂ ನೋಡಿ
+            {% elif key == 'no_wishes_yet' %}ಇನ್ನೂ ಆಶೀರ್ವಾದಗಳಿಲ್ಲ. ಮೊದಲ ಆಶೀರ್ವಾದ ಕಳುಹಿಸಿ!
+            {% elif key == 'our_memories' %}ನಮ್ಮ ನೆನಪುಗಳು
+            {% elif key == 'wedding_gallery' %}ಮದುವೆ ಗ್ಯಾಲರಿ
+            {% else %}{{ key }}{% endif %}
+        {% else %}
+            {% if key == 'convey_your_wishes' %}Convey Your Wishes
+            {% elif key == 'your_name' %}Your Name
+            {% elif key == 'send_wish' %}Send Wish
+            {% elif key == 'wish_them_with_love' %}Wish them with your love...
+            {% elif key == 'rsvp' %}RSVP
+            {% elif key == 'im_attending' %}I'm Attending
+            {% elif key == 'unable_to_attend' %}Unable to Attend
+            {% elif key == 'wishes_from_loved_ones' %}Wishes from Loved Ones
+            {% elif key == 'view_all' %}View All
+            {% elif key == 'no_wishes_yet' %}No wishes yet. Be the first to send your love!
+            {% elif key == 'our_memories' %}Our Memories
+            {% elif key == 'wedding_gallery' %}Wedding Gallery
+            {% else %}{{ key }}{% endif %}
+        {% endif %}
+    {% else %}
+        {% if key == 'convey_your_wishes' %}Convey Your Wishes
+        {% elif key == 'your_name' %}Your Name
+        {% elif key == 'send_wish' %}Send Wish
+        {% elif key == 'wish_them_with_love' %}Wish them with your love...
+        {% elif key == 'rsvp' %}RSVP
+        {% elif key == 'im_attending' %}I'm Attending
+        {% elif key == 'unable_to_attend' %}Unable to Attend
+        {% elif key == 'wishes_from_loved_ones' %}Wishes from Loved Ones
+        {% elif key == 'view_all' %}View All
+        {% elif key == 'no_wishes_yet' %}No wishes yet. Be the first to send your love!
+        {% elif key == 'our_memories' %}Our Memories
+        {% elif key == 'wedding_gallery' %}Wedding Gallery
+        {% else %}{{ key }}{% endif %}
     {% endif %}
-    
-    {% set translations = {
-        'hindi': {
-            'convey_your_wishes': 'अपनी शुभकामनाएं व्यक्त करें',
-            'your_name': 'आपका नाम',
-            'send_wish': 'शुभकामना भेजें',
-            'wish_them_with_love': 'अपने प्यार से उन्हें शुभकामनाएं दें...',
-            'rsvp': 'आरएसवीपी',
-            'im_attending': 'मैं आ रहा हूं',
-            'unable_to_attend': 'शामिल नहीं हो सकते',
-            'wishes_from_loved_ones': 'प्रियजनों से शुभकामनाएं',
-            'view_all': 'सभी देखें',
-            'no_wishes_yet': 'अभी तक कोई शुभकामना नहीं। पहली शुभकामना भेजें!'
-        },
-        'telugu': {
-            'convey_your_wishes': 'మీ ఆశీస్సులను తెలియజేయండి',
-            'your_name': 'మీ పేరు',
-            'send_wish': 'ఆశీస్సు పంపండి',
-            'wish_them_with_love': 'మీ ప్రేమతో వారికి ఆశీస్సులు తెలియజేయండి...',
-            'rsvp': 'ఆర్ఎస్వీపీ',
-            'im_attending': 'నేను వస్తున్నాను',
-            'unable_to_attend': 'వెళ్లలేను',
-            'wishes_from_loved_ones': 'ప్రియమైన వారి ఆశీస్సులు',
-            'view_all': 'అన్నీ చూడండి',
-            'no_wishes_yet': 'ఇంకా ఆశీస్సులు లేవు. మొదటి ఆశీస్సు పంపండి!'
-        },
-        'kannada': {
-            'convey_your_wishes': 'ನಿಮ್ಮ ಆಶೀರ್ವಾದಗಳನ್ನು ತಿಳಿಸಿ',
-            'your_name': 'ನಿಮ್ಮ ಹೆಸರು',
-            'send_wish': 'ಆಶೀರ್ವಾದ ಕಳುಹಿಸಿ',
-            'wish_them_with_love': 'ನಿಮ್ಮ ಪ್ರೀತಿಯಿಂದ ಅವರಿಗೆ ಆಶೀರ್ವಾದಗಳನ್ನು ತಿಳಿಸಿ...',
-            'rsvp': 'ಆರ್ಎಸ್ವಿಪಿ',
-            'im_attending': 'ನಾನು ಬರುತ್ತಿದ್ದೇನೆ',
-            'unable_to_attend': 'ಬರಲು ಸಾಧ್ಯವಿಲ್ಲ',
-            'wishes_from_loved_ones': 'ಪ್ರಿಯರ ಆಶೀರ್ವಾದಗಳು',
-            'view_all': 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ',
-            'no_wishes_yet': 'ಇನ್ನೂ ಆಶೀರ್ವಾದಗಳಿಲ್ಲ. ಮೊದಲ ಆಶೀರ್ವಾದ ಕಳುಹಿಸಿ!'
-        }
-    } %}
-    
-    {% set default_translations = {
-        'convey_your_wishes': 'Convey Your Wishes',
-        'your_name': 'Your Name',
-        'send_wish': 'Send Wish',
-        'wish_them_with_love': 'Wish them with your love...',
-        'rsvp': 'RSVP',
-        'im_attending': "I'm Attending",
-        'unable_to_attend': 'Unable to Attend',
-        'wishes_from_loved_ones': 'Wishes from Loved Ones',
-        'view_all': 'View All',
-        'no_wishes_yet': 'No wishes yet. Be the first to send your love!'
-    } %}
-    
-    {{ translations.get(lang, {}).get(key, default_translations.get(key, key)) }}
 {% endmacro %}
-
-{# ========================================
-   TEMPLATE IMAGE URL & CUSTOMIZATION
-   ======================================== #}
-{% set template_image_url = '' %}
-{% set font_style = '' %}
+{# Get template image URL from customization_data #}
+{% set template_image_url = '/images/templatesimages/wedding.png' %}
 {% if invitation.customization_data %}
     {% set customization = invitation.customization_data|from_json %}
     {% if customization.template_image_url %}
         {% set template_image_url = customization.template_image_url %}
     {% endif %}
-    {% if customization.font_style %}
-        {% set font_style = customization.font_style %}
-    {% endif %}
 {% endif %}
-
-{# ========================================
-   STYLES
-   ======================================== #}
 <style>
-    /* ==================== 
-       RESPONSIVE INVITATION DESIGN
-       - Mobile Extra Small: up to 375px
-       - Mobile: 376px - 575px
-       - Mobile Large: 576px - 767px
-       - Tablet: 768px - 991px
-       - Desktop: 992px - 1199px
-       - Desktop Large: 1200px and above
-       ==================== */
-
-    /* ==================== BASE STYLES ==================== */
-    * {
-        box-sizing: border-box;
-    }
-
+    /* Enhanced Invitation Styling - Match Live Preview Exactly */
     .template-container {
         min-height: 100vh;
-        background: #f5f7fa;
-        padding: 40px 15px;
-        width: 100%;
+        /* Clean background - no template background on container, only on card */
+        background: var(--bg-cream, #FAFAFA) !important;
+        background-color: var(--bg-cream, #FAFAFA) !important;
+        position: relative;
+        overflow-x: hidden;
+        padding: 40px 20px;
+        /* Single column layout - match live preview */
+        display: block;
+    }
+    
+    .template-container::after {
+        display: none !important;
     }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 15px;
-        width: 100%;
+    .template-container::before {
+        display: none !important;
     }
 
-    /* ==================== INVITATION CARD ==================== */
     .invitation-card {
+        /* Match live preview exactly */
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        /* Empty by default - no background until template is selected */
         background: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        border: 1px solid rgba(0,0,0,0.05);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 16px;
+        padding: 40px 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(160, 120, 120, 0.1);
+        position: relative;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        z-index: 0;
+        text-align: center;
+    }
+    
+    /* Template background - Match live preview exactly */
+    .invitation-card.template-bg {
+        background-image: url('{{ template_image_url }}') !important;
+        background-color: transparent !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        position: relative;
+        z-index: 0;
+    }
+    
+    /* Ensure inline background-image is visible */
+    .invitation-card.template-bg[style*="background-image"] {
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+    }
+    
+    /* CRITICAL: Ensure template-bg background image is not overridden */
+    .invitation-card.template-bg::before,
+    .invitation-card.template-bg::after {
+        display: none !important;
+        content: none !important;
+        background: none !important;
+        background-image: none !important;
+    }
+    
+    .invitation-card::after {
+        display: none !important;
+    }
+    
+    .invitation-card::before {
+        display: none !important;
+    }
+    
+    /* Preview Icon - Match live preview */
+    .invitation-card .preview-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+        display: none !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        visibility: hidden;
+        opacity: 0;
+        position: relative;
+        z-index: 15 !important;
+    }
+    
+    /* Only show icon when there's no template background */
+    .invitation-card:not(.template-bg) .preview-icon {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Ensure all content appears above the template background - match live preview */
+    .invitation-card > * {
+        position: relative;
+        z-index: 10 !important;
+    }
+    
+    /* Match live preview text styling exactly */
+    .invitation-card .event-title,
+    .invitation-card h1,
+    .invitation-card h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--reddish-brown-dark);
+        margin-bottom: 20px;
+        font-family: 'Playfair Display', serif;
+        line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.95) !important;
+        padding: 10px 15px;
+        border-radius: 8px;
+        position: relative;
+        z-index: 15 !important;
+    }
+    
+    /* When template background is present, use white text */
+    .invitation-card.template-bg .event-title,
+    .invitation-card.template-bg h1,
+    .invitation-card.template-bg h2 {
+        color: #fff !important;
+        background: rgba(160, 120, 120, 0.95) !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    .invitation-card .event-date,
+    .invitation-card .date-time {
+        font-size: 16px;
+        color: var(--text-gray) !important;
+        margin-bottom: 12px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.95) !important;
+        padding: 8px 12px;
+        border-radius: 6px;
+        position: relative;
+        z-index: 15 !important;
+    }
+    
+    .invitation-card.template-bg .event-date,
+    .invitation-card.template-bg .date-time {
+        color: #fff !important;
+        background: rgba(160, 120, 120, 0.95) !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    .invitation-card .venue-info,
+    .invitation-card .venue {
+        font-size: 16px;
+        color: var(--text-gray) !important;
+        margin-bottom: 12px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-align: center;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.95) !important;
+        padding: 8px 12px;
+        border-radius: 6px;
+        position: relative;
+        z-index: 15 !important;
+    }
+    
+    .invitation-card.template-bg .venue-info,
+    .invitation-card.template-bg .venue {
+        color: #fff !important;
+        background: rgba(160, 120, 120, 0.95) !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    .invitation-card .host-info,
+    .invitation-card .hosted {
+        font-size: 14px;
+        color: var(--text-gray) !important;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(160, 120, 120, 0.2);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.95) !important;
+        padding: 12px;
+        border-radius: 6px;
+        position: relative;
+        z-index: 15 !important;
+    }
+    
+    .invitation-card.template-bg .host-info,
+    .invitation-card.template-bg .hosted {
+        color: #fff !important;
+        background: rgba(160, 120, 120, 0.95) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    .invitation-card .event-description,
+    .invitation-card .message,
+    .invitation-card p {
+        font-size: 15px;
+        color: var(--text-dark) !important;
+        line-height: 1.6;
+        margin-top: 20px;
+        font-style: italic;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.95) !important;
+        padding: 15px;
+        border-radius: 6px;
+        position: relative;
+        z-index: 15 !important;
+    }
+    
+    .invitation-card.template-bg .event-description,
+    .invitation-card.template-bg .message,
+    .invitation-card.template-bg p {
+        color: #fff !important;
+        background: rgba(160, 120, 120, 0.95) !important;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    /* Event-specific fields - match live preview */
+    .invitation-card .bride-groom,
+    .invitation-card .birthday-person,
+    .invitation-card .couple-names,
+    .invitation-card .mother-father,
+    .invitation-card .graduate {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--reddish-brown-dark);
+        margin-bottom: 15px;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 12px 18px;
+        border-radius: 8px;
+        position: relative;
+        z-index: 15 !important;
+    }
+    
+    .invitation-card.template-bg .bride-groom,
+    .invitation-card.template-bg .birthday-person,
+    .invitation-card.template-bg .couple-names,
+    .invitation-card.template-bg .mother-father,
+    .invitation-card.template-bg .graduate {
+        color: #fff;
+        background: rgba(160, 120, 120, 0.85);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Remove old template-not-found and fallback-invitation styles - use invitation-card instead */
+    .template-not-found,
+    .fallback-invitation {
+        display: none !important; /* Hide - use invitation-card structure instead */
+    }
+    
+    .template-not-found::after,
+    .fallback-invitation::after {
+        display: none !important;
+    }
+
+    /* Remove decorative elements - match live preview exactly */
+    .invitation-card::before {
+        display: none !important;
+    }
+    
+    /* Remove hover effects - match live preview */
+    .invitation-card:hover {
+        transform: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Remove all old template-not-found and fallback-invitation styles - use invitation-card instead */
+    .template-not-found,
+    .fallback-invitation {
+        display: none !important;
+    }
+    
+    /* Remove old event-title, event-date, event-description styles - use invitation-card styles instead */
+    .event-title:not(.invitation-card .event-title),
+    .event-date:not(.invitation-card .event-date),
+    .event-description:not(.invitation-card .event-description) {
+        /* Use invitation-card styles instead */
+    }
+
+    /* Remove old event-details and contact-info styles - match live preview */
+    .fallback-invitation .event-details {
+        display: none !important; /* Hide - not in live preview */
+    }
+
+    .fallback-invitation .contact-info {
+        display: none !important; /* Hide - not in live preview */
+    }
+
+    /* Venue Info - Match live preview exactly (no white cards) */
+    .venue-info {
+        /* Only apply clean styling inside invitation-card */
+    }
+    
+    /* Override any old styles for venue-info outside invitation-card */
+    .template-container .venue-info:not(.invitation-card .venue-info) {
+        margin: 1.5rem 0;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border-left: 4px solid #007bff;
+    }
+    
+    /* Location link - only show if needed, styled cleanly */
+    .location-link {
+        display: none; /* Hide by default - match live preview */
+    }
+
+    /* Enhanced Wishes Section Styles - Professional and Clean */
+    .wishes-section {
+        background: #ffffff !important;
+        padding: 3rem 0;
         position: relative;
         overflow: hidden;
-        margin-bottom: 0;
-        width: 100%;
+        border-top: 1px solid #e9ecef;
     }
 
-    /* Template Design as Card Background - Only if exists */
-    {% if template_image_url %}
-    .invitation-card::after {
+    .wishes-section h3 {
+        color: #6F4E37 !important;
+        text-shadow: none !important;
+        font-weight: 700 !important;
+        font-size: 1.8rem !important;
+    }
+
+    .wishes-section h5 {
+        color: #6F4E37 !important;
+        text-shadow: none !important;
+        font-weight: 600 !important;
+    }
+
+    .wishes-section .text-center {
+        color: #6F4E37 !important;
+    }
+
+    .wishes-section::before {
+        display: none !important;
+    }
+
+    .wishes-container {
+        background: #ffffff !important;
+        border: 1px solid #e9ecef !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+        border-radius: 16px !important;
+        animation: wishesSlideIn 1s ease-out 0.6s both;
+    }
+
+    @keyframes wishesSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .wish-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%) !important;
+        border: 2px solid rgba(102, 126, 234, 0.1) !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
+        transition: all 0.3s ease !important;
+        animation: wishCardEntrance 0.6s ease-out both;
+    }
+
+    .wish-card:hover {
+        transform: translateY(-5px) scale(1.02) !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15) !important;
+        border-color: rgba(102, 126, 234, 0.3) !important;
+    }
+
+    @keyframes wishCardEntrance {
+        0% {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .wish-form {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        border: 2px solid #e9ecef;
+    }
+
+    .wish-card {
+        transition: all 0.3s ease;
+        border: 2px solid #e9ecef !important;
+        background: white;
+    }
+
+    .wish-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        border-color: #007bff !important;
+    }
+
+    .wish-avatar {
+        flex-shrink: 0;
+    }
+
+    .wish-name {
+    
+    /* Modal Debug Styles */
+    .modal {
+        z-index: 9999 !important;
+    }
+    
+    .modal-backdrop {
+        z-index: 9998 !important;
+    }
+    
+    #shareModal {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .wish-message {
+        color: #495057;
+        line-height: 1.5;
+    }
+
+    .wish-content small {
+        font-size: 0.8rem;
+    }
+
+    /* Horizontal Scrollable Wishes Styles */
+    .wishes-scroll-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .wishes-horizontal-scroll {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 1rem;
+        padding: 0.5rem 0;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #007bff #f8f9fa;
+    }
+
+    .wishes-horizontal-scroll::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .wishes-horizontal-scroll::-webkit-scrollbar-track {
+        background: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .wishes-horizontal-scroll::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 4px;
+    }
+
+    .wishes-horizontal-scroll::-webkit-scrollbar-thumb:hover {
+        background: #0056b3;
+    }
+
+    .wish-item {
+        flex: 0 0 300px;
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    .wish-item .wish-card {
+        height: 100%;
+        min-height: 120px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .wish-item {
+            flex: 0 0 280px;
+            min-width: 280px;
+            max-width: 280px;
+        }
+        
+        .invitation-container {
+            padding: 1rem !important;
+        }
+        
+        .invitation-header h1 {
+            font-size: 1.75rem !important;
+        }
+        
+        .invitation-header .lead {
+            font-size: 1rem !important;
+        }
+        
+        .invitation-details {
+            padding: 1rem !important;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .detail-item i {
+            font-size: 1rem !important;
+        }
+        
+        .detail-item span {
+            font-size: 0.9rem !important;
+        }
+        
+        .rsvp-section {
+            padding: 1rem !important;
+        }
+        
+        .rsvp-section h3 {
+            font-size: 1.25rem !important;
+        }
+        
+        .btn-lg {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 0.9rem !important;
+        }
+        
+        .wishes-section {
+            padding: 1rem !important;
+        }
+        
+        .wishes-section h3 {
+            font-size: 1.25rem !important;
+        }
+        
+        .wish-form {
+            padding: 1rem !important;
+        }
+        
+        .form-control {
+            padding: 0.75rem !important;
+            font-size: 0.9rem !important;
+        }
+        
+        .btn {
+            padding: 0.75rem 1rem !important;
+            font-size: 0.9rem !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .wish-item {
+            flex: 0 0 250px;
+            min-width: 250px;
+            max-width: 250px;
+        }
+        
+        .invitation-container {
+            padding: 0.75rem !important;
+        }
+        
+        .invitation-header h1 {
+            font-size: 1.5rem !important;
+        }
+        
+        .invitation-header .lead {
+            font-size: 0.95rem !important;
+        }
+        
+        .invitation-details {
+            padding: 0.75rem !important;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.5rem !important;
+        }
+        
+        .detail-item i {
+            font-size: 0.9rem !important;
+        }
+        
+        .detail-item span {
+            font-size: 0.85rem !important;
+        }
+        
+        .rsvp-section {
+            padding: 0.75rem !important;
+        }
+        
+        .rsvp-section h3 {
+            font-size: 1.1rem !important;
+        }
+        
+        .btn-lg {
+            padding: 0.6rem 1.25rem !important;
+            font-size: 0.85rem !important;
+        }
+        
+        .wishes-section {
+            padding: 0.75rem !important;
+        }
+        
+        .wishes-section h3 {
+            font-size: 1.1rem !important;
+        }
+        
+        .wish-form {
+            padding: 0.75rem !important;
+        }
+        
+        .form-control {
+            padding: 0.6rem !important;
+            font-size: 0.85rem !important;
+        }
+        
+        .btn {
+            padding: 0.6rem 0.8rem !important;
+            font-size: 0.85rem !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .wish-item {
+            flex: 0 0 220px;
+            min-width: 220px;
+            max-width: 220px;
+        }
+        
+        .invitation-container {
+            padding: 0.5rem !important;
+        }
+        
+        .invitation-header h1 {
+            font-size: 1.25rem !important;
+        }
+        
+        .invitation-header .lead {
+            font-size: 0.9rem !important;
+        }
+        
+        .invitation-details {
+            padding: 0.5rem !important;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.4rem !important;
+        }
+        
+        .detail-item i {
+            font-size: 0.8rem !important;
+        }
+        
+        .detail-item span {
+            font-size: 0.8rem !important;
+        }
+        
+        .rsvp-section {
+            padding: 0.5rem !important;
+        }
+        
+        .rsvp-section h3 {
+            font-size: 1rem !important;
+        }
+        
+        .btn-lg {
+            padding: 0.5rem 1rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .wishes-section {
+            padding: 0.5rem !important;
+        }
+        
+        .wishes-section h3 {
+            font-size: 1rem !important;
+        }
+        
+        .wish-form {
+            padding: 0.5rem !important;
+        }
+        
+        .form-control {
+            padding: 0.5rem !important;
+            font-size: 0.8rem !important;
+        }
+        
+        .btn {
+            padding: 0.5rem 0.7rem !important;
+            font-size: 0.8rem !important;
+        }
+    }
+
+    /* Auto-scrolling wishes styles */
+    .wishes-auto-scroll {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 1rem;
+        padding: 1rem 0;
+        white-space: nowrap;
+        scroll-behavior: smooth;
+    }
+
+    .wishes-auto-scroll:hover {
+        scroll-behavior: smooth;
+    }
+
+    .wishes-auto-scroll .wish-item {
+        flex: 0 0 300px;
+        white-space: normal;
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    .wishes-scroll-container {
+        position: relative;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        scroll-behavior: smooth;
+    }
+
+    .wishes-scroll-container::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .wishes-scroll-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .wishes-scroll-container::-webkit-scrollbar-thumb {
+        background: var(--primary-teal);
+        border-radius: 3px;
+    }
+
+    .wishes-scroll-container::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-teal-hover);
+    }
+
+    /* Grid view for wishes */
+    .wishes-grid-view {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+        padding: 1rem 0;
+        overflow: visible;
+        animation: none;
+    }
+
+    .wishes-grid-view .wish-item {
+        flex: none;
+        min-width: auto;
+        max-width: none;
+        white-space: normal;
+    }
+
+    /* Enhanced RSVP Section Styles */
+    .rsvp-section {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 
+            0 15px 35px rgba(0,0,0,0.1),
+            0 0 0 1px rgba(255,255,255,0.2);
+        border: 2px solid rgba(102, 126, 234, 0.2);
+        position: relative;
+        overflow: hidden;
+        animation: rsvpSlideIn 1s ease-out 0.3s both;
+    }
+
+    .rsvp-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #28a745, #20c997, #17a2b8);
+        background-size: 200% 100%;
+        animation: rsvpGradient 3s ease-in-out infinite;
+    }
+
+    @keyframes rsvpSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes rsvpGradient {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .rsvp-section h5 {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+
+    .rsvp-btn {
+        padding: 1.2rem 2.5rem;
+        font-weight: 700;
+        border-radius: 15px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .rsvp-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .rsvp-btn:hover::before {
+        left: 100%;
+    }
+
+    .rsvp-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .rsvp-btn.btn-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border-color: #28a745;
+        color: white;
+    }
+
+    .rsvp-btn.btn-success:hover {
+        background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+        border-color: #1e7e34;
+    }
+
+    .rsvp-btn.btn-outline-danger {
+        border-color: #dc3545;
+        color: #dc3545;
+        background: transparent;
+    }
+
+    .rsvp-btn.btn-outline-danger:hover {
+        background: #dc3545;
+        color: white;
+        border-color: #dc3545;
+    }
+
+    .rsvp-status .alert {
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+        color: #0c5460;
+        font-weight: 500;
+    }
+
+    .rsvp-status .alert i {
+        color: #17a2b8;
+    }
+
+    /* Interactive Elements - Removed for clean design matching live preview */
+    .floating-elements {
+        display: none !important;
+    }
+
+    .floating-heart {
+        display: none !important;
+    }
+
+    /* Enhanced Share Button */
+    .share-section .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 15px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .share-section .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .share-section .btn:hover::before {
+        left: 100%;
+    }
+
+    .share-section .btn:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Enhanced Venue Info with Interactive Location */
+    .venue-info {
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%) !important;
+        border: 2px solid rgba(102, 126, 234, 0.2) !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+        animation: venueSlideIn 1s ease-out 0.4s both;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .venue-info::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .venue-info:hover::before {
+        left: 100%;
+    }
+
+    .venue-info:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 
+            0 25px 50px rgba(0,0,0,0.15),
+            0 0 0 1px rgba(102, 126, 234, 0.3);
+        border-color: rgba(102, 126, 234, 0.4);
+    }
+
+    @keyframes venueSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Enhanced Venue Title */
+    .venue-info h4 {
+        color: #2c3e50 !important;
+        font-weight: 800 !important;
+        font-size: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+        text-align: center !important;
+        position: relative;
+        animation: titleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+        0% { 
+            text-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            transform: scale(1);
+        }
+        100% { 
+            text-shadow: 0 0 15px rgba(102, 126, 234, 0.6);
+            transform: scale(1.05);
+        }
+    }
+
+    /* Interactive Location Text */
+    .venue-info p {
+        color: #495057 !important;
+        font-size: 1.2rem !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        margin-bottom: 1.5rem !important;
+        line-height: 1.6 !important;
+        transition: all 0.3s ease !important;
+        position: relative;
+    }
+
+    .venue-info:hover p {
+        color: #667eea !important;
+        transform: scale(1.05);
+    }
+
+    /* Enhanced Location Link */
+    .location-link {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        color: white !important;
+        padding: 1rem 2rem !important;
+        border-radius: 15px !important;
+        text-decoration: none !important;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3) !important;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto !important;
+        animation: locationPulse 3s ease-in-out infinite;
+    }
+
+    .location-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .location-link:hover::before {
+        left: 100%;
+    }
+
+    @keyframes locationPulse {
+        0%, 100% { 
+            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        50% { 
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(40, 167, 69, 0.5);
+        }
+    }
+
+    .location-link:hover {
+        transform: translateY(-5px) scale(1.1) !important;
+        box-shadow: 0 15px 40px rgba(40, 167, 69, 0.5) !important;
+        color: white !important;
+    }
+
+    .location-link i {
+        font-size: 1.2rem !important;
+        animation: mapIconBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes mapIconBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+    }
+
+    /* Enhanced Event Cards Animations */
+    .event-card {
+        animation: eventCardEntrance 1s ease-out both;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .event-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+        background-size: 200% 100%;
+        animation: cardGradientShift 4s ease-in-out infinite;
+    }
+
+    @keyframes eventCardEntrance {
+        0% {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes cardGradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    .event-card:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Enhanced Event Icons */
+    .event-icon {
+        animation: iconFloat 3s ease-in-out infinite;
+        transition: all 0.3s ease;
+    }
+
+    .event-icon:hover {
+        transform: scale(1.2) rotate(10deg);
+        animation-play-state: paused;
+    }
+
+    @keyframes iconFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-8px) rotate(5deg); }
+    }
+
+    /* Enhanced Event Times */
+    .event-time {
+        animation: timeGlow 2s ease-in-out infinite alternate;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    @keyframes timeGlow {
+        0% { 
+            text-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            transform: scale(1);
+        }
+        100% { 
+            text-shadow: 0 0 10px rgba(102, 126, 234, 0.6);
+            transform: scale(1.05);
+        }
+    }
+
+    /* Enhanced Event Titles */
+    .event-title {
+        animation: titleSlideIn 1s ease-out 0.2s both;
+        font-weight: 800;
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    @keyframes titleSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Enhanced Address Text */
+    .address-text {
+        animation: addressFadeIn 1s ease-out 0.6s both;
+        font-weight: 600;
+        color: #495057;
+        line-height: 1.6;
+    }
+
+    @keyframes addressFadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Enhanced Decorative Elements */
+    .decorative-heart {
+        animation: heartFloat 4s ease-in-out infinite;
+        color: #ff6b9d;
+        font-size: 1.5rem;
+    }
+
+    .decorative-star {
+        animation: starTwinkle 2s ease-in-out infinite;
+        color: #ffd700;
+        font-size: 1.2rem;
+    }
+
+    @keyframes heartFloat {
+        0%, 100% { 
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.7;
+        }
+        50% { 
+            transform: translateY(-10px) rotate(10deg);
+            opacity: 1;
+        }
+    }
+
+    @keyframes starTwinkle {
+        0%, 100% { 
+            transform: scale(1) rotate(0deg);
+            opacity: 0.6;
+        }
+        50% { 
+            transform: scale(1.2) rotate(180deg);
+            opacity: 1;
+        }
+    }
+
+    /* Enhanced Location Link */
+    .location-link {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        color: white !important;
+        padding: 0.75rem 1.5rem !important;
+        border-radius: 10px !important;
+        text-decoration: none !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3) !important;
+    }
+
+    .location-link:hover {
+        transform: translateY(-3px) scale(1.05) !important;
+        box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4) !important;
+        color: white !important;
+    }
+
+    /* Share Button Styles */
+    .share-section .btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .share-section .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    /* Enhanced text readability for background images */
+    .hero-content h1, .hero-content h2, .hero-content h3, .hero-content p {
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+        color: white !important;
+        padding: 15px 25px !important;
+        border-radius: 15px !important;
+        display: inline-block !important;
+        margin: 10px 0 !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+        backdrop-filter: blur(10px);
+    }
+    
+    .hero-content p {
+        background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%) !important;
+        padding: 12px 20px !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Ensure all text in hero sections is readable */
+    .hero-section * {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Add semi-transparent backgrounds to text containers */
+    .text-overlay {
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+        padding: 15px;
+        border-radius: 15px;
+        margin: 10px 0;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Enhanced text shadows for better readability */
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3) !important;
+    }
+    
+    /* Text readability for sections with background images */
+    .section-with-bg {
+        position: relative;
+    }
+    
+    .section-with-bg::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('{{ template_image_url }}') !important;
-        background-size: cover !important;
-        background-position: center !important;
-        background-repeat: no-repeat !important;
-        opacity: 1 !important;
-        filter: brightness(1) contrast(1) !important;
+        background: rgba(0,0,0,0.3);
         z-index: 1;
-        pointer-events: none;
     }
-    {% endif %}
     
-    .invitation-card > * {
+    .section-with-bg > * {
         position: relative;
         z-index: 2;
     }
-
-    /* ==================== VENUE INFO ==================== */
-    .venue-info {
-        margin: 1.5rem 0;
-        padding: 1.5rem;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 12px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
+    
+    /* Enhanced text containers */
+    .text-container {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        border: 1px solid rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    .text-container h1, .text-container h2, .text-container h3 {
+        color: #2c3e50 !important;
+        text-shadow: none !important;
+    }
+    
+    .text-container p {
+        color: #555 !important;
+        text-shadow: none !important;
+    }
+    
+    /* Dark text overlay for light backgrounds */
+    .dark-text-overlay {
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+        color: white !important;
+        padding: 15px 25px !important;
+        border-radius: 15px !important;
+        display: inline-block !important;
+        margin: 10px 0 !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Light text overlay for dark backgrounds */
+    .light-text-overlay {
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
+        color: #2c3e50 !important;
+        padding: 15px 25px !important;
+        border-radius: 15px !important;
+        display: inline-block !important;
+        margin: 10px 0 !important;
+        text-shadow: none !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+        backdrop-filter: blur(10px);
     }
 
-    .venue-info:hover {
-        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    /* Modal fallback styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1050;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
     }
 
-    .venue-info h4 {
-        color: #2c3e50;
-        font-weight: 700;
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
-        text-align: center;
+    .modal.show {
+        display: block;
     }
 
-    .location-link {
-        background: #28a745;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1040;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0,0,0,0.5);
     }
 
-    .location-link:hover {
-        background: #218838;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-        color: white;
-        text-decoration: none;
+    .modal-backdrop.fade {
+        opacity: 0;
+        transition: opacity 0.15s linear;
     }
 
-    /* ==================== WISHES & RSVP SECTION (Within Template) ==================== */
-    .wishes-rsvp-section {
-        margin-top: 0;
-        padding: 30px;
-        background: #ffffff;
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        border: 1px solid rgba(0,0,0,0.05);
-        border-top: 2px solid rgba(102, 126, 234, 0.15);
+    .modal-backdrop.show {
+        opacity: 1;
+    }
+
+    .modal-dialog {
         position: relative;
-        top: -10px;
+        width: auto;
+        margin: 0.5rem;
+        pointer-events: none;
     }
 
-    .section-header {
-        color: #2c3e50;
-        font-weight: 700;
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
+    .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,0.2);
+        border-radius: 0.3rem;
+        outline: 0;
+    }
+
+    .modal-header {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        justify-content: space-between;
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: calc(0.3rem - 1px);
+        border-top-right-radius: calc(0.3rem - 1px);
     }
 
-    .wish-form .form-control {
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
+    .modal-body {
+        position: relative;
+        flex: 1 1 auto;
+        padding: 1rem;
+    }
+
+    .modal-footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
         padding: 0.75rem;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-        background: #ffffff;
+        border-top: 1px solid #dee2e6;
+        border-bottom-right-radius: calc(0.3rem - 1px);
+        border-bottom-left-radius: calc(0.3rem - 1px);
     }
 
-    .wish-form .form-control:focus {
-        border-color: #D4AF37;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
-        outline: none;
+    .btn-close {
+        box-sizing: content-box;
+        width: 1em;
+        height: 1em;
+        padding: 0.25em 0.25em;
+        color: #000;
+        background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+        border: 0;
+        border-radius: 0.25rem;
+        opacity: 0.5;
+        cursor: pointer;
     }
 
-    .wish-form .btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .wish-form .btn-primary {
-        background: #D4AF37;
-        border-color: #D4AF37;
-    }
-
-    .wish-form .btn-primary:hover {
-        background: #5568d3;
-        border-color: #5568d3;
-        transform: translateY(-1px);
-    }
-
-    .wish-card {
-        background: #f8f9fa;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 12px;
-        transition: all 0.3s ease;
-    }
-
-    .wish-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        border-color: rgba(102, 126, 234, 0.2);
-    }
-
-    .wishes-display {
-        max-height: 400px;
-        overflow-y: auto;
-        padding-right: 10px;
-    }
-
-    .wishes-display::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .wishes-display::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-    }
-
-    .wishes-display::-webkit-scrollbar-thumb {
-        background: #D4AF37;
-        border-radius: 3px;
-    }
-
-    .wishes-display::-webkit-scrollbar-thumb:hover {
-        background: #5568d3;
-    }
-
-    /* ==================== RSVP BUTTONS ==================== */
-    .rsvp-section {
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .rsvp-btn {
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        font-size: 0.95rem;
+    .btn-close:hover {
+        color: #000;
         text-decoration: none;
-        display: inline-block;
+        opacity: 0.75;
     }
 
-    .rsvp-btn:hover {
-        transform: translateY(-2px);
-        text-decoration: none;
+    .btn-close:focus {
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        opacity: 1;
     }
 
-    .rsvp-btn.btn-success {
-        background: #28a745;
-        color: white;
-        border-color: #28a745;
+    .btn-close-white {
+        filter: invert(1) grayscale(100%) brightness(200%);
     }
 
-    .rsvp-btn.btn-success:hover {
-        background: #218838;
-        border-color: #218838;
-        color: white;
-    }
-
-    .rsvp-btn.btn-outline-danger {
-        color: #dc3545;
-        border-color: #dc3545;
-        background: white;
-    }
-
-    .rsvp-btn.btn-outline-danger:hover {
-        background: #dc3545;
-        color: white;
-    }
-
-    /* ==================== SHARE SECTION ==================== */
-    .share-section {
-        margin: 20px 0;
-        text-align: center;
-    }
-
-    .share-section .btn {
-        background: #D4AF37;
-        border: none;
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 1rem;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .share-section .btn:hover {
-        background: #5568d3;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    }
-
-    /* ==================== TEXT OVERLAYS ==================== */
-    .text-overlay {
-        background: rgba(255, 255, 255, 0.95);
-        color: #333;
-        padding: 12px 20px;
-        border-radius: 8px;
-        display: inline-block;
-        margin: 8px 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        /* backdrop-filter removed - no blur */
-        border: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    /* ==================== RESPONSIVE DESIGN ==================== */
-    
-    /* Desktop Large (1200px and above) */
-    @media (min-width: 1200px) {
-        .container {
-            max-width: 1140px;
-        }
-        
-        .invitation-card {
-            padding: 40px;
-        }
-        
-        .wishes-rsvp-section {
-            padding: 35px 40px;
-        }
-    }
-
-    /* Desktop (992px - 1199px) */
-    @media (min-width: 992px) and (max-width: 1199px) {
-        .container {
-            max-width: 960px;
-        }
-        
-        .invitation-card {
-            padding: 35px;
-        }
-        
-        .wishes-rsvp-section {
-            padding: 30px 35px;
-        }
-    }
-
-    /* Tablet (768px - 991px) */
-    @media (min-width: 768px) and (max-width: 991px) {
-        .container {
-            max-width: 720px;
-        }
-        
-        .template-container {
-            padding: 30px 15px;
-        }
-        
-        .invitation-card {
-            border-radius: 16px;
-            padding: 30px;
-        }
-        
-        .wishes-rsvp-section {
-            padding: 25px 30px;
-        }
-        
-        .section-header {
-            font-size: 1.15rem;
-        }
-        
-        .rsvp-btn,
-        .location-link {
-            padding: 0.7rem 1.3rem;
-            font-size: 0.95rem;
-        }
-    }
-
-    /* Mobile Large (576px - 767px) */
-    @media (min-width: 576px) and (max-width: 767px) {
-        .container {
-            max-width: 540px;
-        }
-        
-        .template-container {
-            padding: 20px 10px;
-        }
-        
-        .invitation-card {
-            border-radius: 14px;
-            padding: 25px;
-        }
-        
-        .wishes-rsvp-section {
-            padding: 20px 25px;
-        }
-        
-        .section-header {
-            font-size: 1.1rem;
-        }
-        
-        .rsvp-btn,
-        .location-link {
-            padding: 0.65rem 1.2rem;
-            font-size: 0.9rem;
-        }
-        
-        .venue-info h4 {
-            font-size: 1.25rem;
-        }
-    }
-
-    /* Mobile (up to 575px) */
-    @media (max-width: 575px) {
-        .container {
-            padding: 0 10px;
-        }
-        
-        .template-container {
-            padding: 15px 5px;
-            background: #ffffff;
-            /* Hardware acceleration */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-        }
-        
-        .invitation-card {
-            border-radius: 12px;
-            padding: 20px 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            /* Hardware acceleration */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-        }
-        
-        .wishes-rsvp-section {
-            padding: 20px 15px;
-            border-radius: 0 0 12px 12px;
-        }
-        
-        .section-header {
-            font-size: 1.05rem;
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-        }
-        
-        .venue-info {
-            padding: 1rem;
-            margin: 1rem 0;
-        }
-        
-        .venue-info h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.75rem;
-            line-height: 1.3;
-        }
-        
-        .location-link,
-        .btn-location {
-            padding: 12px 20px;
-            font-size: 16px;
-            width: 100%;
-            justify-content: center;
-            min-height: 48px;
-            touch-action: manipulation;
-        }
-        
-        .rsvp-btn {
-            width: 100%;
-            padding: 12px 20px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            min-height: 48px;
-            touch-action: manipulation;
-        }
-        
-        /* Gallery images mobile optimization */
-        .row.g-3 {
-            gap: 0.75rem !important;
-        }
-        
-        .row.g-3 > div {
-            margin-bottom: 0.75rem;
-        }
-        
-        /* Image loading optimization */
-        img {
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-        }
-        
-        .wish-form .form-control {
-            font-size: 0.9rem;
-            padding: 0.65rem;
-        }
-        
-        .wish-form .btn {
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        .wish-card {
-            padding: 12px;
-            margin-bottom: 10px;
-        }
-        
-        .wishes-display {
-            max-height: 300px;
-        }
-        
-        .share-section .btn {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            font-size: 0.95rem;
-        }
-        
-        /* Make form layout stack vertically on mobile */
-        .wish-form .row.g-2 {
-            flex-direction: column;
-        }
-        
-        .wish-form .col-md-6 {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-    }
-
-    /* Mobile Extra Small (up to 375px) */
-    @media (max-width: 375px) {
-        .template-container {
-            padding: 10px 2px;
-        }
-        
-        .invitation-card {
-            border-radius: 10px;
-            padding: 15px 12px;
-        }
-        
-        .wishes-rsvp-section {
-            padding: 15px 12px;
-        }
-        
-        .section-header {
-            font-size: 1rem;
-        }
-        
-        .wish-card {
-            padding: 10px;
-        }
-        
-        .wish-card h6 {
-            font-size: 0.95rem;
-        }
-        
-        .wish-card p {
-            font-size: 0.875rem;
-        }
-    }
-
-    /* ==================== MODAL RESPONSIVE ==================== */
-    @media (max-width: 767px) {
+    /* Responsive modal */
+    @media (min-width: 576px) {
         .modal-dialog {
-            margin: 10px;
-            max-width: calc(100% - 20px);
-        }
-        
-        .modal-body {
-            padding: 1.25rem !important;
-        }
-        
-        .modal-title {
-            font-size: 1.1rem;
-        }
-        
-        .social-share-buttons .btn {
-            font-size: 0.85rem;
-            padding: 0.5rem 0.75rem;
-        }
-        
-        #qrcode {
-            padding: 0.75rem !important;
-        }
-        
-        #qrcode canvas {
-            max-width: 100%;
-            height: auto !important;
+            max-width: 500px;
+            margin: 1.75rem auto;
         }
     }
 
-    @media (max-width: 575px) {
+    @media (min-width: 768px) {
         .modal-dialog {
-            margin: 5px;
-            max-width: calc(100% - 10px);
+            max-width: 600px;
         }
-        
-        .modal-body {
-            padding: 1rem !important;
-        }
-        
-        .social-share-buttons .d-flex {
-            flex-direction: column !important;
-            gap: 0.5rem !important;
-        }
-        
-        .social-share-buttons .btn {
-            width: 100%;
-            justify-content: center;
+    }
+
+    @media (min-width: 992px) {
+        .modal-dialog {
+            max-width: 700px;
         }
     }
 </style>
 
-{# ========================================
-   MAIN CONTENT
-   ======================================== #}
-<div class="template-container" {% if font_style %}style="font-family: {{ font_style }} !important;"{% endif %}>
-    <div class="container">
-        {# ========================================
-           TEMPLATE RENDERING
-           ======================================== #}
-        {% if invitation.template_name %}
-            {% if invitation.template_name in ['wedding_elegant', 'wedding_elegant_modern', 'wedding_hindu_traditional'] %}
-                {% include 'invitation/templates/wedding_elegant.html' %}
-            {% elif invitation.template_name == 'birthday_fun_colorful' %}
-                {% include 'invitation/templates/birthday_fun_colorful.html' %}
-            {% elif invitation.template_name == 'birthday_elegant_gold_blue' %}
-                {% include 'invitation/templates/birthday_elegant_gold_blue.html' %}
-            {% elif invitation.template_name == 'birthday_elegant_navy_gold' %}
-                {% include 'invitation/templates/birthday_elegant_navy_gold.html' %}
-            {% elif invitation.template_name == 'birthday_elegant_purple_gold' %}
-                {% include 'invitation/templates/birthday_elegant_purple_gold.html' %}
-            {% elif invitation.template_name == 'birthday_elegant_dark_gold' %}
-                {% include 'invitation/templates/birthday_elegant_dark_gold.html' %}
-            {% elif invitation.template_name == 'birthday_final_elegant' %}
-                {% include 'invitation/templates/birthday_final_elegant.html' %}
-            {% elif invitation.template_name == 'graduation_success_modern' %}
-                {% include 'invitation/templates/graduation_success_modern.html' %}
-            {% elif invitation.template_name == 'anniversary_golden_elegant' %}
-                {% include 'invitation/templates/anniversary_golden_elegant.html' %}
-            {% elif invitation.template_name == 'babyshower_sweet_pink' %}
-                {% include 'invitation/templates/babyshower_sweet_pink.html' %}
-            {% elif invitation.template_name == 'retirement_golden_classic' %}
-                {% include 'invitation/templates/retirement_golden_classic.html' %}
-            {% else %}
-                {% include 'invitation/fallback_template.html' %}
-            {% endif %}
+<div class="template-container">
+    <!-- Floating Hearts Animation - Removed for clean design matching live preview -->
+    
+    {% if invitation.template_name %}
+        {# Render the appropriate template based on template_name #}
+        {% if invitation.template_name == 'wedding_elegant' or invitation.template_name == 'wedding_elegant_modern' or invitation.template_name == 'wedding_hindu_traditional' %}
+            {% include 'invitation/templates/wedding_elegant.html' %}
+        {% elif invitation.template_name == 'birthday_fun_colorful' %}
+            {% include 'invitation/templates/birthday_fun_colorful.html' %}
+        {% elif invitation.template_name == 'birthday_elegant_gold_blue' %}
+            {% include 'invitation/templates/birthday_elegant_gold_blue.html' %}
+        {% elif invitation.template_name == 'birthday_elegant_navy_gold' %}
+            {% include 'invitation/templates/birthday_elegant_navy_gold.html' %}
+        {% elif invitation.template_name == 'birthday_elegant_purple_gold' %}
+            {% include 'invitation/templates/birthday_elegant_purple_gold.html' %}
+        {% elif invitation.template_name == 'birthday_elegant_dark_gold' %}
+            {% include 'invitation/templates/birthday_elegant_dark_gold.html' %}
+        {% elif invitation.template_name == 'birthday_final_elegant' %}
+            {% include 'invitation/templates/birthday_final_elegant.html' %}
+        {% elif invitation.template_name == 'graduation_success_modern' %}
+            {% include 'invitation/templates/graduation_success_modern.html' %}
+        {% elif invitation.template_name == 'anniversary_golden_elegant' %}
+            {% include 'invitation/templates/anniversary_golden_elegant.html' %}
+        {% elif invitation.template_name == 'babyshower_sweet_pink' %}
+            {% include 'invitation/templates/babyshower_sweet_pink.html' %}
+        {% elif invitation.template_name == 'retirement_golden_classic' %}
+            {% include 'invitation/templates/retirement_golden_classic.html' %}
+
         {% else %}
-            {% include 'invitation/preview_card.html' %}
-        {% endif %}
-        
-        {# ========================================
-           WISHES & RSVP SECTION
-           ======================================== #}
-        <div class="wishes-rsvp-section">
-            <!-- RSVP Section -->
-            <div class="rsvp-section mb-4">
-                <h5 class="section-header">
-                    <i class="fas fa-calendar-check"></i> {{ translate_text('rsvp') }}
-                </h5>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <button onclick="addToGoogleCalendar()" 
-                                class="btn btn-success w-100 rsvp-btn"
-                                style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);">
-                            <i class="fas fa-check-circle me-2"></i>{{ translate_text('im_attending') }}
-                        </button>
-                    </div>
-                    <div class="col-md-6">
-                        <button onclick="showBlessingPopup()" 
-                                class="btn btn-outline-danger w-100 rsvp-btn"
-                                style="border: 2px solid #dc3545; color: #dc3545; background: white; transition: all 0.3s;"
-                                onmouseover="this.style.background='#dc3545'; this.style.color='white';"
-                                onmouseout="this.style.background='white'; this.style.color='#dc3545';">
-                            <i class="fas fa-times-circle me-2"></i>{{ translate_text('unable_to_attend') }}
-                        </button>
+            {# Generic template or fallback - Match live preview structure exactly #}
+            <div class="container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="invitation-card {% if template_image_url %}template-bg{% endif %}" style="{% if template_image_url %}background-image: url('{{ template_image_url }}') !important;{% endif %}">
+                            {# Event Icon #}
+                            {% if invitation.event_type %}
+                            <div class="preview-icon" style="font-size: 64px; margin-bottom: 20px; display: {% if template_image_url %}none{% else %}block{% endif %};">
+                                {% if invitation.event_type == 'wedding' %}💍{% elif invitation.event_type == 'birthday' %}🎂{% elif invitation.event_type == 'anniversary' %}💑{% elif invitation.event_type == 'graduation' %}🎓{% elif invitation.event_type == 'babyshower' %}👶{% elif invitation.event_type == 'retirement' %}🎉{% else %}🎊{% endif %}
+                            </div>
+                            {% endif %}
+                            
+                            {# Event Title - Match live preview #}
+                            <h1 class="event-title">{{ invitation.title or 'Event Invitation' }}</h1>
+                            
+                            {# Event-Specific Names - Match live preview #}
+                            {% if invitation.event_type == 'wedding' %}
+                                {% if invitation.bride_name or invitation.groom_name %}
+                                <div class="bride-groom">
+                                    {% if invitation.bride_name %}<span>{{ invitation.bride_name }}</span>{% endif %}
+                                    {% if invitation.bride_name and invitation.groom_name %} & {% endif %}
+                                    {% if invitation.groom_name %}<span>{{ invitation.groom_name }}</span>{% endif %}
+                                </div>
+                                {% endif %}
+                            {% elif invitation.event_type == 'birthday' %}
+                                {% if invitation.birthday_person %}
+                                <div class="birthday-person">
+                                    <span>{{ invitation.birthday_person }}</span>
+                                    {% if invitation.age %}<span style="font-weight: bold;"> {{ invitation.age }}</span>{% endif %}
+                                </div>
+                                {% endif %}
+                            {% elif invitation.event_type == 'anniversary' %}
+                                {% if invitation.couple_names %}
+                                <div class="couple-names">
+                                    <span>{{ invitation.couple_names }}</span>
+                                </div>
+                                {% endif %}
+                            {% elif invitation.event_type == 'babyshower' %}
+                                {% if invitation.mother_name or invitation.father_name %}
+                                <div class="mother-father">
+                                    {% if invitation.mother_name %}<span>{{ invitation.mother_name }}</span>{% endif %}
+                                    {% if invitation.mother_name and invitation.father_name %}<span> & </span>{% endif %}
+                                    {% if invitation.father_name %}<span>{{ invitation.father_name }}</span>{% endif %}
+                                </div>
+                                {% endif %}
+                            {% elif invitation.event_type == 'graduation' %}
+                                {% if invitation.graduate_name %}
+                                <div class="graduate">
+                                    <span>{{ invitation.graduate_name }}</span>
+                                    {% if invitation.degree %} - <span>{{ invitation.degree }}</span>{% endif %}
+                                </div>
+                                {% endif %}
+                            {% endif %}
+                            
+                            {# Date and Time - Match live preview #}
+                            {% if invitation.event_date %}
+                            <div class="event-date date-time">
+                                <i class="fas fa-calendar"></i>
+                                <span>
+                                    {% if invitation.event_date is string %}
+                                        {{ invitation.event_date }}
+                                    {% else %}
+                                        {{ invitation.event_date.strftime('%B %d, %Y') }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                            
+                            {% if invitation.event_time %}
+                            <div class="date-time">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ invitation.event_time }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {# Venue - Match live preview #}
+                            {% if invitation.venue_address %}
+                            <div class="venue-info venue">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ invitation.venue_address }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {# Hosted By - Match live preview #}
+                            {% if invitation.host_name %}
+                            <div class="host-info hosted">
+                                <i class="fas fa-user"></i> Hosted by <span>{{ invitation.host_name }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            {# Message/Description - Match live preview #}
+                            {% if invitation.description %}
+                            <div class="event-description message">
+                                <span>{{ invitation.description }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Wishes Section -->
-            <div class="wishes-section-content">
-                <h5 class="section-header">
-                    <i class="fas fa-heart text-danger"></i> {{ translate_text('convey_your_wishes') }}
-                </h5>
-                
-                <!-- Wish Form -->
-                <form id="wishForm" class="wish-form mb-4">
-                    <div class="row g-2 mb-2">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="wishName" name="name" 
-                                   placeholder="{{ translate_text('your_name') }}" required>
+        {% endif %}
+    {% else %}
+        {# No template specified, show fallback - Match live preview structure exactly #}
+        <div class="container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="invitation-card {% if template_image_url %}template-bg{% endif %}" style="{% if template_image_url %}background-image: url('{{ template_image_url }}') !important;{% endif %}">
+                        {# Event Icon #}
+                        {% if invitation.event_type %}
+                        <div class="preview-icon" style="font-size: 64px; margin-bottom: 20px; display: {% if template_image_url %}none{% else %}block{% endif %};">
+                            {% if invitation.event_type == 'wedding' %}💍{% elif invitation.event_type == 'birthday' %}🎂{% elif invitation.event_type == 'anniversary' %}💑{% elif invitation.event_type == 'graduation' %}🎓{% elif invitation.event_type == 'babyshower' %}👶{% elif invitation.event_type == 'retirement' %}🎉{% else %}🎊{% endif %}
                         </div>
-                        <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-paper-plane me-2"></i>{{ translate_text('send_wish') }}
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <textarea class="form-control" id="wishMessage" name="message" rows="2" 
-                                      placeholder="{{ translate_text('wish_them_with_love') }}" required></textarea>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- Wishes Display -->
-                <div>
-                    <h6 class="mb-3">
-                        <i class="fas fa-gift me-2"></i>{{ translate_text('wishes_from_loved_ones') }}
-                    </h6>
-                    <div id="wishesContainer" class="wishes-display">
-                        {% for wish in wishes %}
-                        <div class="wish-card">
-                            <div class="d-flex align-items-start">
-                                <div class="me-3">
-                                    <i class="fas fa-user-circle fa-2x text-primary"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-1"><strong>{{ wish.name }}</strong></h6>
-                                    <p class="mb-1">{{ wish.message }}</p>
-                                    <small class="text-muted">
-                                        {% if wish.created_at %}
-                                            {{ wish.created_at.strftime('%B %d, %Y') if wish.created_at is not string else wish.created_at }}
-                                        {% else %}
-                                            Recently
-                                        {% endif %}
-                                    </small>
-                                </div>
+                        {% endif %}
+                        
+                        {# Event Title - Match live preview #}
+                        <h1 class="event-title">{{ invitation.title or 'Event Invitation' }}</h1>
+                        
+                        {# Event-Specific Names - Match live preview #}
+                        {% if invitation.event_type == 'wedding' %}
+                            {% if invitation.bride_name or invitation.groom_name %}
+                            <div class="bride-groom">
+                                {% if invitation.bride_name %}<span>{{ invitation.bride_name }}</span>{% endif %}
+                                {% if invitation.bride_name and invitation.groom_name %} & {% endif %}
+                                {% if invitation.groom_name %}<span>{{ invitation.groom_name }}</span>{% endif %}
                             </div>
+                            {% endif %}
+                        {% elif invitation.event_type == 'birthday' %}
+                            {% if invitation.birthday_person %}
+                            <div class="birthday-person">
+                                <span>{{ invitation.birthday_person }}</span>
+                                {% if invitation.age %}<span style="font-weight: bold;"> {{ invitation.age }}</span>{% endif %}
+                            </div>
+                            {% endif %}
+                        {% elif invitation.event_type == 'anniversary' %}
+                            {% if invitation.couple_names %}
+                            <div class="couple-names">
+                                <span>{{ invitation.couple_names }}</span>
+                            </div>
+                            {% endif %}
+                        {% elif invitation.event_type == 'babyshower' %}
+                            {% if invitation.mother_name or invitation.father_name %}
+                            <div class="mother-father">
+                                {% if invitation.mother_name %}<span>{{ invitation.mother_name }}</span>{% endif %}
+                                {% if invitation.mother_name and invitation.father_name %}<span> & </span>{% endif %}
+                                {% if invitation.father_name %}<span>{{ invitation.father_name }}</span>{% endif %}
+                            </div>
+                            {% endif %}
+                        {% elif invitation.event_type == 'graduation' %}
+                            {% if invitation.graduate_name %}
+                            <div class="graduate">
+                                <span>{{ invitation.graduate_name }}</span>
+                                {% if invitation.degree %} - <span>{{ invitation.degree }}</span>{% endif %}
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                        
+                        {# Date and Time - Match live preview #}
+                        {% if invitation.event_date %}
+                        <div class="event-date date-time">
+                            <i class="fas fa-calendar"></i>
+                            <span>
+                                {% if invitation.event_date is string %}
+                                    {{ invitation.event_date }}
+                                {% else %}
+                                    {{ invitation.event_date.strftime('%B %d, %Y') }}
+                                {% endif %}
+                            </span>
                         </div>
-                        {% endfor %}
+                        {% endif %}
+                        
+                        {% if invitation.event_time %}
+                        <div class="date-time">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ invitation.event_time }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {# Venue - Match live preview #}
+                        {% if invitation.venue_address %}
+                        <div class="venue-info venue">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ invitation.venue_address }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {# Hosted By - Match live preview #}
+                        {% if invitation.host_name %}
+                        <div class="host-info hosted">
+                            <i class="fas fa-user"></i> Hosted by <span>{{ invitation.host_name }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {# Message/Description - Match live preview #}
+                        {% if invitation.description %}
+                        <div class="event-description message">
+                            <span>{{ invitation.description }}</span>
+                        </div>
+                        {% endif %}
                     </div>
-                    <div id="noWishes" class="text-center text-muted py-3" {% if wishes %}style="display: none;"{% endif %}>
-                        <i class="fas fa-heart-broken fa-2x mb-2 d-block"></i>
-                        <p class="mb-0">{{ translate_text('no_wishes_yet') }}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Main Image Section - Below invitation card, centered -->
+    {% if invitation.main_image %}
+    <div class="main-image-section mt-4 mb-4">
+        <div class="container" style="max-width: 600px; margin: 0 auto; padding: 0 20px;">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="main-image-container" style="position: relative; z-index: 15 !important; margin: 20px 0;">
+                        <img src="/static/uploads/{{ invitation.main_image }}" 
+                             alt="Main Image" 
+                             class="main-image-display"
+                             style="width: 100%; max-width: 100%; height: auto; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); display: block; margin: 0 auto; position: relative; z-index: 15 !important;"
+                             onerror="this.style.display='none';">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {% endif %}
 
-    {# ========================================
-       SHARE BUTTON (Viewers Only - Not Creator)
-       ======================================== #}
-    {% if not session.user_id or session.user_id != invitation.user_id %}
-    <div class="share-section">
-        <button class="btn btn-primary" onclick="openShareModal()">
+    <!-- Gallery Images Section - Below invitation card, centered and professional -->
+    {% if invitation.gallery_images %}
+        {% set gallery_images = invitation.gallery_images|from_json if invitation.gallery_images is string else invitation.gallery_images %}
+        {% if gallery_images and gallery_images|length > 0 %}
+        <div class="gallery-section mt-4 mb-4">
+            <div class="container" style="max-width: 900px; margin: 0 auto; padding: 0 20px;">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <h3 class="text-center mb-4" style="color: #6F4E37 !important; font-weight: 700; font-size: 1.8rem; position: relative; z-index: 15 !important;">
+                            <i class="fas fa-images me-2"></i>{{ translate_text('our_memories') }}
+                        </h3>
+                        <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; position: relative; z-index: 15 !important;">
+                            {% for image in gallery_images %}
+                            <div class="gallery-item" style="position: relative; z-index: 15 !important;">
+                                <img src="/static/uploads/{{ image }}" 
+                                     alt="Gallery Image {{ loop.index }}" 
+                                     class="gallery-image"
+                                     style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.3s ease; position: relative; z-index: 15 !important;"
+                                     onclick="openImageModal('/static/uploads/{{ image }}')"
+                                     onerror="this.style.display='none';"
+                                     onmouseover="this.style.transform='scale(1.05)'"
+                                     onmouseout="this.style.transform='scale(1)'">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    <!-- Share Button (Creator Only) -->
+    {% if session.user_id and session.user_id == invitation.user_id %}
+    <div class="share-section text-center mt-5 mb-4">
+        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#shareModal">
             <i class="fas fa-share-alt me-2"></i>Share Invitation
         </button>
     </div>
     {% endif %}
-</div>
 
-{# ========================================
-   SHARE MODAL
-   ======================================== #}
-<div class="modal fade" id="shareModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 16px; border: 1px solid rgba(0,0,0,0.1);">
-            <div class="modal-header" style="background: #D4AF37; color: white; border-radius: 16px 16px 0 0;">
-                <h5 class="modal-title">
-                    <i class="fas fa-share-alt me-2"></i>Share This Invitation
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" style="padding: 2rem; background: #f8f9fa;">
-                <!-- Share Link -->
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Share Link:</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="shareUrlInput" 
-                               value="{{ request.url_root }}invitation/{{ invitation.share_url }}" readonly>
-                        <button class="btn btn-outline-primary" onclick="copyShareUrl(event)">
-                            <i class="fas fa-copy"></i> Copy Link
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Download Button -->
-                <div class="mb-4">
-                    <button class="btn btn-primary w-100" onclick="downloadInvitation()" style="background: linear-gradient(135deg, #C9A961 0%, #B39750 100%); border: none; padding: 12px; font-weight: 600;">
-                        <i class="fas fa-download me-2"></i> Download Invitation as PDF
-                    </button>
-                </div>
+    <!-- Wishes Section - Below gallery, centered and professional -->
+    <div class="wishes-section mt-4 mb-4">
+        <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="wishes-container bg-white rounded shadow p-4">
+                        <h3 class="text-center mb-4">
+                            <i class="fas fa-heart text-danger me-2"></i>{{ translate_text('convey_your_wishes') }}
+                        </h3>
+                        
+                        <!-- Wish Form -->
+                        <div class="wish-form mb-4">
+                            <form id="wishForm" class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="wishName" name="name" 
+                                           placeholder="{{ translate_text('your_name') }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-paper-plane me-2"></i>{{ translate_text('send_wish') }}
+                                    </button>
+                                </div>
+                                <div class="col-12">
+                                    <textarea class="form-control" id="wishMessage" name="message" rows="3" 
+                                              placeholder="{{ translate_text('wish_them_with_love') }}" required></textarea>
+                                </div>
+                            </form>
+                        </div>
 
-                <!-- Social Share Buttons -->
-                <div class="social-share-buttons">
-                    <h6 class="mb-3">Share on Social Media:</h6>
-                    <div class="d-flex gap-2 justify-content-center flex-wrap">
-                        <a href="https://wa.me/?text={{ invitation.title }} - {{ request.url }}" target="_blank" 
-                           class="btn btn-success btn-sm" onclick="trackShare('whatsapp')">
-                            <i class="fab fa-whatsapp me-1"></i> WhatsApp
-                        </a>
-                        <a href="https://t.me/share/url?url={{ request.url }}&text={{ invitation.title }}" target="_blank" 
-                           class="btn btn-info btn-sm" onclick="trackShare('telegram')">
-                            <i class="fab fa-telegram me-1"></i> Telegram
-                        </a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" 
-                           class="btn btn-primary btn-sm" onclick="trackShare('facebook')">
-                            <i class="fab fa-facebook me-1"></i> Facebook
-                        </a>
-                        <a href="https://twitter.com/intent/tweet?text={{ invitation.title }}&url={{ request.url }}" target="_blank" 
-                           class="btn btn-dark btn-sm" onclick="trackShare('twitter')">
-                            <i class="fab fa-x-twitter me-1"></i> X
-                        </a>
-                        <a href="mailto:?subject={{ invitation.title }}&body={{ request.url }}" 
-                           class="btn btn-secondary btn-sm" onclick="trackShare('email')">
-                            <i class="fas fa-envelope me-1"></i> Email
-                        </a>
+                        <!-- RSVP Section -->
+                        <div class="rsvp-section mb-5">
+                            <h5 class="mb-3">
+                                <i class="fas fa-calendar-check me-2"></i>{{ translate_text('rsvp') }}
+                            </h5>
+                            <div class="rsvp-options">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <button type="button" onclick="handleRSVP('attending')" class="btn btn-success btn-lg w-100 rsvp-btn" id="rsvpAttendingBtn">
+                                            <i class="fas fa-check-circle me-2"></i>{{ translate_text('im_attending') }}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" onclick="handleRSVP('unable')" class="btn btn-outline-danger btn-lg w-100 rsvp-btn" id="rsvpUnableBtn">
+                                            <i class="fas fa-times-circle me-2"></i>{{ translate_text('unable_to_attend') }}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="rsvp-status mt-3" id="rsvpStatus" style="display: none;">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <span id="rsvpMessage"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wishes Display -->
+                        <div class="wishes-display">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-gift me-2"></i>{{ translate_text('wishes_from_loved_ones') }}
+                                </h5>
+                                <button class="btn btn-outline-primary btn-sm" id="viewAllWishesBtn" onclick="toggleWishesView()">
+                                    <i class="fas fa-expand-arrows-alt me-1"></i>{{ translate_text('view_all') }}
+                                </button>
+                            </div>
+                            <div class="wishes-scroll-container">
+                                <div id="wishesContainer" class="wishes-auto-scroll">
+                                    {% for wish in wishes %}
+                                    <div class="wish-item">
+                                        <div class="wish-card border rounded p-3 h-100">
+                                            <div class="d-flex align-items-start">
+                                                <div class="wish-avatar me-3">
+                                                    <i class="fas fa-user-circle fa-2x text-primary"></i>
+                                                </div>
+                                                <div class="wish-content flex-grow-1">
+                                                    <h6 class="wish-name mb-1">{{ wish.name }}</h6>
+                                                    <p class="wish-message mb-2">{{ wish.message }}</p>
+                                                    <small class="text-muted">
+                                                        {% if wish.created_at %}
+                                                            {% if wish.created_at is string %}
+                                                                {{ wish.created_at }}
+                                                            {% else %}
+                                                                {{ wish.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                                            {% endif %}
+                                                        {% else %}
+                                                            Recently
+                                                        {% endif %}
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div id="noWishes" class="text-center text-muted py-4" {% if wishes %}style="display: none;"{% endif %}>
+                                <i class="fas fa-heart-broken fa-2x mb-2"></i>
+                                <p>{{ translate_text('no_wishes_yet') }}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- QR Code -->
-                <div class="qr-code-section mt-4 text-center">
-                    <h6 class="mb-3 fw-bold">QR Code - Scan to View Invitation:</h6>
-                    <div id="qrcode" style="display: inline-block !important; padding: 1.5rem; background: white; 
-                                            border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); 
-                                            border: 3px solid #D4AF37; min-height: 250px; min-width: 250px;"></div>
-                    <p class="mt-3 text-muted" style="font-size: 14px;">
-                        <i class="fas fa-mobile-alt me-1"></i>Scan this code with your phone camera to open the invitation
-                    </p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-{# ========================================
-   SCRIPTS
-   ======================================== #}
+<!-- Share Button (Floating) - Temporarily Disabled for Debugging -->
+<!--
+<div class="share-floating-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    <button class="btn btn-primary btn-lg rounded-circle" data-bs-toggle="modal" data-bs-target="#shareModal" style="width: 60px; height: 60px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+        <i class="fas fa-share-alt fa-lg"></i>
+    </button>
+</div>
+-->
+
+<!-- Share Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                <h5 class="modal-title" id="shareModalLabel">
+                    <i class="fas fa-share-alt me-2"></i>Share This Invitation
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" style="padding: 2rem;">
+                <div class="share-preview mb-4" style="text-align: center;">
+                    <div class="invitation-preview" style="background: #f8f9fa; padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem;">
+                        <h6 style="color: #2c3e50; margin-bottom: 0.5rem;">{{ invitation.title or 'Event Invitation' }}</h6>
+                        <p style="color: #6c757d; margin: 0; font-size: 0.9rem;">
+                            {% if invitation.event_date %}
+                                {% if invitation.event_date is string %}
+                                    {{ invitation.event_date }}
+                                {% else %}
+                                    {{ invitation.event_date.strftime('%B %d, %Y') }}
+                                {% endif %}
+                            {% else %}
+                                Date TBD
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="share-options">
+                    <label class="form-label" style="font-weight: 600; color: #2c3e50;">Share Link:</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="shareUrlInput" value="{{ request.url_root }}invitation/{{ invitation.share_url }}" readonly style="background: #f8f9fa; border: 2px solid #e9ecef;">
+                        <button class="btn btn-outline-primary" type="button" onclick="copyShareUrl()">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+
+                    <div class="social-share-buttons">
+                        <h6 style="margin-bottom: 1rem; color: #2c3e50;">Share on Social Media:</h6>
+                        <div class="d-flex gap-2 justify-content-center flex-wrap">
+                            <a href="https://wa.me/?text={{ invitation.title or 'Event Invitation' }} - {{ request.url }}" target="_blank" class="btn btn-success btn-sm" onclick="trackShare('whatsapp')">
+                                <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                            </a>
+                            <a href="https://t.me/share/url?url={{ request.url }}&text={{ invitation.title or 'Event Invitation' }}" target="_blank" class="btn btn-info btn-sm" onclick="trackShare('telegram')">
+                                <i class="fab fa-telegram me-1"></i> Telegram
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" class="btn btn-primary btn-sm" onclick="trackShare('facebook')">
+                                <i class="fab fa-facebook me-1"></i> Facebook
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?text={{ invitation.title or 'Event Invitation' }}&url={{ request.url }}" target="_blank" class="btn btn-dark btn-sm" onclick="trackShare('twitter')">
+                                <i class="fab fa-x-twitter me-1"></i> X
+                            </a>
+                            <a href="https://www.instagram.com/" target="_blank" class="btn btn-danger btn-sm" onclick="shareToInstagram()">
+                                <i class="fab fa-instagram me-1"></i> Instagram
+                            </a>
+                            <a href="mailto:?subject={{ invitation.title or 'Event Invitation' }}&body=You're invited! {{ request.url }}" class="btn btn-secondary btn-sm" onclick="trackShare('email')">
+                                <i class="fas fa-envelope me-1"></i> Email
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code Section -->
+                    <div class="qr-code-section mt-4">
+                        <h6 style="margin-bottom: 1rem; color: #2c3e50;">QR Code:</h6>
+                        <div class="text-center">
+                            <div id="qrcode" style="display: inline-block; padding: 1rem; background: white; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+                            <p class="mt-2 small text-muted">Scan to view invitation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="border: none; padding: 1rem 2rem;">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Test Modal -->
+<div class="modal fade" id="testModal" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="testModalLabel">Test Modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>This is a test modal to check if Bootstrap modals are working.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QR Code Library -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
 <script>
-// ==================== GLOBAL VARIABLES ====================
-const invitationUrl = window.location.href;
-const invitationId = {{ invitation.id }};
-const shareUrl = "{{ request.url_root }}invitation/{{ invitation.share_url }}";
-
-// ==================== UTILITY FUNCTIONS ====================
-function showToast(message, type = 'info') {
-    const bgColors = {
-        success: '#28a745',
-        warning: '#ffc107',
-        error: '#dc3545',
-        info: '#17a2b8'
-    };
-    
-    const toast = document.createElement('div');
-    toast.style.cssText = `
-        position: fixed; top: 20px; right: 20px; z-index: 9999;
-        background: ${bgColors[type]}; color: white;
-        padding: 1rem 1.5rem; border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        max-width: 300px; font-weight: 500;
-    `;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    
-    setTimeout(() => toast.remove(), 3000);
-}
-
-function formatWishTime(dateString) {
-    if (!dateString) return 'Just now';
-    
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now - date;
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-    
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-}
-
-// ==================== SHARE FUNCTIONS ====================
+// Template variables - set from server
+const INVITATION_ID = {{ invitation.id|tojson }};
+// Function to open share modal with fallback
 function openShareModal() {
+    console.log('openShareModal called');
     const modal = document.getElementById('shareModal');
-    if (modal) {
-        const bsModal = new bootstrap.Modal(modal);
-        bsModal.show();
-        
-        // Generate QR code when modal is shown
-        modal.addEventListener('shown.bs.modal', generateQRCode, { once: true });
-    }
-}
-
-function copyShareUrl(event) {
-    const input = document.getElementById('shareUrlInput');
-    const btn = event.target.closest('button');
     
-    // Try modern clipboard API first
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(input.value)
-            .then(() => {
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                btn.classList.add('btn-success');
-                
-                showToast('Link copied to clipboard!', 'success');
-                trackShare('copy');
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.classList.remove('btn-success');
-                }, 2000);
-            })
-            .catch(() => {
-                // Fallback to old method
-                fallbackCopyText(input, btn);
-            });
-    } else {
-        // Fallback for older browsers
-        fallbackCopyText(input, btn);
-    }
-}
-
-function fallbackCopyText(input, btn) {
-    input.select();
-    input.setSelectionRange(0, 99999); // For mobile devices
-    
-    try {
-        const successful = document.execCommand('copy');
-        if (successful) {
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            btn.classList.add('btn-success');
-            
-            showToast('Link copied to clipboard!', 'success');
-            trackShare('copy');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('btn-success');
-            }, 2000);
-        } else {
-            showToast('Failed to copy link. Please copy manually.', 'error');
-        }
-    } catch (err) {
-        showToast('Failed to copy link. Please copy manually.', 'error');
-    }
-}
-
-function downloadInvitation() {
-    // Create a canvas and capture the invitation card
-    const invitationCard = document.querySelector('.template-container') || document.querySelector('.invitation-card');
-    
-    if (!invitationCard) {
-        showToast('Unable to find invitation content. Please try again.', 'error');
+    if (!modal) {
+        console.error('Share modal not found!');
+        alert('Share modal not found. Please refresh the page.');
         return;
     }
     
-    // Use html2canvas library if available, otherwise use print
-    if (typeof html2canvas !== 'undefined') {
-        html2canvas(invitationCard, {
-            backgroundColor: '#ffffff',
-            scale: 2,
-            useCORS: true,
-            logging: false
-        }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = '{{ invitation.title|default("invitation")|replace(" ", "_") }}.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            showToast('Invitation downloaded successfully!', 'success');
-            trackShare('download');
-        }).catch(err => {
-            console.error('Download failed:', err);
-            // Fallback to print
-            window.print();
-        });
+    // Try Bootstrap modal first
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+        try {
+            console.log('Using Bootstrap modal');
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            
+            // Generate QR code when modal is shown
+            modal.addEventListener('shown.bs.modal', function() {
+                generateQRCode();
+            });
+        } catch (error) {
+            console.error('Bootstrap modal error:', error);
+            showModalManually(modal);
+        }
     } else {
-        // Fallback: Open print dialog
-        window.print();
-        showToast('Opening print dialog. You can save as PDF.', 'info');
-        trackShare('download');
+        console.log('Bootstrap not available, using manual modal');
+        showModalManually(modal);
+        // Generate QR code for manual modal
+        setTimeout(generateQRCode, 100);
     }
 }
 
-function trackShare(method) {
-    fetch('/api/track-share', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            invitation_id: invitationId,
-            share_method: method,
-            url: invitationUrl
-        })
-    }).catch(err => console.error('Share tracking failed:', err));
+// Fallback function to show modal manually
+function showModalManually(modal) {
+    console.log('Showing modal manually');
+    modal.style.display = 'block';
+    modal.classList.add('show');
+    document.body.classList.add('modal-open');
+    
+    // Add backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop fade show';
+    backdrop.id = 'manualBackdrop';
+    document.body.appendChild(backdrop);
+    
+    // Close modal when clicking backdrop
+    backdrop.addEventListener('click', function() {
+        closeModalManually(modal);
+    });
 }
 
-function generateQRCode() {
-    const container = document.getElementById('qrcode');
-    if (container && typeof QRCode !== 'undefined') {
-        container.innerHTML = '';
-        new QRCode(container, {
-            text: shareUrl,
-            width: 200,
-            height: 200,
-            colorDark: "#101357",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+// Function to close modal manually
+function closeModalManually(modal) {
+    modal.style.display = 'none';
+    modal.classList.remove('show');
+    document.body.classList.remove('modal-open');
+    
+    // Remove backdrop
+    const backdrop = document.getElementById('manualBackdrop');
+    if (backdrop) {
+        backdrop.remove();
+    }
+}
+
+// Debug function to test modal
+function testModal() {
+    console.log('Testing modal...');
+    const modal = document.getElementById('shareModal');
+    if (modal) {
+        console.log('Modal found:', modal);
+        try {
+            const bsModal = new bootstrap.Modal(modal);
+            console.log('Bootstrap Modal instance:', bsModal);
+            bsModal.show();
+        } catch (error) {
+            console.error('Error creating Bootstrap modal:', error);
+            // Fallback: show modal manually
+            showModalManually(modal);
+        }
+    } else {
+        console.log('Modal not found!');
+    }
+}
+
+// Test modal on page load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, checking for share button...');
+    console.log('Bootstrap available:', typeof bootstrap !== 'undefined');
+    console.log('Bootstrap Modal available:', typeof bootstrap?.Modal !== 'undefined');
+    
+    const shareButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
+    console.log('Share buttons found:', shareButtons.length);
+    
+    shareButtons.forEach(button => {
+        console.log('Share button:', button);
+        button.addEventListener('click', function(e) {
+            console.log('Share button clicked!');
+            console.log('Target modal:', this.getAttribute('data-bs-target'));
+            
+            // Check if Bootstrap is available
+            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                const targetModal = this.getAttribute('data-bs-target');
+                const modalElement = document.querySelector(targetModal);
+                if (modalElement) {
+                    try {
+                        const bsModal = new bootstrap.Modal(modalElement);
+                        bsModal.show();
+                    } catch (error) {
+                        console.error('Error showing modal:', error);
+                        // Fallback: show modal manually
+                        showModalManually(modalElement);
+                    }
+                } else {
+                    console.error('Modal element not found:', targetModal);
+                }
+            } else {
+                console.error('Bootstrap Modal not available');
+                // Fallback: show modal manually
+                const targetModal = this.getAttribute('data-bs-target');
+                const modalElement = document.querySelector(targetModal);
+                if (modalElement) {
+                    showModalManually(modalElement);
+                }
+            }
         });
+    });
+    
+    // Add manual modal close functionality
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal') || e.target.classList.contains('btn-close')) {
+            const modal = e.target.closest('.modal');
+            if (modal) {
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    try {
+                        const bsModal = bootstrap.Modal.getInstance(modal);
+                        if (bsModal) {
+                            bsModal.hide();
+                        } else {
+                            closeModalManually(modal);
+                        }
+                    } catch (error) {
+                        closeModalManually(modal);
+                    }
+                } else {
+                    closeModalManually(modal);
+                }
+            }
+        }
+    });
+});
+
+function copyShareUrl() {
+    const shareUrlInput = document.getElementById('shareUrlInput');
+    if (!shareUrlInput) {
+        console.error('Share URL input not found');
+        showToast('Share link not found', 'error');
+        return;
+    }
+    
+    const shareUrl = shareUrlInput.value;
+    const btn = event.target.closest('button');
+    
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareUrl).then(function() {
+            showSuccessFeedback(btn);
+            showToast('Link copied to clipboard!', 'success');
+            trackShare('copy');
+        }).catch(function(err) {
+            console.error('Clipboard API failed, trying fallback:', err);
+            fallbackCopy(shareUrlInput, btn);
+        });
+    } else {
+        // Fallback for older browsers or non-secure contexts
+        fallbackCopy(shareUrlInput, btn);
+    }
+}
+
+function fallbackCopy(input, btn) {
+    try {
+        // Select the text
+        input.select();
+        input.setSelectionRange(0, 99999); // For mobile devices
+        
+        // Try execCommand
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showSuccessFeedback(btn);
+            showToast('Link copied to clipboard!', 'success');
+            trackShare('copy');
+        } else {
+            throw new Error('execCommand failed');
+        }
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        showToast('Failed to copy link. Please select and copy manually.', 'error');
+    }
+}
+
+function showSuccessFeedback(btn) {
+    if (!btn) return;
+    
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i>';
+    btn.classList.remove('btn-outline-primary');
+    btn.classList.add('btn-success');
+
+    setTimeout(function() {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove('btn-success');
+        btn.classList.add('btn-outline-primary');
+    }, 2000);
+}
+
+// Instagram sharing function
+function shareToInstagram() {
+    // Copy the invitation URL to clipboard first
+    copyShareUrl();
+    
+    // Show instructions for Instagram sharing
+    setTimeout(function() {
+        showToast('Link copied! Open Instagram and paste it in your story or post.', 'info');
+    }, 1000);
+    
+    // Track the share
+    trackShare('instagram');
+}
+
+// Track sharing actions
+function trackShare(method) {
+    console.log('Tracking share:', method, 'for invitation:', INVITATION_ID);
+    
+    fetch('/api/track-share', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            invitation_id: INVITATION_ID,
+            share_method: method,
+            url: window.location.href
+        })
+    })
+    .then(response => {
+        console.log('Share tracking response:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Share tracked successfully:', data);
+        // Optional: Show success message
+        if (data.success) {
+            console.log('Share count updated');
+        }
+    })
+    .catch(error => {
+        console.error('Share tracking failed:', error);
+        // Optional: Show error message to user
+        showToast('Failed to track share action', 'warning');
+    });
+}
+
+// Generate QR Code
+function generateQRCode() {
+    const qrContainer = document.getElementById('qrcode');
+    if (qrContainer) {
+        // Clear existing QR code
+        qrContainer.innerHTML = '';
+        
+        // Check if QRCode library is available
+        if (typeof QRCode !== 'undefined') {
+            try {
+                // Generate QR code using QRCode library
+                new QRCode(qrContainer, {
+                    text: window.location.href,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#101357",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                console.log('QR Code generated successfully');
+                // Track QR code generation as a share action
+                trackShare('qr');
+            } catch (error) {
+                console.error('Error generating QR code with library:', error);
+                generateQRCodeFallback();
+            }
+        } else {
+            console.log('QRCode library not available, using fallback');
+            generateQRCodeFallback();
+        }
+    }
+}
+
+// Fallback QR code generation using external API
+function generateQRCodeFallback() {
+    const qrContainer = document.getElementById('qrcode');
+    if (qrContainer) {
+        const url = window.location.href;
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+        
+        qrContainer.innerHTML = `
+            <img src="${qrCodeUrl}" 
+                 alt="QR Code" 
+                 style="max-width: 200px; height: auto;"
+                 onerror="this.style.display='none'; this.parentNode.innerHTML='<p class=\\"text-muted\\">QR Code unavailable</p>';">
+        `;
+        
+        // Track QR code generation as a share action
         trackShare('qr');
     }
 }
 
-// ==================== LOCATION FUNCTIONS ====================
-function openLocation(address) {
-    if (address && address.trim()) {
-        const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.trim())}`;
-        window.open(url, '_blank');
+function showToast(message, type) {
+    // Create toast notification
+    const toast = document.createElement('div');
+    toast.className = `toast align-items-center text-white bg-${type} border-0`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+
+    // Add to body
+    document.body.appendChild(toast);
+
+    // Show toast
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+
+    // Remove from DOM after hiding
+    toast.addEventListener('hidden.bs.toast', function() {
+        toast.remove();
+    });
+}
+
+// Location functionality
+function openLocation(venueAddress) {
+    if (venueAddress && venueAddress.trim()) {
+        const encodedAddress = encodeURIComponent(venueAddress.trim());
+        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+        window.open(googleMapsUrl, '_blank');
+    } else {
+        showToast('Venue address not available', 'warning');
     }
 }
 
-// ==================== WISHES FUNCTIONS ====================
-function addWishToDisplay(wish) {
-    const container = document.getElementById('wishesContainer');
-    const noWishes = document.getElementById('noWishes');
+// RSVP functionality
+function handleRSVP(response) {
+    const rsvpStatus = document.getElementById('rsvpStatus');
+    const rsvpMessage = document.getElementById('rsvpMessage');
+    const rsvpButtons = document.querySelectorAll('.rsvp-btn');
     
-    const wishCard = document.createElement('div');
-    wishCard.className = 'wish-card';
-    wishCard.innerHTML = `
-        <div class="d-flex align-items-start">
-            <div class="me-3">
-                <i class="fas fa-user-circle fa-2x text-primary"></i>
-            </div>
-            <div class="flex-grow-1">
-                <h6 class="mb-1"><strong>${wish.name}</strong></h6>
-                <p class="mb-1">${wish.message}</p>
-                <small class="text-muted">${formatWishTime(wish.created_at)}</small>
-            </div>
-        </div>
-    `;
+    // Disable all buttons
+    rsvpButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+    });
     
-    container.insertBefore(wishCard, container.firstChild);
-    if (noWishes) noWishes.style.display = 'none';
+    if (response === 'attending') {
+        // Add to Google Calendar
+        addToGoogleCalendar();
+        
+        // Show success message
+        rsvpMessage.textContent = 'Thank you for confirming your attendance! We\'ve added this event to your Google Calendar.';
+        rsvpStatus.style.display = 'block';
+        rsvpStatus.querySelector('.alert').className = 'alert alert-success';
+        
+        // Update button state
+        document.querySelector('.rsvp-btn.btn-success').innerHTML = '<i class="fas fa-check me-2"></i>Confirmed';
+        document.querySelector('.rsvp-btn.btn-success').classList.remove('btn-success');
+        document.querySelector('.rsvp-btn.btn-success').classList.add('btn-outline-success');
+        
+    } else if (response === 'unable') {
+        // Show unable to attend message and scroll to wishes
+        rsvpMessage.textContent = 'We understand you can\'t make it. Please share your wishes for the event below.';
+        rsvpStatus.style.display = 'block';
+        rsvpStatus.querySelector('.alert').className = 'alert alert-warning';
+        
+        // Scroll to wishes section
+        setTimeout(() => {
+            document.querySelector('.wishes-display').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 1000);
+        
+        // Update button state
+        document.querySelector('.rsvp-btn.btn-outline-danger').innerHTML = '<i class="fas fa-times me-2"></i>Not Attending';
+        document.querySelector('.rsvp-btn.btn-outline-danger').classList.remove('btn-outline-danger');
+        document.querySelector('.rsvp-btn.btn-outline-danger').classList.add('btn-danger');
+    }
     
-    wishCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Save RSVP to server
+    saveRSVP(response);
 }
 
-// ==================== INITIALIZATION ====================
+// Add event to Google Calendar
+function addToGoogleCalendar() {
+    // Get event details from the invitation
+    const eventTitle = document.querySelector('.event-title, h1')?.textContent?.trim() || 
+                      document.querySelector('.invitation-card h1')?.textContent?.trim() || 
+                      '{{ invitation.title or "Event Invitation" }}';
+    
+    // Get event date
+    let eventDate = null;
+    const dateElement = document.querySelector('.event-date, .date-time');
+    if (dateElement) {
+        const dateText = dateElement.textContent.trim();
+        // Try to parse the date from the text
+        const dateMatch = dateText.match(/(\w+\s+\d+,\s+\d{4})/);
+        if (dateMatch) {
+            eventDate = new Date(dateMatch[1]);
+        }
+    }
+    
+    // If no date found, use invitation date from server
+    if (!eventDate || isNaN(eventDate.getTime())) {
+        {% if invitation.event_date %}
+            {% if invitation.event_date is string %}
+                eventDate = new Date('{{ invitation.event_date }}');
+            {% else %}
+                eventDate = new Date('{{ invitation.event_date.strftime("%Y-%m-%d") }}');
+            {% endif %}
+        {% else %}
+            eventDate = new Date();
+        {% endif %}
+    }
+    
+    // Get event time
+    let eventTime = null;
+    const timeElement = document.querySelector('.date-time');
+    if (timeElement) {
+        const timeText = timeElement.textContent.trim();
+        const timeMatch = timeText.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+        if (timeMatch) {
+            let hours = parseInt(timeMatch[1]);
+            const minutes = parseInt(timeMatch[2]);
+            const ampm = timeMatch[3].toUpperCase();
+            if (ampm === 'PM' && hours !== 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+            eventDate.setHours(hours, minutes, 0, 0);
+        }
+    }
+    
+    {% if invitation.event_time %}
+    // Use invitation time from server
+    const timeStr = '{{ invitation.event_time }}';
+    const timeMatch = timeStr.match(/(\d{1,2}):(\d{2})/);
+    if (timeMatch) {
+        eventDate.setHours(parseInt(timeMatch[1]), parseInt(timeMatch[2]), 0, 0);
+    }
+    {% endif %}
+    
+    // Get venue address
+    const venueElement = document.querySelector('.venue-info, .venue');
+    const venueAddress = venueElement?.textContent?.trim() || 
+                        '{{ invitation.venue_address or "" }}';
+    
+    // Get event description
+    const descriptionElement = document.querySelector('.event-description, .message');
+    const eventDescription = descriptionElement?.textContent?.trim() || 
+                            '{{ invitation.description or "Event invitation from EventCraft Pro" }}';
+    
+    // Create start and end dates (default 2 hours duration)
+    const startDate = new Date(eventDate);
+    const endDate = new Date(startDate.getTime() + (2 * 60 * 60 * 1000)); // 2 hours duration
+    
+    // Format dates for Google Calendar (YYYYMMDDTHHMMSSZ)
+    const formatDateForGoogle = (date) => {
+        const year = date.getUTCFullYear();
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const hours = String(date.getUTCHours()).padStart(2, '0');
+        const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+        const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+        return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+    };
+    
+    const startDateStr = formatDateForGoogle(startDate);
+    const endDateStr = formatDateForGoogle(endDate);
+    
+    // Create Google Calendar URL
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${startDateStr}/${endDateStr}&details=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(venueAddress)}`;
+    
+    // Open Google Calendar in new tab
+    window.open(googleCalendarUrl, '_blank');
+}
+
+// Format date for Google Calendar
+function formatDateForGoogleCalendar(date) {
+    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+// Save RSVP to server
+function saveRSVP(response) {
+    // Get invitation ID from the page
+    const invitationId = {{ invitation.id|tojson }};
+    const shareUrl = '{{ invitation.share_url|tojson }}';
+    
+    fetch('/save-rsvp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            invitation_id: invitationId,
+            share_url: shareUrl,
+            response: response,
+            timestamp: new Date().toISOString()
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('RSVP saved successfully');
+        } else {
+            console.error('Failed to save RSVP:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error saving RSVP:', error);
+    });
+}
+
+// Toggle wishes view between scroll and grid
+function toggleWishesView() {
+    const container = document.getElementById('wishesContainer');
+    const btn = document.getElementById('viewAllWishesBtn');
+    
+    if (container.classList.contains('wishes-auto-scroll')) {
+        // Switch to grid view
+        container.classList.remove('wishes-auto-scroll');
+        container.classList.add('wishes-grid-view');
+        btn.innerHTML = '<i class="fas fa-compress-arrows-alt me-1"></i>Scroll View';
+    } else {
+        // Switch to scroll view
+        container.classList.remove('wishes-grid-view');
+        container.classList.add('wishes-auto-scroll');
+        btn.innerHTML = '<i class="fas fa-expand-arrows-alt me-1"></i>View All';
+    }
+}
+
+// Wish form functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Wish Form Handler
     const wishForm = document.getElementById('wishForm');
+    const wishesContainer = document.getElementById('wishesContainer');
+    const noWishes = document.getElementById('noWishes');
+    
+    // Check if user has already wished when page loads
+    checkWishStatus();
+    
+    function checkWishStatus() {
+        fetch(`/check-wish-status/{{ invitation.share_url }}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.already_wished) {
+                    // User has already wished, disable form
+                    disableWishForm();
+                }
+            })
+            .catch(error => {
+                console.error('Error checking wish status:', error);
+            });
+    }
+
+    function disableWishForm() {
+        const form = document.getElementById('wishForm');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        // Disable all form inputs
+        form.querySelectorAll('input, textarea, button').forEach(input => {
+            input.disabled = true;
+        });
+        
+        // Update submit button
+        submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Already Wished';
+        submitBtn.classList.remove('btn-primary');
+        submitBtn.classList.add('btn-secondary');
+        
+        // Add message
+        const message = document.createElement('div');
+        message.className = 'alert alert-info mt-3';
+        message.innerHTML = '<i class="fas fa-info-circle me-2"></i>You have already sent your wish. Thank you for your kind words!';
+        form.appendChild(message);
+    }
+    
+    function disableWishForm() {
+        if (wishForm) {
+            // Disable form fields
+            const nameInput = document.getElementById('wishName');
+            const messageInput = document.getElementById('wishMessage');
+            const submitBtn = wishForm.querySelector('button[type="submit"]');
+            
+            if (nameInput) nameInput.disabled = true;
+            if (messageInput) messageInput.disabled = true;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Already Wished';
+                submitBtn.classList.add('btn-success');
+                submitBtn.classList.remove('btn-primary');
+            }
+        }
+    }
+    
     if (wishForm) {
         wishForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1137,225 +2734,292 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+            // Show processing state
+            const submitBtn = wishForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
             submitBtn.disabled = true;
             
+            // Send wish to server
             fetch('/add-wish/{{ invitation.share_url }}', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify(formData)
             })
-            .then(res => res.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Failed to send wish');
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
-                    addWishToDisplay(data.wish);
+                    // Add new wish to display
+                    if (wishesContainer && typeof addWishToDisplay === 'function') {
+                        addWishToDisplay(data.wish);
+                    } else {
+                        // Reload page to show new wish
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }
+                    
+                    // Clear form
                     wishForm.reset();
-                    showToast(data.message, 'success');
+                    
+                    // Hide no wishes message
+                    if (noWishes) {
+                        noWishes.style.display = 'none';
+                    }
+                    
+                    showToast(data.message || 'Wish sent successfully!', 'success');
+                    
+                    // Disable form after successful submission
+                    disableWishForm();
                 } else {
-                    showToast(data.message || 'Failed to send wish', 'warning');
+                    if (data.already_wished) {
+                        // Show existing wish information
+                        if (wishesContainer && typeof showAlreadyWishedMessage === 'function') {
+                            showAlreadyWishedMessage(data.existing_wish);
+                        }
+                        showToast(data.message, 'warning');
+                        disableWishForm();
+                    } else {
+                        showToast(data.message || 'Failed to send wish', 'error');
+                    }
                 }
             })
-            .catch(() => showToast('Failed to send wish', 'error'))
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Failed to send wish. Please try again.', 'error');
+            })
             .finally(() => {
-                submitBtn.innerHTML = originalText;
+                // Reset button state
+                submitBtn.innerHTML = originalBtnText;
                 submitBtn.disabled = false;
             });
         });
     }
-});
-
-// ==================== GOOGLE CALENDAR INTEGRATION ====================
-function addToGoogleCalendar() {
-    // Get event details
-    const title = "{{ invitation.title|replace("'", "\\'") }}";
-    const description = "{{ invitation.description|replace("'", "\\'")|default('') }}";
-    const location = "{{ invitation.venue_address|replace("'", "\\'")|default('') }}";
     
-    // Parse event date and time
-    const eventDate = "{{ invitation.event_date }}";
-    const eventTime = "{{ invitation.event_time|default('10:00') }}";
-    
-    // Convert to Google Calendar format (YYYYMMDDTHHMMSS)
-    let startDateTime = '';
-    let endDateTime = '';
-    
-    if (eventDate) {
-        // Parse the date
-        const dateObj = new Date(eventDate);
+    function formatWishTime(dateString) {
+        if (!dateString) return 'Just now';
         
-        // Parse time or use default
-        let [hours, minutes] = eventTime.split(':');
-        if (!hours) hours = '10';
-        if (!minutes) minutes = '00';
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
         
-        // Set start time
-        dateObj.setHours(parseInt(hours), parseInt(minutes), 0);
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
         
-        // Format: YYYYMMDDTHHMMSSZ
-        const year = dateObj.getFullYear();
-        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-        const day = String(dateObj.getDate()).padStart(2, '0');
-        const hour = String(dateObj.getHours()).padStart(2, '0');
-        const minute = String(dateObj.getMinutes()).padStart(2, '0');
-        
-        startDateTime = `${year}${month}${day}T${hour}${minute}00`;
-        
-        // End time (2 hours later)
-        dateObj.setHours(dateObj.getHours() + 2);
-        const endYear = dateObj.getFullYear();
-        const endMonth = String(dateObj.getMonth() + 1).padStart(2, '0');
-        const endDay = String(dateObj.getDate()).padStart(2, '0');
-        const endHour = String(dateObj.getHours()).padStart(2, '0');
-        const endMinute = String(dateObj.getMinutes()).padStart(2, '0');
-        
-        endDateTime = `${endYear}${endMonth}${endDay}T${endHour}${endMinute}00`;
+        // For older dates, show formatted date
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
     }
     
-    // Build Google Calendar URL
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startDateTime}/${endDateTime}&details=${encodeURIComponent(description)}&location=${encodeURIComponent(location)}`;
-    
-    // Open in new tab
-    window.open(googleCalendarUrl, '_blank');
-    
-    // Show confirmation
-    showToast('✅ Event added to your calendar!', 'success');
-}
-
-// ==================== BLESSING POPUP ====================
-function showBlessingPopup() {
-    // Create modal HTML
-    const modal = document.createElement('div');
-    modal.id = 'blessingModal';
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10000;
-        animation: fadeIn 0.3s ease;
-    `;
-    
-    modal.innerHTML = `
-        <div style="background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%); 
-                    padding: 40px; 
-                    border-radius: 20px; 
-                    max-width: 500px; 
-                    width: 90%; 
-                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-                    text-align: center;
-                    position: relative;
-                    animation: slideIn 0.4s ease;">
-            <button onclick="closeBlessingPopup()" 
-                    style="position: absolute; 
-                           top: 15px; 
-                           right: 15px; 
-                           background: rgba(255,255,255,0.2); 
-                           border: none; 
-                           width: 35px; 
-                           height: 35px; 
-                           border-radius: 50%; 
-                           cursor: pointer; 
-                           font-size: 20px; 
-                           color: white;
-                           transition: all 0.3s;"
-                    onmouseover="this.style.background='rgba(255,255,255,0.3)'"
-                    onmouseout="this.style.background='rgba(255,255,255,0.2)'">
-                ×
-            </button>
-            
-            <div style="font-size: 60px; margin-bottom: 20px;">🙏</div>
-            
-            <h2 style="color: white; font-size: 28px; font-weight: 700; margin-bottom: 15px;">
-                We Understand
-            </h2>
-            
-            <p style="color: rgba(255,255,255,0.95); font-size: 18px; line-height: 1.6; margin-bottom: 25px;">
-                Though you can't join us in person, your blessings mean the world to us.
-            </p>
-            
-            <div style="background: rgba(255,255,255,0.95); 
-                        padding: 20px; 
-                        border-radius: 15px; 
-                        margin-bottom: 25px;">
-                <p style="color: white; font-size: 20px; font-weight: 600; margin: 0; font-style: italic;">
-                    "Bless us with your wishes"
-                </p>
+    function addWishToDisplay(wish) {
+        const wishItem = document.createElement('div');
+        wishItem.className = 'wish-item';
+        wishItem.innerHTML = `
+            <div class="wish-card border rounded p-3 h-100">
+                <div class="d-flex align-items-start">
+                    <div class="wish-avatar me-3">
+                        <i class="fas fa-user-circle fa-2x text-primary"></i>
+                    </div>
+                    <div class="wish-content flex-grow-1">
+                        <h6 class="wish-name mb-1">${wish.name}</h6>
+                        <p class="wish-message mb-2">${wish.message}</p>
+                        <small class="text-muted">${formatWishTime(wish.created_at)}</small>
+                    </div>
+                </div>
             </div>
-            
-            <button onclick="scrollToWishes()" 
-                    style="background: white; 
-                           color: #6F4E37; 
-                           border: none; 
-                           padding: 15px 35px; 
-                           border-radius: 25px; 
-                           font-size: 16px; 
-                           font-weight: 600; 
-                           cursor: pointer; 
-                           box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                           transition: all 0.3s;"
-                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,0,0,0.3)'"
-                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.2)'">
-                <i class="fas fa-heart" style="margin-right: 8px;"></i>
-                Send Your Blessings
-            </button>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Add animation styles
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-function closeBlessingPopup() {
-    const modal = document.getElementById('blessingModal');
-    if (modal) {
-        modal.style.animation = 'fadeOut 0.3s ease';
-        setTimeout(() => modal.remove(), 300);
+        `;
+        
+        // Add to beginning of container
+        wishesContainer.insertBefore(wishItem, wishesContainer.firstChild);
+        
+        // Auto-scroll to new wish (horizontal scroll)
+        wishItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
     }
-}
-
-function scrollToWishes() {
-    closeBlessingPopup();
-    // Scroll to wishes section
-    const wishesSection = document.querySelector('.wishes-section-content');
-    if (wishesSection) {
-        wishesSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Focus on the name input
+    
+    function showAlreadyWishedMessage(existingWish) {
+        // Create a special message card for already wished users
+        const alreadyWishedCard = document.createElement('div');
+        alreadyWishedCard.className = 'wish-item';
+        alreadyWishedCard.innerHTML = `
+            <div class="wish-card border rounded p-3 h-100" style="border-color: #ffc107 !important; background: linear-gradient(145deg, #fff3cd 0%, #ffeaa7 100%) !important;">
+                <div class="d-flex align-items-start">
+                    <div class="wish-avatar me-3">
+                        <i class="fas fa-check-circle fa-2x text-warning"></i>
+                    </div>
+                    <div class="wish-content flex-grow-1">
+                        <h6 class="wish-name mb-1 text-warning">
+                            <i class="fas fa-heart me-1"></i>Your Previous Wish
+                        </h6>
+                        <p class="wish-message mb-2">${existingWish.message}</p>
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>Sent ${formatWishTime(existingWish.created_at)}
+                        </small>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Add to beginning of container
+        wishesContainer.insertBefore(alreadyWishedCard, wishesContainer.firstChild);
+        
+        // Auto-scroll to the message
+        alreadyWishedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }
+    
+    function showToast(message, type) {
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : type === 'error' ? '#dc3545' : '#17a2b8'};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+            font-weight: 500;
+        `;
+        toast.textContent = message;
+        
+        // Add to body
+        document.body.appendChild(toast);
+        
+        // Auto-remove after 3 seconds
         setTimeout(() => {
-            const nameInput = document.getElementById('wishName');
-            if (nameInput) {
-                nameInput.focus();
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
             }
-        }, 500);
+        }, 3000);
     }
-}
+    
+    // Gallery image modal functionality
+    function openImageModal(imageSrc) {
+        // Create modal overlay
+        const modal = document.createElement('div');
+        modal.className = 'image-modal-overlay';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        `;
+        
+        // Create image container
+        const imgContainer = document.createElement('div');
+        imgContainer.style.cssText = `
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        `;
+        
+        // Create image
+        const img = document.createElement('img');
+        img.src = imageSrc;
+        img.style.cssText = `
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        `;
+        
+        // Create close button
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 40px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        `;
+        closeBtn.onmouseover = function() {
+            this.style.background = 'rgba(255,255,255,0.4)';
+        };
+        closeBtn.onmouseout = function() {
+            this.style.background = 'rgba(255,255,255,0.2)';
+        };
+        
+        // Assemble modal
+        imgContainer.appendChild(img);
+        imgContainer.appendChild(closeBtn);
+        modal.appendChild(imgContainer);
+        document.body.appendChild(modal);
+        
+        // Close modal on click
+        const closeModal = function() {
+            document.body.removeChild(modal);
+        };
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal || e.target === closeBtn) {
+                closeModal();
+            }
+        });
+        
+        // Close on Escape key
+        const escapeHandler = function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                document.removeEventListener('keydown', escapeHandler);
+            }
+        };
+        document.addEventListener('keydown', escapeHandler);
+    }
+    
+    // Add hover effect to gallery images
+    document.addEventListener('DOMContentLoaded', function() {
+        const galleryImages = document.querySelectorAll('.gallery-image');
+        galleryImages.forEach(img => {
+            img.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+            });
+            img.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+});
 </script>
 
-<style>
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-</style>
-
+<!-- Add html2canvas library for downloading -->
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 {% endblock %}
-

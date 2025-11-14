@@ -164,55 +164,7 @@ def register_routes(app):
     def index():
         if is_authenticated():
             return redirect(url_for('dashboard'))
-        
-        # Get all images from images/home directory
-        home_images = []
-        home_images_dir = os.path.join('images', 'home')
-        if os.path.exists(home_images_dir):
-            try:
-                for filename in os.listdir(home_images_dir):
-                    filepath = os.path.join(home_images_dir, filename)
-                    # Check if it's a file and has image extension
-                    if os.path.isfile(filepath) and filename.lower().endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
-                        home_images.append({
-                            'filename': filename,
-                            'path': f'/images/home/{filename}'
-                        })
-                # Sort images by filename for consistent ordering
-                home_images.sort(key=lambda x: x['filename'])
-                app.logger.info(f"Found {len(home_images)} images in {home_images_dir}")
-            except Exception as e:
-                app.logger.error(f"Error reading home images directory: {str(e)}")
-        else:
-            app.logger.warning(f"Home images directory does not exist: {home_images_dir}")
-        
-        # Get category images from images/home1 directory
-        category_images = {}
-        home1_images_dir = os.path.join('images', 'home1')
-        if os.path.exists(home1_images_dir):
-            try:
-                # Map category names to image filenames
-                category_mapping = {
-                    'wedding': 'weddings.jpg',
-                    'birthday': 'birthdays.jpg',
-                    'corporate': 'corporateevents.jpg',
-                    'babyshower': 'babyshowers.jpg',
-                    'anniversary': 'anniversaries.jpg',
-                    'custom': 'customevents.jpg'
-                }
-                
-                for category, image_filename in category_mapping.items():
-                    image_path = os.path.join(home1_images_dir, image_filename)
-                    if os.path.exists(image_path) and os.path.isfile(image_path):
-                        category_images[category] = f'/images/home1/{image_filename}'
-                
-                app.logger.info(f"Found {len(category_images)} category images in {home1_images_dir}")
-            except Exception as e:
-                app.logger.error(f"Error reading home1 images directory: {str(e)}")
-        else:
-            app.logger.warning(f"Home1 images directory does not exist: {home1_images_dir}")
-        
-        return render_template('index.html', home_images=home_images, category_images=category_images)
+        return render_template('index.html')
 
     @app.route('/images/<path:filename>')
     def serve_image(filename):
@@ -574,11 +526,8 @@ def register_routes(app):
             token_response = requests.post(token_url, data=token_data)
             
             if token_response.status_code != 200:
-                error_details = token_response.text
-                app.logger.error(f"Token exchange failed: {token_response.status_code} - {error_details}")
-                app.logger.error(f"Redirect URI used: {app.config['GOOGLE_REDIRECT_URI']}")
-                app.logger.error(f"Client ID configured: {'Yes' if app.config['GOOGLE_CLIENT_ID'] else 'No'}")
-                flash('Google sign-in failed. Please ensure your Google account settings allow third-party apps.', 'error')
+                app.logger.error(f"Token exchange failed: {token_response.status_code} - {token_response.text}")
+                flash('Failed to exchange authorization code for token', 'error')
                 return redirect(url_for('auth'))
             
             token_json = token_response.json()
@@ -1419,93 +1368,71 @@ def register_routes(app):
 
     @app.route('/create-invitation')
     def create_invitation():
-        try:
-            print("=== CREATE INVITATION ROUTE CALLED ===")
-            if not is_authenticated():
-                print("User not authenticated, redirecting to auth")
-                flash('Please login to create an invitation', 'error')
-                return redirect(url_for('auth'))
-            
-            print("User authenticated, importing form")
-            # Import form
-            from forms import InvitationForm
-            form = InvitationForm()
-            print(f"Form created successfully: {form}")
-            
-            # Get template and event_type parameters
-            selected_template = request.args.get('template')
-            template_id = request.args.get('template_id')  # Template ID from database
-            event_type = request.args.get('event_type', 'birthday')  # Default to birthday
-            print(f"Parameters - template: {selected_template}, template_id: {template_id}, event_type: {event_type}")
-            
-            # If no template is selected, redirect to templates page to select event and template first
-            if not selected_template and not template_id:
-                return redirect(url_for('templates'))
-            
-            # Get current user information
-            try:
-                current_user = User.query.get(session['user_id'])
-                if not current_user:
-                    app.logger.error(f"User not found for session user_id: {session['user_id']}")
-                    flash('User not found. Please login again.', 'error')
-                    session.clear()
-                    return redirect(url_for('auth'))
-                
-            except Exception as e:
-                app.logger.error(f"Error getting user: {str(e)}")
-                flash('Error retrieving user information', 'error')
-                return redirect(url_for('auth'))
-            
-            # If template_id is provided, fetch the template from database
-            selected_template_obj = None
-            if template_id:
-                try:
-                    selected_template_obj = Template.query.get(int(template_id))
-                    if selected_template_obj:
-                        selected_template = selected_template_obj.name
-                        event_type = selected_template_obj.event_type  # Use template's event type
-                except (ValueError, TypeError) as e:
-                    app.logger.error(f"Error fetching template: {str(e)}")
-                    pass
-            
-            # Fetch templates for the selected event type - Only templates with images from templatesimages/
-            templates = Template.query.filter_by(event_type=event_type, is_active=True)\
-                .filter(Template.preview_image.like('/images/templatesimages/%'))\
-                .order_by(Template.name.asc()).all()
-            
-            # Also fetch all active templates for theme selection page - Only with templatesimages/
-            all_templates = Template.query.filter_by(is_active=True)\
-                .filter(Template.preview_image.like('/images/templatesimages/%'))\
-                .order_by(Template.event_type.asc(), Template.name.asc()).all()
-            
-            # Optimize: Only fetch active event types
-            event_types = EventType.query.filter_by(is_active=True).order_by(EventType.sort_order.asc()).limit(10).all()
-            
-            # Determine which step to show
-            # If template is selected, go directly to details form, otherwise show theme selection
-            show_details = bool(selected_template or template_id)
-            
-            return render_template('invitation/create.html', 
-                                 form=form,
-                                 event_types=event_types, 
-                                 selected_template=selected_template,
-                                 selected_template_obj=selected_template_obj,
-                                 template_id=template_id if 'template_id' in locals() else None,
-                                 templates=templates,
-                                 all_templates=all_templates,
-                                 event_type=event_type,
-                                 current_user=current_user,
-                                 show_details=show_details)
+        if not is_authenticated():
+            flash('Please login to create an invitation', 'error')
+            return redirect(url_for('auth'))
         
+        # Get template and event_type parameters
+        selected_template = request.args.get('template')
+        template_id = request.args.get('template_id')  # Template ID from database
+        event_type = request.args.get('event_type', 'birthday')  # Default to birthday
+        
+        # If no template is selected, redirect to templates page to select event and template first
+        if not selected_template and not template_id:
+            return redirect(url_for('templates'))
+        
+        # Get current user information
+        try:
+            current_user = User.query.get(session['user_id'])
+            if not current_user:
+                app.logger.error(f"User not found for session user_id: {session['user_id']}")
+                flash('User not found. Please login again.', 'error')
+                session.clear()
+                return redirect(url_for('auth'))
+            
         except Exception as e:
-            app.logger.error(f"CRITICAL ERROR in create_invitation: {str(e)}")
-            import traceback
-            error_traceback = traceback.format_exc()
-            app.logger.error(error_traceback)
-            print(f"ERROR in create_invitation: {str(e)}")
-            print(error_traceback)
-            flash(f'ERROR: {str(e)} - Please check the console for details.', 'error')
-            return redirect(url_for('index'))
+            app.logger.error(f"Error getting user: {str(e)}")
+            flash('Error retrieving user information', 'error')
+            return redirect(url_for('auth'))
+        
+        # If template_id is provided, fetch the template from database
+        selected_template_obj = None
+        if template_id:
+            try:
+                selected_template_obj = Template.query.get(int(template_id))
+                if selected_template_obj:
+                    selected_template = selected_template_obj.name
+                    event_type = selected_template_obj.event_type  # Use template's event type
+            except (ValueError, TypeError):
+                pass
+        
+        # Fetch templates for the selected event type - Only templates with images from templatesimages/
+        templates = Template.query.filter_by(event_type=event_type, is_active=True)\
+            .filter(Template.preview_image.like('/images/templatesimages/%'))\
+            .order_by(Template.name.asc()).all()
+        
+        # Also fetch all active templates for theme selection page - Only with templatesimages/
+        all_templates = Template.query.filter_by(is_active=True)\
+            .filter(Template.preview_image.like('/images/templatesimages/%'))\
+            .order_by(Template.event_type.asc(), Template.name.asc()).all()
+        
+        # Optimize: Only fetch active event types
+        event_types = EventType.query.filter_by(is_active=True).order_by(EventType.sort_order.asc()).limit(10).all()
+        
+        # Determine which step to show
+        # If template is selected, go directly to details form, otherwise show theme selection
+        show_details = bool(selected_template or template_id)
+        
+        return render_template('invitation/create.html', 
+                             event_types=event_types, 
+                             selected_template=selected_template,
+                             selected_template_obj=selected_template_obj,
+                             template_id=template_id if 'template_id' in locals() else None,
+                             templates=templates,
+                             all_templates=all_templates,
+                             event_type=event_type,
+                             current_user=current_user,
+                             show_details=show_details)
 
     @app.route('/create-invitation', methods=['POST'])
     def create_invitation_post():
@@ -1683,6 +1610,12 @@ def register_routes(app):
     @app.route('/test')
     def test():
         return 'Flask app is working!'
+    
+    @app.route('/service-worker.js')
+    def service_worker_redirect():
+        """Redirect old service worker path to new location"""
+        from flask import redirect
+        return redirect('/static/sw.js?v=3', code=301)
 
 
     @app.route('/about')
@@ -1755,10 +1688,6 @@ def register_routes(app):
     @app.route('/terms')
     def terms():
         return render_template('terms.html')
-    
-    @app.route('/account-policy')
-    def account_policy():
-        return render_template('account_policy.html')
 
     @app.route('/forgot-password', methods=['POST'])
     def forgot_password():
@@ -2051,10 +1980,10 @@ def register_routes(app):
             'mainImage': invitation.main_image,
             'galleryImages': json.loads(invitation.gallery_images) if invitation.gallery_images else [],
             
-            # Contact info - default to user name and email if not set
-            'hostName': invitation.host_name or (invitation.user.name if invitation.user else ''),
+            # Contact info
+            'hostName': invitation.host_name or '',
             'contactPhone': invitation.contact_phone or '',
-            'contactEmail': invitation.contact_email or (invitation.user.email if invitation.user else ''),
+            'contactEmail': invitation.contact_email or '',
             
             # Time and venue data (structured format)
             'timeData': {
@@ -2607,14 +2536,20 @@ def register_routes(app):
         try:
             data = request.get_json()
             invitation_id = data.get('invitation_id')
+            share_url = data.get('share_url')
             response = data.get('response')
             timestamp = data.get('timestamp')
             
-            if not invitation_id or not response:
+            if not response:
                 return jsonify({'success': False, 'message': 'Missing required fields'}), 400
             
-            # Find invitation by share_url (since we're getting it from the URL)
-            invitation = Invitation.query.filter_by(share_url=invitation_id).first()
+            # Find invitation by ID or share_url
+            invitation = None
+            if invitation_id:
+                invitation = Invitation.query.get(invitation_id)
+            elif share_url:
+                invitation = Invitation.query.filter_by(share_url=share_url).first()
+            
             if not invitation:
                 return jsonify({'success': False, 'message': 'Invitation not found'}), 404
             
@@ -2795,19 +2730,14 @@ def register_routes(app):
             app.logger.error(f"Error removing guest: {str(e)}")
             return jsonify({'success': False, 'message': 'Failed to remove guest'}), 500
 
-    # Public RSVP Response Route
+    # Public RSVP Response Route - Redirect to invitation view (RSVP handled on page)
     @app.route('/rsvp/<share_url>', methods=['GET'])
     def public_rsvp(share_url):
-        """Public RSVP response page - Auto Calendar"""
+        """Public RSVP response - redirects to invitation view where RSVP is handled"""
         invitation = Invitation.query.filter_by(share_url=share_url).first_or_404()
         
-        # Generate Google Calendar URL
-        google_calendar_url = generate_google_calendar_url(invitation)
-        
-        # Render the auto-calendar page
-        return render_template('invitation/rsvp_form.html', 
-                             invitation=invitation, 
-                             google_calendar_url=google_calendar_url)
+        # Redirect to the invitation view page where RSVP buttons are handled
+        return redirect(url_for('view_invitation_final', share_url=share_url))
 
     @app.route('/analytics')
     def analytics():

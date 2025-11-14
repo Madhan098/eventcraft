@@ -6,10 +6,6 @@ from extensions import db
 import json
 import datetime
 
-# Load environment variables from .env file
-from dotenv import load_dotenv
-load_dotenv()  # This loads the .env file automatically
-
 # Create the app
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = os.environ.get("SESSION_SECRET", "eventcraft-secret-key-2024")
@@ -25,7 +21,11 @@ if os.environ.get('RENDER'):
     app.config['GOOGLE_REDIRECT_URI'] = 'https://eventcraft-aysl.onrender.com/auth/google/callback'
 else:
     # Running locally
-    app.config['GOOGLE_REDIRECT_URI'] = os.environ.get('GOOGLE_REDIRECT_URI', 'http://localhost:5000/auth/google/callback')
+    app.config['GOOGLE_REDIRECT_URI'] = os.environ.get('GOOGLE_REDIRECT_URI', 'http://localhost:8000/auth/google/callback')
+
+# Configure debug mode
+app.config['DEBUG'] = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
+app.debug = app.config['DEBUG']
 
 # Configure session
 from datetime import timedelta
@@ -33,21 +33,18 @@ app.permanent_session_lifetime = timedelta(days=7)  # Sessions last 7 days
 
 # Configure the database
 database_url = os.environ.get("DATABASE_URL")
-
-# If DATABASE_URL is not set OR is set to placeholder, use SQLite for local development
-if not database_url or "placeholder" in database_url:
-    # Check if we're on Render (production)
-    if os.environ.get("RENDER"):
-        # Production on Render - require proper DATABASE_URL
-        raise ValueError("DATABASE_URL must be set in production on Render")
-    else:
-        # Local development - use SQLite
-        print("Using SQLite for local development")
+if not database_url:
+    # For Render, we need a PostgreSQL database
+    # Fallback to SQLite only for local development
+    if os.environ.get("FLASK_ENV") != "production":
         db_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'database'))
         os.makedirs(db_dir, exist_ok=True)
         db_file = os.path.join(db_dir, 'eventcraft.db')
         database_url = f'sqlite:///{db_file}'
-        print(f"Database: {db_file}")
+    else:
+        # In production, try to use a default database or give helpful error
+        # Don't crash the app, just use a placeholder that will fail gracefully
+        database_url = "postgresql://placeholder:placeholder@localhost:5432/placeholder"
 
 # Fix for Render PostgreSQL (convert postgres:// to postgresql://)
 if database_url and database_url.startswith('postgres://'):
@@ -86,7 +83,8 @@ def tojson_filter(value):
     """Convert value to JSON string, safe for JavaScript"""
     if value is None:
         return '""'
-    return json.dumps(str(value))
+    # Use json.dumps to properly escape all special characters including &
+    return json.dumps(str(value), ensure_ascii=False)
 
 # Add custom Jinja2 functions
 @app.template_global('template_exists')
@@ -105,12 +103,6 @@ def inject_session():
     return dict(session=session)
 
 # Add CORS headers
-@app.route('/.well-known/appspecific/com.chrome.devtools.json')
-def chrome_devtools():
-    """Handle Chrome DevTools request - return empty JSON to prevent 404"""
-    from flask import jsonify
-    return jsonify({}), 200
-
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -135,8 +127,12 @@ def after_request(response):
     response.headers.setdefault('Referrer-Policy', 'strict-origin-when-cross-origin')
     response.headers.setdefault('X-Frame-Options', 'SAMEORIGIN')
     # Allow modern cross-origin isolation without being overly strict for this app
-    response.headers.setdefault('Cross-Origin-Opener-Policy', 'same-origin-allow-popups')
-    response.headers.setdefault('Cross-Origin-Embedder-Policy', 'credentialless')
+    # Only set COOP/COEP headers for HTTPS (production) to avoid warnings on HTTP (localhost)
+    # Check both is_secure and if we're on Render (production)
+    is_production = os.environ.get('RENDER') or (request.is_secure and request.host != '127.0.0.1:5000' and request.host != 'localhost:5000')
+    if is_production:
+        response.headers.setdefault('Cross-Origin-Opener-Policy', 'same-origin-allow-popups')
+        response.headers.setdefault('Cross-Origin-Embedder-Policy', 'credentialless')
     # Content Security Policy
     # NOTE: eval() is intentionally blocked for security. This warning is expected and GOOD.
     # We do NOT use eval() in our code, but some third-party libraries (like html2canvas) might.
@@ -147,6 +143,7 @@ def after_request(response):
     # Change script-src to: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net ..."
     #
     # The CSP below blocks eval() while allowing:
+    # - data: URIs for media (audio, video, images)
     # - Inline scripts (needed for Jinja2 templates)
     # - Scripts from trusted CDNs (Bootstrap, Font Awesome, etc.)
     # - Styles from trusted sources
@@ -165,6 +162,7 @@ def after_request(response):
         "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
         "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; "
         "img-src 'self' data: https: blob:; "
+        "media-src 'self' data: https: blob:; "
         "connect-src 'self' https:; "
         "frame-src 'self' https://www.google.com; "
         "object-src 'none'; "
@@ -221,4 +219,4 @@ except Exception as e:
     raise
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=app.config['DEBUG'], host='0.0.0.0', port=8000)
