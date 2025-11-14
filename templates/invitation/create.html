@@ -1587,7 +1587,8 @@
 
                     <div class="form-group">
                         <label class="form-label required" for="eventDate">Event Date</label>
-                            <input type="date" class="form-input" id="eventDate" name="eventDate" autocomplete="off">
+                            <input type="date" class="form-input" id="eventDate" name="eventDate" autocomplete="off" placeholder="YYYY-MM-DD or DD-MM-YYYY">
+                            <small class="form-text text-muted" style="display: block; margin-top: 5px; font-size: 0.85rem;">You can type the date in YYYY-MM-DD or DD-MM-YYYY format</small>
                 </div>
 
                         <div class="form-group">
@@ -2152,6 +2153,29 @@
         // Get all form inputs for preview
         const eventDateInput = document.getElementById('eventDate');
         const eventTimeInput = document.getElementById('eventTime');
+        
+        // Fix date input to accept manual typing in multiple formats
+        if (eventDateInput) {
+            // Allow manual typing and format conversion
+            eventDateInput.addEventListener('input', function(e) {
+                let value = e.target.value;
+                // If user types DD-MM-YYYY or DD/MM/YYYY, convert to YYYY-MM-DD
+                if (value.match(/^\d{2}[-\/]\d{2}[-\/]\d{4}$/)) {
+                    const parts = value.split(/[-\/]/);
+                    if (parts.length === 3) {
+                        const day = parts[0];
+                        const month = parts[1];
+                        const year = parts[2];
+                        // Validate date
+                        const date = new Date(year, month - 1, day);
+                        if (date.getDate() == day && date.getMonth() == month - 1 && date.getFullYear() == year) {
+                            e.target.value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                        }
+                    }
+                }
+            });
+        }
+        
         const venueNameInput = document.getElementById('venueName');
         const venueAddressInput = document.getElementById('venueAddress');
         const hostedByInput = document.getElementById('hostedBy');
@@ -2664,14 +2688,22 @@
             const templateNameFromUrl = templateNameAttr || '';
             const templateImageFromUrl = templateImageAttr || null;
             
-            // Apply template image IMMEDIATELY - don't wait for DOM
+            // Apply template image IMMEDIATELY - optimized with limited retries
+            let previewRetryCount = 0;
+            const MAX_PREVIEW_RETRIES = 3;
+            
             function applyTemplateToPreview() {
                 const previewCard = document.getElementById('invitationPreviewCard');
                 if (!previewCard) {
-                    console.log('⏳ Preview card not found, retrying...');
-                    setTimeout(applyTemplateToPreview, 100);
+                    if (previewRetryCount < MAX_PREVIEW_RETRIES) {
+                        previewRetryCount++;
+                        setTimeout(applyTemplateToPreview, 100);
+                    } else {
+                        console.warn('Preview card not found after retries');
+                    }
                     return;
                 }
+                previewRetryCount = 0; // Reset on success
                 
                 // Get template image URL - check multiple sources
                 let cleanUrl = null;
@@ -2744,58 +2776,30 @@
                     const escapedUrl = cleanUrl.replace(/'/g, "\\'");
                     const templateImageUrl = `url('${escapedUrl}')`;
                     
-                    // CRITICAL: Preload the image first to ensure it's available
+                    // Optimized: Apply immediately and preload in background
+                    previewCard.style.setProperty('background-image', templateImageUrl, 'important');
+                    previewCard.style.setProperty('background-size', 'cover', 'important');
+                    previewCard.style.setProperty('background-position', 'center', 'important');
+                    previewCard.style.setProperty('background-repeat', 'no-repeat', 'important');
+                    previewCard.style.setProperty('background-color', 'transparent', 'important');
+                    
+                    // Hide placeholder immediately
+                    const previewPlaceholder = document.getElementById('previewPlaceholder');
+                    if (previewPlaceholder) {
+                        previewPlaceholder.style.display = 'none';
+                    }
+                    
+                    // Preload image in background for better performance (non-blocking)
                     const preloadImg = new Image();
                     preloadImg.onload = function() {
-                        // Image is loaded, verify and re-apply to ensure it's visible
+                        // Image loaded successfully - ensure it's still applied
                         previewCard.style.setProperty('background-image', templateImageUrl, 'important');
-                        previewCard.style.setProperty('background-size', 'cover', 'important');
-                        previewCard.style.setProperty('background-position', 'center', 'important');
-                        previewCard.style.setProperty('background-repeat', 'no-repeat', 'important');
-                        previewCard.style.setProperty('background-color', 'transparent', 'important');
-                        
-                        // Also set directly
-                        previewCard.style.backgroundImage = templateImageUrl;
-                        previewCard.style.backgroundSize = 'cover';
-                        previewCard.style.backgroundPosition = 'center';
-                        previewCard.style.backgroundRepeat = 'no-repeat';
-                        previewCard.style.backgroundColor = 'transparent';
-                        
-                        // Hide placeholder when template is applied
-                        const previewPlaceholder = document.getElementById('previewPlaceholder');
-                        if (previewPlaceholder) {
-                            previewPlaceholder.style.display = 'none';
-                        }
-                        
-                        // Force a reflow
-                        void previewCard.offsetHeight;
-                        
-                        // Verify it's applied
-                        const finalComputed = window.getComputedStyle(previewCard).backgroundImage;
-                        console.log('✅ After image preload - Computed background:', finalComputed);
-                        if (finalComputed === 'none' || (!finalComputed.includes(cleanUrl) && !finalComputed.includes(escapedUrl))) {
-                            console.error('❌ Background image still not applied after preload!');
-                            console.error('❌ Inline style backgroundImage:', previewCard.style.backgroundImage);
-                            console.error('❌ Image URL:', cleanUrl);
-                            console.error('❌ Template image URL:', templateImageUrl);
-                            console.error('❌ All computed background properties:', {
-                                background: window.getComputedStyle(previewCard).background,
-                                backgroundImage: window.getComputedStyle(previewCard).backgroundImage,
-                                backgroundSize: window.getComputedStyle(previewCard).backgroundSize,
-                                backgroundPosition: window.getComputedStyle(previewCard).backgroundPosition
-                            });
-                            // Last resort: try using setAttribute to set style
-                            const currentStyle = previewCard.getAttribute('style') || '';
-                            const newStyle = currentStyle.replace(/background[^;]*;?/g, '').replace(/background-image[^;]*;?/g, '');
-                            previewCard.setAttribute('style', newStyle + ` background-image: ${templateImageUrl} !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important;`);
-                        } else {
-                            console.log('✅ Template background image successfully applied:', finalComputed);
-                        }
                     };
                     preloadImg.onerror = function() {
-                        console.error('❌ Failed to preload template image:', cleanUrl);
-                        // Try to apply anyway
-                        previewCard.style.setProperty('background-image', templateImageUrl, 'important');
+                        // Fallback to default image if template image fails
+                        const fallbackUrl = '/images/templatesimages/wedding.png';
+                        const fallbackImageUrl = `url('${fallbackUrl}')`;
+                        previewCard.style.setProperty('background-image', fallbackImageUrl, 'important');
                     };
                     preloadImg.src = cleanUrl;
                     
@@ -2917,14 +2921,11 @@
                 }
             }
             
-            // Apply immediately - try multiple times to ensure it works
-            // Use requestAnimationFrame to ensure DOM is ready
+            // Optimized: Apply immediately with minimal retries
             function applyTemplateWithRetries() {
                 applyTemplateToPreview();
+                // Single retry after short delay if needed
                 setTimeout(applyTemplateToPreview, 100);
-                setTimeout(applyTemplateToPreview, 300);
-                setTimeout(applyTemplateToPreview, 500);
-                setTimeout(applyTemplateToPreview, 1000);
             }
             
             if (document.readyState === 'loading') {
@@ -2938,9 +2939,8 @@
             
             // Also apply on window load as a fallback
             window.addEventListener('load', function() {
-                setTimeout(applyTemplateToPreview, 200);
-                setTimeout(applyTemplateToPreview, 1000);
-                setTimeout(applyTemplateToPreview, 2000);
+                // Optimized: Single immediate call
+                applyTemplateToPreview();
             });
         } else if (previewCardForInit && templateNameAttr) {
             // Get template ID from data attribute
@@ -3097,7 +3097,10 @@
             if (galleryImagesInput && galleryImagesInput.files && galleryImagesInput.files.length > 0) {
                 if (previewGalleryGrid) {
                     previewGalleryGrid.innerHTML = '';
-                    Array.from(galleryImagesInput.files).forEach((file) => {
+                    const filesArray = Array.from(galleryImagesInput.files);
+                    let firstImageLoaded = false;
+                    
+                    filesArray.forEach((file, index) => {
                         const reader = new FileReader();
                         reader.onload = function(e) {
                             const img = document.createElement('img');
@@ -3127,6 +3130,31 @@
                                 this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
                             };
                             previewGalleryGrid.appendChild(img);
+                            
+                            // Use first gallery image as background
+                            if (index === 0 && !firstImageLoaded) {
+                                firstImageLoaded = true;
+                                const previewCard = document.getElementById('invitationPreviewCard');
+                                if (previewCard) {
+                                    // Apply first gallery image as background
+                                    const galleryBgUrl = `url('${e.target.result}')`;
+                                    previewCard.style.setProperty('background-image', galleryBgUrl, 'important');
+                                    previewCard.style.setProperty('background-size', 'cover', 'important');
+                                    previewCard.style.setProperty('background-position', 'center', 'important');
+                                    previewCard.style.setProperty('background-repeat', 'no-repeat', 'important');
+                                    previewCard.style.setProperty('background-color', 'transparent', 'important');
+                                    previewCard.classList.add('template-bg');
+                                    previewCard.classList.remove('wedding-bg');
+                                    
+                                    // Hide placeholder
+                                    const previewPlaceholder = document.getElementById('previewPlaceholder');
+                                    if (previewPlaceholder) {
+                                        previewPlaceholder.style.display = 'none';
+                                    }
+                                    
+                                    console.log('✅ First gallery image applied as background');
+                                }
+                            }
                         };
                         reader.readAsDataURL(file);
                     });
@@ -3534,15 +3562,22 @@
         }
         
         // Update preview for critical fields - INSTANT updates
-        const criticalFields = ['eventDate', 'eventTime', 'hostedBy', 'personalMessage'];
+        const criticalFields = ['eventDate', 'eventTime', 'hostedBy', 'personalMessage', 'venueName', 'venueAddress'];
         criticalFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
             if (field) {
                 field.addEventListener('input', instantUpdatePreview);
                 field.addEventListener('change', instantUpdatePreview);
                 field.addEventListener('keyup', instantUpdatePreview);
+                field.addEventListener('blur', instantUpdatePreview);
             }
         });
+        
+        // Ensure date field updates preview
+        if (eventDateInput) {
+            eventDateInput.addEventListener('change', instantUpdatePreview);
+            eventDateInput.addEventListener('blur', instantUpdatePreview);
+        }
 
         // Update preview for all form fields - Real-time updates
         const allInputs = document.querySelectorAll('#invitationForm input, #invitationForm textarea, #invitationForm select');
@@ -4397,6 +4432,20 @@
         
         // Form submission - Capture all form data including template background
         window.submitForm = function() {
+            // Show loading state
+            const submitBtn = document.querySelector('button[onclick="submitForm()"]');
+            if (submitBtn) {
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Invitation...';
+                submitBtn.style.opacity = '0.7';
+                submitBtn.style.cursor = 'not-allowed';
+                
+                // Show loading overlay
+                if (typeof showLoadingWithIcon === 'function') {
+                    showLoadingWithIcon('Creating your invitation...', 'Please wait while we process your request', '🎉');
+                }
+            }
             const form = document.getElementById('invitationForm');
             
             // Show loading overlay

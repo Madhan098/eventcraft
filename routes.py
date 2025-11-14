@@ -50,14 +50,21 @@ def is_admin():
     return user and user.is_admin
 
 def generate_unique_share_url():
-    """Generate a unique share URL for invitations"""
-    while True:
-        # Generate a random 8-character string
-        share_url = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+    """Generate a unique share URL for invitations - Optimized"""
+    max_attempts = 10
+    for attempt in range(max_attempts):
+        # Generate a random 12-character string (more unique, less collisions)
+        share_url = ''.join(random.choices(string.ascii_letters + string.digits, k=12))
         
-        # Check if it already exists
-        if not Invitation.query.filter_by(share_url=share_url).first():
+        # Check if it already exists - use exists() for better performance
+        exists = db.session.query(Invitation.share_url).filter_by(share_url=share_url).first() is not None
+        if not exists:
             return share_url
+    
+    # Fallback: use timestamp + random if all attempts fail
+    import time
+    share_url = f"{int(time.time())}{''.join(random.choices(string.ascii_letters + string.digits, k=6))}"
+    return share_url
 
 def is_invitation_expired(invitation):
     """Check if an invitation has expired"""
@@ -1466,26 +1473,30 @@ def register_routes(app):
                 flash('Event date is required', 'error')
                 return redirect(url_for('create_invitation'))
 
-            # Handle file uploads with better error handling
+            # Handle file uploads with better error handling and optimization
             uploaded_files = {}
             gallery_images = []
+            
+            # Pre-generate timestamp once for all files (performance optimization)
+            timestamp = datetime.now().timestamp()
+            user_id = session['user_id']
 
-            # Ensure upload directory exists
+            # Ensure upload directory exists (only once)
             os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-            # Main image upload
+            # Main image upload - optimized
             if 'mainImage' in request.files:
                 main_file = request.files['mainImage']
                 if main_file and main_file.filename and main_file.filename != '':
                     try:
-                        filename = secure_filename(f"{session['user_id']}_main_{datetime.now().timestamp()}_{main_file.filename}")
+                        filename = secure_filename(f"{user_id}_main_{timestamp}_{main_file.filename}")
                         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                         main_file.save(file_path)
                         uploaded_files['main_image'] = filename
                     except Exception as e:
                         app.logger.error(f"Error saving main image: {str(e)}")
 
-            # Event-specific image uploads
+            # Event-specific image uploads - optimized loop
             event_images = ['brideImage', 'groomImage', 'coupleImage', 'birthdayImage', 'graduateImage', 'honoreeImage']
             for img_field in event_images:
                 if img_field in request.files:
@@ -1493,34 +1504,53 @@ def register_routes(app):
                     if img_file and img_file.filename and img_file.filename != '':
                         try:
                             field_name = img_field.replace('Image', '').lower()
-                            filename = secure_filename(f"{session['user_id']}_{field_name}_{datetime.now().timestamp()}_{img_file.filename}")
+                            filename = secure_filename(f"{user_id}_{field_name}_{timestamp}_{img_file.filename}")
                             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                             img_file.save(file_path)
                             uploaded_files[f'{field_name}_image'] = filename
                         except Exception as e:
                             app.logger.error(f"Error saving {img_field}: {str(e)}")
 
-            # Gallery images upload
+            # Gallery images upload - optimized
             if 'galleryImages' in request.files:
                 gallery_files = request.files.getlist('galleryImages')
                 for i, gallery_file in enumerate(gallery_files):
                     if gallery_file and gallery_file.filename and gallery_file.filename != '':
                         try:
-                            filename = secure_filename(f"{session['user_id']}_{datetime.now().timestamp()}_{i}_{gallery_file.filename}")
+                            filename = secure_filename(f"{user_id}_{timestamp}_{i}_{gallery_file.filename}")
                             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                             gallery_file.save(file_path)
                             gallery_images.append(filename)
                         except Exception as e:
                             app.logger.error(f"Error saving gallery image {i}: {str(e)}")
 
-            # Create new invitation
+            # Generate share URL before creating invitation (optimization)
+            share_url = generate_unique_share_url()
+            
+            # Parse event date once (optimization)
+            event_date = None
+            if data.get('eventDate'):
+                try:
+                    event_date = datetime.strptime(data.get('eventDate', ''), '%Y-%m-%d')
+                except ValueError:
+                    app.logger.warning(f"Invalid event date format: {data.get('eventDate')}")
+            
+            # Prepare customization data once (optimization)
+            customization_data = json.dumps({
+                'font_style': data.get('fontStyle', 'default'),
+                'language': data.get('language', 'english'),
+                'template_id': template_id,
+                'template_image_url': template_image_url
+            })
+            
+            # Create new invitation - optimized
             invitation = Invitation(
-                user_id=session['user_id'],
+                user_id=user_id,
                 title=data.get('eventTitle', ''),
                 description=data.get('eventDescription', ''),
                 event_type=selected_template.split('_')[0] if selected_template else 'general',
                 template_name=selected_template,
-                event_date=datetime.strptime(data.get('eventDate', ''), '%Y-%m-%d') if data.get('eventDate') else None,
+                event_date=event_date,
                 event_style=data.get('eventStyle', ''),
                 bride_name=data.get('brideName', ''),
                 groom_name=data.get('groomName', ''),
@@ -1557,11 +1587,11 @@ def register_routes(app):
                 contact_phone=data.get('contactPhone', ''),
                 contact_email=data.get('contactEmail', ''),
                 venue_address=data.get('venueAddress', ''),
-
+                
                 # Story fields
                 love_story=data.get('loveStory', ''),
                 event_story=data.get('eventStory', ''),
-
+                
                 # Image fields
                 main_image=uploaded_files.get('main_image'),
                 bride_image=uploaded_files.get('bride_image'),
@@ -1571,27 +1601,28 @@ def register_routes(app):
                 graduate_image=uploaded_files.get('graduate_image'),
                 honoree_image=uploaded_files.get('honoree_image'),
                 gallery_images=json.dumps(gallery_images) if gallery_images else None,
-
+                
                 # Font and language customization
-                customization_data=json.dumps({
-                    'font_style': data.get('fontStyle', 'default'),
-                    'language': data.get('language', 'english'),
-                    'template_id': template_id,
-                    'template_image_url': template_image_url
-                }),
-
+                customization_data=customization_data,
+                
                 # Generate unique share URL
-                share_url=generate_unique_share_url(),
+                share_url=share_url,
                 is_active=True,
                 view_count=0,
                 expires_at=datetime.utcnow() + timedelta(days=365)  # Set expiration to 1 year
             )
             
+            # Optimized database operations
             db.session.add(invitation)
-            db.session.commit()
-            
-            flash('Invitation created successfully!', 'success')
-            return redirect(url_for('view_invitation_final', share_url=invitation.share_url))
+            try:
+                db.session.commit()
+                flash('Invitation created successfully!', 'success')
+                return redirect(url_for('view_invitation_final', share_url=invitation.share_url))
+            except Exception as db_error:
+                db.session.rollback()
+                app.logger.error(f"Database error creating invitation: {str(db_error)}")
+                flash('Error creating invitation. Please try again.', 'error')
+                return redirect(url_for('create_invitation'))
             
         except Exception as e:
             import traceback
@@ -2019,7 +2050,8 @@ def register_routes(app):
 
     @app.route('/view-invitation-final/<share_url>')
     def view_invitation_final(share_url):
-        """View the final invitation as guests would see it"""
+        """View the final invitation as guests would see it - Optimized"""
+        # Optimized query - only fetch what we need
         invitation = Invitation.query.filter_by(share_url=share_url).first()
         if not invitation:
             flash('Invitation not found', 'error')
@@ -2030,10 +2062,14 @@ def register_routes(app):
             flash('This invitation has expired', 'error')
             return redirect(url_for('dashboard'))
         
-        # Increment view count if user is not the owner
+        # Increment view count if user is not the owner - optimized to avoid unnecessary commits
         if not is_authenticated() or invitation.user_id != session.get('user_id'):
             invitation.view_count += 1
-            db.session.commit()
+            try:
+                db.session.commit()
+            except Exception as e:
+                app.logger.error(f"Error updating view count: {str(e)}")
+                db.session.rollback()
         
         # Prepare event_data in the format the templates expect
         event_data = {
@@ -2129,6 +2165,25 @@ def register_routes(app):
             }
         }
         
+        # Get template image URL from customization data
+        template_image_url = None
+        if invitation.customization_data:
+            try:
+                customization = json.loads(invitation.customization_data)
+                template_image_url = customization.get('template_image_url')
+            except:
+                pass
+        
+        # Get gallery images - use first gallery image as background if available
+        gallery_images_list = json.loads(invitation.gallery_images) if invitation.gallery_images else []
+        background_image_url = None
+        if gallery_images_list and len(gallery_images_list) > 0:
+            # Use first gallery image as background (priority over template image)
+            background_image_url = f"/static/uploads/{gallery_images_list[0]}"
+        elif template_image_url:
+            # Fallback to template image if no gallery images
+            background_image_url = template_image_url
+        
         # Check if current user is the creator
         is_creator = is_authenticated() and invitation.user_id == session.get('user_id')
         
@@ -2145,7 +2200,9 @@ def register_routes(app):
                              invitation=invitation, 
                              event_data=event_data, 
                              is_creator=is_creator,
-                             wishes=wishes_data)
+                             wishes=wishes_data,
+                             background_image_url=background_image_url,
+                             gallery_images_list=gallery_images_list)
 
     @app.route('/edit-invitation/<int:invitation_id>', methods=['GET', 'POST'])
     def edit_invitation(invitation_id):

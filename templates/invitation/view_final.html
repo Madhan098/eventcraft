@@ -190,10 +190,10 @@
     /* Enhanced Invitation Styling - Match Live Preview Exactly */
     .template-container {
         min-height: 100vh;
-        /* Apply template background to whole container - like live preview */
+        /* Apply gallery image or template background to whole container - like live preview */
         background: var(--bg-cream, #FAFAFA) !important;
         background-color: var(--bg-cream, #FAFAFA) !important;
-        background-image: {% if template_image_url %}url('{{ template_image_url }}'){% else %}none{% endif %} !important;
+        background-image: {% if background_image_url %}url('{{ background_image_url }}'){% elif template_image_url %}url('{{ template_image_url }}'){% else %}none{% endif %} !important;
         background-size: cover !important;
         background-position: center !important;
         background-repeat: no-repeat !important;
@@ -237,9 +237,9 @@
         text-align: center;
     }
     
-    /* Template background - Match live preview exactly */
+    /* Template background - Use gallery image or template image - Match live preview exactly */
     .invitation-card.template-bg {
-        background-image: url('{{ template_image_url }}') !important;
+        background-image: {% if background_image_url %}url('{{ background_image_url }}'){% elif template_image_url %}url('{{ template_image_url }}'){% else %}none{% endif %} !important;
         background-color: transparent !important;
         background-size: cover !important;
         background-position: center !important;
@@ -1708,7 +1708,7 @@
     }
 </style>
 
-<div class="template-container" {% if template_image_url %}style="background-image: url('{{ template_image_url }}') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; background-attachment: fixed !important;"{% endif %}>
+<div class="template-container" {% if background_image_url %}style="background-image: url('{{ background_image_url }}') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; background-attachment: fixed !important;"{% elif template_image_url %}style="background-image: url('{{ template_image_url }}') !important; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; background-attachment: fixed !important;"{% endif %}>
     <!-- Floating Hearts Animation - Removed for clean design matching live preview -->
     
     {% if invitation.template_name %}
@@ -1741,10 +1741,10 @@
             <div class="container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
                 <div class="row justify-content-center">
                     <div class="col-12">
-                        <div class="invitation-card {% if template_image_url %}template-bg{% endif %}" style="{% if template_image_url %}background-image: url('{{ template_image_url }}') !important;{% endif %}">
+                        <div class="invitation-card {% if background_image_url or template_image_url %}template-bg{% endif %}" style="{% if background_image_url %}background-image: url('{{ background_image_url }}') !important;{% elif template_image_url %}background-image: url('{{ template_image_url }}') !important;{% endif %}">
                             {# Event Icon #}
                             {% if invitation.event_type %}
-                            <div class="preview-icon" style="font-size: 64px; margin-bottom: 20px; display: {% if template_image_url %}none{% else %}block{% endif %};">
+                            <div class="preview-icon" style="font-size: 64px; margin-bottom: 20px; display: {% if background_image_url or template_image_url %}none{% else %}block{% endif %};">
                                 {% if invitation.event_type == 'wedding' %}💍{% elif invitation.event_type == 'birthday' %}🎂{% elif invitation.event_type == 'anniversary' %}💑{% elif invitation.event_type == 'graduation' %}🎓{% elif invitation.event_type == 'babyshower' %}👶{% elif invitation.event_type == 'retirement' %}🎉{% else %}🎊{% endif %}
                             </div>
                             {% endif %}
@@ -1843,10 +1843,10 @@
         <div class="container" style="max-width: 600px; margin: 0 auto; padding: 20px;">
             <div class="row justify-content-center">
                 <div class="col-12">
-                    <div class="invitation-card {% if template_image_url %}template-bg{% endif %}" style="{% if template_image_url %}background-image: url('{{ template_image_url }}') !important;{% endif %}">
+                    <div class="invitation-card {% if background_image_url or template_image_url %}template-bg{% endif %}" style="{% if background_image_url %}background-image: url('{{ background_image_url }}') !important;{% elif template_image_url %}background-image: url('{{ template_image_url }}') !important;{% endif %}">
                         {# Event Icon #}
                         {% if invitation.event_type %}
-                        <div class="preview-icon" style="font-size: 64px; margin-bottom: 20px; display: {% if template_image_url %}none{% else %}block{% endif %};">
+                        <div class="preview-icon" style="font-size: 64px; margin-bottom: 20px; display: {% if background_image_url or template_image_url %}none{% else %}block{% endif %};">
                             {% if invitation.event_type == 'wedding' %}💍{% elif invitation.event_type == 'birthday' %}🎂{% elif invitation.event_type == 'anniversary' %}💑{% elif invitation.event_type == 'graduation' %}🎓{% elif invitation.event_type == 'babyshower' %}👶{% elif invitation.event_type == 'retirement' %}🎉{% else %}🎊{% endif %}
                         </div>
                         {% endif %}
@@ -3242,4 +3242,135 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Add html2canvas library for downloading -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<script>
+    // Download invitation with watermark
+    function downloadInvitation() {
+        const invitationCard = document.querySelector('.invitation-card');
+        if (!invitationCard) {
+            showToast('Invitation card not found', 'error');
+            return;
+        }
+        
+        // Show loading
+        showToast('Preparing download...', 'info');
+        
+        // Create a container for the screenshot
+        const container = document.createElement('div');
+        container.style.cssText = `
+            position: relative;
+            width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+        `;
+        
+        // Clone the invitation card
+        const clonedCard = invitationCard.cloneNode(true);
+        clonedCard.style.cssText = invitationCard.style.cssText;
+        clonedCard.style.width = '100%';
+        clonedCard.style.maxWidth = '100%';
+        clonedCard.style.margin = '0';
+        
+        // Add watermark
+        const watermark = document.createElement('div');
+        watermark.style.cssText = `
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(111, 78, 55, 0.6);
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            z-index: 1000;
+            pointer-events: none;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+        `;
+        watermark.textContent = 'Made with EventCraft Pro';
+        
+        container.appendChild(clonedCard);
+        container.appendChild(watermark);
+        
+        // Temporarily add to body (off-screen)
+        container.style.position = 'absolute';
+        container.style.left = '-9999px';
+        document.body.appendChild(container);
+        
+        // Use html2canvas to capture
+        html2canvas(container, {
+            backgroundColor: '#ffffff',
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            allowTaint: true,
+            width: container.offsetWidth,
+            height: container.offsetHeight
+        }).then(canvas => {
+            // Add watermark to canvas
+            const ctx = canvas.getContext('2d');
+            ctx.font = 'bold 16px Inter, sans-serif';
+            ctx.fillStyle = 'rgba(111, 78, 55, 0.6)';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('Made with EventCraft Pro', canvas.width - 20, canvas.height - 20);
+            
+            // Convert to image and download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = '{{ invitation.title or "Invitation" }}.png';
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+                
+                // Clean up
+                document.body.removeChild(container);
+                showToast('Invitation downloaded successfully!', 'success');
+            }, 'image/png');
+        }).catch(error => {
+            console.error('Download error:', error);
+            document.body.removeChild(container);
+            showToast('Failed to download invitation. Please try again.', 'error');
+        });
+    }
+    
+    // Add download button if not exists
+    document.addEventListener('DOMContentLoaded', function() {
+        const shareButtons = document.querySelector('.share-buttons, .action-buttons');
+        if (shareButtons && !document.getElementById('downloadInvitationBtn')) {
+            const downloadBtn = document.createElement('button');
+            downloadBtn.id = 'downloadInvitationBtn';
+            downloadBtn.className = 'btn btn-primary';
+            downloadBtn.innerHTML = '<i class="fas fa-download me-2"></i>Download Invitation';
+            downloadBtn.onclick = downloadInvitation;
+            downloadBtn.style.cssText = `
+                margin: 10px;
+                padding: 12px 24px;
+                background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
+                border: none;
+                color: white;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s;
+            `;
+            downloadBtn.onmouseover = function() {
+                this.style.transform = 'scale(1.05)';
+            };
+            downloadBtn.onmouseout = function() {
+                this.style.transform = 'scale(1)';
+            };
+            
+            // Insert before share buttons or at the end
+            if (shareButtons) {
+                shareButtons.insertBefore(downloadBtn, shareButtons.firstChild);
+            } else {
+                const invitationCard = document.querySelector('.invitation-card');
+                if (invitationCard && invitationCard.parentNode) {
+                    invitationCard.parentNode.insertBefore(downloadBtn, invitationCard.nextSibling);
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}

@@ -4289,7 +4289,7 @@
         {% if messages %}
             <div class="container mt-4">
                 {% for category, message in messages %}
-                    <div class="alert alert-{% if category == 'error' %}danger{% elif category == 'success' %}success{% elif category == 'info' %}info{% else %}warning{% endif %} alert-dismissible fade show fade-in" role="alert" style="display: flex; align-items: center; justify-content: space-between; position: relative;">
+                    <div class="alert alert-{% if category == 'error' %}danger{% elif category == 'success' %}success{% elif category == 'info' %}info{% else %}warning{% endif %} alert-dismissible fade show fade-in auto-dismiss" role="alert" style="display: flex; align-items: center; justify-content: space-between; position: relative;" data-dismiss-time="{% if category == 'success' %}4000{% else %}5000{% endif %}">
                         <div class="d-flex align-items-center flex-grow-1">
                             {% if category == 'success' %}
                                 <i class="fas fa-check-circle me-2" style="color: var(--accent-color);"></i>
@@ -5478,6 +5478,27 @@
 
             // Preload critical resources
             preloadCriticalResources();
+            
+            // Auto-dismiss notifications
+            function initAutoDismiss() {
+                const alerts = document.querySelectorAll('.auto-dismiss');
+                alerts.forEach(alert => {
+                    const dismissTime = parseInt(alert.getAttribute('data-dismiss-time')) || 4000;
+                    setTimeout(() => {
+                        if (alert && alert.parentNode) {
+                            alert.classList.remove('show');
+                            setTimeout(() => {
+                                if (alert.parentNode) {
+                                    alert.remove();
+                                }
+                            }, 300);
+                        }
+                    }, dismissTime);
+                });
+            }
+            
+            // Initialize auto-dismiss
+            initAutoDismiss();
 
             // Optimize animations for performance
             function optimizeAnimations() {
