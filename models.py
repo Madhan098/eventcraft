@@ -134,12 +134,22 @@ class Invitation(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # Emotional Features Fields
+    enable_personal_messages = db.Column(db.Boolean, default=False)
+    enable_countdown = db.Column(db.Boolean, default=True)
+    countdown_mystery_mode = db.Column(db.Boolean, default=False)
+    enable_voice_message = db.Column(db.Boolean, default=False)
+    voice_message_url = db.Column(db.String(500))
+    voice_message_duration = db.Column(db.Integer)  # Duration in seconds
+
     # Relationships
     wishes = db.relationship('Wish', backref='invitation', lazy=True, cascade='all, delete-orphan')
     guests = db.relationship('Guest', backref='invitation', lazy=True, cascade='all, delete-orphan')
     rsvps = db.relationship('RSVP', backref='invitation', lazy=True, cascade='all, delete-orphan')
     views = db.relationship('InvitationView', backref='invitation', lazy=True, cascade='all, delete-orphan')
     shares = db.relationship('InvitationShare', backref='invitation', lazy=True, cascade='all, delete-orphan')
+    personal_messages = db.relationship('PersonalMessage', backref='invitation', lazy=True, cascade='all, delete-orphan')
+    memories = db.relationship('Memory', backref='invitation', lazy=True, cascade='all, delete-orphan')
 
 
 
@@ -536,3 +546,34 @@ class InvitationShare(db.Model):
     recipient_info = db.Column(db.String(255))  # email, phone, or 'direct_link'
     shared_at = db.Column(db.DateTime, default=datetime.utcnow)
     ip_address = db.Column(db.String(45))
+
+# Emotional Features Models
+class PersonalMessage(db.Model):
+    __tablename__ = 'personal_messages'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invitation_id = db.Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
+    guest_email = db.Column(db.String(120), nullable=False)
+    guest_name = db.Column(db.String(100), nullable=False)
+    message_template = db.Column(db.String(50))  # Format: "opening-impact-closing"
+    generated_message = db.Column(db.Text, nullable=False)
+    viewed_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Index for faster lookups
+    __table_args__ = (
+        db.Index('idx_invitation_guest', 'invitation_id', 'guest_email'),
+    )
+
+class Memory(db.Model):
+    __tablename__ = 'memories'
+
+    id = db.Column(db.Integer, primary_key=True)
+    invitation_id = db.Column(db.Integer, db.ForeignKey('invitations.id'), nullable=False)
+    guest_name = db.Column(db.String(100), nullable=False)
+    guest_email = db.Column(db.String(120))
+    photo_url = db.Column(db.String(500), nullable=False)
+    memory_text = db.Column(db.Text, nullable=False)
+    uploaded_at = db.Column(db.DateTime, default=datetime.utcnow)
+    approved = db.Column(db.Boolean, default=True)
+    likes = db.Column(db.Integer, default=0)

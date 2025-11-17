@@ -244,6 +244,25 @@ body {
     opacity: 1 !important;
 }
 
+/* Filter visibility classes - HIGHEST PRIORITY */
+.theme-card.filter-hidden {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+.theme-card.filter-visible {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
 /* Template design overlay image - removed per user request */
 
 .theme-card:hover {
@@ -503,12 +522,10 @@ body {
         <button class="filter-btn active" data-filter="all">All Occasions</button>
         <button class="filter-btn" data-filter="wedding">Wedding</button>
         <button class="filter-btn" data-filter="birthday">Birthday</button>
-        <button class="filter-btn" data-filter="engagement">Engagement</button>
-        <button class="filter-btn" data-filter="anniversary">Anniversary</button>
         <button class="filter-btn" data-filter="babyshower">Baby Shower</button>
-        <button class="filter-btn" data-filter="corporate">Corporate</button>
-        <button class="filter-btn" data-filter="custom">Custom</button>
-                            </div>
+        <button class="filter-btn" data-filter="graduation">Graduation</button>
+        <button class="filter-btn" data-filter="retirement">Retirement</button>
+    </div>
 </section>
 
 <!-- Theme Cards Grid -->
@@ -576,7 +593,7 @@ body {
         <!-- Fallback Templates (only show if no database templates) -->
         {% if not templates or templates|length == 0 %}
         <!-- Modern Minimal (Fallback) -->
-        <div class="theme-card" data-category="wedding corporate engagement">
+        <div class="theme-card" data-category="wedding" data-event-type="wedding">
             <div class="color-palette">
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
                 <div class="color-circle" style="background: #000000;"></div>
@@ -587,8 +604,6 @@ body {
                 <p class="card-description">Clean lines and sophisticated simplicity</p>
                 <div class="card-tags">
                     <span class="tag">wedding</span>
-                    <span class="tag">corporate</span>
-                    <span class="tag">engagement</span>
                 </div>
                 <a href="/create-invitation?template=modern_minimal" class="use-theme-btn">
                     Use This Theme
@@ -598,7 +613,7 @@ body {
         </div>
         
         <!-- Floral Luxury -->
-        <div class="theme-card" data-category="wedding babyshower anniversary">
+        <div class="theme-card" data-category="wedding" data-event-type="wedding">
             <div class="color-palette">
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
                 <div class="color-circle" style="background: #90EE90;"></div>
@@ -609,167 +624,151 @@ body {
                 <p class="card-description">Elegant botanical designs with golden accents</p>
                 <div class="card-tags">
                     <span class="tag">wedding</span>
-                    <span class="tag">baby shower</span>
-                    <span class="tag">anniversary</span>
-        </div>
+                </div>
                 <a href="/create-invitation?template=floral_luxury" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-    </div>
-                </div>
+            </div>
+        </div>
                 
         <!-- Royal Gold -->
-        <div class="theme-card" data-category="wedding anniversary corporate">
+        <div class="theme-card" data-category="wedding" data-event-type="wedding">
             <div class="color-palette">
                 <div class="color-circle" style="background: #000000;"></div>
                 <div class="color-circle" style="background: var(--secondary-color);"></div>
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                </div>
+            </div>
             <div class="card-content">
                 <h3 class="card-title">Royal Gold</h3>
                 <p class="card-description">Opulent and regal with metallic brilliance</p>
                 <div class="card-tags">
                     <span class="tag">wedding</span>
-                    <span class="tag">anniversary</span>
-                    <span class="tag">corporate</span>
-                    </div>
+                </div>
                 <a href="/create-invitation?template=royal_gold" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                            </div>
-                            </div>
+            </div>
+        </div>
                 
         <!-- Watercolor Dreams -->
-        <div class="theme-card" data-category="birthday babyshower engagement">
+        <div class="theme-card" data-category="birthday" data-event-type="birthday">
             <div class="color-palette">
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
                 <div class="color-circle" style="background: #DDA0DD;"></div>
                 <div class="color-circle" style="background: #90EE90;"></div>
-                        </div>
+            </div>
             <div class="card-content">
                 <h3 class="card-title">Watercolor Dreams</h3>
                 <p class="card-description">Soft, artistic washes of color</p>
                 <div class="card-tags">
                     <span class="tag">birthday</span>
-                    <span class="tag">baby shower</span>
-                    <span class="tag">engagement</span>
-                    </div>
+                </div>
                 <a href="/create-invitation?template=watercolor_dreams" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                    </div>
-                </div>
+            </div>
+        </div>
 
         <!-- Dark Chic -->
-        <div class="theme-card" data-category="corporate birthday anniversary">
+        <div class="theme-card" data-category="birthday" data-event-type="birthday">
             <div class="color-palette">
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
                 <div class="color-circle" style="background: var(--primary-dark);"></div>
                 <div class="color-circle" style="background: var(--secondary-color);"></div>
-                        </div>
+            </div>
             <div class="card-content">
                 <h3 class="card-title">Dark Chic</h3>
                 <p class="card-description">Bold and modern with dramatic contrast</p>
                 <div class="card-tags">
-                    <span class="tag">corporate</span>
                     <span class="tag">birthday</span>
-                    <span class="tag">anniversary</span>
-                    </div>
+                </div>
                 <a href="/create-invitation?template=dark_chic" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                    </div>
-                </div>
+            </div>
+        </div>
 
         <!-- Festive Traditional -->
-        <div class="theme-card" data-category="birthday anniversary custom">
+        <div class="theme-card" data-category="birthday" data-event-type="birthday">
             <div class="color-palette">
                 <div class="color-circle" style="background: var(--secondary-color);"></div>
                 <div class="color-circle" style="background: var(--primary-dark);"></div>
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                        </div>
+            </div>
             <div class="card-content">
                 <h3 class="card-title">Festive Traditional</h3>
                 <p class="card-description">Classic celebration with timeless charm</p>
                 <div class="card-tags">
                     <span class="tag">birthday</span>
-                    <span class="tag">anniversary</span>
-                    <span class="tag">custom</span>
-                    </div>
+                </div>
                 <a href="/create-invitation?template=festive_traditional" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                    </div>
-                </div>
+            </div>
+        </div>
 
         <!-- Additional templates from your existing data -->
-        <div class="theme-card" data-category="wedding">
+        <div class="theme-card" data-category="wedding" data-event-type="wedding">
             <div class="color-palette">
                 <div class="color-circle" style="background: #FFF5F0;"></div>
                 <div class="color-circle" style="background: var(--primary-color);"></div>
                 <div class="color-circle" style="background: var(--secondary-color);"></div>
-                        </div>
+            </div>
             <div class="card-content">
                 <h3 class="card-title">Wedding Elegant</h3>
                 <p class="card-description">Perfect for your special day</p>
                 <div class="card-tags">
                     <span class="tag">wedding</span>
-                    <span class="tag">elegant</span>
-                    <span class="tag">engagement</span>
-                    </div>
+                </div>
                 <a href="/create-invitation?template=wedding_elegant" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                    </div>
-                </div>
+            </div>
+        </div>
 
-        <div class="theme-card" data-category="birthday">
+        <div class="theme-card" data-category="birthday" data-event-type="birthday">
             <div class="color-palette">
                 <div class="color-circle" style="background: #FF6B6B;"></div>
                 <div class="color-circle" style="background: #4ECDC4;"></div>
                 <div class="color-circle" style="background: #FFE66D;"></div>
-                        </div>
+            </div>
             <div class="card-content">
                 <h3 class="card-title">Birthday Fun</h3>
                 <p class="card-description">Vibrant and playful celebration</p>
                 <div class="card-tags">
                     <span class="tag">birthday</span>
-                    <span class="tag">fun</span>
-                    <span class="tag">custom</span>
-                    </div>
+                </div>
                 <a href="/create-invitation?template=birthday_fun" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                    </div>
-                </div>
+            </div>
+        </div>
 
-        <div class="theme-card" data-category="corporate">
+        <div class="theme-card" data-category="babyshower" data-event-type="babyshower">
             <div class="color-palette">
-                <div class="color-circle" style="background: #2C3E50;"></div>
-                <div class="color-circle" style="background: #3498DB;"></div>
+                <div class="color-circle" style="background: #FFB6C1;"></div>
+                <div class="color-circle" style="background: #87CEEB;"></div>
                 <div class="color-circle" style="background: #FFFFFF; border: 2px solid #E5E5E5;"></div>
-                        </div>
+            </div>
             <div class="card-content">
-                <h3 class="card-title">Corporate Professional</h3>
-                <p class="card-description">Professional events with sophistication</p>
+                <h3 class="card-title">Baby Shower Delight</h3>
+                <p class="card-description">Celebrate the upcoming arrival with charm</p>
                 <div class="card-tags">
-                    <span class="tag">corporate</span>
-                    <span class="tag">professional</span>
-                    <span class="tag">custom</span>
-                    </div>
-                <a href="/create-invitation?template=corporate_professional" class="use-theme-btn">
+                    <span class="tag">babyshower</span>
+                </div>
+                <a href="/create-invitation?template=babyshower_delight" class="use-theme-btn">
                     Use This Theme
                     <i class="fas fa-arrow-right"></i>
                 </a>
-                        </div>
-                        </div>
+            </div>
+        </div>
         {% endif %}
     </div>
 </section>
@@ -804,103 +803,67 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const filter = this.dataset.filter.toLowerCase().trim();
             
+            console.log(`\n🔍 FILTER CLICKED: "${filter}"`);
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            
             // Filter cards with smooth animations
             let visibleCount = 0;
             themeCards.forEach((card, index) => {
-                // Get event type from data attribute (case-insensitive)
-                const eventType = (card.dataset.eventType || card.getAttribute('data-event-type') || '').toLowerCase().trim();
-                const category = (card.dataset.category || card.getAttribute('data-category') || '').toLowerCase().trim();
+                // Get event type from data attribute
+                const eventType = (card.getAttribute('data-event-type') || '').toLowerCase().trim();
+                const cardTitle = card.querySelector('.card-title')?.textContent || 'Unknown';
                 
-                // Debug logging for troubleshooting
-                // console.log('Filter:', filter, 'EventType:', eventType, 'Category:', category, 'Card:', card);
-                
-                // Normalize filter and event type (remove spaces, handle variations)
-                const filterNormalized = filter.replace(/\s+/g, '').replace('-', '');
-                const eventTypeNormalized = eventType.replace(/\s+/g, '').replace('-', '');
-                
-                // Create array of possible matches
-                const possibleMatches = [eventType, eventTypeNormalized, category];
-                if (category) {
-                    possibleMatches.push(...category.split(' ').map(c => c.trim().toLowerCase()));
-                }
-                
-                // Check for exact match or partial match
+                // Simple and reliable matching
                 let matches = false;
                 if (filter === 'all') {
                     matches = true;
                 } else {
-                    // Check exact matches
-                    matches = possibleMatches.some(match => {
-                        const matchNormalized = match.replace(/\s+/g, '').replace('-', '');
-                        return match === filter || 
-                               matchNormalized === filterNormalized ||
-                               match.includes(filter) ||
-                               filter.includes(match);
-                    });
+                    // Exact match only - most reliable
+                    matches = (eventType === filter);
                 }
                 
                 if (matches) {
-                    // Show card with fade-in animation
-                    card.style.display = 'flex';
+                    visibleCount++;
+                    // Show card immediately - remove hidden class and add visible class
+                    card.classList.remove('filter-hidden');
+                    card.classList.add('filter-visible');
+                    card.style.display = 'flex !important';
                     card.style.flexDirection = 'column';
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px) scale(0.95)';
-                    card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0) scale(1)';
+                    card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                     card.style.visibility = 'visible';
                     
-                    // Ensure all text is visible when showing
-                    const title = card.querySelector('.card-title');
-                    if (title) {
-                        title.style.color = '#000000';
-                        title.style.visibility = 'visible';
-                        title.style.opacity = '1';
-                    }
-                    const description = card.querySelector('.card-description');
-                    if (description) {
-                        description.style.color = '#666666';
-                        description.style.visibility = 'visible';
-                        description.style.opacity = '1';
-                    }
-                    const tags = card.querySelectorAll('.tag');
-                    tags.forEach(tag => {
-                        tag.style.background = '#333333';
-                        tag.style.color = '#FFFFFF';
-                        tag.style.visibility = 'visible';
-                        tag.style.opacity = '1';
-                    });
-                    const button = card.querySelector('.use-theme-btn');
-                    if (button) {
-                        button.style.background = '#333333';
-                        button.style.color = '#FFFFFF';
-                        button.style.visibility = 'visible';
-                        button.style.opacity = '1';
-                    }
-                    
-                    setTimeout(() => {
-                        card.style.transition = 'all 0.4s ease';
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 10);
-        } else {
-                    card.style.transition = 'all 0.4s ease';
+                    console.log(`✓ SHOW: "${cardTitle}" (type: ${eventType})`);
+                } else {
+                    // Hide card immediately
+                    card.classList.remove('filter-visible');
+                    card.classList.add('filter-hidden');
+                    card.style.display = 'none !important';
                     card.style.opacity = '0';
-                    card.style.transform = 'translateY(-20px)';
+                    card.style.visibility = 'hidden';
+                    card.style.pointerEvents = 'none';
                     
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 400);
+                    console.log(`✗ HIDE: "${cardTitle}" (type: ${eventType})`);
                 }
             });
+            
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log(`✅ Result: ${visibleCount} cards visible\n`);
         });
     });
     
-    // Initial animation - make sure all cards are visible
+    // Initial animation - make sure all cards are visible (but don't override filter)
     themeCards.forEach((card, index) => {
-        card.style.display = 'flex'; // Use flex for proper alignment
-        card.style.flexDirection = 'column';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.visibility = 'visible';
+        // Only set initial styles if card doesn't have filter class
+        if (!card.classList.contains('filter-hidden')) {
+            card.classList.add('filter-visible');
+            card.style.display = 'flex'; // Use flex for proper alignment
+            card.style.flexDirection = 'column';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.visibility = 'visible';
+        }
         
         // Make sure all text elements are visible
         const title = card.querySelector('.card-title');
@@ -957,11 +920,14 @@ document.addEventListener('DOMContentLoaded', function() {
             img.style.objectFit = 'cover';
         });
         
-        setTimeout(() => {
-            card.style.transition = 'all 0.4s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, index * 100);
+        // Only animate visible cards
+        if (!card.classList.contains('filter-hidden')) {
+            setTimeout(() => {
+                card.style.transition = 'all 0.4s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 100);
+        }
     });
     
     // Log templates count for debugging

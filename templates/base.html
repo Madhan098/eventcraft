@@ -213,7 +213,7 @@
             background-position: center center !important;
             background-size: cover !important;
             background-attachment: fixed !important;
-            min-height: 100% !important;
+            /* Remove min-height to prevent extra space below footer */
         }
 
         body {
@@ -222,18 +222,18 @@
             color: #3E2723 !important;
             /* EXACT Floral Damask Pattern Background - Using Uploaded Image */
             background-color: transparent !important;
+            /* Prevent layout shifts from fixed elements */
+            overflow-x: hidden;
+            position: relative;
             background-image: url('/static/images/Pink & Blue Watercolor Floral Paris Theme Event Invitation.png') !important;
             background-repeat: no-repeat !important;
             background-position: center center !important;
             background-size: cover !important;
             background-attachment: fixed !important;
-            min-height: 100vh !important;
-            overflow-x: hidden;
+            /* Remove min-height to prevent extra space - let content determine height */
             font-size: 16px;
             font-weight: 400;
             letter-spacing: -0.01em;
-            min-height: 100vh;
-            position: relative;
             /* Performance optimizations */
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -245,6 +245,9 @@
             will-change: scroll-position;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
+            /* Prevent extra space below footer */
+            padding-bottom: 0;
+            margin-bottom: 0;
         }
         
         /* Clean white background - no overlay needed */
@@ -943,7 +946,7 @@
         .back-to-top {
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            right: 110px;
             width: 50px;
             height: 50px;
             background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%);
@@ -956,11 +959,12 @@
             justify-content: center;
             font-size: 20px;
             box-shadow: 0 4px 15px rgba(111, 78, 55, 0.3);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
             z-index: 999;
             opacity: 0;
             visibility: hidden;
             transform: translateY(20px);
+            will-change: transform, opacity;
         }
         
         .back-to-top.visible {
@@ -982,7 +986,7 @@
         /* Back to Home Button - Fixed position, visible on all pages except home */
         .back-to-home-btn {
             position: fixed;
-            bottom: 100px;
+            bottom: 110px;
             right: 30px;
             z-index: 998;
             background: linear-gradient(135deg, #6F4E37 0%, #D4AF37 100%) !important;
@@ -997,11 +1001,12 @@
             font-weight: 600;
             font-size: 16px;
             box-shadow: 0 4px 20px rgba(111, 78, 55, 0.4), 0 0 30px rgba(212, 175, 55, 0.3) !important;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             visibility: visible !important;
             opacity: 1 !important;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            will-change: transform;
         }
         
         .back-to-home-btn:hover {
@@ -1272,12 +1277,14 @@
             height: 100%;
             background: rgba(255, 255, 255, 0.95);
             /* backdrop-filter removed - no blur */
-            display: flex;
+            display: flex !important;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 99999;
             transition: opacity 0.4s ease, visibility 0.4s ease;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
         
         .loading-overlay.hidden {
@@ -1324,6 +1331,9 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto 24px;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
         
         @keyframes spin {
@@ -2005,29 +2015,38 @@
             transform: translateX(5px);
         }
 
-        /* Mobile Navigation Drawer */
+        /* Mobile Navigation Drawer - Professional & Responsive */
         .mobile-nav-drawer {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 75%;
-            height: 100vh;
-            background: #FFFFFF;
-            z-index: 1050;
-            transition: all 0.3s ease;
-            box-shadow: -5px 0 15px rgba(111, 78, 55, 0.06);
-            overflow-y: auto;
-            border-left: 3px solid var(--reddish-brown-dark);
-            visibility: hidden;
-            opacity: 0;
-            transform: translateX(100%);
+            position: fixed !important;
+            top: 0 !important;
+            right: -100% !important;
+            width: 85% !important;
+            max-width: 320px !important;
+            height: 100vh !important;
+            background: #FFFFFF !important;
+            z-index: 1050 !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15) !important;
+            overflow-y: auto !important;
+            border-left: 3px solid var(--reddish-brown-dark) !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            transform: translateX(100%) !important;
+            -webkit-overflow-scrolling: touch !important;
         }
 
         .mobile-nav-drawer.open {
-            right: 0;
-            visibility: visible;
-            opacity: 1;
-            transform: translateX(0);
+            right: 0 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            transform: translateX(0) !important;
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-nav-drawer {
+                width: 90% !important;
+                max-width: 100% !important;
+            }
         }
 
         .mobile-nav-overlay {
@@ -2080,13 +2099,16 @@
         }
 
         .mobile-nav-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            color: #374151;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
+            display: flex !important;
+            align-items: center !important;
+            padding: 1rem 1.5rem !important;
+            color: #374151 !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease !important;
+            border-left: 3px solid transparent !important;
+            min-height: 44px !important; /* Touch target */
+            font-size: 16px !important;
+            touch-action: manipulation !important;
             position: relative;
             font-weight: 500;
             border-bottom: 1px solid #f3f4f6;
@@ -2805,6 +2827,35 @@
             background: var(--gradient-bg) !important;
             position: relative;
         }
+        
+        /* Prevent extra space below footer */
+        footer {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        footer.footer-modern {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Ensure main content doesn't create extra space */
+        main {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Ensure no extra space at the end of the page */
+        html, body {
+            height: auto !important;
+            max-height: 100% !important;
+        }
+        
+        /* Remove any bottom padding/margin that could create extra space */
+        body > *:last-child {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
 
         .footer-content::before {
             content: '';
@@ -2985,12 +3036,13 @@
         .floating-get-started {
             position: fixed;
             bottom: 30px;
-            right: 100px;
+            left: 30px;
             z-index: 1000;
             opacity: 0;
             transform: translateY(100px);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
+            will-change: transform, opacity;
         }
 
         .floating-get-started.show {
@@ -3048,10 +3100,11 @@
         /* Responsive adjustments for floating buttons */
         @media (max-width: 768px) {
             .floating-get-started {
-                bottom: 85px !important; /* Will be overridden by JS when footer is in view */
-                right: 20px;
+                bottom: 20px !important;
                 left: 20px;
+                right: auto;
                 width: auto;
+                max-width: calc(100% - 160px);
             }
             
             .floating-btn {
@@ -3063,29 +3116,83 @@
             
             .back-to-top {
                 bottom: 20px;
+                right: 90px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+            
+            .back-to-home-btn {
+                bottom: 80px;
                 right: 20px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .live-chat-bot {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .chat-bot-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .floating-get-started {
+                bottom: 20px !important;
+                left: 15px;
+                max-width: calc(100% - 145px);
+            }
+            
+            .floating-btn {
+                font-size: 0.8rem !important;
+                padding: 0.7rem 0.9rem !important;
+                min-width: auto !important;
+            }
+            
+            .back-to-top {
+                right: 80px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .back-to-home-btn {
+                bottom: 70px;
+                right: 15px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            
+            .live-chat-bot {
+                right: 15px;
+            }
+            
+            .chat-bot-toggle {
                 width: 45px;
                 height: 45px;
                 font-size: 18px;
             }
         }
         
-        @media (max-width: 480px) {
-            .floating-get-started {
-                bottom: 75px !important; /* Will be overridden by JS when footer is in view */
-            }
-            
-            .floating-btn {
-                font-size: 0.85rem !important;
-                padding: 0.8rem 1rem !important;
-            }
-        }
-        
         /* Tablet adjustments */
         @media (min-width: 769px) and (max-width: 1024px) {
             .floating-get-started {
-                bottom: 30px !important; /* Will be overridden by JS when footer is in view */
-                right: 50px;
+                bottom: 30px !important;
+                left: 30px;
+            }
+            
+            .back-to-top {
+                right: 100px;
+            }
+            
+            .back-to-home-btn {
+                bottom: 100px;
+                right: 30px;
             }
         }
         
@@ -3095,7 +3202,8 @@
             bottom: 30px;
             right: 30px;
             left: auto;
-            z-index: 9999;
+            z-index: 1001;
+            will-change: transform;
         }
         
         .chat-bot-toggle {
@@ -3109,7 +3217,7 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(111, 78, 55, 0.4), 0 0 30px rgba(212, 175, 55, 0.3);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             font-size: 24px;
             border: 3px solid #FFFFFF;
@@ -3499,64 +3607,107 @@
            MOBILE OPTIMIZATIONS - PERFORMANCE & VISIBILITY
            ============================================ */
         
-        /* Touch-friendly tap targets (minimum 44x44px) */
+        /* Professional Mobile Responsive Design - Enhanced */
         @media (max-width: 768px) {
+            /* Touch-friendly tap targets (minimum 44x44px) */
             .btn, button, a.btn {
-                min-height: 44px;
-                min-width: 44px;
-                padding: 12px 20px;
-                font-size: 16px;
-                touch-action: manipulation;
+                min-height: 44px !important;
+                min-width: 44px !important;
+                padding: 12px 20px !important;
+                font-size: 16px !important;
+                touch-action: manipulation !important;
+                border-radius: 8px !important;
             }
             
             /* Larger touch targets for navigation */
             .navbar-nav .nav-link {
-                padding: 12px 16px;
-                font-size: 16px;
+                padding: 12px 16px !important;
+                font-size: 16px !important;
+                min-height: 44px !important;
+                display: flex !important;
+                align-items: center !important;
             }
             
             /* Mobile navbar optimization */
             .navbar {
-                /* backdrop-filter removed - no blur */
+                padding: 0.75rem 1rem !important;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+            }
+            
+            .navbar-brand {
+                font-size: 1.25rem !important;
+            }
+            
+            .navbar-toggler {
+                padding: 0.5rem !important;
+                min-height: 44px !important;
+                min-width: 44px !important;
             }
             
             /* Optimize container padding for mobile */
             .container {
-                padding-left: 1rem;
-                padding-right: 1rem;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+                max-width: 100% !important;
+            }
+            
+            .container-fluid {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
             }
             
             /* Reduce hero font sizes for mobile readability */
             h1, .h1 {
-                font-size: 2rem;
-                line-height: 1.2;
+                font-size: 2rem !important;
+                line-height: 1.2 !important;
+                margin-bottom: 1rem !important;
             }
             
             h2, .h2 {
-                font-size: 1.5rem;
-                line-height: 1.3;
+                font-size: 1.5rem !important;
+                line-height: 1.3 !important;
+                margin-bottom: 0.75rem !important;
             }
             
             h3, .h3 {
-                font-size: 1.25rem;
-                line-height: 1.4;
+                font-size: 1.25rem !important;
+                line-height: 1.4 !important;
+                margin-bottom: 0.75rem !important;
+            }
+            
+            h4, .h4 {
+                font-size: 1.125rem !important;
+                line-height: 1.4 !important;
             }
             
             /* Mobile card spacing */
             .card {
-                margin-bottom: 1rem;
+                margin-bottom: 1rem !important;
+                border-radius: 12px !important;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+            }
+            
+            .card-body {
+                padding: 1.25rem !important;
             }
             
             /* Optimize form inputs for mobile */
-            .form-control, .form-select {
-                font-size: 16px;
-                padding: 12px 16px;
-                min-height: 44px;
+            .form-control, .form-select, input, textarea, select {
+                font-size: 16px !important; /* Prevents zoom on iOS */
+                padding: 12px 16px !important;
+                min-height: 44px !important;
+                border-radius: 8px !important;
+                border: 1px solid #ddd !important;
             }
             
             /* Mobile modal adjustments */
             .modal-dialog {
-                margin: 0.5rem;
+                margin: 0.5rem !important;
+                max-width: calc(100% - 1rem) !important;
+            }
+            
+            .modal-content {
+                border-radius: 12px !important;
             }
             
             /* Fast hardware acceleration for animations */
@@ -3565,35 +3716,132 @@
                 transform: translateZ(0);
                 will-change: transform;
             }
+            
+            /* Improve spacing */
+            .section {
+                padding: 2rem 0 !important;
+            }
+            
+            /* Table responsive */
+            .table-responsive {
+                border-radius: 8px !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
         }
         
-        /* Small mobile devices */
+        /* Small mobile devices - Enhanced */
         @media (max-width: 480px) {
+            html {
+                font-size: 14px !important;
+            }
+            
             body {
-                font-size: 14px;
+                font-size: 14px !important;
             }
             
             h1, .h1 {
-                font-size: 1.75rem;
+                font-size: 1.75rem !important;
+                line-height: 1.2 !important;
             }
             
             h2, .h2 {
-                font-size: 1.35rem;
+                font-size: 1.35rem !important;
+                line-height: 1.3 !important;
+            }
+            
+            h3, .h3 {
+                font-size: 1.2rem !important;
             }
             
             .container {
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
             }
             
             /* Stack buttons vertically on very small screens */
             .btn-group {
-                flex-direction: column;
+                flex-direction: column !important;
+                width: 100% !important;
             }
             
             .btn-group .btn {
-                width: 100%;
-                margin-bottom: 0.5rem;
+                width: 100% !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Navigation improvements */
+            .navbar {
+                padding: 0.5rem 0.75rem !important;
+            }
+            
+            .navbar-brand {
+                font-size: 1.1rem !important;
+            }
+            
+            /* Card improvements */
+            .card-body {
+                padding: 1rem !important;
+            }
+            
+            /* Form improvements */
+            .form-control, .form-select {
+                font-size: 16px !important;
+                padding: 10px 14px !important;
+            }
+        }
+        
+        /* Extra Small Mobile Devices */
+        @media (max-width: 375px) {
+            html {
+                font-size: 13px !important;
+            }
+            
+            h1, .h1 {
+                font-size: 1.5rem !important;
+            }
+            
+            h2, .h2 {
+                font-size: 1.25rem !important;
+            }
+            
+            .container {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+            
+            .btn {
+                padding: 10px 14px !important;
+                font-size: 14px !important;
+            }
+        }
+        
+        /* Landscape Mobile Optimization */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero-section {
+                min-height: 60vh !important;
+                padding: 2rem 0 !important;
+            }
+            
+            .navbar {
+                padding: 0.5rem 1rem !important;
+            }
+        }
+        
+        /* Tablet Portrait */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .container {
+                max-width: 100% !important;
+                padding-left: 2rem !important;
+                padding-right: 2rem !important;
+            }
+            
+            h1, .h1 {
+                font-size: 2.5rem !important;
+            }
+            
+            h2, .h2 {
+                font-size: 2rem !important;
             }
         }
         
@@ -4579,6 +4827,29 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Prevent scrolling past footer - limit scroll to footer bottom
+        function limitScrollToFooter() {
+            const footer = document.querySelector('footer');
+            if (footer) {
+                const footerBottom = footer.offsetTop + footer.offsetHeight;
+                const windowHeight = window.innerHeight;
+                
+                // Prevent scrolling past footer
+                window.addEventListener('scroll', function() {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const maxScroll = Math.max(0, footerBottom - windowHeight);
+                    
+                    if (scrollTop > maxScroll) {
+                        window.scrollTo(0, maxScroll);
+                    }
+                }, { passive: false });
+            }
+        }
+        
+        // Call after page loads
+        limitScrollToFooter();
+        window.addEventListener('load', limitScrollToFooter);
+        
         // Smooth scroll for internal anchors
         document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
             anchor.addEventListener('click', function (e) {
@@ -4643,74 +4914,22 @@
             }
         });
 
-        // Floating Get Started Button - Prevent scrolling below footer
+        // Floating Get Started Button - Simple show/hide based on scroll
         function updateFloatingButtons() {
             const floatingBtn = document.getElementById('floatingGetStarted');
-            const backToHomeBtn = document.getElementById('backToHomeBtn');
             const heroSection = document.querySelector('.hero-section');
-            const footerSection = document.querySelector('.footer-modern');
             
-            if (!footerSection) return;
-            
-            const scrollPosition = window.scrollY;
-            const windowHeight = window.innerHeight;
-            
-            // Get footer position relative to viewport
-            const footerRect = footerSection.getBoundingClientRect();
-            const footerTopFromViewport = footerRect.top; // Distance from top of viewport
-            const footerBottomFromViewport = footerRect.bottom; // Distance from bottom of viewport
-            
-            // Button dimensions
-            const buttonHeight = 60;
-            const padding = 20; // Space between button and footer
-            const defaultBottom = 30; // Default bottom offset
-            const mobileDefaultBottom = 85; // Mobile default (accounts for nav bar)
-            
-            const isMobile = window.innerWidth <= 768;
-            const isTablet = window.innerWidth > 768 && window.innerWidth <= 1024;
-            const baseBottom = isMobile ? mobileDefaultBottom : defaultBottom;
-            
-            // Handle floating Get Started button
+            // Only handle visibility, NOT position
             if (floatingBtn) {
+                const scrollPosition = window.scrollY;
                 const heroHeight = heroSection ? heroSection.offsetHeight : 500;
                 const shouldShow = scrollPosition > heroHeight * 0.5;
                 
                 if (shouldShow) {
-                    let calculatedBottom = baseBottom;
-                    
-                    // Check if footer is visible in viewport
-                    if (footerTopFromViewport < windowHeight) {
-                        // Footer is in view - calculate position above footer
-                        // Distance from bottom of viewport to top of footer
-                        const spaceAboveFooter = windowHeight - footerTopFromViewport;
-                        
-                        // Position button above footer with padding
-                        calculatedBottom = spaceAboveFooter + padding;
-                        
-                        // Ensure button doesn't go too high (minimum bottom position)
-                        calculatedBottom = Math.max(calculatedBottom, baseBottom);
-                    }
-                    
-                    // Apply the calculated position
-                    floatingBtn.style.bottom = calculatedBottom + 'px';
                     floatingBtn.classList.add('show');
                 } else {
                     floatingBtn.classList.remove('show');
                 }
-            }
-            
-            // Handle back to home button (if visible)
-            if (backToHomeBtn && backToHomeBtn.offsetParent !== null) {
-                const homeButtonDefaultBottom = 100;
-                let calculatedBottom = homeButtonDefaultBottom;
-                
-                if (footerTopFromViewport < windowHeight) {
-                    const spaceAboveFooter = windowHeight - footerTopFromViewport;
-                    calculatedBottom = spaceAboveFooter + padding;
-                    calculatedBottom = Math.max(calculatedBottom, homeButtonDefaultBottom);
-                }
-                
-                backToHomeBtn.style.bottom = calculatedBottom + 'px';
             }
         }
         
@@ -4723,71 +4942,15 @@
             scrollTimeout = setTimeout(updateFloatingButtons, 10);
         }
         
-        // Update on scroll and resize
+        // Update on scroll only for show/hide
         window.addEventListener('scroll', throttledUpdateFloatingButtons, { passive: true });
-        window.addEventListener('resize', updateFloatingButtons);
         
         // Initial call
         updateFloatingButtons();
         
-        // Update chat bot position to respect footer
-        function updateChatBotPosition() {
-            const chatBot = document.getElementById('liveChatBot');
-            const footerSection = document.querySelector('.footer-modern');
-            
-            if (!chatBot) return;
-            
-            const isMobile = window.innerWidth <= 768;
-            const isSmallMobile = window.innerWidth <= 480;
-            
-            if (isMobile) {
-                // On mobile, position is handled by CSS - fixed on right side
-                chatBot.style.bottom = isSmallMobile ? '15px' : '20px';
-                chatBot.style.right = isSmallMobile ? '10px' : '15px';
-                chatBot.style.left = 'auto';
-                return;
-            }
-            
-            // Desktop/tablet positioning - fixed on right side
-            if (!footerSection) {
-                chatBot.style.bottom = '30px';
-                chatBot.style.right = '30px';
-                chatBot.style.left = 'auto';
-                return;
-            }
-            
-            const windowHeight = window.innerHeight;
-            const footerRect = footerSection.getBoundingClientRect();
-            const footerTopFromViewport = footerRect.top;
-            const padding = 20;
-            const defaultBottom = 30;
-            
-            let calculatedBottom = defaultBottom;
-            
-            if (footerTopFromViewport < windowHeight) {
-                const spaceAboveFooter = windowHeight - footerTopFromViewport;
-                calculatedBottom = spaceAboveFooter + padding;
-                calculatedBottom = Math.max(calculatedBottom, defaultBottom);
-            }
-            
-            // Keep chat bot fixed on right side, only adjust bottom position
-            chatBot.style.bottom = calculatedBottom + 'px';
-            chatBot.style.right = '30px';
-            chatBot.style.left = 'auto';
-        }
-        
-        // Update chat bot position on scroll (throttled for performance)
-        let chatBotScrollTimeout;
-        function throttledUpdateChatBotPosition() {
-            if (chatBotScrollTimeout) {
-                clearTimeout(chatBotScrollTimeout);
-            }
-            chatBotScrollTimeout = setTimeout(updateChatBotPosition, 50);
-        }
-        
-        window.addEventListener('scroll', throttledUpdateChatBotPosition, { passive: true });
-        window.addEventListener('resize', updateChatBotPosition);
-        updateChatBotPosition();
+        // Chat bot position - REMOVED all dynamic positioning
+        // Chat bot now stays in fixed position defined by CSS
+        // No more movement on scroll!
         
         // Live Chat Bot Functions
         window.toggleChatBot = function() {
@@ -5396,7 +5559,7 @@
                 
                 overlay.innerHTML = `
                     <div class="loading-content">
-                        <div class="loading-spinner" style="display: block !important; visibility: visible !important; opacity: 1 !important;"></div>
+                        <div class="loading-spinner" style="display: block !important; visibility: visible !important; opacity: 1 !important; animation: spin 0.8s linear infinite !important;"></div>
                         <div class="loading-text" style="display: block !important; visibility: visible !important; opacity: 1 !important;">${message}</div>
                         <div class="loading-subtext" style="display: block !important; visibility: visible !important; opacity: 1 !important;">${subtext}</div>
                     </div>

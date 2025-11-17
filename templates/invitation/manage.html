@@ -101,19 +101,28 @@
                             <div class="share-url-container">
                                 <input type="text" class="form-control" id="shareUrlInput" 
                                        value="{{ request.url_root }}view-invitation-final/{{ invitation.share_url }}" readonly>
-                                <button class="btn btn-outline-primary" onclick="copyShareUrl()">
-                                    <i class="fas fa-copy"></i>
+                                <button class="btn btn-outline-primary" type="button" onclick="copyShareUrl(event)">
+                                    <i class="fas fa-copy"></i> Copy
                                 </button>
                             </div>
                             <div class="social-share-buttons mt-3">
-                                <a href="https://wa.me/?text={{ invitation.title or 'Event Invitation' }} - {{ request.url_root }}view-invitation-final/{{ invitation.share_url }}" target="_blank" class="btn btn-success btn-sm" onclick="trackShare('whatsapp')">
+                                {% set share_url = request.url_root + 'view-invitation-final/' + invitation.share_url %}
+                                {% set share_text = (invitation.title or 'Event Invitation')|urlencode %}
+                                
+                                <a href="https://wa.me/?text={{ share_text }}%20-%20{{ share_url|urlencode }}" target="_blank" class="btn btn-success btn-sm" onclick="if(typeof trackShare === 'function') trackShare('whatsapp'); return true;">
                                     <i class="fab fa-whatsapp me-1"></i> WhatsApp
                                 </a>
-                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url_root }}view-invitation-final/{{ invitation.share_url }}" target="_blank" class="btn btn-primary btn-sm" onclick="trackShare('facebook')">
+                                <a href="https://t.me/share/url?url={{ share_url|urlencode }}&text={{ share_text }}" target="_blank" class="btn btn-info btn-sm" onclick="if(typeof trackShare === 'function') trackShare('telegram'); return true;">
+                                    <i class="fab fa-telegram me-1"></i> Telegram
+                                </a>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" target="_blank" class="btn btn-primary btn-sm" onclick="if(typeof trackShare === 'function') trackShare('facebook'); return true;">
                                     <i class="fab fa-facebook me-1"></i> Facebook
                                 </a>
-                                <a href="https://www.instagram.com/" target="_blank" class="btn btn-danger btn-sm" onclick="trackShare('instagram')">
-                                    <i class="fab fa-instagram me-1"></i> Instagram
+                                <a href="https://twitter.com/intent/tweet?text={{ share_text }}&url={{ share_url|urlencode }}" target="_blank" class="btn btn-dark btn-sm" onclick="if(typeof trackShare === 'function') trackShare('twitter'); return true;">
+                                    <i class="fab fa-x-twitter me-1"></i> X
+                                </a>
+                                <a href="mailto:?subject={{ share_text }}&body=You're%20invited!%20{{ share_url|urlencode }}" class="btn btn-secondary btn-sm" onclick="if(typeof trackShare === 'function') trackShare('email'); return true;">
+                                    <i class="fas fa-envelope me-1"></i> Email
                                 </a>
                             </div>
                         </div>
@@ -143,31 +152,50 @@
 <!-- All styles moved to static/css/style.css -->
 
 <script>
-function copyShareUrl() {
+function copyShareUrl(event) {
+    // Handle event if provided
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
     const shareUrlInput = document.getElementById('shareUrlInput');
     if (!shareUrlInput) {
         console.error('Share URL input not found');
-        showToast('Share link not found', 'error');
+        if (typeof showToast === 'function') {
+            showToast('Share link not found', 'error');
+        } else {
+            alert('Share link not found');
+        }
         return;
     }
     
     const shareUrl = shareUrlInput.value;
+    const btn = event ? (event.target.closest('button') || event.target) : null;
     
     // Try modern clipboard API first
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(shareUrl).then(function() {
-            showToast('Share link copied to clipboard!', 'success');
+            if (btn) showSuccessFeedback(btn);
+            if (typeof showToast === 'function') {
+                showToast('Share link copied to clipboard!', 'success');
+            } else {
+                alert('Share link copied!');
+            }
+            if (typeof trackShare === 'function') {
+                trackShare('copy');
+            }
         }).catch(function(err) {
             console.error('Clipboard API failed, trying fallback:', err);
-            fallbackCopy(shareUrlInput);
+            fallbackCopy(shareUrlInput, btn);
         });
     } else {
         // Fallback for older browsers or non-secure contexts
-        fallbackCopy(shareUrlInput);
+        fallbackCopy(shareUrlInput, btn);
     }
 }
 
-function fallbackCopy(input) {
+function fallbackCopy(input, btn) {
     try {
         // Select the text
         input.select();
@@ -176,14 +204,41 @@ function fallbackCopy(input) {
         // Try execCommand
         const successful = document.execCommand('copy');
         if (successful) {
-            showToast('Share link copied to clipboard!', 'success');
+            if (btn) showSuccessFeedback(btn);
+            if (typeof showToast === 'function') {
+                showToast('Share link copied to clipboard!', 'success');
+            } else {
+                alert('Share link copied!');
+            }
+            if (typeof trackShare === 'function') {
+                trackShare('copy');
+            }
         } else {
             throw new Error('execCommand failed');
         }
     } catch (err) {
         console.error('Fallback copy failed:', err);
-        showToast('Failed to copy link. Please select and copy manually.', 'error');
+        if (typeof showToast === 'function') {
+            showToast('Failed to copy link. Please select and copy manually.', 'error');
+        } else {
+            alert('Failed to copy link. Please select and copy manually.');
+        }
     }
+}
+
+function showSuccessFeedback(btn) {
+    if (!btn) return;
+    
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i>';
+    const originalClasses = btn.className;
+    btn.classList.add('btn-success');
+    btn.classList.remove('btn-outline-primary');
+
+    setTimeout(function() {
+        btn.innerHTML = originalHTML;
+        btn.className = originalClasses;
+    }, 2000);
 }
 
 function duplicateInvitation() {

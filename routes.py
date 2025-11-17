@@ -2,7 +2,7 @@ from flask import render_template, request, jsonify, session, redirect, url_for,
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from extensions import db
-from models import User, OTP, Invitation, Template, EventType, Wish, Guest, RSVP, InvitationView, InvitationShare
+from models import User, OTP, Invitation, Template, EventType, Wish, Guest, RSVP, InvitationView, InvitationShare, PersonalMessage, Memory
 from utils import send_otp_email, generate_otp
 from datetime import datetime, timedelta
 import json
@@ -1375,34 +1375,44 @@ def register_routes(app):
 
     @app.route('/create-invitation')
     def create_invitation():
-        # Improved authentication check - verify user exists in database
-        if not is_authenticated():
+        # Improved authentication check - less aggressive, don't clear session on minor errors
+        # Check session first
+        if 'user_id' not in session:
             flash('Please login to create an invitation', 'error')
             return redirect(url_for('auth'))
         
-        # Verify user still exists in database
+        # Verify user still exists in database and session is valid
         try:
             user_id = session.get('user_id')
             if not user_id:
                 flash('Please login to create an invitation', 'error')
-                session.clear()
                 return redirect(url_for('auth'))
             
+            # Verify user exists in database - but don't clear session on first check failure
             current_user = User.query.get(user_id)
             if not current_user:
-                app.logger.error(f"User not found for session user_id: {user_id}")
-                flash('User not found. Please login again.', 'error')
+                app.logger.warning(f"User not found for session user_id: {user_id}, but session exists")
+                # Only clear session if user definitely doesn't exist
                 session.clear()
+                flash('Session expired. Please login again.', 'error')
                 return redirect(url_for('auth'))
+            
+            # Refresh session to prevent timeout - only if user is valid
+            session['user_id'] = user_id
+            session.permanent = True
+            
         except KeyError:
-            flash('Please login to create an invitation', 'error')
-            session.clear()
-            return redirect(url_for('auth'))
+            # KeyError means session doesn't have user_id, but don't clear if it might be valid
+            if 'user_id' not in session:
+                flash('Please login to create an invitation', 'error')
+                return redirect(url_for('auth'))
         except Exception as e:
             app.logger.error(f"Error getting user: {str(e)}")
-            flash('Error retrieving user information. Please login again.', 'error')
-            session.clear()
-            return redirect(url_for('auth'))
+            # Don't clear session on database errors - might be temporary
+            flash('Error retrieving user information. Please try again.', 'error')
+            # Only redirect if it's a critical error
+            if 'user_id' not in session:
+                return redirect(url_for('auth'))
         
         # Get template and event_type parameters
         selected_template = request.args.get('template')
@@ -1454,9 +1464,36 @@ def register_routes(app):
 
     @app.route('/create-invitation', methods=['POST'])
     def create_invitation_post():
-        if not is_authenticated():
+        # Improved authentication check - less aggressive, don't clear session on minor errors
+        if 'user_id' not in session:
             flash('Please login to create an invitation', 'error')
             return redirect(url_for('auth'))
+        
+        # Verify user exists - but don't clear session on first check failure
+        try:
+            user_id = session.get('user_id')
+            if not user_id:
+                flash('Please login to create an invitation', 'error')
+                return redirect(url_for('auth'))
+            
+            current_user = User.query.get(user_id)
+            if not current_user:
+                app.logger.warning(f"User not found for session user_id: {user_id}, but session exists")
+                # Only clear session if user definitely doesn't exist
+                session.clear()
+                flash('Session expired. Please login again.', 'error')
+                return redirect(url_for('auth'))
+            
+            # Refresh session to prevent timeout - only if user is valid
+            session['user_id'] = user_id
+            session.permanent = True
+        except Exception as e:
+            app.logger.error(f"Error verifying user: {str(e)}")
+            # Don't clear session on database errors - might be temporary
+            flash('Error retrieving user information. Please try again.', 'error')
+            # Only redirect if it's a critical error
+            if 'user_id' not in session:
+                return redirect(url_for('auth'))
 
         try:
             data = request.form
@@ -1523,6 +1560,25 @@ def register_routes(app):
                             gallery_images.append(filename)
                         except Exception as e:
                             app.logger.error(f"Error saving gallery image {i}: {str(e)}")
+            
+            # Handle voice message upload
+            voice_message_url = None
+            voice_message_duration = None
+            enable_voice_message = False
+            if 'voiceMessage' in request.files:
+                voice_file = request.files['voiceMessage']
+                if voice_file and voice_file.filename and voice_file.filename != '':
+                    try:
+                        filename = secure_filename(f"voice_{user_id}_{timestamp}_{voice_file.filename}")
+                        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                        voice_file.save(file_path)
+                        voice_message_url = url_for('uploaded_file', filename=filename)
+                        # Estimate duration (15 seconds max)
+                        voice_message_duration = 15
+                        enable_voice_message = True
+                        app.logger.info(f"Voice message saved: {filename}")
+                    except Exception as e:
+                        app.logger.error(f"Error saving voice message: {str(e)}")
 
             # Generate share URL before creating invitation (optimization)
             share_url = generate_unique_share_url()
@@ -1534,6 +1590,20 @@ def register_routes(app):
                     event_date = datetime.strptime(data.get('eventDate', ''), '%Y-%m-%d')
                 except ValueError:
                     app.logger.warning(f"Invalid event date format: {data.get('eventDate')}")
+            
+            # Determine event type from template or fallback
+            event_type = 'general'
+            if template_id:
+                # Get event type from database template
+                try:
+                    template = Template.query.get(template_id)
+                    if template:
+                        event_type = template.event_type
+                except Exception as e:
+                    app.logger.error(f"Error fetching template: {str(e)}")
+            elif selected_template:
+                # Extract event type from template name
+                event_type = selected_template.split('_')[0] if '_' in selected_template else 'general'
             
             # Prepare customization data once (optimization)
             customization_data = json.dumps({
@@ -1548,7 +1618,7 @@ def register_routes(app):
                 user_id=user_id,
                 title=data.get('eventTitle', ''),
                 description=data.get('eventDescription', ''),
-                event_type=selected_template.split('_')[0] if selected_template else 'general',
+                event_type=event_type,
                 template_name=selected_template,
                 event_date=event_date,
                 event_style=data.get('eventStyle', ''),
@@ -1609,7 +1679,15 @@ def register_routes(app):
                 share_url=share_url,
                 is_active=True,
                 view_count=0,
-                expires_at=datetime.utcnow() + timedelta(days=365)  # Set expiration to 1 year
+                expires_at=datetime.utcnow() + timedelta(days=365),  # Set expiration to 1 year
+                
+                # Emotional Features
+                enable_personal_messages=data.get('enablePersonalMessages', 'false').lower() == 'true',
+                enable_countdown=data.get('enableCountdown', 'true').lower() == 'true',
+                countdown_mystery_mode=data.get('countdownMysteryMode', 'false').lower() == 'true',
+                enable_voice_message=enable_voice_message,
+                voice_message_url=voice_message_url,
+                voice_message_duration=voice_message_duration
             )
             
             # Optimized database operations
@@ -2186,24 +2264,64 @@ def register_routes(app):
             }
         }
         
-        # Get template image URL from customization data
+        # Get template image URL - first try from Template model, then from customization data
         template_image_url = None
-        if invitation.customization_data:
+        
+        # Try to get template image from Template model based on template_name
+        if invitation.template_name:
+            # Try multiple matching strategies
+            template = None
+            
+            # Strategy 1: Exact match
+            template = Template.query.filter_by(name=invitation.template_name).first()
+            
+            # Strategy 2: Case-insensitive exact match
+            if not template:
+                template = Template.query.filter(Template.name.ilike(invitation.template_name)).first()
+            
+            # Strategy 3: Partial match (contains)
+            if not template:
+                template = Template.query.filter(Template.name.ilike(f'%{invitation.template_name}%')).first()
+            
+            # Strategy 4: Try matching with underscores/spaces normalized
+            if not template:
+                normalized_name = invitation.template_name.replace('_', ' ').replace('-', ' ')
+                template = Template.query.filter(Template.name.ilike(f'%{normalized_name}%')).first()
+            
+            # Strategy 5: Try reverse - check if template name contains invitation template_name
+            if not template:
+                template = Template.query.filter(Template.name.ilike(f'%{invitation.template_name.replace("_", " ")}%')).first()
+            
+            if template and template.preview_image:
+                template_image_url = template.preview_image
+                # Normalize the path - ensure it uses /images/ instead of /static/images/
+                if template_image_url.startswith('/static/images/'):
+                    template_image_url = template_image_url.replace('/static/images/', '/images/')
+                elif not template_image_url.startswith('/') and not template_image_url.startswith('http'):
+                    template_image_url = f'/images/{template_image_url}'
+        
+        # Fallback to customization data if template not found in database
+        if not template_image_url and invitation.customization_data:
             try:
                 customization = json.loads(invitation.customization_data)
                 template_image_url = customization.get('template_image_url')
+                # Normalize the path
+                if template_image_url and template_image_url.startswith('/static/images/'):
+                    template_image_url = template_image_url.replace('/static/images/', '/images/')
             except:
                 pass
         
-        # Get gallery images - use first gallery image as background if available
+        # Get gallery images
         gallery_images_list = json.loads(invitation.gallery_images) if invitation.gallery_images else []
+        
+        # Set background image - prioritize template image over gallery images
         background_image_url = None
-        if gallery_images_list and len(gallery_images_list) > 0:
-            # Use first gallery image as background (priority over template image)
-            background_image_url = f"/static/uploads/{gallery_images_list[0]}"
-        elif template_image_url:
-            # Fallback to template image if no gallery images
+        if template_image_url:
+            # Use template image as background (priority)
             background_image_url = template_image_url
+        elif gallery_images_list and len(gallery_images_list) > 0:
+            # Fallback to first gallery image if no template image
+            background_image_url = f"/static/uploads/{gallery_images_list[0]}"
         
         # Check if current user is the creator
         is_creator = is_authenticated() and invitation.user_id == session.get('user_id')
@@ -2223,6 +2341,7 @@ def register_routes(app):
                              is_creator=is_creator,
                              wishes=wishes_data,
                              background_image_url=background_image_url,
+                             template_image_url=template_image_url,
                              gallery_images_list=gallery_images_list)
 
     @app.route('/edit-invitation/<int:invitation_id>', methods=['GET', 'POST'])
@@ -2309,8 +2428,8 @@ def register_routes(app):
                 elif invitation.event_type == 'babyshower':
                     invitation.mother_name = data.get('motherName', '')
                     invitation.father_name = data.get('fatherName', '')
-                    invitation.start_time = data.get('babyshowerStartTime', '')
-                    invitation.end_time = data.get('babyshowerEndTime', '')
+                    invitation.babyshower_start_time = data.get('babyshowerStartTime', '')
+                    invitation.babyshower_end_time = data.get('babyshowerEndTime', '')
                 elif invitation.event_type == 'graduation':
                     invitation.graduate_name = data.get('graduateName', '')
                     invitation.degree = data.get('degree', '')
@@ -3217,3 +3336,256 @@ def export_pdf(guests, invitation):
     except ImportError:
         # Fallback to CSV if reportlab is not available
         return export_csv(guests, invitation)
+
+    # ========== EMOTIONAL FEATURES API ENDPOINTS ==========
+    
+    @app.route('/api/invitations/<share_url>/personal-message', methods=['GET'])
+    def get_personal_message(share_url):
+        """Get or generate personal message for a guest"""
+        try:
+            guest_email = request.args.get('guestEmail', '').strip()
+            guest_name = request.args.get('guestName', '').strip()
+            
+            if not guest_email:
+                return jsonify({'success': False, 'message': 'Guest email is required'}), 400
+            
+            invitation = Invitation.query.filter_by(share_url=share_url).first()
+            if not invitation:
+                return jsonify({'success': False, 'message': 'Invitation not found'}), 404
+            
+            if not invitation.enable_personal_messages:
+                return jsonify({'success': False, 'message': 'Personal messages not enabled'}), 400
+            
+            # Check if message already exists
+            existing_message = PersonalMessage.query.filter_by(
+                invitation_id=invitation.id,
+                guest_email=guest_email
+            ).first()
+            
+            if existing_message:
+                # Mark as viewed
+                if not existing_message.viewed_at:
+                    existing_message.viewed_at = datetime.utcnow()
+                    db.session.commit()
+                
+                return jsonify({
+                    'success': True,
+                    'message': existing_message.generated_message,
+                    'guestName': existing_message.guest_name
+                })
+            
+            # Generate new message
+            from utils_emotional import generate_personal_message, get_used_templates_for_invitation
+            
+            used_templates = get_used_templates_for_invitation(invitation.id, db.session, PersonalMessage)
+            message_text, template_combo = generate_personal_message(
+                guest_name or guest_email.split('@')[0],
+                guest_email,
+                invitation.id,
+                used_templates
+            )
+            
+            # Save to database
+            personal_message = PersonalMessage(
+                invitation_id=invitation.id,
+                guest_email=guest_email,
+                guest_name=guest_name or guest_email.split('@')[0],
+                message_template=template_combo,
+                generated_message=message_text
+            )
+            db.session.add(personal_message)
+            db.session.commit()
+            
+            return jsonify({
+                'success': True,
+                'message': message_text,
+                'guestName': personal_message.guest_name
+            })
+            
+        except Exception as e:
+            app.logger.error(f"Error getting personal message: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to get personal message'}), 500
+    
+    @app.route('/api/invitations/<share_url>/memories', methods=['GET'])
+    def get_memories(share_url):
+        """Get all memories for an invitation"""
+        try:
+            invitation = Invitation.query.filter_by(share_url=share_url).first()
+            if not invitation:
+                return jsonify({'success': False, 'message': 'Invitation not found'}), 404
+            
+            memories = Memory.query.filter_by(
+                invitation_id=invitation.id,
+                approved=True
+            ).order_by(Memory.uploaded_at.desc()).all()
+            
+            memories_data = [{
+                'id': m.id,
+                'guestName': m.guest_name,
+                'photoUrl': m.photo_url,
+                'memoryText': m.memory_text,
+                'uploadedAt': m.uploaded_at.isoformat() if m.uploaded_at else None,
+                'likes': m.likes
+            } for m in memories]
+            
+            return jsonify({
+                'success': True,
+                'memories': memories_data
+            })
+            
+        except Exception as e:
+            app.logger.error(f"Error getting memories: {str(e)}")
+            return jsonify({'success': False, 'message': 'Failed to get memories'}), 500
+    
+    @app.route('/api/invitations/<share_url>/memories', methods=['POST'])
+    def upload_memory(share_url):
+        """Upload a memory (photo + text)"""
+        try:
+            app.logger.info(f"Memory upload request for share_url: {share_url}")
+            
+            invitation = Invitation.query.filter_by(share_url=share_url).first()
+            if not invitation:
+                app.logger.warning(f"Invitation not found for share_url: {share_url}")
+                return jsonify({'success': False, 'message': 'Invitation not found'}), 404
+            
+            # Get form data
+            guest_name = request.form.get('guestName', '').strip()
+            guest_email = request.form.get('guestEmail', '').strip()
+            memory_text = request.form.get('memoryText', '').strip()
+            
+            app.logger.info(f"Memory upload data: guest_name={guest_name}, has_text={bool(memory_text)}")
+            
+            if not guest_name or not memory_text:
+                return jsonify({'success': False, 'message': 'Name and memory text are required'}), 400
+            
+            # Handle photo upload
+            if 'photo' not in request.files:
+                app.logger.warning("No 'photo' key in request.files")
+                return jsonify({'success': False, 'message': 'Photo is required'}), 400
+            
+            photo_file = request.files['photo']
+            if photo_file.filename == '':
+                app.logger.warning("Photo filename is empty")
+                return jsonify({'success': False, 'message': 'Photo is required'}), 400
+            
+            # Ensure upload directory exists
+            upload_folder = app.config.get('UPLOAD_FOLDER', 'uploads')
+            os.makedirs(upload_folder, exist_ok=True)
+            
+            # Save photo
+            timestamp = datetime.now().timestamp()
+            filename = secure_filename(f"memory_{invitation.id}_{timestamp}_{photo_file.filename}")
+            file_path = os.path.join(upload_folder, filename)
+            
+            try:
+                photo_file.save(file_path)
+                app.logger.info(f"Photo saved to: {file_path}")
+            except Exception as save_error:
+                app.logger.error(f"Error saving photo: {str(save_error)}")
+                return jsonify({'success': False, 'message': f'Failed to save photo: {str(save_error)}'}), 500
+            
+            # Create URL for the photo - use direct path if url_for doesn't work
+            try:
+                photo_url = url_for('uploaded_file', filename=filename, _external=False)
+            except:
+                # Fallback to direct path
+                photo_url = f"/uploads/{filename}"
+            
+            # Save memory to database
+            memory = Memory(
+                invitation_id=invitation.id,
+                guest_name=guest_name,
+                guest_email=guest_email,
+                photo_url=photo_url,
+                memory_text=memory_text,
+                approved=True
+            )
+            db.session.add(memory)
+            db.session.commit()
+            
+            return jsonify({
+                'success': True,
+                'message': 'Memory uploaded successfully',
+                'memory': {
+                    'id': memory.id,
+                    'guestName': memory.guest_name,
+                    'guest_name': memory.guest_name,
+                    'photoUrl': memory.photo_url,
+                    'photo_url': memory.photo_url,
+                    'memoryText': memory.memory_text,
+                    'memory_text': memory.memory_text,
+                    'uploadedAt': memory.uploaded_at.isoformat() if memory.uploaded_at else None,
+                    'uploaded_at': memory.uploaded_at.isoformat() if memory.uploaded_at else None,
+                    'likes': memory.likes
+                }
+            })
+            
+        except Exception as e:
+            import traceback
+            error_trace = traceback.format_exc()
+            app.logger.error(f"Error uploading memory: {str(e)}")
+            app.logger.error(f"Traceback: {error_trace}")
+            db.session.rollback()
+            
+            # Return more detailed error in development, generic in production
+            error_message = 'Failed to upload memory'
+            if app.config.get('DEBUG', False):
+                error_message = f'Failed to upload memory: {str(e)}'
+            
+            return jsonify({
+                'success': False, 
+                'message': error_message,
+                'error': str(e) if app.config.get('DEBUG', False) else None
+            }), 500
+    
+    @app.route('/api/invitations/<int:invitation_id>/voice-message', methods=['POST'])
+    def upload_voice_message(invitation_id):
+        """Upload voice message for an invitation"""
+        try:
+            # Check if user owns the invitation
+            if 'user_id' not in session:
+                return jsonify({'success': False, 'message': 'Authentication required'}), 401
+            
+            invitation = Invitation.query.get(invitation_id)
+            if not invitation:
+                return jsonify({'success': False, 'message': 'Invitation not found'}), 404
+            
+            if invitation.user_id != session['user_id']:
+                return jsonify({'success': False, 'message': 'Unauthorized'}), 403
+            
+            # Handle audio file upload
+            if 'audio' not in request.files:
+                return jsonify({'success': False, 'message': 'Audio file is required'}), 400
+            
+            audio_file = request.files['audio']
+            if audio_file.filename == '':
+                return jsonify({'success': False, 'message': 'Audio file is required'}), 400
+            
+            # Get duration if provided
+            duration = request.form.get('duration', type=int)
+            
+            # Save audio file
+            timestamp = datetime.now().timestamp()
+            filename = secure_filename(f"voice_{invitation_id}_{timestamp}_{audio_file.filename}")
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            audio_file.save(file_path)
+            
+            # Create URL for the audio
+            audio_url = url_for('uploaded_file', filename=filename)
+            
+            # Update invitation
+            invitation.voice_message_url = audio_url
+            invitation.voice_message_duration = duration
+            invitation.enable_voice_message = True
+            db.session.commit()
+            
+            return jsonify({
+                'success': True,
+                'audioUrl': audio_url,
+                'duration': duration
+            })
+            
+        except Exception as e:
+            app.logger.error(f"Error uploading voice message: {str(e)}")
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Failed to upload voice message'}), 500
