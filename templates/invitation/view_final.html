@@ -2365,6 +2365,37 @@
 
     <!-- ========== EMOTIONAL FEATURES SECTIONS ========== -->
     
+    <!-- Guest Info Modal (for Personal Messages) -->
+    {% if invitation.enable_personal_messages %}
+    <div class="modal fade" id="guestInfoModal" tabindex="-1" aria-labelledby="guestInfoModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="guestInfoModalLabel">👋 Welcome! Let's personalize your invitation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3">To receive your personalized message, please share your details:</p>
+                    <form id="guestInfoForm">
+                        <div class="mb-3">
+                            <label for="guestNameInput" class="form-label">Your Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="guestNameInput" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="guestEmailInput" class="form-label">Your Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="guestEmailInput" placeholder="Enter your email" required>
+                            <small class="form-text text-muted">We'll use this to generate your unique personalized message</small>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Get My Personalized Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Personal Message Section -->
     {% if invitation.enable_personal_messages %}
     <div id="personal-message-container" class="personal-message-container" style="display: none;">
@@ -4042,21 +4073,69 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Load Personal Message (if enabled and guest info available)
+        // Load Personal Message (if enabled)
         {% if invitation.enable_personal_messages %}
-        // Try to get guest info from URL params or prompt
+        // Storage key for guest info (unique per invitation)
+        const guestInfoKey = `guestInfo_${shareUrl}`;
+        
+        // Try to get guest info from:
+        // 1. URL parameters (for shared links)
+        // 2. localStorage (for returning visitors)
         const urlParams = new URLSearchParams(window.location.search);
         let guestEmail = urlParams.get('email') || urlParams.get('guestEmail') || '';
         let guestName = urlParams.get('name') || urlParams.get('guestName') || '';
         
-        // If no guest info in URL, try to prompt (optional)
-        if (!guestEmail && !guestName) {
-            // You can prompt for guest info or use a default
-            // For now, we'll try to load with empty values (will use email domain as name)
+        // Check localStorage for stored guest info
+        const storedGuestInfo = localStorage.getItem(guestInfoKey);
+        if (storedGuestInfo) {
+            try {
+                const parsed = JSON.parse(storedGuestInfo);
+                if (parsed.email && !guestEmail) {
+                    guestEmail = parsed.email;
+                }
+                if (parsed.name && !guestName) {
+                    guestName = parsed.name;
+                }
+            } catch (e) {
+                console.error('Error parsing stored guest info:', e);
+            }
         }
         
-        if (guestEmail || guestName) {
+        // If we have guest info, load the personal message
+        if (guestEmail) {
+            // Store in localStorage for future visits
+            if (guestName || guestEmail) {
+                localStorage.setItem(guestInfoKey, JSON.stringify({
+                    email: guestEmail,
+                    name: guestName || guestEmail.split('@')[0]
+                }));
+            }
             loadPersonalMessage(shareUrl, guestEmail, guestName);
+        } else {
+            // Show modal to collect guest info
+            const guestInfoModal = new bootstrap.Modal(document.getElementById('guestInfoModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            guestInfoModal.show();
+            
+            // Handle form submission
+            document.getElementById('guestInfoForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('guestNameInput').value.trim();
+                const email = document.getElementById('guestEmailInput').value.trim();
+                
+                if (name && email) {
+                    // Store in localStorage
+                    localStorage.setItem(guestInfoKey, JSON.stringify({ email, name }));
+                    
+                    // Close modal
+                    guestInfoModal.hide();
+                    
+                    // Load personal message
+                    loadPersonalMessage(shareUrl, email, name);
+                }
+            });
         }
         {% endif %}
     };

@@ -664,6 +664,7 @@
 
     .form-group {
         margin-bottom: 20px;
+        position: relative;
     }
 
     .form-label {
@@ -678,6 +679,92 @@
     .form-label.required::after {
         content: ' *';
         color: var(--reddish-brown-dark);
+    }
+
+    .form-label.optional::after {
+        content: ' (Optional)';
+        color: #718096;
+        font-weight: 400;
+        font-size: 12px;
+    }
+
+    /* Validation Feedback Icons */
+    .form-group .validation-icon {
+        position: absolute;
+        right: 12px;
+        top: 38px;
+        font-size: 18px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+    }
+
+    .form-group.valid .validation-icon {
+        opacity: 1;
+        color: #48bb78;
+    }
+
+    .form-group.invalid .validation-icon {
+        opacity: 1;
+        color: #e53e3e;
+    }
+
+    .form-group.valid .form-input,
+    .form-group.valid .form-textarea {
+        border-color: #48bb78;
+        padding-right: 40px;
+    }
+
+    .form-group.invalid .form-input,
+    .form-group.invalid .form-textarea {
+        border-color: #e53e3e;
+        padding-right: 40px;
+    }
+
+    /* Error Message */
+    .form-group .error-message {
+        display: none;
+        color: #e53e3e;
+        font-size: 12px;
+        margin-top: 5px;
+        font-weight: 500;
+    }
+
+    .form-group.invalid .error-message {
+        display: block;
+    }
+
+    /* Character Counter */
+    .char-counter {
+        display: block;
+        text-align: right;
+        font-size: 12px;
+        color: #718096;
+        margin-top: 5px;
+    }
+
+    .char-counter.warning {
+        color: #ed8936;
+    }
+
+    .char-counter.error {
+        color: #e53e3e;
+    }
+
+    /* Loading State */
+    .form-group.loading .form-input,
+    .form-group.loading .form-textarea {
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 2v4M10 14v4M2 10h4M14 10h4M4.343 4.343l2.828 2.828M12.829 12.829l2.828 2.828M4.343 15.657l2.828-2.828M12.829 7.171l2.828-2.828' stroke='%23667eea' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px 16px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        from { background-position: right 12px center; }
+        to { background-position: right 12px center; }
     }
 
     .form-input,
@@ -903,6 +990,258 @@
     .view-toggle-btn.active {
         background: #667eea;
         color: white;
+    }
+    
+    /* Zoom Controls */
+    .zoom-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-left: auto;
+    }
+    
+    .zoom-btn {
+        padding: 6px 10px;
+        border: 1px solid #ddd;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        color: #667eea;
+    }
+    
+    .zoom-btn:hover {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+    }
+    
+    .zoom-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .zoom-level {
+        min-width: 50px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 600;
+        color: #667eea;
+    }
+    
+    /* Enhanced Date/Time Input Styling */
+    .form-group input[type="date"],
+    .form-group input[type="time"] {
+        position: relative;
+    }
+    
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator,
+    .form-group input[type="time"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .form-group input[type="date"]:focus,
+    .form-group input[type="time"]:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    /* Loading States */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .loading-overlay.show {
+        visibility: visible;
+        opacity: 1;
+    }
+    
+    .loading-content {
+        background: white;
+        padding: 40px;
+        border-radius: 16px;
+        text-align: center;
+        max-width: 400px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    
+    .loading-subtext {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .progress-bar-container {
+        width: 100%;
+        height: 6px;
+        background: #f0f0f0;
+        border-radius: 3px;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+        width: 0%;
+    }
+    
+    /* Success/Error Toast Messages */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10001;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .toast {
+        background: white;
+        padding: 16px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 300px;
+        max-width: 400px;
+        animation: slideInRight 0.3s ease;
+        border-left: 4px solid;
+    }
+    
+    .toast.success {
+        border-left-color: #10b981;
+    }
+    
+    .toast.error {
+        border-left-color: #ef4444;
+    }
+    
+    .toast.warning {
+        border-left-color: #f59e0b;
+    }
+    
+    .toast.info {
+        border-left-color: #3b82f6;
+    }
+    
+    .toast-icon {
+        font-size: 20px;
+    }
+    
+    .toast.success .toast-icon {
+        color: #10b981;
+    }
+    
+    .toast.error .toast-icon {
+        color: #ef4444;
+    }
+    
+    .toast.warning .toast-icon {
+        color: #f59e0b;
+    }
+    
+    .toast.info .toast-icon {
+        color: #3b82f6;
+    }
+    
+    .toast-content {
+        flex: 1;
+    }
+    
+    .toast-title {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 4px;
+        color: #2c3e50;
+    }
+    
+    .toast-message {
+        font-size: 13px;
+        color: #666;
+    }
+    
+    .toast-close {
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: #999;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .toast-close:hover {
+        color: #333;
+    }
+    
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
     }
     
     /* Live Preview Card */
@@ -2410,10 +2749,60 @@
         
         .preview-header {
             padding: 12px 15px !important;
+            flex-direction: column !important;
+            gap: 15px !important;
         }
         
         .preview-title {
             font-size: 16px !important;
+        }
+        
+        /* Mobile Zoom Controls */
+        .zoom-controls {
+            width: 100% !important;
+            justify-content: center !important;
+            margin-left: 0 !important;
+            margin-top: 10px !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+        }
+        
+        .zoom-btn {
+            padding: 8px 12px !important;
+            font-size: 16px !important;
+            min-width: 44px !important;
+            min-height: 44px !important;
+        }
+        
+        .zoom-level {
+            min-width: 60px !important;
+            font-size: 14px !important;
+        }
+        
+        /* Mobile Toast */
+        .toast-container {
+            top: 10px !important;
+            right: 10px !important;
+            left: 10px !important;
+        }
+        
+        .toast {
+            min-width: auto !important;
+            max-width: 100% !important;
+        }
+        
+        /* Mobile Loading Overlay */
+        .loading-content {
+            margin: 20px !important;
+            padding: 30px 20px !important;
+        }
+        
+        .loading-text {
+            font-size: 16px !important;
+        }
+        
+        .loading-subtext {
+            font-size: 13px !important;
         }
     }
     
@@ -2933,59 +3322,86 @@
                     <input type="hidden" name="templateId" value="" id="templateIdInput">
                     <input type="hidden" name="templateImageUrl" value="" id="templateImageUrlInput">
                     
-                    <div class="form-group">
+                    <div class="form-group" id="eventNameGroup">
                         <label class="form-label required" for="eventName">Event Name</label>
                         <input type="text" class="form-input" id="eventName" name="eventTitle" 
                                placeholder="e.g., Sarah & James or Emma's Sweet 16"
                                autocomplete="off"
+                               required
                                data-default-name="{% if current_user %}{{ current_user.name|e }}{% endif %}"
                                data-event-type="{{ event_type }}"
                                value="{% if current_user and event_type and current_user.name %}{{ current_user.name|e }}'s {% if event_type == 'wedding' %}Wedding{% elif event_type == 'birthday' %}Birthday{% elif event_type == 'anniversary' %}Anniversary{% elif event_type == 'graduation' %}Graduation{% elif event_type == 'babyshower' %}Baby Shower{% elif event_type == 'retirement' %}Retirement{% else %}Event{% endif %}{% endif %}">
+                        <span class="validation-icon">✓</span>
+                        <span class="error-message" id="eventNameError">Event name is required</span>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" id="eventDateGroup">
                         <label class="form-label required" for="eventDate">Event Date</label>
-                            <input type="date" class="form-input" id="eventDate" name="eventDate" autocomplete="off" placeholder="YYYY-MM-DD or DD-MM-YYYY">
-                            <small class="form-text text-muted" style="display: block; margin-top: 5px; font-size: 0.85rem;">You can type the date in YYYY-MM-DD or DD-MM-YYYY format</small>
+                        <div style="position: relative;">
+                            <input type="date" class="form-input" id="eventDate" name="eventDate" autocomplete="off" 
+                                   placeholder="YYYY-MM-DD or DD-MM-YYYY" required
+                                   style="padding-right: 40px;">
+                            <i class="fas fa-calendar-alt" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #667eea; pointer-events: none;"></i>
+                        </div>
+                        <small class="form-text text-muted" style="display: block; margin-top: 5px; font-size: 0.85rem;">
+                            <i class="fas fa-info-circle"></i> Click the calendar icon or type date in YYYY-MM-DD or DD-MM-YYYY format
+                        </small>
+                        <span class="validation-icon">✓</span>
+                        <span class="error-message" id="eventDateError">Event date is required</span>
+                </div>
+
+                        <div class="form-group" id="eventTimeGroup">
+                        <label class="form-label optional" for="eventTime">Event Time</label>
+                        <div style="position: relative;">
+                            <input type="time" class="form-input" id="eventTime" name="eventTime" autocomplete="off"
+                                   style="padding-right: 40px;">
+                            <i class="fas fa-clock" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #667eea; pointer-events: none;"></i>
+                        </div>
+                        <small class="form-text text-muted" style="display: block; margin-top: 5px; font-size: 0.85rem;">
+                            <i class="fas fa-info-circle"></i> Select time using the time picker or type in HH:MM format (24-hour)
+                        </small>
+                            <span class="validation-icon">✓</span>
+                            <span class="error-message" id="eventTimeError">Please enter a valid time</span>
                 </div>
 
                         <div class="form-group">
-                        <label class="form-label" for="eventTime">Event Time</label>
-                            <input type="time" class="form-input" id="eventTime" name="eventTime" autocomplete="off">
-                </div>
-
-                        <div class="form-group">
-                        <label class="form-label" for="venueName">Venue Name</label>
+                        <label class="form-label optional" for="venueName">Venue Name</label>
                         <input type="text" class="form-input" id="venueName" name="venueName" 
                                placeholder="e.g., Garden Estate" autocomplete="organization">
                 </div>
 
                 <div class="form-group">
-                        <label class="form-label" for="venueAddress">Venue Address</label>
+                        <label class="form-label optional" for="venueAddress">Venue Address</label>
                         <input type="text" class="form-input" id="venueAddress" name="venueAddress" 
                                placeholder="e.g., 123 Main St, City, State" autocomplete="street-address">
             </div>
 
                         <div class="form-group">
-                        <label class="form-label" for="hostedBy">Hosted By</label>
+                        <label class="form-label optional" for="hostedBy">Hosted By</label>
                         <input type="text" class="form-input" id="hostedBy" name="hostName" 
                                placeholder="e.g., The Smith Family"
                                autocomplete="name"
                                value="{{ current_user.name if current_user else '' }}">
                 </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="rsvpContact">RSVP Contact</label>
+                    <div class="form-group" id="rsvpContactGroup">
+                        <label class="form-label optional" for="rsvpContact">RSVP Contact</label>
                         <input type="text" class="form-input" id="rsvpContact" name="contactEmail" 
                                placeholder="e.g., email@example.com or (555) 123-4567"
                                autocomplete="email"
                                value="{{ current_user.email if current_user else '' }}">
+                        <span class="validation-icon">✓</span>
+                        <span class="error-message" id="rsvpContactError">Please enter a valid email or phone number</span>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label" for="personalMessage">Personal Message</label>
+                    <div class="form-group" id="personalMessageGroup">
+                        <label class="form-label optional" for="personalMessage">Personal Message</label>
                         <textarea class="form-textarea" id="personalMessage" name="eventDescription" 
-                                  rows="4" placeholder="Add a heartfelt message to your guests..." autocomplete="off"></textarea>
+                                  rows="4" placeholder="Add a heartfelt message to your guests..." 
+                                  autocomplete="off" maxlength="500"></textarea>
+                        <span class="char-counter" id="personalMessageCounter">0 / 500 characters</span>
+                        <span class="validation-icon">✓</span>
+                        <span class="error-message" id="personalMessageError"></span>
                     </div>
 
                     <!-- Language & Font Style -->
@@ -3127,7 +3543,7 @@
                         <label class="form-label" for="mainImage">Main Image</label>
                         <input type="file" class="form-input" id="mainImage" name="mainImage" accept="image/*" autocomplete="off" onchange="previewImage(this, 'mainImagePreview')">
                         <div id="mainImagePreview" class="image-preview"></div>
-                    </div>
+                </div>
                     
                     <!-- Image Shape Format Selector -->
                     <div class="form-group" id="imageShapeFormatGroup" style="display: none;">
@@ -3311,13 +3727,28 @@
             <div class="editor-preview-section">
                 <div class="preview-header" style="position: sticky !important; top: 0 !important; background: #f8f9fa !important; z-index: 100 !important; padding: 15px 0 !important; margin-bottom: 10px !important; border-bottom: 2px solid #e0e0e0 !important;">
                     <h3 class="preview-title">Live Preview</h3>
-                    <div class="view-toggle-buttons">
-                        <button class="view-toggle-btn active" data-view="desktop" id="desktopViewBtn">
-                            <i class="fas fa-desktop"></i> Desktop
-                        </button>
-                        <button class="view-toggle-btn" data-view="mobile" id="mobileViewBtn">
-                            <i class="fas fa-mobile-alt"></i> Mobile
-                        </button>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <div class="view-toggle-buttons">
+                            <button class="view-toggle-btn active" data-view="desktop" id="desktopViewBtn">
+                                <i class="fas fa-desktop"></i> Desktop
+                            </button>
+                            <button class="view-toggle-btn" data-view="mobile" id="mobileViewBtn">
+                                <i class="fas fa-mobile-alt"></i> Mobile
+                            </button>
+                        </div>
+                        <!-- Zoom Controls -->
+                        <div class="zoom-controls" style="display: flex; align-items: center; gap: 5px; margin-left: auto;">
+                            <button class="zoom-btn" id="zoomOutBtn" title="Zoom Out" style="padding: 6px 10px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                                <i class="fas fa-search-minus"></i>
+                            </button>
+                            <span class="zoom-level" id="zoomLevel" style="min-width: 50px; text-align: center; font-size: 13px; font-weight: 600; color: #667eea;">100%</span>
+                            <button class="zoom-btn" id="zoomInBtn" title="Zoom In" style="padding: 6px 10px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                            <button class="zoom-btn" id="zoomResetBtn" title="Reset Zoom" style="padding: 6px 10px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -4145,9 +4576,9 @@
                 const eventType = previewCard ? (previewCard.getAttribute('data-event-type') || '') : '';
                 if (eventType) {
                 // Call function if available (should always be available now)
-                if (typeof window.showEventSpecificImages === 'function') {
-                    window.showEventSpecificImages(eventType);
-                }
+                    if (typeof window.showEventSpecificImages === 'function') {
+                        window.showEventSpecificImages(eventType);
+                    }
                 }
                 
                 // Force re-display of uploaded images on top of new template background
@@ -5155,7 +5586,7 @@
                     previewPlaceholder.style.setProperty('display', 'block', 'important');
                     previewPlaceholder.style.setProperty('visibility', 'visible', 'important');
                     previewPlaceholder.style.setProperty('opacity', '1', 'important');
-                }
+            }
             }
             
             // Apply current language and font style to preview
@@ -5349,8 +5780,8 @@
                 // All supported languages (English, Hindi, Telugu, Tamil, Kannada) are LTR
                 const previewCard = document.getElementById('invitationPreviewCard');
                 if (previewCard) {
-                    previewCard.style.direction = 'ltr';
-                    previewCard.style.textAlign = 'center';
+                        previewCard.style.direction = 'ltr';
+                        previewCard.style.textAlign = 'center';
                 }
             });
         }
@@ -7234,7 +7665,7 @@
             });
             
             // Update mobile preview content container if it exists
-            if (mobilePreviewContent) {
+                if (mobilePreviewContent) {
                 mobilePreviewContent.innerHTML = desktopHTML;
             }
             
@@ -7696,6 +8127,277 @@
         };
         
         // Form submission - Capture all form data including template background
+        // ============================================
+        // ZOOM CONTROLS FUNCTIONALITY
+        // ============================================
+        let currentZoom = 100;
+        const minZoom = 50;
+        const maxZoom = 200;
+        const zoomStep = 10;
+        
+        function initZoomControls() {
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const zoomResetBtn = document.getElementById('zoomResetBtn');
+            const zoomLevel = document.getElementById('zoomLevel');
+            const previewCard = document.querySelector('.live-preview-card');
+            
+            if (!previewCard) return;
+            
+            function updateZoom(zoom) {
+                currentZoom = Math.max(minZoom, Math.min(maxZoom, zoom));
+                if (zoomLevel) zoomLevel.textContent = currentZoom + '%';
+                
+                // Apply zoom to preview card
+                previewCard.style.transform = `scale(${currentZoom / 100})`;
+                previewCard.style.transformOrigin = 'top center';
+                
+                // Store zoom level
+                localStorage.setItem('previewZoom', currentZoom);
+            }
+            
+            // Load saved zoom level
+            const savedZoom = localStorage.getItem('previewZoom');
+            if (savedZoom) {
+                updateZoom(parseInt(savedZoom));
+            }
+            
+            if (zoomInBtn) {
+                zoomInBtn.addEventListener('click', () => {
+                    updateZoom(currentZoom + zoomStep);
+                });
+            }
+            
+            if (zoomOutBtn) {
+                zoomOutBtn.addEventListener('click', () => {
+                    updateZoom(currentZoom - zoomStep);
+                });
+            }
+            
+            if (zoomResetBtn) {
+                zoomResetBtn.addEventListener('click', () => {
+                    updateZoom(100);
+                });
+            }
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    if (e.key === '=' || e.key === '+') {
+                        e.preventDefault();
+                        updateZoom(currentZoom + zoomStep);
+                    } else if (e.key === '-') {
+                        e.preventDefault();
+                        updateZoom(currentZoom - zoomStep);
+                    } else if (e.key === '0') {
+                        e.preventDefault();
+                        updateZoom(100);
+                    }
+                }
+            });
+        }
+        
+        // ============================================
+        // LOADING OVERLAY FUNCTIONS
+        // ============================================
+        function createLoadingOverlay() {
+            let overlay = document.getElementById('loadingOverlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'loadingOverlay';
+                overlay.className = 'loading-overlay';
+                overlay.innerHTML = `
+                    <div class="loading-content">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text" id="loadingText">Processing...</div>
+                        <div class="loading-subtext" id="loadingSubtext">Please wait</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+            }
+            return overlay;
+        }
+        
+        function showLoading(title = 'Processing...', subtitle = 'Please wait', progress = 0) {
+            const overlay = createLoadingOverlay();
+            const loadingText = overlay.querySelector('#loadingText');
+            const loadingSubtext = overlay.querySelector('#loadingSubtext');
+            const progressBar = overlay.querySelector('#progressBar');
+            
+            if (loadingText) loadingText.textContent = title;
+            if (loadingSubtext) loadingSubtext.textContent = subtitle;
+            if (progressBar) progressBar.style.width = progress + '%';
+            
+            overlay.classList.add('show');
+        }
+        
+        function updateLoadingProgress(progress, subtitle = null) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                const progressBar = overlay.querySelector('#progressBar');
+                const loadingSubtext = overlay.querySelector('#loadingSubtext');
+                
+                if (progressBar) progressBar.style.width = progress + '%';
+                if (loadingSubtext && subtitle) loadingSubtext.textContent = subtitle;
+            }
+        }
+        
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    if (overlay.parentNode) {
+                        overlay.remove();
+                    }
+                }, 300);
+            }
+        }
+        
+        // ============================================
+        // TOAST NOTIFICATION FUNCTIONS
+        // ============================================
+        function createToastContainer() {
+            let container = document.getElementById('toastContainer');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toastContainer';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+            return container;
+        }
+        
+        function showToast(title, message, type = 'info', duration = 5000) {
+            const container = createToastContainer();
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${icons[type] || icons.info}</span>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto remove after duration
+            if (duration > 0) {
+                setTimeout(() => {
+                    toast.style.animation = 'slideOutRight 0.3s ease';
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.remove();
+                        }
+                    }, 300);
+                }, duration);
+            }
+            
+            return toast;
+        }
+        
+        // Make toast functions globally available
+        window.showToast = showToast;
+        window.showLoading = showLoading;
+        window.hideLoading = hideLoading;
+        window.updateLoadingProgress = updateLoadingProgress;
+        
+        // ============================================
+        // ENHANCED DATE/TIME PICKER HANDLING
+        // ============================================
+        function initEnhancedDateTimePickers() {
+            const dateInput = document.getElementById('eventDate');
+            const timeInput = document.getElementById('eventTime');
+            
+            // Enhanced date input handling
+            if (dateInput) {
+                // Format date on blur
+                dateInput.addEventListener('blur', function() {
+                    const value = this.value;
+                    if (value) {
+                        // Try to parse and format date
+                        const date = new Date(value);
+                        if (!isNaN(date.getTime())) {
+                            // Format as YYYY-MM-DD for HTML5 date input
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(2, '0');
+                            const day = String(date.getDate()).padStart(2, '0');
+                            this.value = `${year}-${month}-${day}`;
+                        }
+                    }
+                });
+                
+                // Validate date on input
+                dateInput.addEventListener('input', function() {
+                    const value = this.value;
+                    if (value) {
+                        const date = new Date(value);
+                        if (isNaN(date.getTime())) {
+                            this.setCustomValidity('Please enter a valid date');
+                        } else {
+                            this.setCustomValidity('');
+                        }
+                    }
+                });
+            }
+            
+            // Enhanced time input handling
+            if (timeInput) {
+                // Format time on blur
+                timeInput.addEventListener('blur', function() {
+                    const value = this.value;
+                    if (value && !value.includes(':')) {
+                        // Try to parse time format
+                        const match = value.match(/(\d{1,2}):?(\d{2})?\s?(AM|PM)?/i);
+                        if (match) {
+                            let hours = parseInt(match[1]);
+                            const minutes = match[2] ? parseInt(match[2]) : 0;
+                            const ampm = match[3] ? match[3].toUpperCase() : '';
+                            
+                            if (ampm === 'PM' && hours !== 12) hours += 12;
+                            if (ampm === 'AM' && hours === 12) hours = 0;
+                            
+                            this.value = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                        }
+                    }
+                });
+                
+                // Validate time on input
+                timeInput.addEventListener('input', function() {
+                    const value = this.value;
+                    if (value) {
+                        const timePattern = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+                        if (!timePattern.test(value)) {
+                            this.setCustomValidity('Please enter time in HH:MM format (24-hour)');
+                        } else {
+                            this.setCustomValidity('');
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initZoomControls();
+            initEnhancedDateTimePickers();
+        });
+        
+        // ============================================
+        // FORM SUBMISSION WITH ENHANCED FEEDBACK
+        // ============================================
         // Define submitForm globally to ensure it's available for onclick handlers
         window.submitForm = function() {
             // Prevent double submission
@@ -7721,14 +8423,11 @@
                 const originalText = submitBtn.innerHTML;
                 submitBtn.setAttribute('data-original-text', originalText);
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Invitation...';
-                }
-            
-            // Show loading overlay - only once
-            if (typeof showLoadingWithIcon === 'function') {
-                showLoadingWithIcon('Creating your invitation...', 'Please wait while we process your request', '🎉');
-            } else if (typeof showLoading === 'function') {
-                showLoading('Generating your invitation...');
             }
+            
+            // Show enhanced loading overlay with progress
+            showLoading('Creating your invitation...', 'Please wait while we process your request', 0);
+            updateLoadingProgress(30, 'Validating form data...');
             
             // Capture template background info before submission
             const templateIdInput = document.getElementById('templateIdInput');
@@ -7762,7 +8461,8 @@
             const eventDate = form.querySelector('[name="eventDate"]')?.value.trim();
             
             if (!eventTitle) {
-                alert('Please enter an Event Name');
+                hideLoading();
+                showToast('Validation Error', 'Please enter an Event Name', 'error');
                 window.formSubmitting = false;
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -7779,7 +8479,8 @@
             }
             
             if (!eventDate) {
-                alert('Please enter an Event Date');
+                hideLoading();
+                showToast('Validation Error', 'Please enter an Event Date', 'error');
                 window.formSubmitting = false;
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -7794,6 +8495,8 @@
                 }
                 return;
             }
+            
+            updateLoadingProgress(60, 'Preparing invitation data...');
             
             console.log('Submitting form with template data:', {
                 templateId: templateIdInput ? templateIdInput.value : selectedTemplateId,
@@ -7860,9 +8563,17 @@
                 }
                 
                 console.log('Form is valid, submitting...');
-                form.submit();
+                updateLoadingProgress(80, 'Submitting invitation...');
+                
+                // Small delay to show progress
+                setTimeout(() => {
+                    updateLoadingProgress(100, 'Finalizing...');
+                    form.submit();
+                }, 300);
             } catch (error) {
                 console.error('Error submitting form:', error);
+                hideLoading();
+                showToast('Submission Error', 'An error occurred while submitting the form. Please try again.', 'error');
                 window.formSubmitting = false;
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -7875,7 +8586,6 @@
                         submitBtn.innerHTML = 'Preview <i class="fas fa-arrow-right"></i>';
                     }
                 }
-                alert('Error submitting form: ' + error.message);
             }
         };
 
@@ -8008,6 +8718,179 @@
         }
         
         // Add event delegation for theme card clicks (replaces inline onclick to avoid HTML entity issues)
+        // ========== REAL-TIME VALIDATION ==========
+        function validateField(field, groupId) {
+            const group = document.getElementById(groupId) || field.closest('.form-group');
+            if (!group) return true;
+            
+            const value = field.value.trim();
+            const fieldType = field.type || field.tagName.toLowerCase();
+            let isValid = true;
+            let errorMessage = '';
+            
+            // Remove existing validation classes
+            group.classList.remove('valid', 'invalid', 'loading');
+            
+            // Required field validation
+            if (field.hasAttribute('required') && !value) {
+                isValid = false;
+                errorMessage = field.getAttribute('data-error-message') || 'This field is required';
+            }
+            
+            // Field-specific validation
+            if (value && isValid) {
+                switch(fieldType) {
+                    case 'email':
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(value)) {
+                            isValid = false;
+                            errorMessage = 'Please enter a valid email address';
+                        }
+                        break;
+                    case 'text':
+                        if (field.id === 'rsvpContact') {
+                            // Validate email or phone
+                            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            const phoneRegex = /^[\d\s\(\)\-\+]+$/;
+                            if (!emailRegex.test(value) && !phoneRegex.test(value) && value.length > 0) {
+                                isValid = false;
+                                errorMessage = 'Please enter a valid email or phone number';
+                            }
+                        }
+                        break;
+                    case 'date':
+                        if (value) {
+                            const date = new Date(value);
+                            if (isNaN(date.getTime())) {
+                                isValid = false;
+                                errorMessage = 'Please enter a valid date';
+                            }
+                        }
+                        break;
+                    case 'time':
+                        if (value) {
+                            const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
+                            if (!timeRegex.test(value)) {
+                                isValid = false;
+                                errorMessage = 'Please enter a valid time (HH:MM)';
+                            }
+                        }
+                        break;
+                }
+            }
+            
+            // Update UI
+            if (value && isValid) {
+                group.classList.add('valid');
+            } else if (value && !isValid) {
+                group.classList.add('invalid');
+                const errorEl = group.querySelector('.error-message');
+                if (errorEl) {
+                    errorEl.textContent = errorMessage;
+                }
+            } else {
+                // Empty field - remove validation state
+                group.classList.remove('valid', 'invalid');
+            }
+            
+            return isValid;
+        }
+        
+        // Character counter for textarea
+        function updateCharCounter(textarea, counterId) {
+            const counter = document.getElementById(counterId);
+            if (!counter || !textarea) return;
+            
+            const current = textarea.value.length;
+            const max = textarea.getAttribute('maxlength') || 500;
+            const remaining = max - current;
+            
+            counter.textContent = `${current} / ${max} characters`;
+            
+            // Update counter color based on remaining characters
+            counter.classList.remove('warning', 'error');
+            if (remaining < 50) {
+                counter.classList.add('error');
+            } else if (remaining < 100) {
+                counter.classList.add('warning');
+            }
+        }
+        
+        // Initialize validation for all form fields
+        function initFormValidation() {
+            // Event Name
+            const eventName = document.getElementById('eventName');
+            if (eventName) {
+                eventName.addEventListener('input', () => validateField(eventName, 'eventNameGroup'));
+                eventName.addEventListener('blur', () => validateField(eventName, 'eventNameGroup'));
+            }
+            
+            // Event Date
+            const eventDate = document.getElementById('eventDate');
+            if (eventDate) {
+                eventDate.addEventListener('change', () => validateField(eventDate, 'eventDateGroup'));
+                eventDate.addEventListener('blur', () => validateField(eventDate, 'eventDateGroup'));
+            }
+            
+            // Event Time
+            const eventTime = document.getElementById('eventTime');
+            if (eventTime) {
+                eventTime.addEventListener('change', () => validateField(eventTime, 'eventTimeGroup'));
+                eventTime.addEventListener('blur', () => validateField(eventTime, 'eventTimeGroup'));
+            }
+            
+            // RSVP Contact
+            const rsvpContact = document.getElementById('rsvpContact');
+            if (rsvpContact) {
+                rsvpContact.addEventListener('input', () => validateField(rsvpContact, 'rsvpContactGroup'));
+                rsvpContact.addEventListener('blur', () => validateField(rsvpContact, 'rsvpContactGroup'));
+            }
+            
+            // Personal Message (with character counter)
+            const personalMessage = document.getElementById('personalMessage');
+            if (personalMessage) {
+                personalMessage.addEventListener('input', function() {
+                    updateCharCounter(this, 'personalMessageCounter');
+                    validateField(this, this.closest('.form-group')?.id);
+                });
+                personalMessage.addEventListener('blur', () => validateField(personalMessage, personalMessage.closest('.form-group')?.id));
+            }
+            
+            // Validate on form submit
+            const form = document.getElementById('invitationForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    let isValid = true;
+                    
+                    // Validate required fields
+                    const requiredFields = form.querySelectorAll('[required]');
+                    requiredFields.forEach(field => {
+                        const group = field.closest('.form-group');
+                        if (group && !validateField(field, group.id)) {
+                            isValid = false;
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                        // Scroll to first invalid field
+                        const firstInvalid = form.querySelector('.form-group.invalid');
+                        if (firstInvalid) {
+                            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                        return false;
+                    }
+                });
+            }
+        }
+        
+        // Initialize validation when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initFormValidation);
+        } else {
+            initFormValidation();
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
             document.addEventListener('click', function(e) {
                 const themeCard = e.target.closest('.theme-card');
@@ -8040,7 +8923,7 @@
                     // Hide placeholder immediately when image is uploaded
                     if (typeof hidePlaceholderIfContent === 'function') {
                         hidePlaceholderIfContent();
-                    }
+                }
                     
                     // Update live preview based on image type
                     const inputId = input.id;
@@ -8100,8 +8983,8 @@
                             mainImg.style.visibility = 'visible';
                             mainImg.style.opacity = '1';
                             if (mainSection) {
-                                mainSection.style.display = 'block';
-                                mainSection.style.setProperty('display', 'block', 'important');
+                            mainSection.style.display = 'block';
+                            mainSection.style.setProperty('display', 'block', 'important');
                             }
                             mainContainer.style.zIndex = '15';
                             mainContainer.style.setProperty('z-index', '15', 'important');
@@ -8115,8 +8998,8 @@
                             setTimeout(() => {
                                 if (mainImg.src) {
                                     if (mainSection) {
-                                        mainSection.style.display = 'block';
-                                        mainSection.style.setProperty('display', 'block', 'important');
+                                    mainSection.style.display = 'block';
+                                    mainSection.style.setProperty('display', 'block', 'important');
                                     }
                                     mainContainer.style.display = 'block';
                                     mainContainer.style.setProperty('display', 'block', 'important');
@@ -8461,6 +9344,18 @@
         const voiceMessageBlob = document.getElementById('voiceMessageBlob');
         
         async function startRecording() {
+            // Check if getUserMedia is available
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                showMicrophoneError('Your browser does not support microphone recording. Please use a modern browser like Chrome, Firefox, or Edge.');
+                return;
+            }
+            
+            // Check if we're on HTTPS (required for getUserMedia)
+            if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+                showMicrophoneError('Microphone access requires a secure connection (HTTPS). Please access this page via HTTPS.');
+                return;
+            }
+            
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
@@ -8473,6 +9368,9 @@
                 };
                 
                 mediaRecorder.onstop = () => {
+                    // Stop all tracks to release microphone
+                    stream.getTracks().forEach(track => track.stop());
+                    
                     const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                     const audioUrl = URL.createObjectURL(audioBlob);
                     
@@ -8502,6 +9400,9 @@
                 mediaRecorder.start();
                 recordingStartTime = Date.now();
                 
+                // Hide any error messages
+                hideMicrophoneError();
+                
                 // Update UI
                 if (startBtn) startBtn.style.display = 'none';
                 if (stopBtn) stopBtn.style.display = 'block';
@@ -8525,9 +9426,86 @@
                 
             } catch (error) {
                 console.error('Error accessing microphone:', error);
-                alert('Unable to access microphone. Please check your permissions and try again.');
+                
+                // Handle specific error types
+                let errorMessage = 'Unable to access microphone. ';
+                let errorDetails = '';
+                
+                if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                    errorMessage += 'Microphone permission was denied.';
+                    errorDetails = 'Please click the microphone icon in your browser\'s address bar and allow microphone access, then try again.';
+                } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
+                    errorMessage += 'No microphone found.';
+                    errorDetails = 'Please connect a microphone to your device and try again.';
+                } else if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {
+                    errorMessage += 'Microphone is already in use.';
+                    errorDetails = 'Another application is using your microphone. Please close it and try again.';
+                } else if (error.name === 'OverconstrainedError' || error.name === 'ConstraintNotSatisfiedError') {
+                    errorMessage += 'Microphone settings are not supported.';
+                    errorDetails = 'Your microphone does not support the required settings.';
+                } else {
+                    errorMessage += 'An unexpected error occurred.';
+                    errorDetails = error.message || 'Please check your browser settings and try again.';
+                }
+                
+                showMicrophoneError(errorMessage, errorDetails);
             }
         }
+        
+        // Show microphone error with helpful message
+        function showMicrophoneError(message, details = '') {
+            // Remove any existing error message
+            hideMicrophoneError();
+            
+            const errorContainer = document.createElement('div');
+            errorContainer.id = 'microphone-error-container';
+            errorContainer.style.cssText = `
+                margin-top: 15px;
+                padding: 15px;
+                background: #fee;
+                border: 2px solid #e53e3e;
+                border-radius: 8px;
+                color: #c53030;
+            `;
+            
+            errorContainer.innerHTML = `
+                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                    <span style="font-size: 20px;">⚠️</span>
+                    <div style="flex: 1;">
+                        <strong style="display: block; margin-bottom: 5px;">${message}</strong>
+                        ${details ? `<p style="margin: 0; font-size: 0.9rem; color: #742a2a;">${details}</p>` : ''}
+                        <div style="margin-top: 10px; font-size: 0.85rem; color: #742a2a;">
+                            <strong>How to fix:</strong>
+                            <ul style="margin: 5px 0 0 0; padding-left: 20px;">
+                                <li>Click the lock/microphone icon in your browser's address bar</li>
+                                <li>Select "Allow" for microphone permissions</li>
+                                <li>Refresh the page and try again</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button onclick="hideMicrophoneError()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #c53030; padding: 0; width: 24px; height: 24px;">×</button>
+                </div>
+            `;
+            
+            const recordingControls = document.getElementById('voice-recording-controls');
+            if (recordingControls) {
+                recordingControls.appendChild(errorContainer);
+            } else {
+                // Fallback: show as alert
+                alert(message + (details ? '\n\n' + details : ''));
+            }
+        }
+        
+        // Hide microphone error
+        function hideMicrophoneError() {
+            const errorContainer = document.getElementById('microphone-error-container');
+            if (errorContainer) {
+                errorContainer.remove();
+            }
+        }
+        
+        // Make hideMicrophoneError globally available
+        window.hideMicrophoneError = hideMicrophoneError;
         
         function stopRecording() {
             if (mediaRecorder && mediaRecorder.state !== 'inactive') {

@@ -6,18 +6,22 @@
 // ========== PERSONAL MESSAGE ==========
 async function loadPersonalMessage(shareUrl, guestEmail, guestName) {
     try {
+        console.log('📧 Loading personal message for:', guestEmail, guestName);
         const response = await fetch(
             `/api/invitations/${shareUrl}/personal-message?guestEmail=${encodeURIComponent(guestEmail)}&guestName=${encodeURIComponent(guestName || '')}`
         );
         const data = await response.json();
         
         if (data.success && data.message) {
+            console.log('✅ Personal message loaded successfully for:', guestEmail);
             displayPersonalMessage(data.message, data.guestName);
             return true;
+        } else {
+            console.warn('⚠️ Failed to load personal message:', data.message || 'Unknown error');
+            return false;
         }
-        return false;
     } catch (error) {
-        console.error('Error loading personal message:', error);
+        console.error('❌ Error loading personal message:', error);
         return false;
     }
 }
